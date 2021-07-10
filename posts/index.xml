@@ -4,7 +4,24 @@
         <link>http://sumityadav.com.np/posts/</link>
         <description>All Posts | Sumit Yadav</description>
         <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>rockerritesh4@gmail.com (rockerritesh)</managingEditor>
-            <webMaster>rockerritesh4@gmail.com (rockerritesh)</webMaster><lastBuildDate>Mon, 21 Jun 2021 00:00:00 &#43;0000</lastBuildDate><atom:link href="http://sumityadav.com.np/posts/" rel="self" type="application/rss+xml" /><item>
+            <webMaster>rockerritesh4@gmail.com (rockerritesh)</webMaster><lastBuildDate>Sat, 10 Jul 2021 08:12:36 &#43;0545</lastBuildDate><atom:link href="http://sumityadav.com.np/posts/" rel="self" type="application/rss+xml" /><item>
+    <title>Simplemath</title>
+    <link>http://sumityadav.com.np/simplemath/</link>
+    <pubDate>Sat, 10 Jul 2021 08:12:36 &#43;0545</pubDate>
+    <author>Author</author>
+    <guid>http://sumityadav.com.np/simplemath/</guid>
+    <description><![CDATA[NUMPY AND PYTHON
+ DERIVATIVE OF polynomial function 1 2 3 4 5 6 7 8 9 10  import numpy as np def basis_function(x): a=np.eye(x) b=np.zeros((x,1)) c=np. concatenate((b,a),axis=1) d=np.array(range(1,x+1)).reshape(x,1) e=c *d return e   enter coeff.of equation in given pattern :- constant,x,x^2,x^3,&hellip;.
+1 2 3 4 5  #ENTER HERE [\\\\\\\\\\\\\] d=np.array([34,90,34,90]) #NUMBER MUST BE SEPERATED BY COMMA d   1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17  print(f&#39;your equation is {d[0]}+{d[1]}x +{d[2]}x^2-----&#39;) #TO FIND LENGTH e=len(d) y=e-1 #RESHAPE d=d.]]></description>
+</item><item>
+    <title>Unsupervised</title>
+    <link>http://sumityadav.com.np/supervised/</link>
+    <pubDate>Fri, 09 Jul 2021 13:52:07 &#43;0545</pubDate>
+    <author>Author</author>
+    <guid>http://sumityadav.com.np/supervised/</guid>
+    <description><![CDATA[VAE  VAE TYPES
+ Auto Encoder This is like a simple generative algorithm in which one model is used to reduce the data like simple compression and other is for increasing data like decompressor. This model contain different neural network model for both of task. Here there is difficult to develop or generate determined image from compressed laten space. Variational Autoencoders Up to now, we have discussed dimensionality reduction problem and introduce autoencoders that are encoder-decoder architectures that can be trained by gradient descent.]]></description>
+</item><item>
     <title>Nepali_Devanagari_Letter_Classifier</title>
     <link>http://sumityadav.com.np/first_post/</link>
     <pubDate>Mon, 21 Jun 2021 00:00:00 &#43;0000</pubDate>
