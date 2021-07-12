@@ -1,31 +1,39 @@
-# second
+# Sentence That Define Me
 
 
-Mathematical notation in a Hugo project can be enabled by using third party JavaScript libraries.
-<!--more-->
+# Hi!
+***
+In this post i will put some quotes and some historic line which defined me and suggest me what to do in that very critical stage.
 
-In this example we will be using [KaTeX](https://katex.org/)
+## From my Twitter
+### {{< tweet 1408429584278716416 >}}
 
-- Create a partial under `/layouts/partials/math.html`
-- Within this partial reference the [Auto-render Extension](https://katex.org/docs/autorender.html) or host these scripts locally.
-- Include the partial in your templates like so:
+### {{< tweet 1401701147467927557 >}}
 
-```bash
-{{ if or .Params.math .Site.Params.math }}
-{{ partial "math.html" . }}
-{{ end }}
-```
+### {{< tweet 1398435159339270144 >}}
 
-- To enable KaTex on a per page basis include the parameter `katex: true` in content files
+### {{< tweet 1396991326483222529 >}}
 
-**Note:** Use the online reference of [Supported TeX Functions](https://katex.org/docs/supported.html)
+### {{< tweet 1395176888037953539 >}}
 
-### Examples
+### {{< tweet 1393153794435809283 >}}
 
-Inline math: $(\varphi = \dfrac{1+\sqrt5}{2}= 1.6180339887…)$
+### {{< tweet 1385956885212237828 >}}
 
-Block math:
-$$
- \varphi = 1+\frac{1} {1+\frac{1} {1+\frac{1} {1+\cdots} } }
-$$
+### {{< tweet 1384097942533939207 >}}
+
+### {{< tweet 1398435159339270144 >}}
+
+### {{< tweet 1382626887357272064 >}}
+
+
+## From Holy Book
+
+
+
+
+
+
+
+
 

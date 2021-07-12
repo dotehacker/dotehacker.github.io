@@ -1,4 +1,6 @@
-# Simplemath
+# Simple Math
+
+
 
 
 > NUMPY AND PYTHON

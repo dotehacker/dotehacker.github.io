@@ -1,4 +1,4 @@
-# categories
+# Documentation
 
  
 > PICTURES  [Photography](/photography).
