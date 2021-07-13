@@ -6,6 +6,8 @@
 In this post i will put some quotes and some historic line which defined me and suggest me what to do in that very critical stage.
 
 ## From my Twitter
+
+
 ### {{< tweet 1408429584278716416 >}}
 
 ### {{< tweet 1401701147467927557 >}}
@@ -28,6 +30,10 @@ In this post i will put some quotes and some historic line which defined me and 
 
 
 ## From Holy Book
+
+
+### > 
+
 
 
 
