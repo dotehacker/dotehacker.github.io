@@ -4,9 +4,17 @@
         <link>http://sumityadav.com.np/</link>
         <description>This is My New Hugo Site</description>
         <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>rockerritesh4@gmail.com (rockerritesh)</managingEditor>
-            <webMaster>rockerritesh4@gmail.com (rockerritesh)</webMaster><lastBuildDate>Sat, 10 Jul 2021 08:12:36 &#43;0545</lastBuildDate>
+            <webMaster>rockerritesh4@gmail.com (rockerritesh)</webMaster><lastBuildDate>Mon, 19 Jul 2021 20:05:33 &#43;0545</lastBuildDate>
             <atom:link href="http://sumityadav.com.np/index.xml" rel="self" type="application/rss+xml" />
         <item>
+    <title>AutoEncoder</title>
+    <link>http://sumityadav.com.np/autoencoder/</link>
+    <pubDate>Mon, 19 Jul 2021 20:05:33 &#43;0545</pubDate>
+    <author>Author</author>
+    <guid>http://sumityadav.com.np/autoencoder/</guid>
+    <description><![CDATA[AUTO ENCODER   In this notebook you will find how auto encoder are trained in tensorflow(Keras). This notebook have two different type of encoder i.e normal * Auto Encoder * and * Denoising Auto Encoder * .  Normal Encoder   LIBRARY ARE LOADED
+ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16  %matplotlib inline %config InlineBackend.figure_format = &#39;retina&#39; import matplotlib.]]></description>
+</item><item>
     <title>Simple Math</title>
     <link>http://sumityadav.com.np/simplemath/</link>
     <pubDate>Sat, 10 Jul 2021 08:12:36 &#43;0545</pubDate>
