@@ -1,6 +1,6 @@
 # Julia_Set_Fractal
 
-![Mandelbrot](http://paulbourke.net/fractals/juliaset/julia_mandel.gif "Mandelbrot")
+![Mandelbrot](/julia2.png "Julia Set")
 
 The Julia set is named after the French mathematician Gaston Julia who investigated their properties circa 1915 and culminated in his famous paper in 1918. While the Julia set is now associated with a simpler polynomial, Julia was interested in the iterative properties of a more general expression, namely 
 
