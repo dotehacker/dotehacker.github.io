@@ -4,9 +4,17 @@
         <link>http://sumityadav.com.np/</link>
         <description>This is My New Hugo Site</description>
         <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>rockerritesh4@gmail.com (rockerritesh)</managingEditor>
-            <webMaster>rockerritesh4@gmail.com (rockerritesh)</webMaster><lastBuildDate>Thu, 22 Jul 2021 08:53:14 &#43;0545</lastBuildDate>
+            <webMaster>rockerritesh4@gmail.com (rockerritesh)</webMaster><lastBuildDate>Mon, 16 Aug 2021 12:02:51 &#43;0545</lastBuildDate>
             <atom:link href="http://sumityadav.com.np/index.xml" rel="self" type="application/rss+xml" />
         <item>
+    <title>Nepali_OCR_Python</title>
+    <link>http://sumityadav.com.np/nepali_ocr/</link>
+    <pubDate>Mon, 16 Aug 2021 12:02:51 &#43;0545</pubDate>
+    <author>Author</author>
+    <guid>http://sumityadav.com.np/nepali_ocr/</guid>
+    <description><![CDATA[Nepali OCR detector In this post I am going to present Nepali Optical Character Recognition (OCR) that extracts Nepali text from images and scanned documents so that it can be edited, formatted, indexed, searched, or translated. Below mentioned code are written in python, using easyocr as a heart of this post.
+OCR Optical character recognition or optical character reader (OCR) is the electronic or mechanical conversion of images of typed, handwritten or printed text into machine-encoded text, whether from a scanned document, a photo of a document, a scene-photo (for example the text on signs and billboards in a landscape photo) or from subtitle text superimposed on an image (for example: from a television broadcast).]]></description>
+</item><item>
     <title>Julia_Set_Fractal</title>
     <link>http://sumityadav.com.np/julia_set_fractal/</link>
     <pubDate>Thu, 22 Jul 2021 08:53:14 &#43;0545</pubDate>
