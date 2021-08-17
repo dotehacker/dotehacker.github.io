@@ -1,0 +1,16 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Generative - Tag - Sumit Yadav</title>
+        <link>http://sumityadav.com.np/tags/generative/</link>
+        <description>Generative - Tag - Sumit Yadav</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>rockerritesh4@gmail.com (rockerritesh)</managingEditor>
+            <webMaster>rockerritesh4@gmail.com (rockerritesh)</webMaster><lastBuildDate>Fri, 09 Jul 2021 13:52:07 &#43;0545</lastBuildDate><atom:link href="http://sumityadav.com.np/tags/generative/" rel="self" type="application/rss+xml" /><item>
+    <title>Unsupervised</title>
+    <link>http://sumityadav.com.np/supervised/</link>
+    <pubDate>Fri, 09 Jul 2021 13:52:07 &#43;0545</pubDate>
+    <author>Author</author>
+    <guid>http://sumityadav.com.np/supervised/</guid>
+    <description><![CDATA[VAE  VAE TYPES
+ Auto Encoder This is like a simple generative algorithm in which one model is used to reduce the data like simple compression and other is for increasing data like decompressor. This model contain different neural network model for both of task. Here there is difficult to develop or generate determined image from compressed laten space. Variational Autoencoders Up to now, we have discussed dimensionality reduction problem and introduce autoencoders that are encoder-decoder architectures that can be trained by gradient descent.]]></description>
+</item></channel>
+</rss>

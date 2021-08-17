@@ -1,7 +1,6 @@
 # Nepali_OCR_Python
 
 
-<div class="cell markdown" id="GPYo7ikiWHeB">
 
 # **Nepali OCR detector**
 

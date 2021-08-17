@@ -1,0 +1,16 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Supervised - Tag - Sumit Yadav</title>
+        <link>http://sumityadav.com.np/tags/supervised/</link>
+        <description>Supervised - Tag - Sumit Yadav</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>rockerritesh4@gmail.com (rockerritesh)</managingEditor>
+            <webMaster>rockerritesh4@gmail.com (rockerritesh)</webMaster><lastBuildDate>Mon, 19 Jul 2021 20:05:33 &#43;0545</lastBuildDate><atom:link href="http://sumityadav.com.np/tags/supervised/" rel="self" type="application/rss+xml" /><item>
+    <title>AutoEncoder</title>
+    <link>http://sumityadav.com.np/autoencoder/</link>
+    <pubDate>Mon, 19 Jul 2021 20:05:33 &#43;0545</pubDate>
+    <author>Author</author>
+    <guid>http://sumityadav.com.np/autoencoder/</guid>
+    <description><![CDATA[AUTO ENCODER   In this notebook you will find how auto encoder are trained in tensorflow(Keras). This notebook have two different type of encoder i.e normal * Auto Encoder * and * Denoising Auto Encoder * .  Normal Encoder   LIBRARY ARE LOADED
+ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16  %matplotlib inline %config InlineBackend.figure_format = &#39;retina&#39; import matplotlib.]]></description>
+</item></channel>
+</rss>
