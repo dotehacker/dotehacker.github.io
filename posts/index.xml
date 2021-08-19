@@ -4,7 +4,16 @@
         <link>http://sumityadav.com.np/posts/</link>
         <description>All Posts | Sumit Yadav</description>
         <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>rockerritesh4@gmail.com (rockerritesh)</managingEditor>
-            <webMaster>rockerritesh4@gmail.com (rockerritesh)</webMaster><lastBuildDate>Mon, 16 Aug 2021 12:02:51 &#43;0545</lastBuildDate><atom:link href="http://sumityadav.com.np/posts/" rel="self" type="application/rss+xml" /><item>
+            <webMaster>rockerritesh4@gmail.com (rockerritesh)</webMaster><lastBuildDate>Thu, 19 Aug 2021 20:17:03 &#43;0545</lastBuildDate><atom:link href="http://sumityadav.com.np/posts/" rel="self" type="application/rss+xml" /><item>
+    <title>Syllabus of BCT</title>
+    <link>http://sumityadav.com.np/syllabus/</link>
+    <pubDate>Thu, 19 Aug 2021 20:17:03 &#43;0545</pubDate>
+    <author>Author</author>
+    <guid>http://sumityadav.com.np/syllabus/</guid>
+    <description><![CDATA[Course Structure for Bachelor&rsquo;s Degree in Computer Engineering
+ Here I presented the TU, IOE Syllabus of BCT.
+1. Year: 1, Semester: Odd    Code Title Exam Type Theory Ass Theory Final Practical Ass Practical Final Total     SH401 Engineering Mathematics I T 20 80   100   CT401 Computer Programming B 20 80 50  150   ME401 Engineering Drawing I P   60 40 100   SH402 Engineering Physics B 20 80 20 30 150   CE401 Applied Mechanics T 20 80   100   EE401 Basic Electrical Engineering B 20 80 25  125   Total Marks 725          2.]]></description>
+</item><item>
     <title>Nepali_OCR_Python</title>
     <link>http://sumityadav.com.np/nepali_ocr/</link>
     <pubDate>Mon, 16 Aug 2021 12:02:51 &#43;0545</pubDate>
