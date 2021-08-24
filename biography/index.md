@@ -42,7 +42,7 @@ see [Publications](/posts).
 
 ## Other
 
-- AI and Robotics Member - RAN.
+- AI and Robotics [Member](/Sumit_Yadav.jpg) - RAN.
 - IRB Robotics Arm- LOCUS 2020.
 - Joint Secretary - NTBNS.
 
