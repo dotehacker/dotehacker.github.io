@@ -1,5 +1,6 @@
 # VIM
 
+![vim.png](https://fatosmorina.com/wp-content/uploads/2017/06/vim.png)
 # VIM
 IT IS MODAL EDITOR(DIFFERENT OPERATING MODE)
 * Normal mode(navigating around file)
