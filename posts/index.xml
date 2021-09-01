@@ -4,19 +4,7 @@
         <link>http://sumityadav.com.np/posts/</link>
         <description>All Posts | Sumit Yadav</description>
         <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>rockerritesh4@gmail.com (rockerritesh)</managingEditor>
-            <webMaster>rockerritesh4@gmail.com (rockerritesh)</webMaster><lastBuildDate>Wed, 01 Sep 2021 20:05:29 &#43;0545</lastBuildDate><atom:link href="http://sumityadav.com.np/posts/" rel="self" type="application/rss+xml" /><item>
-    <title>Step to be followed to solve Transient Problems.</title>
-    <link>http://sumityadav.com.np/ect/</link>
-    <pubDate>Wed, 01 Sep 2021 20:05:29 &#43;0545</pubDate>
-    <author>Author</author>
-    <guid>http://sumityadav.com.np/ect/</guid>
-    <description><![CDATA[To find current and voltage on each of the components in Transient Analysis. Following Step to be followed to solve any problems.
- Convert all values in SI units
- 1. Check whether given variable is continuity or not. &ndash;&gt;continuity variables are (iL, vC, and q)
-2. If it is continuity variable:- &mdash;&gt; There are two ways of finding at t=0-
- By observation at t&lt;0.
-&mdash;&gt; When voltage is not applied on inductor and capacitor.]]></description>
-</item><item>
+            <webMaster>rockerritesh4@gmail.com (rockerritesh)</webMaster><lastBuildDate>Thu, 19 Aug 2021 20:17:03 &#43;0545</lastBuildDate><atom:link href="http://sumityadav.com.np/posts/" rel="self" type="application/rss+xml" /><item>
     <title>Syllabus of BCT</title>
     <link>http://sumityadav.com.np/syllabus/</link>
     <pubDate>Thu, 19 Aug 2021 20:17:03 &#43;0545</pubDate>
