@@ -1,0 +1,15 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Markdown - Tag - Sumit Yadav</title>
+        <link>http://sumityadav.com.np/tags/markdown/</link>
+        <description>Markdown - Tag - Sumit Yadav</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>rockerritesh4@gmail.com (rockerritesh)</managingEditor>
+            <webMaster>rockerritesh4@gmail.com (rockerritesh)</webMaster><lastBuildDate>Sun, 01 Dec 2019 21:57:40 &#43;0800</lastBuildDate><atom:link href="http://sumityadav.com.np/tags/markdown/" rel="self" type="application/rss+xml" /><item>
+    <title>Basic Markdown Syntax</title>
+    <link>http://sumityadav.com.np/test/</link>
+    <pubDate>Sun, 01 Dec 2019 21:57:40 &#43;0800</pubDate>
+    <author>Author</author>
+    <guid>http://sumityadav.com.np/test/</guid>
+    <description><![CDATA[<p>This article offers a sample of basic Markdown syntax that can be used in Hugo content files.</p>]]></description>
+</item></channel>
+</rss>
