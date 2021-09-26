@@ -5,6 +5,9 @@ Below is the chart which shows today status of different company status.
 
 
 
-<iframe src='https://view.officeapps.live.com/op/embed.aspx?src=https://github.com/dotehacker/dotehacker.github.io/blob/main/nepse_simple.xlsx?raw=true' width="710px" height="4800px" frameborder='1'> </iframe>
+<iframe src='https://rockerritesh.github.io/nepsesimple/' width="100%" height="9480px" frameborder='1'> </iframe>
 
+## Today GRAPH
+
+![](https://github.com/rockerritesh/nepsesimple/raw/main/graph.png)
 
