@@ -5,7 +5,7 @@
 
 ![](https://github.com/rockerritesh/nepsesimple/raw/main/graph.png)
 
-
+s
 ## Today NEPSE
 Below is the chart which shows today status of different company status.
 
