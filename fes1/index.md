@@ -37,7 +37,7 @@
 | Description |  Depicted as Walking On Bare Foot wears White Clothes and Crown.<br>Jap Mala(Rudraksh Rosary) on her right hand along with Kamandal on her left hand. |
 | Worship | On second day of Navratri.<br> Maa Brahmacharini is worshipped along with Lord Shiva, by Offering **Milk**, Flowers, rice and sandalwood. |
 
-# Day 3 Maa Chandraghanta Devi
+## Day 3 Maa Chandraghanta
 | Name | Chandraghanta Devi |
 | --- | --- |
 | Image | ![Chandraghanta Devi](https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Chandraghanta_Sanghasri_2010_Arnab_Dutta.JPG/220px-Chandraghanta_Sanghasri_2010_Arnab_Dutta.JPG)
@@ -54,4 +54,20 @@
 | Description |  She has ten hands where two hands hold a Trishula(trident), Gada(mace), bow-arrow, khadak(sword), Kamala(lotus flower), Ghanta(bell) and kamandal(waterpot), while one of her hands remains in blessing posture.she wears a half moon depicting a Bell on her forehead and has a third eye in the middle of her forehead.  |
 | Worship | On Ashwin Sukla Paksha Tritiya.<br> Maa Chandraghanta Devi, by Offering Water, Milk, Honey, Flowers and sandalwood. |
 
+## Day 4 Kushmanda Devi
+| Name | Kushmanda Devi |
+| --- | --- |
+| Image | ![Kushmanda Devi](https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Kushmanda_Sanghasri_2010_Arnab_Dutta.JPG/220px-Kushmanda_Sanghasri_2010_Arnab_Dutta.JPG)
+| Meaning | Ku means "a little", Ushma means "warmth" or "energy" and Anda means "cosmic egg".  |
+| Father and Mother | *** |
+| Husband | Lord Shiv |
+| Recarnarion | Goddess Parvati |
+| Chakra | Anahata Chakra |
+| Mount(Vahan) | Lion |
+| Colour | Red |
+| Flower | Red color flowers |
+| Mantra | **ॐ देवी कूष्माण्डायै नमः॥** <br> **Om Devi Kushmandayai Namah॥** |
+| Prayer | **सुरासम्पूर्ण कलशं रुधिराप्लुतमेव च।।<br>दधाना हस्तपद्माभ्यां कूष्माण्डा शुभदास्तु मे॥<br>या देवी सर्वभू‍तेषु माँ कूष्माण्डा रूपेण संस्थिता।<br> नमस्तस्यै नमस्तस्यै नमस्तस्यै नमो नमः॥** |
+| Description |  Kushmanda is depicted with eight to ten hands holding a trident, discus, sword, hook, mace, bow, arrow and two jars of honey (Elixir) and blood. Her one hand is always on abhayamudra from which she blesses all her devotees.  |
+| Worship | On this day, as far as possible, a bright married woman with a big forehead should be worshipped. It is preferable to feed them curd, pudding in their food. After this, fruits, dry fruits and good luck items should be offered. Due to which the mother is pleased and the desired results are obtained. |
 
