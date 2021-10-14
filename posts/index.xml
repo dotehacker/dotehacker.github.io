@@ -4,7 +4,15 @@
         <link>http://sumityadav.com.np/posts/</link>
         <description>All Posts | Sumit Yadav</description>
         <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>rockerritesh4@gmail.com (rockerritesh)</managingEditor>
-            <webMaster>rockerritesh4@gmail.com (rockerritesh)</webMaster><lastBuildDate>Thu, 07 Oct 2021 18:01:34 &#43;0545</lastBuildDate><atom:link href="http://sumityadav.com.np/posts/" rel="self" type="application/rss+xml" /><item>
+            <webMaster>rockerritesh4@gmail.com (rockerritesh)</webMaster><lastBuildDate>Thu, 14 Oct 2021 10:27:05 &#43;0545</lastBuildDate><atom:link href="http://sumityadav.com.np/posts/" rel="self" type="application/rss+xml" /><item>
+    <title>Drum</title>
+    <link>http://sumityadav.com.np/drum/</link>
+    <pubDate>Thu, 14 Oct 2021 10:27:05 &#43;0545</pubDate>
+    <author>Author</author>
+    <guid>http://sumityadav.com.np/drum/</guid>
+    <description><![CDATA[JS Drum Kit   A clap  S hihat  D kick  F openhat  G boom  H ride  J snare  K tom  L tink           
+ function removeTransition(e) { if (e.propertyName !== 'transform') return; e.target.classList.remove('playing'); } function playSound(e) { const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`); const key = document.querySelector(`div[data-key="${e.keyCode}"]`); if (!audio) return; key.classList.add('playing'); audio.currentTime = 0; audio.]]></description>
+</item><item>
     <title>Dashain : Nine form of Goddess Durga</title>
     <link>http://sumityadav.com.np/fes1/</link>
     <pubDate>Thu, 07 Oct 2021 18:01:34 &#43;0545</pubDate>
@@ -82,15 +90,5 @@ The Julia set is now associated with those points z = x + iy on the complex plan
     <guid>http://sumityadav.com.np/first_post/</guid>
     <description><![CDATA[In the search of deep data analytic we comes to deep machine learnig which is most famous way of finding pattern in data and predicting the future state of data pattern.
 In this python based machine learning code i have written a convolution based deep learnig code of predicting and recogination of number,letter and and many more. In this code i have used tranfer learning way of predicting number and letter in real time by using c++ based one of the famous visual modulus callled Open CV.]]></description>
-</item><item>
-    <title>Sentence That Define Me</title>
-    <link>http://sumityadav.com.np/second_post/</link>
-    <pubDate>Mon, 21 Jun 2021 00:00:00 &#43;0000</pubDate>
-    <author>Author</author>
-    <guid>http://sumityadav.com.np/second_post/</guid>
-    <description><![CDATA[Hi!  In this post i will put some quotes and some historic line which defined me and suggest me what to do in that very critical stage.
-From my Twitter Very silent style is yours, should I annihilate or love your style. #foryou #quotes pic.twitter.com/jAaoSnpREN
-&mdash; Sumit Yadav (@Rocker_Ritesh) August 15, 2021   I have found eternal Aloneness.
-&mdash; Sumit Yadav (@Rocker_Ritesh) August 13, 2021   One obvious thing is.]]></description>
 </item></channel>
 </rss>
