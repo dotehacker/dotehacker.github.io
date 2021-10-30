@@ -6,7 +6,7 @@
         <meta name="robots" content="noodp" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
         <title>Drum - Sumit Yadav</title><meta name="Description" content="This is My New Hugo Site"><meta property="og:title" content="Drum" />
-<meta property="og:description" content="JS Drum Kit   A clap  S hihat  D kick  F openhat  G boom  H ride  J snare  K tom  L tink           
+<meta property="og:description" content="Play Music   A clap  S hihat  D kick  F openhat  G boom  H ride  J snare  K tom  L tink           
  function removeTransition(e) { if (e.propertyName !== &#39;transform&#39;) return; e.target.classList.remove(&#39;playing&#39;); } function playSound(e) { const audio = document.querySelector(`audio[data-key=&#34;${e.keyCode}&#34;]`); const key = document.querySelector(`div[data-key=&#34;${e.keyCode}&#34;]`); if (!audio) return; key.classList.add(&#39;playing&#39;); audio.currentTime = 0; audio." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://sumityadav.com.np/drum/" /><meta property="og:image" content="http://sumityadav.com.np/logo.png"/><meta property="article:section" content="posts" />
@@ -17,7 +17,7 @@
 <meta name="twitter:image" content="http://sumityadav.com.np/logo.png"/>
 
 <meta name="twitter:title" content="Drum"/>
-<meta name="twitter:description" content="JS Drum Kit   A clap  S hihat  D kick  F openhat  G boom  H ride  J snare  K tom  L tink           
+<meta name="twitter:description" content="Play Music   A clap  S hihat  D kick  F openhat  G boom  H ride  J snare  K tom  L tink           
  function removeTransition(e) { if (e.propertyName !== &#39;transform&#39;) return; e.target.classList.remove(&#39;playing&#39;); } function playSound(e) { const audio = document.querySelector(`audio[data-key=&#34;${e.keyCode}&#34;]`); const key = document.querySelector(`div[data-key=&#34;${e.keyCode}&#34;]`); if (!audio) return; key.classList.add(&#39;playing&#39;); audio.currentTime = 0; audio."/>
 <meta name="application-name" content="LoveIt">
 <meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="canonical" href="http://sumityadav.com.np/drum/" /><link rel="prev" href="http://sumityadav.com.np/fes1/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
@@ -29,7 +29,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "http:\/\/sumityadav.com.np\/drum\/"
-        },"genre": "posts","wordcount":  61 ,
+        },"genre": "posts","wordcount":  62 ,
         "url": "http:\/\/sumityadav.com.np\/drum\/","datePublished": "2021-10-14T10:27:05+05:45","dateModified": "2021-10-14T10:27:05+05:45","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -106,7 +106,7 @@
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animated flipInX">Drum</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="http://sumityadav.com.np" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>rockerritesh</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-10-14">2021-10-14</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;61 words&nbsp;
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-10-14">2021-10-14</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;62 words&nbsp;
                 <i class="far fa-clock fa-fw"></i>&nbsp;One minute&nbsp;<span id="/drum/" class="leancloud_visitors" data-flag-title="Drum">
                         <i class="far fa-eye fa-fw"></i>&nbsp;<span class=leancloud-visitors-count></span>&nbsp;views
                     </span>&nbsp;</div>
@@ -120,7 +120,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>JS Drum Kit</title>
+  <title>Play Music</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -190,6 +190,10 @@
   const keys = Array.from(document.querySelectorAll('.key'));
   keys.forEach(key => key.addEventListener('transitionend', removeTransition));
   window.addEventListener('keydown', playSound);
+  
+  window.addEventListener('touchenter', playSound)
+ 
+
 </script>
 </body>
 </html>

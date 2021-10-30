@@ -5,7 +5,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>JS Drum Kit</title>
+  <title>Play Music</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -79,6 +79,10 @@
   const keys = Array.from(document.querySelectorAll('.key'));
   keys.forEach(key => key.addEventListener('transitionend', removeTransition));
   window.addEventListener('keydown', playSound);
+  
+  window.addEventListener('touchenter', playSound)
+ 
+
 </script>
 
 

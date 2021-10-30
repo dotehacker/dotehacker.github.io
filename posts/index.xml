@@ -10,7 +10,7 @@
     <pubDate>Thu, 14 Oct 2021 10:27:05 &#43;0545</pubDate>
     <author>Author</author>
     <guid>http://sumityadav.com.np/drum/</guid>
-    <description><![CDATA[JS Drum Kit   A clap  S hihat  D kick  F openhat  G boom  H ride  J snare  K tom  L tink           
+    <description><![CDATA[Play Music   A clap  S hihat  D kick  F openhat  G boom  H ride  J snare  K tom  L tink           
  function removeTransition(e) { if (e.propertyName !== 'transform') return; e.target.classList.remove('playing'); } function playSound(e) { const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`); const key = document.querySelector(`div[data-key="${e.keyCode}"]`); if (!audio) return; key.classList.add('playing'); audio.currentTime = 0; audio.]]></description>
 </item><item>
     <title>Dashain : Nine form of Goddess Durga</title>
@@ -26,9 +26,9 @@
     <pubDate>Wed, 01 Sep 2021 21:57:40 &#43;0800</pubDate>
     <author>Author</author>
     <guid>http://sumityadav.com.np/test/</guid>
-    <description><![CDATA[Today GRAPH s
-Today NEPSE Below is the chart which shows today status of different company status.
-  &lt;sodipodi:namedview id=&ldquo;namedview13570&rdquo; pagecolor=&quot;#505050&quot; bordercolor=&quot;#eeeeee&quot; borderopacity=&ldquo;1&rdquo; inkscape:pageshadow=&ldquo;0&rdquo; inkscape:pageopacity=&ldquo;0&rdquo; inkscape:pagecheckerboard=&ldquo;0&rdquo; inkscape:document-units=&ldquo;mm&rdquo; showgrid=&ldquo;false&rdquo; inkscape:zoom=&ldquo;1.587419&rdquo; inkscape:cx=&ldquo;54.490969&rdquo; inkscape:cy=&ldquo;559.08364&rdquo; inkscape:window-width=&ldquo;1920&rdquo; inkscape:window-height=&ldquo;1017&rdquo; inkscape:window-x=&ldquo;0&rdquo; inkscape:window-y=&ldquo;28&rdquo; inkscape:window-maximized=&ldquo;1&rdquo; inkscape:current-layer=&ldquo;layer1&rdquo; /&gt; &lt;inkscape:perspective sodipodi:type=&ldquo;inkscape:persp3d&rdquo; inkscape:vp_x=&ldquo;0 : 148.5 : 1&rdquo; inkscape:vp_y=&ldquo;0 : 1000 : 0&rdquo; inkscape:vp_z=&ldquo;210 : 148.5 : 1&rdquo; inkscape:persp3d-origin=&ldquo;105 : 99 : 1&rdquo; id=&ldquo;perspective42916&rdquo; /&gt;    ROCKER RITESH]]></description>
+    <description><![CDATA[Today GRAPH Upcomming IPO Here below are the present active and upcomming IPO details.
+ Today Stock Summary  Today NEPSE Below is the chart which shows today status of different company status.
+  ]]></description>
 </item><item>
     <title>Syllabus of BCT</title>
     <link>http://sumityadav.com.np/syllabus/</link>

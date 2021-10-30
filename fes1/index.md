@@ -71,3 +71,89 @@
 | Description |  Kushmanda is depicted with eight to ten hands holding a trident, discus, sword, hook, mace, bow, arrow and two jars of honey (Elixir) and blood. Her one hand is always on abhayamudra from which she blesses all her devotees.  |
 | Worship | On this day, as far as possible, a bright married woman with a big forehead should be worshipped. It is preferable to feed them curd, pudding in their food. After this, fruits, dry fruits and good luck items should be offered. Due to which the mother is pleased and the desired results are obtained. |
 
+## Day 5 Skandamata Devi
+| Name | Skandamata Devi |
+| --- | --- |
+| Image | ![Skandamata Devi](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Skandamata_Sanghasri_2010_Arnab_Dutta.JPG/220px-Skandamata_Sanghasri_2010_Arnab_Dutta.JPG)
+| Meaning | Mata Parvati was given this name after giving birth to Lord Skanda, also known as Kartikeya.  |
+| Father and Mother | Himavan and Menavati |
+| Husband | Lord Shiv |
+| Recarnarion | Goddess Parvati |
+| Chakra | 5th chakra of Kundalini – Visuddha Chakra |
+| Mount(Vahan) | Lion |
+| Colour | Red |
+| Flower | Red color flowers |
+| Mantra | **ॐ देवी स्कन्दमातायै नम:** <br> **Oṃ Devī Skandamātāyai Namaḥ** |
+| Prayer | **सिंहासनगता नित्यं पद्माश्रितकरद्वया।<br>शुभदास्तु सदा देवी स्कन्दमाता यशस्विनी॥<br>या देवी सर्वभू‍तेषु माँ स्कन्दमाता रूपेण संस्थिता।<br> नमस्तस्यै नमस्तस्यै नमस्तस्यै नमो नमः॥** |
+| Description |  She is pictured carrying Lotus flowers in her upper two hands, baby Murugan in one of her right hands, and Abhaya Mudra in the other.She is also seen holding Kartikey, a small child, on her lap.  |
+| Worship | By offering red flowers, Shringar Samagri |
+
+## Day 6 Katyayani Devi
+| Name | Katyayani Devi |
+| --- | --- |
+| Image | ![Katyayani Devi](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Katyayani_Sanghasri_2010_Arnab_Dutta.JPG/220px-Katyayani_Sanghasri_2010_Arnab_Dutta.JPG)
+| Meaning | Ku means "a little", Ushma means "warmth" or "energy" and Anda means "cosmic egg".  |
+| Father and Mother | *** |
+| Husband | Lord Shiv |
+| Recarnarion | Goddess Parvati |
+| Chakra |  Ajna Chakra |
+| Mount(Vahan) | Lion |
+| Colour | Red |
+| Flower | Red color flowers |
+| Mantra | **ॐ देवी कूष्माण्डायै नमः॥** <br> **Om Devi Kushmandayai Namah॥** |
+| Prayer | **सुरासम्पूर्ण कलशं रुधिराप्लुतमेव च।।<br>दधाना हस्तपद्माभ्यां कूष्माण्डा शुभदास्तु मे॥<br>या देवी सर्वभू‍तेषु माँ कूष्माण्डा रूपेण संस्थिता।<br> नमस्तस्यै नमस्तस्यै नमस्तस्यै नमो नमः॥** |
+| Description |  Kushmanda is depicted with eight to ten hands holding a trident, discus, sword, hook, mace, bow, arrow and two jars of honey (Elixir) and blood. Her one hand is always on abhayamudra from which she blesses all her devotees.  |
+| Worship | On this day, as far as possible, a bright married woman with a big forehead should be worshipped. It is preferable to feed them curd, pudding in their food. After this, fruits, dry fruits and good luck items should be offered. Due to which the mother is pleased and the desired results are obtained. |
+
+## Day 7 Kushmanda Devi
+| Name | Kushmanda Devi |
+| --- | --- |
+| Image | ![Kushmanda Devi](https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Kushmanda_Sanghasri_2010_Arnab_Dutta.JPG/220px-Kushmanda_Sanghasri_2010_Arnab_Dutta.JPG)
+| Meaning | Ku means "a little", Ushma means "warmth" or "energy" and Anda means "cosmic egg".  |
+| Father and Mother | *** |
+| Husband | Lord Shiv |
+| Recarnarion | Goddess Parvati |
+| Chakra | Anahata Chakra |
+| Mount(Vahan) | Lion |
+| Colour | Red |
+| Flower | Red color flowers |
+| Mantra | **ॐ देवी कूष्माण्डायै नमः॥** <br> **Om Devi Kushmandayai Namah॥** |
+| Prayer | **सुरासम्पूर्ण कलशं रुधिराप्लुतमेव च।।<br>दधाना हस्तपद्माभ्यां कूष्माण्डा शुभदास्तु मे॥<br>या देवी सर्वभू‍तेषु माँ कूष्माण्डा रूपेण संस्थिता।<br> नमस्तस्यै नमस्तस्यै नमस्तस्यै नमो नमः॥** |
+| Description |  Kushmanda is depicted with eight to ten hands holding a trident, discus, sword, hook, mace, bow, arrow and two jars of honey (Elixir) and blood. Her one hand is always on abhayamudra from which she blesses all her devotees.  |
+| Worship | On this day, as far as possible, a bright married woman with a big forehead should be worshipped. It is preferable to feed them curd, pudding in their food. After this, fruits, dry fruits and good luck items should be offered. Due to which the mother is pleased and the desired results are obtained. |
+
+
+## Day 8 Kushmanda Devi
+| Name | Kushmanda Devi |
+| --- | --- |
+| Image | ![Kushmanda Devi](https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Kushmanda_Sanghasri_2010_Arnab_Dutta.JPG/220px-Kushmanda_Sanghasri_2010_Arnab_Dutta.JPG)
+| Meaning | Ku means "a little", Ushma means "warmth" or "energy" and Anda means "cosmic egg".  |
+| Father and Mother | *** |
+| Husband | Lord Shiv |
+| Recarnarion | Goddess Parvati |
+| Chakra | Anahata Chakra |
+| Mount(Vahan) | Lion |
+| Colour | Red |
+| Flower | Red color flowers |
+| Mantra | **ॐ देवी कूष्माण्डायै नमः॥** <br> **Om Devi Kushmandayai Namah॥** |
+| Prayer | **सुरासम्पूर्ण कलशं रुधिराप्लुतमेव च।।<br>दधाना हस्तपद्माभ्यां कूष्माण्डा शुभदास्तु मे॥<br>या देवी सर्वभू‍तेषु माँ कूष्माण्डा रूपेण संस्थिता।<br> नमस्तस्यै नमस्तस्यै नमस्तस्यै नमो नमः॥** |
+| Description |  Kushmanda is depicted with eight to ten hands holding a trident, discus, sword, hook, mace, bow, arrow and two jars of honey (Elixir) and blood. Her one hand is always on abhayamudra from which she blesses all her devotees.  |
+| Worship | On this day, as far as possible, a bright married woman with a big forehead should be worshipped. It is preferable to feed them curd, pudding in their food. After this, fruits, dry fruits and good luck items should be offered. Due to which the mother is pleased and the desired results are obtained. |
+
+## Day 9 Kushmanda Devi
+| Name | Kushmanda Devi |
+| --- | --- |
+| Image | ![Kushmanda Devi](https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Kushmanda_Sanghasri_2010_Arnab_Dutta.JPG/220px-Kushmanda_Sanghasri_2010_Arnab_Dutta.JPG)
+| Meaning | Ku means "a little", Ushma means "warmth" or "energy" and Anda means "cosmic egg".  |
+| Father and Mother | *** |
+| Husband | Lord Shiv |
+| Recarnarion | Goddess Parvati |
+| Chakra | Anahata Chakra |
+| Mount(Vahan) | Lion |
+| Colour | Red |
+| Flower | Red color flowers |
+| Mantra | **ॐ देवी कूष्माण्डायै नमः॥** <br> **Om Devi Kushmandayai Namah॥** |
+| Prayer | **सुरासम्पूर्ण कलशं रुधिराप्लुतमेव च।।<br>दधाना हस्तपद्माभ्यां कूष्माण्डा शुभदास्तु मे॥<br>या देवी सर्वभू‍तेषु माँ कूष्माण्डा रूपेण संस्थिता।<br> नमस्तस्यै नमस्तस्यै नमस्तस्यै नमो नमः॥** |
+| Description |  Kushmanda is depicted with eight to ten hands holding a trident, discus, sword, hook, mace, bow, arrow and two jars of honey (Elixir) and blood. Her one hand is always on abhayamudra from which she blesses all her devotees.  |
+| Worship | On this day, as far as possible, a bright married woman with a big forehead should be worshipped. It is preferable to feed them curd, pudding in their food. After this, fruits, dry fruits and good luck items should be offered. Due to which the mother is pleased and the desired results are obtained. |
+
