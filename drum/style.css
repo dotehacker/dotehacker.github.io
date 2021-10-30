@@ -1,3 +1,11 @@
+<<<<<<< HEAD
+=======
+html {
+  font-size: 15px;
+  background: url('./background.jpg') bottom center;
+}
+
+>>>>>>> 4b444250f1160b45b97b3ab70bb2435873e30e81
 body,html {
   margin: 0;
   padding: 0;
