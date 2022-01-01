@@ -184,6 +184,12 @@ Krishna Mandir.
 Lockdown View.
 ![](/photo/102.jpeg)
 
-
+## pulchowk Campus
+WhiteHouse
+![](/photo/pulchowk.jpg)
+Architecture
+![](/photo/arci.jpg)
+Flower in Pcampus
+![](/photo/121.jpg)
 
 
