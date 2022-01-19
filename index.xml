@@ -2,7 +2,7 @@
     <channel>
         <title>Sumit Yadav</title>
         <link>http://sumityadav.com.np/</link>
-        <description>This is My New Hugo Site</description>
+        <description>Still Backpropagating Through My Learning that I have done a year Ago.</description>
         <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>rockerritesh4@gmail.com (rockerritesh)</managingEditor>
             <webMaster>rockerritesh4@gmail.com (rockerritesh)</webMaster><lastBuildDate>Thu, 14 Oct 2021 10:27:05 &#43;0545</lastBuildDate>
             <atom:link href="http://sumityadav.com.np/index.xml" rel="self" type="application/rss+xml" />
@@ -28,9 +28,9 @@
     <pubDate>Wed, 01 Sep 2021 21:57:40 &#43;0800</pubDate>
     <author>Author</author>
     <guid>http://sumityadav.com.np/test/</guid>
-    <description><![CDATA[Today GRAPH Upcomming IPO Here below are the present active and upcomming IPO details.
- Today Stock Summary  Today NEPSE Below is the chart which shows today status of different company status.
- !function(){"use strict";window.addEventListener("message",(function(e){if(void 0!==e.data["datawrapper-height"]){var t=document.querySelectorAll("iframe");for(var a in e.data["datawrapper-height"])for(var r=0;r]]></description>
+    <description><![CDATA[In order to view the advance real time nepsa data as well as other nepse related things please visit &ndash;&gt; nepse. This website run an automatic command on github to take data from nepse related website and display data.
+nepse.sumityadav.com.np
+Today GRAPH This below is the graph of taday nepse value with other day value.]]></description>
 </item><item>
     <title>Syllabus of BCT</title>
     <link>http://sumityadav.com.np/syllabus/</link>
