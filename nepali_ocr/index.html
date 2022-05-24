@@ -29,7 +29,7 @@ OCR Optical character recognition or optical character reader (OCR) is the elect
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "http:\/\/sumityadav.com.np\/nepali_ocr\/"
-        },"genre": "posts","keywords": "project, OCR","wordcount":  1152 ,
+        },"genre": "posts","keywords": "project, OCR","wordcount":  1150 ,
         "url": "http:\/\/sumityadav.com.np\/nepali_ocr\/","datePublished": "2021-08-16T12:02:51+05:45","dateModified": "2021-08-16T12:02:51+05:45","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -106,7 +106,7 @@ OCR Optical character recognition or optical character reader (OCR) is the elect
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animated flipInX">Nepali_OCR_Python</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="http://sumityadav.com.np" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>rockerritesh</a></span>&nbsp;<span class="post-category">included in <a href="/categories/machine-learning/"><i class="far fa-folder fa-fw"></i>Machine Learning</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-08-16">2021-08-16</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1152 words&nbsp;
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-08-16">2021-08-16</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1150 words&nbsp;
                 <i class="far fa-clock fa-fw"></i>&nbsp;6 minutes&nbsp;<span id="/nepali_ocr/" class="leancloud_visitors" data-flag-title="Nepali_OCR_Python">
                         <i class="far fa-eye fa-fw"></i>&nbsp;<span class=leancloud-visitors-count></span>&nbsp;views
                     </span>&nbsp;</div>
@@ -148,8 +148,8 @@ OCR Optical character recognition or optical character reader (OCR) is the elect
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="ch">#!pip install easyocr #To install easyocr</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="ch">#!pip install easyocr #To install easyocr</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div></div>
 <div class="cell code" execution_count="23" id="8VzgYQudJpj9">
@@ -164,19 +164,19 @@ OCR Optical character recognition or optical character reader (OCR) is the elect
 </span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">cv2</span>
-<span class="kn">import</span> <span class="nn">easyocr</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">pylab</span> <span class="kn">import</span> <span class="n">rcParams</span>
-<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
-<span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">16</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">cv2</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">easyocr</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pylab</span> <span class="kn">import</span> <span class="n">rcParams</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
+</span></span><span class="line"><span class="cl"><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">16</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div></div>
 <div class="cell markdown" id="WpGuRi25WCzh">
 <h2 id="loading-pre-trained-model">Loading pre trained model.</h2>
-<p>&lsquo;ne&rsquo; for Nepali and &lsquo;en&rsquo; for english and simillary for other</p>
+<p>&rsquo;ne&rsquo; for Nepali and &rsquo;en&rsquo; for english and simillary for other</p>
 </div>
 <div class="cell code" id="mmegcfLtcCib">
 <div class="highlight"><div class="chroma">
@@ -184,8 +184,8 @@ OCR Optical character recognition or optical character reader (OCR) is the elect
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">reader</span> <span class="o">=</span> <span class="n">easyocr</span><span class="o">.</span><span class="n">Reader</span><span class="p">([</span><span class="s1">&#39;ne&#39;</span><span class="p">])</span> <span class="c1">#&#39;ne&#39; for Nepali and &#39;en&#39; for english and simillary for other</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">reader</span> <span class="o">=</span> <span class="n">easyocr</span><span class="o">.</span><span class="n">Reader</span><span class="p">([</span><span class="s1">&#39;ne&#39;</span><span class="p">])</span> <span class="c1">#&#39;ne&#39; for Nepali and &#39;en&#39; for english and simillary for other</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div></div>
 <div class="cell markdown" id="gYQb-c-_dfbL">
@@ -237,54 +237,52 @@ OCR Optical character recognition or optical character reader (OCR) is the elect
 </span><span class="lnt">41
 </span><span class="lnt">42
 </span><span class="lnt">43
-</span><span class="lnt">44
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">map</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">in_min</span><span class="p">,</span> <span class="n">in_max</span><span class="p">,</span> <span class="n">out_min</span><span class="p">,</span> <span class="n">out_max</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">in_min</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">out_max</span> <span class="o">-</span> <span class="n">out_min</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">in_max</span> <span class="o">-</span> <span class="n">in_min</span><span class="p">)</span> <span class="o">+</span> <span class="n">out_min</span>
-
-<span class="k">def</span> <span class="nf">highPassFilter</span><span class="p">(</span><span class="n">img</span><span class="p">,</span><span class="n">kSize</span><span class="p">):</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">kSize</span><span class="o">%</span><span class="mi">2</span><span class="p">:</span>
-        <span class="n">kSize</span> <span class="o">+=</span><span class="mi">1</span>
-    <span class="n">kernel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">kSize</span><span class="p">,</span><span class="n">kSize</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">kSize</span><span class="o">*</span><span class="n">kSize</span><span class="p">)</span>
-    <span class="n">filtered</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">filter2D</span><span class="p">(</span><span class="n">img</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">kernel</span><span class="p">)</span>
-    <span class="n">filtered</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="n">filtered</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span>
-    <span class="n">filtered</span> <span class="o">=</span> <span class="n">filtered</span> <span class="o">+</span> <span class="mi">127</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
-    <span class="n">filtered</span> <span class="o">=</span> <span class="n">filtered</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;uint8&#39;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">filtered</span>
-
-<span class="k">def</span> <span class="nf">blackPointSelect</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">blackPoint</span><span class="p">):</span>
-    <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int32&#39;</span><span class="p">)</span>
-    <span class="n">img</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">blackPoint</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
-    <span class="n">_</span><span class="p">,</span> <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">threshold</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">THRESH_TOZERO</span><span class="p">)</span>
-    <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;uint8&#39;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">img</span>
-
-<span class="k">def</span> <span class="nf">whitePointSelect</span><span class="p">(</span><span class="n">img</span><span class="p">,</span><span class="n">whitePoint</span><span class="p">):</span>
-    <span class="n">_</span><span class="p">,</span><span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">threshold</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">whitePoint</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">THRESH_TRUNC</span><span class="p">)</span>
-    <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int32&#39;</span><span class="p">)</span>
-    <span class="n">img</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">whitePoint</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
-    <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;uint8&#39;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">img</span>
-
-<span class="k">def</span> <span class="nf">blackAndWhite</span><span class="p">(</span><span class="n">img</span><span class="p">):</span>
-    <span class="n">lab</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2LAB</span><span class="p">)</span>
-    <span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">lab</span><span class="p">)</span>
-    <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">add</span><span class="p">(</span> <span class="n">cv2</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">b</span><span class="p">),</span> <span class="n">cv2</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">a</span><span class="p">)</span> <span class="p">)</span>
-    <span class="k">return</span> <span class="n">img</span>
-<span class="k">def</span> <span class="nf">scan_effect</span><span class="p">(</span><span class="n">img</span><span class="p">):</span>
-    
-    <span class="n">blackPoint</span> <span class="o">=</span> <span class="mi">66</span>
-    <span class="n">whitePoint</span> <span class="o">=</span> <span class="mi">130</span>
-    <span class="n">image</span> <span class="o">=</span> <span class="n">highPassFilter</span><span class="p">(</span><span class="n">img</span><span class="p">,</span><span class="n">kSize</span> <span class="o">=</span> <span class="mi">51</span><span class="p">)</span>
-    <span class="n">image_white</span> <span class="o">=</span> <span class="n">whitePointSelect</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">whitePoint</span><span class="p">)</span>
-    <span class="n">img_black</span> <span class="o">=</span> <span class="n">blackPointSelect</span><span class="p">(</span><span class="n">image_white</span><span class="p">,</span> <span class="n">blackPoint</span><span class="p">)</span>
-    <span class="n">image</span><span class="o">=</span><span class="n">blackPointSelect</span><span class="p">(</span><span class="n">img</span><span class="p">,</span><span class="n">blackPoint</span><span class="p">)</span>
-    <span class="n">white</span> <span class="o">=</span> <span class="n">whitePointSelect</span><span class="p">(</span><span class="n">image</span><span class="p">,</span><span class="n">whitePoint</span><span class="p">)</span>
-    <span class="n">img_black</span> <span class="o">=</span> <span class="n">blackAndWhite</span><span class="p">(</span><span class="n">white</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">img_black</span>
-
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">map</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">in_min</span><span class="p">,</span> <span class="n">in_max</span><span class="p">,</span> <span class="n">out_min</span><span class="p">,</span> <span class="n">out_max</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">in_min</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">out_max</span> <span class="o">-</span> <span class="n">out_min</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">in_max</span> <span class="o">-</span> <span class="n">in_min</span><span class="p">)</span> <span class="o">+</span> <span class="n">out_min</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">highPassFilter</span><span class="p">(</span><span class="n">img</span><span class="p">,</span><span class="n">kSize</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="ow">not</span> <span class="n">kSize</span><span class="o">%</span><span class="mi">2</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">kSize</span> <span class="o">+=</span><span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="n">kernel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">kSize</span><span class="p">,</span><span class="n">kSize</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">kSize</span><span class="o">*</span><span class="n">kSize</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">filtered</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">filter2D</span><span class="p">(</span><span class="n">img</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">kernel</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">filtered</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="n">filtered</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">filtered</span> <span class="o">=</span> <span class="n">filtered</span> <span class="o">+</span> <span class="mi">127</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">filtered</span> <span class="o">=</span> <span class="n">filtered</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;uint8&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">filtered</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">blackPointSelect</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">blackPoint</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int32&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">img</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">blackPoint</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">_</span><span class="p">,</span> <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">threshold</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">THRESH_TOZERO</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;uint8&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">img</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">whitePointSelect</span><span class="p">(</span><span class="n">img</span><span class="p">,</span><span class="n">whitePoint</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">_</span><span class="p">,</span><span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">threshold</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">whitePoint</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">THRESH_TRUNC</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int32&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">img</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">whitePoint</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;uint8&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">img</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">blackAndWhite</span><span class="p">(</span><span class="n">img</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">lab</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2LAB</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">lab</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">add</span><span class="p">(</span> <span class="n">cv2</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">b</span><span class="p">),</span> <span class="n">cv2</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">a</span><span class="p">)</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">img</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">scan_effect</span><span class="p">(</span><span class="n">img</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="n">blackPoint</span> <span class="o">=</span> <span class="mi">66</span>
+</span></span><span class="line"><span class="cl">    <span class="n">whitePoint</span> <span class="o">=</span> <span class="mi">130</span>
+</span></span><span class="line"><span class="cl">    <span class="n">image</span> <span class="o">=</span> <span class="n">highPassFilter</span><span class="p">(</span><span class="n">img</span><span class="p">,</span><span class="n">kSize</span> <span class="o">=</span> <span class="mi">51</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">image_white</span> <span class="o">=</span> <span class="n">whitePointSelect</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">whitePoint</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">img_black</span> <span class="o">=</span> <span class="n">blackPointSelect</span><span class="p">(</span><span class="n">image_white</span><span class="p">,</span> <span class="n">blackPoint</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">image</span><span class="o">=</span><span class="n">blackPointSelect</span><span class="p">(</span><span class="n">img</span><span class="p">,</span><span class="n">blackPoint</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">white</span> <span class="o">=</span> <span class="n">whitePointSelect</span><span class="p">(</span><span class="n">image</span><span class="p">,</span><span class="n">whitePoint</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">img_black</span> <span class="o">=</span> <span class="n">blackAndWhite</span><span class="p">(</span><span class="n">white</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">img_black</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div></div>
 <div class="cell markdown" id="CONLRt8_eNOI">
@@ -300,20 +298,18 @@ OCR Optical character recognition or optical character reader (OCR) is the elect
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">loc</span><span class="o">=</span><span class="s2">&#34;2.jpg&#34;</span> <span class="c1">#Enter the loction of image</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">loc</span><span class="o">=</span><span class="s2">&#34;2.jpg&#34;</span> <span class="c1">#Enter the loction of image</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div></div>
 <div class="cell code" execution_count="42" id="KyPM2cGrdpuA">
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">Image</span><span class="p">(</span><span class="n">loc</span><span class="p">)</span>
-
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">Image</span><span class="p">(</span><span class="n">loc</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><div class="output display_data">
 <p><img
@@ -339,13 +335,13 @@ id="GSTzuQzocCNh" outputId="dfc09dff-08c2-4321-96c6-5f4192359091">
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">loc</span><span class="p">)</span>
-<span class="n">image</span> <span class="o">=</span> <span class="n">scan_effect</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
-<span class="c1">#from google.colab.patches import cv2_imshow</span>
-<span class="c1">#cv2_imshow(image)</span>
-<span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;scanned.jpg&#39;</span>
-<span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">image</span><span class="p">)</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">loc</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">image</span> <span class="o">=</span> <span class="n">scan_effect</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#from google.colab.patches import cv2_imshow</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#cv2_imshow(image)</span>
+</span></span><span class="line"><span class="cl"><span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;scanned.jpg&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">image</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><div class="output execute_result" execution_count="43">
 <pre><code>True
@@ -361,8 +357,8 @@ id="GSTzuQzocCNh" outputId="dfc09dff-08c2-4321-96c6-5f4192359091">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">path</span><span class="o">=</span><span class="n">filename</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">path</span><span class="o">=</span><span class="n">filename</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div></div>
 <div class="cell code" execution_count="41"
@@ -373,8 +369,8 @@ id="UbxYB0ciJt5u" outputId="7e5de9f5-0797-461f-b666-a7710f152628">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">Image</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">Image</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><div class="output execute_result" execution_count="41">
 <p><img
@@ -396,8 +392,8 @@ id="UbxYB0ciJt5u" outputId="7e5de9f5-0797-461f-b666-a7710f152628">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">output</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">readtext</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">output</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">readtext</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div></div>
 <div class="cell markdown" id="HPmTmXGAWv30">
@@ -411,8 +407,8 @@ id="VTaR_9lpJ713" outputId="adfa8449-6acb-4ad6-f22f-b7ff18dc6642">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">output</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">output</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><div class="output execute_result" execution_count="37">
 <pre><code>[([[123, 1], [667, 1], [667, 67], [123, 67]],
@@ -514,8 +510,8 @@ id="BPZ3LIlMKTfJ" outputId="fd8f775b-356a-4a76-9d01-13c4e634f4e3">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total number of detection&#39;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">output</span><span class="p">))</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total number of detection&#39;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">output</span><span class="p">))</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><div class="output stream stdout">
 <pre><code>Total number of detection 27
@@ -541,16 +537,16 @@ id="ITkLviDfKTUs" outputId="45296062-47f4-480f-adf2-f8c51228c0d4">
 </span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">image</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">output</span><span class="p">)):</span>
-  <span class="n">cord</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-  <span class="n">x_min</span><span class="p">,</span> <span class="n">y_min</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">idx</span><span class="p">))</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">cord</span><span class="p">)]</span>
-  <span class="n">x_max</span><span class="p">,</span> <span class="n">y_max</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">idx</span><span class="p">))</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">cord</span><span class="p">)]</span>
-  <span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">image</span><span class="p">,(</span><span class="n">x_min</span><span class="p">,</span><span class="n">y_min</span><span class="p">),(</span><span class="n">x_max</span><span class="p">,</span><span class="n">y_max</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span><span class="mi">2</span><span class="p">)</span>
-  <span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">))</span>  
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">image</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">output</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">  <span class="n">cord</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">  <span class="n">x_min</span><span class="p">,</span> <span class="n">y_min</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">idx</span><span class="p">))</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">cord</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">  <span class="n">x_max</span><span class="p">,</span> <span class="n">y_max</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">idx</span><span class="p">))</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">cord</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">  <span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">image</span><span class="p">,(</span><span class="n">x_min</span><span class="p">,</span><span class="n">y_min</span><span class="p">),(</span><span class="n">x_max</span><span class="p">,</span><span class="n">y_max</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span><span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">))</span>  
+</span></span></code></pre></td></tr></table>
 </div>
 </div><div class="output stream stdout">
 <pre><code>त्या बांच्न के ढुकुर झैं नभमा डुलेर
@@ -635,7 +631,7 @@ Free free to Star this code on <a href="https://github.com/rockerritesh/BASICS-I
                 Please enable JavaScript to view the comments powered by <a href="https://valine.js.org/">Valine</a>.
             </noscript></div></article></div>
             </main><footer class="footer">
-        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.92.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.98.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
                 </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="http://sumityadav.com.np" target="_blank">rockerritesh</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
         </div>
     </footer></div>

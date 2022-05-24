@@ -105,7 +105,25 @@
 | Description |  Kushmanda is depicted with eight to ten hands holding a trident, discus, sword, hook, mace, bow, arrow and two jars of honey (Elixir) and blood. Her one hand is always on abhayamudra from which she blesses all her devotees.  |
 | Worship | On this day, as far as possible, a bright married woman with a big forehead should be worshipped. It is preferable to feed them curd, pudding in their food. After this, fruits, dry fruits and good luck items should be offered. Due to which the mother is pleased and the desired results are obtained. |
 
-## Day 7 Kushmanda Devi
+## Day 7 Kalaratri Devi
+| Name | Kalaratri Devi |
+| --- | --- |
+| Image | ![Kalaratri Devi](https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Kalratri_Sanghasri_2010_Arnab_Dutta.JPG/220px-Kalratri_Sanghasri_2010_Arnab_Dutta.JPG)
+| Meaning | Kaalratri; Kala(First part) means black in honour of being the first creation before the light itself. ratri( second part) means darkness after the sun sets, which whole combined to give the meaning the Goddess who is empowers the devotee with the devouring quality of kala (time) and the all-consuming nature of ratri (night) - allowing all obstacles to be overcome and guaranteeing success in all undertakings.   |
+| Father and Mother | *** |
+| Husband | Lord Shiv |
+| Recarnarion | Goddess Durga |
+| Chakra | Crown Chakra |
+| Mount(Vahan) | Donkey |
+| Colour | Red |
+| Flower | Red color flowers |
+| Mantra | **ॐ देवी कालरात्र्यै नम:॥** <br> **Oṃ Devī Kālarātryai Namaḥ॥** |
+| Prayer | **एकवेणी जपाकर्णपूरा नग्ना खरास्थिता <br> लंंबोष्टी कर्णिकाकर्णी तैलाभ्यक्तशरीरिणी।<br>वामपादोल्लसल्लोहलताकंठकभूषणा <br> वर्धनमूर्धध्वजा कृष्णा कालरात्रिर्भयंकरी।।** |
+| Description | Kalaratri devi is depicted with four hands holding a trident, hook with two hand positioning blessing( giving and protecting) devotees.  |
+| Worship | On this day, as far as possible, a bright married woman with a big forehead should be worshipped. It is preferable to feed them curd, pudding in their food. After this, fruits, dry fruits and good luck items should be offered. Due to which the mother is pleased and the desired results are obtained. |
+
+
+## Day 8 Mahagauri Devi
 | Name | Kushmanda Devi |
 | --- | --- |
 | Image | ![Kushmanda Devi](https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Kushmanda_Sanghasri_2010_Arnab_Dutta.JPG/220px-Kushmanda_Sanghasri_2010_Arnab_Dutta.JPG)
@@ -122,25 +140,7 @@
 | Description |  Kushmanda is depicted with eight to ten hands holding a trident, discus, sword, hook, mace, bow, arrow and two jars of honey (Elixir) and blood. Her one hand is always on abhayamudra from which she blesses all her devotees.  |
 | Worship | On this day, as far as possible, a bright married woman with a big forehead should be worshipped. It is preferable to feed them curd, pudding in their food. After this, fruits, dry fruits and good luck items should be offered. Due to which the mother is pleased and the desired results are obtained. |
 
-
-## Day 8 Kushmanda Devi
-| Name | Kushmanda Devi |
-| --- | --- |
-| Image | ![Kushmanda Devi](https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Kushmanda_Sanghasri_2010_Arnab_Dutta.JPG/220px-Kushmanda_Sanghasri_2010_Arnab_Dutta.JPG)
-| Meaning | Ku means "a little", Ushma means "warmth" or "energy" and Anda means "cosmic egg".  |
-| Father and Mother | *** |
-| Husband | Lord Shiv |
-| Recarnarion | Goddess Parvati |
-| Chakra | Anahata Chakra |
-| Mount(Vahan) | Lion |
-| Colour | Red |
-| Flower | Red color flowers |
-| Mantra | **ॐ देवी कूष्माण्डायै नमः॥** <br> **Om Devi Kushmandayai Namah॥** |
-| Prayer | **सुरासम्पूर्ण कलशं रुधिराप्लुतमेव च।।<br>दधाना हस्तपद्माभ्यां कूष्माण्डा शुभदास्तु मे॥<br>या देवी सर्वभू‍तेषु माँ कूष्माण्डा रूपेण संस्थिता।<br> नमस्तस्यै नमस्तस्यै नमस्तस्यै नमो नमः॥** |
-| Description |  Kushmanda is depicted with eight to ten hands holding a trident, discus, sword, hook, mace, bow, arrow and two jars of honey (Elixir) and blood. Her one hand is always on abhayamudra from which she blesses all her devotees.  |
-| Worship | On this day, as far as possible, a bright married woman with a big forehead should be worshipped. It is preferable to feed them curd, pudding in their food. After this, fruits, dry fruits and good luck items should be offered. Due to which the mother is pleased and the desired results are obtained. |
-
-## Day 9 Kushmanda Devi
+## Day 9 Siddhidatri Devi
 | Name | Kushmanda Devi |
 | --- | --- |
 | Image | ![Kushmanda Devi](https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Kushmanda_Sanghasri_2010_Arnab_Dutta.JPG/220px-Kushmanda_Sanghasri_2010_Arnab_Dutta.JPG)

@@ -27,7 +27,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "http:\/\/sumityadav.com.np\/simplemath\/"
-        },"genre": "posts","keywords": "math, Python","wordcount":  124 ,
+        },"genre": "posts","keywords": "math, Python","wordcount":  122 ,
         "url": "http:\/\/sumityadav.com.np\/simplemath\/","datePublished": "2021-07-10T08:12:36+05:45","dateModified": "2021-07-10T08:12:36+05:45","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -104,7 +104,7 @@
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animated flipInX">Simple Math</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="http://sumityadav.com.np" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>rockerritesh</a></span>&nbsp;<span class="post-category">included in <a href="/categories/math/"><i class="far fa-folder fa-fw"></i>Math</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-07-10">2021-07-10</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;124 words&nbsp;
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-07-10">2021-07-10</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;122 words&nbsp;
                 <i class="far fa-clock fa-fw"></i>&nbsp;One minute&nbsp;<span id="/simplemath/" class="leancloud_visitors" data-flag-title="Simple Math">
                         <i class="far fa-eye fa-fw"></i>&nbsp;<span class=leancloud-visitors-count></span>&nbsp;views
                     </span>&nbsp;</div>
@@ -132,17 +132,17 @@
 </span><span class="lnt">10
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">
-import numpy as np
-def basis_function(x):
-    a=np.eye(x)
-    b=np.zeros((x,1))
-    c=np. concatenate((b,a),axis=1)
-    d=np.array(range(1,x+1)).reshape(x,1)
-    e=c *d
-    return e
-    
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">import numpy as np
+</span></span><span class="line"><span class="cl">def basis_function(x):
+</span></span><span class="line"><span class="cl">    a=np.eye(x)
+</span></span><span class="line"><span class="cl">    b=np.zeros((x,1))
+</span></span><span class="line"><span class="cl">    c=np. concatenate((b,a),axis=1)
+</span></span><span class="line"><span class="cl">    d=np.array(range(1,x+1)).reshape(x,1)
+</span></span><span class="line"><span class="cl">    e=c *d
+</span></span><span class="line"><span class="cl">    return e
+</span></span><span class="line"><span class="cl">    
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>enter  coeff.of equation  in given pattern :- constant,x,x^2,x^3,&hellip;.</p>
 <div class="highlight"><div class="chroma">
@@ -151,15 +151,13 @@ def basis_function(x):
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
-</span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">
-#ENTER HERE [\\\\\\\\\\\\\]
-d=np.array([34,90,34,90]) #NUMBER MUST BE SEPERATED BY COMMA
-d
-
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">#ENTER HERE [\\\\\\\\\\\\\]
+</span></span><span class="line"><span class="cl">d=np.array([34,90,34,90]) #NUMBER MUST BE SEPERATED BY COMMA
+</span></span><span class="line"><span class="cl">d
+</span></span></code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -179,27 +177,25 @@ d
 </span><span class="lnt">14
 </span><span class="lnt">15
 </span><span class="lnt">16
-</span><span class="lnt">17
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">print(f&#39;your equation is {d[0]}+{d[1]}x +{d[2]}x^2-----&#39;)
-#TO FIND LENGTH
-e=len(d)
-y=e-1
-
-#RESHAPE
-d=d.reshape(e,1)
-
-#CALLING BASIS FUNCTION
-f=basis_function(y)
-
-#FINDING DERIVATIVE
-g=f@d
-
-#PRINTING OUT
-print(f&#39;your derivative coeff. in order of constant,x,x^2,x^3,.... term is:- {g.reshape(1,-1)} &#39;)
-
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">print(f&#39;your equation is {d[0]}+{d[1]}x +{d[2]}x^2-----&#39;)
+</span></span><span class="line"><span class="cl">#TO FIND LENGTH
+</span></span><span class="line"><span class="cl">e=len(d)
+</span></span><span class="line"><span class="cl">y=e-1
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">#RESHAPE
+</span></span><span class="line"><span class="cl">d=d.reshape(e,1)
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">#CALLING BASIS FUNCTION
+</span></span><span class="line"><span class="cl">f=basis_function(y)
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">#FINDING DERIVATIVE
+</span></span><span class="line"><span class="cl">g=f@d
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">#PRINTING OUT
+</span></span><span class="line"><span class="cl">print(f&#39;your derivative coeff. in order of constant,x,x^2,x^3,.... term is:- {g.reshape(1,-1)} &#39;)
+</span></span></code></pre></td></tr></table>
 </div>
 </div><blockquote>
 <p>Result</p>
@@ -238,7 +234,7 @@ your derivative coeff. in order of constant,x,x^2,x^3,&hellip;. term is:- [[ 90.
                 Please enable JavaScript to view the comments powered by <a href="https://valine.js.org/">Valine</a>.
             </noscript></div></article></div>
             </main><footer class="footer">
-        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.92.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.98.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
                 </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="http://sumityadav.com.np" target="_blank">rockerritesh</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
         </div>
     </footer></div>

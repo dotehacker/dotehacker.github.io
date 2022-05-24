@@ -12,6 +12,6 @@
     <guid>http://sumityadav.com.np/simplemath/</guid>
     <description><![CDATA[NUMPY AND PYTHON
  DERIVATIVE OF polynomial function 1 2 3 4 5 6 7 8 9 10  import numpy as np def basis_function(x): a=np.eye(x) b=np.zeros((x,1)) c=np. concatenate((b,a),axis=1) d=np.array(range(1,x+1)).reshape(x,1) e=c *d return e   enter coeff.of equation in given pattern :- constant,x,x^2,x^3,&hellip;.
-1 2 3 4 5  #ENTER HERE [\\\\\\\\\\\\\] d=np.array([34,90,34,90]) #NUMBER MUST BE SEPERATED BY COMMA d   1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17  print(f&#39;your equation is {d[0]}+{d[1]}x +{d[2]}x^2-----&#39;) #TO FIND LENGTH e=len(d) y=e-1 #RESHAPE d=d.]]></description>
+1 2 3 4  #ENTER HERE [\\\\\\\\\\\\\] d=np.array([34,90,34,90]) #NUMBER MUST BE SEPERATED BY COMMA d   1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16  print(f&#39;your equation is {d[0]}+{d[1]}x +{d[2]}x^2-----&#39;) #TO FIND LENGTH e=len(d) y=e-1 #RESHAPE d=d.]]></description>
 </item></channel>
 </rss>

@@ -4,9 +4,18 @@
         <link>http://sumityadav.com.np/</link>
         <description>Still Backpropagating Through My Learning that I have done a year Ago.</description>
         <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>rockerritesh4@gmail.com (rockerritesh)</managingEditor>
-            <webMaster>rockerritesh4@gmail.com (rockerritesh)</webMaster><lastBuildDate>Thu, 14 Oct 2021 10:27:05 &#43;0545</lastBuildDate>
+            <webMaster>rockerritesh4@gmail.com (rockerritesh)</webMaster><lastBuildDate>Wed, 30 Mar 2022 17:50:41 &#43;0545</lastBuildDate>
             <atom:link href="http://sumityadav.com.np/index.xml" rel="self" type="application/rss+xml" />
         <item>
+    <title>Multi_Class_Text_Classification</title>
+    <link>http://sumityadav.com.np/text_classification/</link>
+    <pubDate>Wed, 30 Mar 2022 17:50:41 &#43;0545</pubDate>
+    <author>Author</author>
+    <guid>http://sumityadav.com.np/text_classification/</guid>
+    <description><![CDATA[Multi_Class_Text_Classification  This post and code are used in a challenge organized by LOCUS called DataRush.
+ Hi!, Today in this post i am going to share our effort which was applied by us in a competition organized by LOCUS.
+Lets start, for this challenge we have give data sets which contain a train data csv which contain four columns and 390603 rows ie 390603 rows × 4 columns. As in each row we have given &lsquo;id&rsquo; number( which is random id number to represent id), &lsquo;abstract&rsquo; which contain main part for this competition which we have to classify.]]></description>
+</item><item>
     <title>Drum</title>
     <link>http://sumityadav.com.np/drum/</link>
     <pubDate>Thu, 14 Oct 2021 10:27:05 &#43;0545</pubDate>
@@ -75,7 +84,7 @@ The Julia set is now associated with those points z = x + iy on the complex plan
     <guid>http://sumityadav.com.np/simplemath/</guid>
     <description><![CDATA[NUMPY AND PYTHON
  DERIVATIVE OF polynomial function 1 2 3 4 5 6 7 8 9 10  import numpy as np def basis_function(x): a=np.eye(x) b=np.zeros((x,1)) c=np. concatenate((b,a),axis=1) d=np.array(range(1,x+1)).reshape(x,1) e=c *d return e   enter coeff.of equation in given pattern :- constant,x,x^2,x^3,&hellip;.
-1 2 3 4 5  #ENTER HERE [\\\\\\\\\\\\\] d=np.array([34,90,34,90]) #NUMBER MUST BE SEPERATED BY COMMA d   1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17  print(f&#39;your equation is {d[0]}+{d[1]}x +{d[2]}x^2-----&#39;) #TO FIND LENGTH e=len(d) y=e-1 #RESHAPE d=d.]]></description>
+1 2 3 4  #ENTER HERE [\\\\\\\\\\\\\] d=np.array([34,90,34,90]) #NUMBER MUST BE SEPERATED BY COMMA d   1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16  print(f&#39;your equation is {d[0]}+{d[1]}x +{d[2]}x^2-----&#39;) #TO FIND LENGTH e=len(d) y=e-1 #RESHAPE d=d.]]></description>
 </item><item>
     <title>Unsupervised</title>
     <link>http://sumityadav.com.np/supervised/</link>
@@ -84,13 +93,5 @@ The Julia set is now associated with those points z = x + iy on the complex plan
     <guid>http://sumityadav.com.np/supervised/</guid>
     <description><![CDATA[VAE  VAE TYPES
  Auto Encoder This is like a simple generative algorithm in which one model is used to reduce the data like simple compression and other is for increasing data like decompressor. This model contain different neural network model for both of task. Here there is difficult to develop or generate determined image from compressed laten space. Variational Autoencoders Up to now, we have discussed dimensionality reduction problem and introduce autoencoders that are encoder-decoder architectures that can be trained by gradient descent.]]></description>
-</item><item>
-    <title>Nepali_Devanagari_Letter_Classifier</title>
-    <link>http://sumityadav.com.np/first_post/</link>
-    <pubDate>Mon, 21 Jun 2021 00:00:00 &#43;0000</pubDate>
-    <author>Author</author>
-    <guid>http://sumityadav.com.np/first_post/</guid>
-    <description><![CDATA[In the search of deep data analytic we comes to deep machine learnig which is most famous way of finding pattern in data and predicting the future state of data pattern.
-In this python based machine learning code i have written a convolution based deep learnig code of predicting and recogination of number,letter and and many more. In this code i have used tranfer learning way of predicting number and letter in real time by using c++ based one of the famous visual modulus callled Open CV.]]></description>
 </item></channel>
 </rss>

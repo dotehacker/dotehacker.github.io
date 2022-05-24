@@ -4,7 +4,16 @@
         <link>http://sumityadav.com.np/categories/machine-learning/</link>
         <description>Machine Learning - Category - Sumit Yadav</description>
         <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>rockerritesh4@gmail.com (rockerritesh)</managingEditor>
-            <webMaster>rockerritesh4@gmail.com (rockerritesh)</webMaster><lastBuildDate>Mon, 16 Aug 2021 12:02:51 &#43;0545</lastBuildDate><atom:link href="http://sumityadav.com.np/categories/machine-learning/" rel="self" type="application/rss+xml" /><item>
+            <webMaster>rockerritesh4@gmail.com (rockerritesh)</webMaster><lastBuildDate>Wed, 30 Mar 2022 17:50:41 &#43;0545</lastBuildDate><atom:link href="http://sumityadav.com.np/categories/machine-learning/" rel="self" type="application/rss+xml" /><item>
+    <title>Multi_Class_Text_Classification</title>
+    <link>http://sumityadav.com.np/text_classification/</link>
+    <pubDate>Wed, 30 Mar 2022 17:50:41 &#43;0545</pubDate>
+    <author>Author</author>
+    <guid>http://sumityadav.com.np/text_classification/</guid>
+    <description><![CDATA[Multi_Class_Text_Classification  This post and code are used in a challenge organized by LOCUS called DataRush.
+ Hi!, Today in this post i am going to share our effort which was applied by us in a competition organized by LOCUS.
+Lets start, for this challenge we have give data sets which contain a train data csv which contain four columns and 390603 rows ie 390603 rows × 4 columns. As in each row we have given &lsquo;id&rsquo; number( which is random id number to represent id), &lsquo;abstract&rsquo; which contain main part for this competition which we have to classify.]]></description>
+</item><item>
     <title>Nepali_OCR_Python</title>
     <link>http://sumityadav.com.np/nepali_ocr/</link>
     <pubDate>Mon, 16 Aug 2021 12:02:51 &#43;0545</pubDate>
