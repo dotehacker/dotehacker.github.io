@@ -4,7 +4,20 @@
         <link>http://sumityadav.com.np/posts/</link>
         <description>All Posts | Sumit Yadav</description>
         <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>rockerritesh4@gmail.com (rockerritesh)</managingEditor>
-            <webMaster>rockerritesh4@gmail.com (rockerritesh)</webMaster><lastBuildDate>Wed, 30 Mar 2022 17:50:41 &#43;0545</lastBuildDate><atom:link href="http://sumityadav.com.np/posts/" rel="self" type="application/rss+xml" /><item>
+            <webMaster>rockerritesh4@gmail.com (rockerritesh)</webMaster><lastBuildDate>Thu, 09 Jun 2022 18:07:21 &#43;0545</lastBuildDate><atom:link href="http://sumityadav.com.np/posts/" rel="self" type="application/rss+xml" /><item>
+    <title>Tensor_processing_units</title>
+    <link>http://sumityadav.com.np/tensor_processing_units/</link>
+    <pubDate>Thu, 09 Jun 2022 18:07:21 &#43;0545</pubDate>
+    <author>Author</author>
+    <guid>http://sumityadav.com.np/tensor_processing_units/</guid>
+    <description><![CDATA[Sumit Yadav&nbsp;(PUL076BCT088)
+Prof. Dr. &nbsp;Subarna Shakya&nbsp;
+Director, Information Technology Innovation Center, Tribhuvan University
+Computer Organization and Architecture
+09&nbsp;June&nbsp;2022
+TPUs (Tensor Processing Unit)
+Tensor Processing Units (TPUs) are custom-designed application-specific integrated circuits (ASICs) developed by Google to accelerate AI &nbsp;and neural network works. Formally, it was begun in 2015 and first made available publicly &nbsp;in 2018 for both cloud computing and small business. Tensor processing unit was first introduced in 2016 at Google I/O, when the company said the TPU had been already used in the company for over a year.]]></description>
+</item><item>
     <title>Multi_Class_Text_Classification</title>
     <link>http://sumityadav.com.np/text_classification/</link>
     <pubDate>Wed, 30 Mar 2022 17:50:41 &#43;0545</pubDate>
@@ -83,13 +96,5 @@ The Julia set is now associated with those points z = x + iy on the complex plan
     <description><![CDATA[NUMPY AND PYTHON
  DERIVATIVE OF polynomial function 1 2 3 4 5 6 7 8 9 10  import numpy as np def basis_function(x): a=np.eye(x) b=np.zeros((x,1)) c=np. concatenate((b,a),axis=1) d=np.array(range(1,x+1)).reshape(x,1) e=c *d return e   enter coeff.of equation in given pattern :- constant,x,x^2,x^3,&hellip;.
 1 2 3 4  #ENTER HERE [\\\\\\\\\\\\\] d=np.array([34,90,34,90]) #NUMBER MUST BE SEPERATED BY COMMA d   1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16  print(f&#39;your equation is {d[0]}+{d[1]}x +{d[2]}x^2-----&#39;) #TO FIND LENGTH e=len(d) y=e-1 #RESHAPE d=d.]]></description>
-</item><item>
-    <title>Unsupervised</title>
-    <link>http://sumityadav.com.np/supervised/</link>
-    <pubDate>Fri, 09 Jul 2021 13:52:07 &#43;0545</pubDate>
-    <author>Author</author>
-    <guid>http://sumityadav.com.np/supervised/</guid>
-    <description><![CDATA[VAE  VAE TYPES
- Auto Encoder This is like a simple generative algorithm in which one model is used to reduce the data like simple compression and other is for increasing data like decompressor. This model contain different neural network model for both of task. Here there is difficult to develop or generate determined image from compressed laten space. Variational Autoencoders Up to now, we have discussed dimensionality reduction problem and introduce autoencoders that are encoder-decoder architectures that can be trained by gradient descent.]]></description>
 </item></channel>
 </rss>
