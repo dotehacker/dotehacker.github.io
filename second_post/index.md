@@ -7,6 +7,7 @@ In this post i will put some quotes and some historic line which defined me and 
 
 ## From my Twitter
 
+### {{< tweet 1535582031299477505 >}}
 
 ### {{< tweet 1426834591793369098 >}}
 
@@ -53,6 +54,7 @@ In this post i will put some quotes and some historic line which defined me and 
 ### {{< tweet 1398435159339270144 >}}
 
 ### {{< tweet 1382626887357272064 >}}
+
 
 
 ## From Holy Book

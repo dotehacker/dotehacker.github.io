@@ -1,0 +1,21 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>TPUs - Tag - Sumit Yadav</title>
+        <link>http://sumityadav.com.np/tags/tpus/</link>
+        <description>TPUs - Tag - Sumit Yadav</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>rockerritesh4@gmail.com (rockerritesh)</managingEditor>
+            <webMaster>rockerritesh4@gmail.com (rockerritesh)</webMaster><lastBuildDate>Thu, 09 Jun 2022 18:07:21 &#43;0545</lastBuildDate><atom:link href="http://sumityadav.com.np/tags/tpus/" rel="self" type="application/rss+xml" /><item>
+    <title>Tensor_processing_units</title>
+    <link>http://sumityadav.com.np/tensor_processing_units/</link>
+    <pubDate>Thu, 09 Jun 2022 18:07:21 &#43;0545</pubDate>
+    <author>Author</author>
+    <guid>http://sumityadav.com.np/tensor_processing_units/</guid>
+    <description><![CDATA[Sumit Yadav&nbsp;(PUL076BCT088)
+Prof. Dr. &nbsp;Subarna Shakya&nbsp;
+Director, Information Technology Innovation Center, Tribhuvan University
+Computer Organization and Architecture
+09&nbsp;June&nbsp;2022
+TPUs (Tensor Processing Unit)
+Tensor Processing Units (TPUs) are custom-designed application-specific integrated circuits (ASICs) developed by Google to accelerate AI &nbsp;and neural network works. Formally, it was begun in 2015 and first made available publicly &nbsp;in 2018 for both cloud computing and small business. Tensor processing unit was first introduced in 2016 at Google I/O, when the company said the TPU had been already used in the company for over a year.]]></description>
+</item></channel>
+</rss>

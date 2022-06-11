@@ -41,6 +41,7 @@ see [Publications](/posts).
 
 ## Educational/Work history
 
+- 2022/06/01~ Software Coordinator of [PDSC](pdscnepal.org)
 - 2019/08/01~ Pulchowk campus, Computer Engineering.
 - 2017/04/01~ Kathmandu Bernhardt School, +2 level.
 - 2007/03/01~ School Level.
