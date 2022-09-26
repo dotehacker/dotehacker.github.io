@@ -23,8 +23,8 @@ Tensor Processing Units (TPUs) are custom-designed application-specific integrat
     <pubDate>Wed, 30 Mar 2022 17:50:41 &#43;0545</pubDate>
     <author>Author</author>
     <guid>http://sumityadav.com.np/text_classification/</guid>
-    <description><![CDATA[Multi_Class_Text_Classification  This post and code are used in a challenge organized by LOCUS called DataRush.
- Hi!, Today in this post i am going to share our effort which was applied by us in a competition organized by LOCUS.
+    <description><![CDATA[Multi_Class_Text_Classification This post and code are used in a challenge organized by LOCUS called DataRush.
+Hi!, Today in this post i am going to share our effort which was applied by us in a competition organized by LOCUS.
 Lets start, for this challenge we have give data sets which contain a train data csv which contain four columns and 390603 rows ie 390603 rows × 4 columns. As in each row we have given &lsquo;id&rsquo; number( which is random id number to represent id), &lsquo;abstract&rsquo; which contain main part for this competition which we have to classify.]]></description>
 </item><item>
     <title>Drum</title>
@@ -32,8 +32,7 @@ Lets start, for this challenge we have give data sets which contain a train data
     <pubDate>Thu, 14 Oct 2021 10:27:05 &#43;0545</pubDate>
     <author>Author</author>
     <guid>http://sumityadav.com.np/drum/</guid>
-    <description><![CDATA[Play Music   A clap  S hihat  D kick  F openhat  G boom  H ride  J snare  K tom  L tink           
- function removeTransition(e) { if (e.propertyName !== 'transform') return; e.target.classList.remove('playing'); } function playSound(e) { const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`); const key = document.querySelector(`div[data-key="${e.keyCode}"]`); if (!audio) return; key.classList.add('playing'); audio.currentTime = 0; audio.]]></description>
+    <description><![CDATA[ A clap S hihat D kick F openhat G boom H ride J snare K tom L tink ]]></description>
 </item><item>
     <title>Dashain : Nine form of Goddess Durga</title>
     <link>http://sumityadav.com.np/fes1/</link>
@@ -41,7 +40,9 @@ Lets start, for this challenge we have give data sets which contain a train data
     <author>Author</author>
     <guid>http://sumityadav.com.np/fes1/</guid>
     <description><![CDATA[One of the Biggest Festival, Hindu celebrate.
- Day 1 Maa Shailaputri    Name Shailaputri     Image    Meaning Daughter of Mountain   Father and Mother Himavan and Menavati   Husband Lord Shiva   Recarnarion Sati(Parvati)   Chakra Root Chakra(Muladhara Charkra)   Mount(Vahan) Nandi bull   Colour Yellow   Mantra ॐ देवी शैलपुत्र्यै नमः॥ Om Devi Shailaputryai Namah ।   Prayer वन्दे वाञ्छितलाभाय चन्द्रार्ध कृतशेखराम् ॥]]></description>
+Day 1 Maa Shailaputri Name Shailaputri Image Meaning Daughter of Mountain Father and Mother Himavan and Menavati Husband Lord Shiva Recarnarion Sati(Parvati) Chakra Root Chakra(Muladhara Charkra) Mount(Vahan) Nandi bull Colour Yellow Mantra ॐ देवी शैलपुत्र्यै नमः॥ Om Devi Shailaputryai Namah । Prayer वन्दे वाञ्छितलाभाय चन्द्रार्ध कृतशेखराम् ॥
+वृषारूढाम् शूलधराम् शैलपुत्रीम् यशस्विनीम् । या देवी सर्वभू‍तेषु माँ शैलपुत्री रूपेण संस्थिता ।
+नमस्तस्यै नमस्तस्यै नमस्तस्यै नमो नमः ॥ Description Portrayed with a half-moon on her forehead.]]></description>
 </item><item>
     <title>Nepal Company Status</title>
     <link>http://sumityadav.com.np/test/</link>
@@ -58,8 +59,8 @@ Today GRAPH This below is the graph of taday nepse value with other day value.]]
     <author>Author</author>
     <guid>http://sumityadav.com.np/syllabus/</guid>
     <description><![CDATA[Course Structure for Bachelor&rsquo;s Degree in Computer Engineering
- Here I presented the TU, IOE Syllabus of BCT.
-1. Year: 1, Semester: Odd    Code Title Exam Type Theory Ass Theory Final Practical Ass Practical Final Total     SH401 Engineering Mathematics I T 20 80   100   CT401 Computer Programming B 20 80 50  150   ME401 Engineering Drawing I P   60 40 100   SH402 Engineering Physics B 20 80 20 30 150   CE401 Applied Mechanics T 20 80   100   EE401 Basic Electrical Engineering B 20 80 25  125   Total Marks 725          2.]]></description>
+Here I presented the TU, IOE Syllabus of BCT.
+1. Year: 1, Semester: Odd Code Title Exam Type Theory Ass Theory Final Practical Ass Practical Final Total SH401 Engineering Mathematics I T 20 80 100 CT401 Computer Programming B 20 80 50 150 ME401 Engineering Drawing I P 60 40 100 SH402 Engineering Physics B 20 80 20 30 150 CE401 Applied Mechanics T 20 80 100 EE401 Basic Electrical Engineering B 20 80 25 125 Total Marks 725 2.]]></description>
 </item><item>
     <title>Nepali_OCR_Python</title>
     <link>http://sumityadav.com.np/nepali_ocr/</link>
@@ -74,9 +75,7 @@ OCR Optical character recognition or optical character reader (OCR) is the elect
     <pubDate>Thu, 22 Jul 2021 08:53:14 &#43;0545</pubDate>
     <author>Author</author>
     <guid>http://sumityadav.com.np/julia_set_fractal/</guid>
-    <description><![CDATA[Julia SetMandelbrot
-" Julia Set 
-The Julia set is named after the French mathematician Gaston Julia who investigated their properties circa 1915 and culminated in his famous paper in 1918. While the Julia set is now associated with a simpler polynomial, Julia was interested in the iterative properties of a more general expression, namely
+    <description><![CDATA[Julia Set The Julia set is named after the French mathematician Gaston Julia who investigated their properties circa 1915 and culminated in his famous paper in 1918. While the Julia set is now associated with a simpler polynomial, Julia was interested in the iterative properties of a more general expression, namely
 z4 + z3/(z-1) + z2/(z3 + 4 z2 + 5) + c.
 The Julia set is now associated with those points z = x + iy on the complex plane for which the series zn+1 = zn2 + c does not tend to infinity.]]></description>
 </item><item>
@@ -85,8 +84,8 @@ The Julia set is now associated with those points z = x + iy on the complex plan
     <pubDate>Mon, 19 Jul 2021 20:05:33 &#43;0545</pubDate>
     <author>Author</author>
     <guid>http://sumityadav.com.np/autoencoder/</guid>
-    <description><![CDATA[AUTO ENCODER   In this notebook you will find how auto encoder are trained in tensorflow(Keras). This notebook have two different type of encoder i.e normal * Auto Encoder * and * Denoising Auto Encoder * .  Normal Encoder   LIBRARY ARE LOADED
- 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16  %matplotlib inline %config InlineBackend.figure_format = &#39;retina&#39; import matplotlib.]]></description>
+    <description><![CDATA[AUTO ENCODER In this notebook you will find how auto encoder are trained in tensorflow(Keras). This notebook have two different type of encoder i.e normal * Auto Encoder * and * Denoising Auto Encoder * . Normal Encoder LIBRARY ARE LOADED
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 %matplotlib inline %config InlineBackend.figure_format = &#39;retina&#39; import matplotlib.pyplot as plt import pandas as pd import numpy as np import seaborn as sns import warnings warnings.]]></description>
 </item><item>
     <title>Simple Math</title>
     <link>http://sumityadav.com.np/simplemath/</link>
@@ -94,7 +93,7 @@ The Julia set is now associated with those points z = x + iy on the complex plan
     <author>Author</author>
     <guid>http://sumityadav.com.np/simplemath/</guid>
     <description><![CDATA[NUMPY AND PYTHON
- DERIVATIVE OF polynomial function 1 2 3 4 5 6 7 8 9 10  import numpy as np def basis_function(x): a=np.eye(x) b=np.zeros((x,1)) c=np. concatenate((b,a),axis=1) d=np.array(range(1,x+1)).reshape(x,1) e=c *d return e   enter coeff.of equation in given pattern :- constant,x,x^2,x^3,&hellip;.
-1 2 3 4  #ENTER HERE [\\\\\\\\\\\\\] d=np.array([34,90,34,90]) #NUMBER MUST BE SEPERATED BY COMMA d   1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16  print(f&#39;your equation is {d[0]}+{d[1]}x +{d[2]}x^2-----&#39;) #TO FIND LENGTH e=len(d) y=e-1 #RESHAPE d=d.]]></description>
+DERIVATIVE OF polynomial function 1 2 3 4 5 6 7 8 9 10 import numpy as np def basis_function(x): a=np.eye(x) b=np.zeros((x,1)) c=np. concatenate((b,a),axis=1) d=np.array(range(1,x+1)).reshape(x,1) e=c *d return e enter coeff.of equation in given pattern :- constant,x,x^2,x^3,&hellip;.
+1 2 3 4 #ENTER HERE [\\\\\\\\\\\\\] d=np.array([34,90,34,90]) #NUMBER MUST BE SEPERATED BY COMMA d 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 print(f&#39;your equation is {d[0]}+{d[1]}x +{d[2]}x^2-----&#39;) #TO FIND LENGTH e=len(d) y=e-1 #RESHAPE d=d.]]></description>
 </item></channel>
 </rss>

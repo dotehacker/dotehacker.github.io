@@ -10,7 +10,7 @@
     <pubDate>Fri, 09 Jul 2021 13:52:07 &#43;0545</pubDate>
     <author>Author</author>
     <guid>http://sumityadav.com.np/supervised/</guid>
-    <description><![CDATA[VAE  VAE TYPES
- Auto Encoder This is like a simple generative algorithm in which one model is used to reduce the data like simple compression and other is for increasing data like decompressor. This model contain different neural network model for both of task. Here there is difficult to develop or generate determined image from compressed laten space. Variational Autoencoders Up to now, we have discussed dimensionality reduction problem and introduce autoencoders that are encoder-decoder architectures that can be trained by gradient descent.]]></description>
+    <description><![CDATA[VAE VAE TYPES
+Auto Encoder This is like a simple generative algorithm in which one model is used to reduce the data like simple compression and other is for increasing data like decompressor. This model contain different neural network model for both of task. Here there is difficult to develop or generate determined image from compressed laten space. Variational Autoencoders Up to now, we have discussed dimensionality reduction problem and introduce autoencoders that are encoder-decoder architectures that can be trained by gradient descent.]]></description>
 </item></channel>
 </rss>

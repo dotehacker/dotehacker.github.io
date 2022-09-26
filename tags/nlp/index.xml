@@ -10,8 +10,8 @@
     <pubDate>Wed, 30 Mar 2022 17:50:41 &#43;0545</pubDate>
     <author>Author</author>
     <guid>http://sumityadav.com.np/text_classification/</guid>
-    <description><![CDATA[Multi_Class_Text_Classification  This post and code are used in a challenge organized by LOCUS called DataRush.
- Hi!, Today in this post i am going to share our effort which was applied by us in a competition organized by LOCUS.
+    <description><![CDATA[Multi_Class_Text_Classification This post and code are used in a challenge organized by LOCUS called DataRush.
+Hi!, Today in this post i am going to share our effort which was applied by us in a competition organized by LOCUS.
 Lets start, for this challenge we have give data sets which contain a train data csv which contain four columns and 390603 rows ie 390603 rows × 4 columns. As in each row we have given &lsquo;id&rsquo; number( which is random id number to represent id), &lsquo;abstract&rsquo; which contain main part for this competition which we have to classify.]]></description>
 </item></channel>
 </rss>

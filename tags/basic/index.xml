@@ -10,9 +10,7 @@
     <pubDate>Thu, 22 Jul 2021 08:53:14 &#43;0545</pubDate>
     <author>Author</author>
     <guid>http://sumityadav.com.np/julia_set_fractal/</guid>
-    <description><![CDATA[Julia SetMandelbrot
-" Julia Set 
-The Julia set is named after the French mathematician Gaston Julia who investigated their properties circa 1915 and culminated in his famous paper in 1918. While the Julia set is now associated with a simpler polynomial, Julia was interested in the iterative properties of a more general expression, namely
+    <description><![CDATA[Julia Set The Julia set is named after the French mathematician Gaston Julia who investigated their properties circa 1915 and culminated in his famous paper in 1918. While the Julia set is now associated with a simpler polynomial, Julia was interested in the iterative properties of a more general expression, namely
 z4 + z3/(z-1) + z2/(z3 + 4 z2 + 5) + c.
 The Julia set is now associated with those points z = x + iy on the complex plane for which the series zn+1 = zn2 + c does not tend to infinity.]]></description>
 </item></channel>

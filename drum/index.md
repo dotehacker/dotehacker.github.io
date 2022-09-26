@@ -1,11 +1,8 @@
 # Drum
 
 
-<!DOCTYPE html>
-<html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Play Music</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -86,6 +83,6 @@
 </script>
 
 
-</body>
-</html>
+
+
 

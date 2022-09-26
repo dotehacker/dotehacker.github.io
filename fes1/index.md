@@ -124,36 +124,37 @@
 
 
 ## Day 8 Mahagauri Devi
-| Name | Kushmanda Devi |
+| Name | Mahagauri Devi |
 | --- | --- |
-| Image | ![Kushmanda Devi](https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Kushmanda_Sanghasri_2010_Arnab_Dutta.JPG/220px-Kushmanda_Sanghasri_2010_Arnab_Dutta.JPG)
-| Meaning | Ku means "a little", Ushma means "warmth" or "energy" and Anda means "cosmic egg".  |
+| Image | ![Mahagauri Devi](https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Mahagauri_Sanghasri_2010_Arnab_Dutta.JPG/220px-Mahagauri_Sanghasri_2010_Arnab_Dutta.JPG)
+| Meaning | Goddess of Beauty and Women. The name Mahagauri means extremely bright, clean complexioned, with a shine like the moon. (Mahā, महा = great; Gaurī, गौरी = bright, clean). |
 | Father and Mother | *** |
 | Husband | Lord Shiv |
-| Recarnarion | Goddess Parvati |
-| Chakra | Anahata Chakra |
-| Mount(Vahan) | Lion |
+| Siblings | Ganga and Vishnu |
+| Recarnarion | Goddess Durga |
+| Chakra | *** Chakra |
+| Mount(Vahan) | Ox(White Bull) |
 | Colour | Red |
 | Flower | Red color flowers |
-| Mantra | **ॐ देवी कूष्माण्डायै नमः॥** <br> **Om Devi Kushmandayai Namah॥** |
-| Prayer | **सुरासम्पूर्ण कलशं रुधिराप्लुतमेव च।।<br>दधाना हस्तपद्माभ्यां कूष्माण्डा शुभदास्तु मे॥<br>या देवी सर्वभू‍तेषु माँ कूष्माण्डा रूपेण संस्थिता।<br> नमस्तस्यै नमस्तस्यै नमस्तस्यै नमो नमः॥** |
-| Description |  Kushmanda is depicted with eight to ten hands holding a trident, discus, sword, hook, mace, bow, arrow and two jars of honey (Elixir) and blood. Her one hand is always on abhayamudra from which she blesses all her devotees.  |
-| Worship | On this day, as far as possible, a bright married woman with a big forehead should be worshipped. It is preferable to feed them curd, pudding in their food. After this, fruits, dry fruits and good luck items should be offered. Due to which the mother is pleased and the desired results are obtained. |
+| Mantra | **ॐ देवी महागौर्यै नमः॥ ** <br> **Om Devi Mahagauryai Namah॥** |
+| Prayer | **Sarvamangal Mangalye, Shiva Sarvartha Sadhike <br>Sharanye Tryambake Gauri Narayani Namostute  <br>Shwete Vrushe Samarudha Shvetambardhara Shuchih <br> Mahagauri shubham dadyanmahadev-pramod-da** |
+| Description |  According to a legend, to get Lord Shiva in her husband's form, the goddess did severe penance, due to which her body turns black. Pleased with the penance of the goddess, Lord Shiva accepts her and Shiva washes her body with Ganga-water. Then the goddess becomes very radiant like white light, and since then she was named 'Gauri'. Goddess Mahagauri is also known as Annapurna, Aishwarya Pradayini, Chaitanyamai.Mahagauri has four arms. His vehicle is Taurus. He holds Abhaya Mudra in his upper right hand and Trishul in his lower right hand. There is a Damru in the upper left hand and Vara-mudra in the lower left hand. His posture is very calm.  |
+| Worship | Mahagauri is worshiped on the eighth day of Navratri. According to Hinduism, Goddess Mahagauri has the power to fulfill all the wishes of her devotees. One who worships the goddess gets freedom from all the troubles of life. On the day of Ashtami, women offer chunari to the mother goddess for their honeymoon. The law of worship of Goddess Gauri is also the same, that is, just as you have worshiped the mother till the date of Saptami, similarly on the day of Ashtami, like every day, worship the Goddess with Panchopchar. |
 
 ## Day 9 Siddhidatri Devi
-| Name | Kushmanda Devi |
+| Name | Siddhidatri Devi |
 | --- | --- |
-| Image | ![Kushmanda Devi](https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Kushmanda_Sanghasri_2010_Arnab_Dutta.JPG/220px-Kushmanda_Sanghasri_2010_Arnab_Dutta.JPG)
-| Meaning | Ku means "a little", Ushma means "warmth" or "energy" and Anda means "cosmic egg".  |
+| Image | ![Siddhidatri Devi](https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Siddhidatri_Sanghasri_2010_Arnab_Dutta.JPG/220px-Siddhidatri_Sanghasri_2010_Arnab_Dutta.JPG)
+| Meaning | Siddhi means supernatural power or meditative ability, and Dhatri means giver or awarder.  |
 | Father and Mother | *** |
 | Husband | Lord Shiv |
-| Recarnarion | Goddess Parvati |
-| Chakra | Anahata Chakra |
-| Mount(Vahan) | Lion |
-| Colour | Red |
+| Recarnarion | Goddess Durga |
+| Chakra | Goddess who governs the planet Ketu. |
+| Mount(Vahan) | Lotus |
+| Colour | Pink |
 | Flower | Red color flowers |
-| Mantra | **ॐ देवी कूष्माण्डायै नमः॥** <br> **Om Devi Kushmandayai Namah॥** |
-| Prayer | **सुरासम्पूर्ण कलशं रुधिराप्लुतमेव च।।<br>दधाना हस्तपद्माभ्यां कूष्माण्डा शुभदास्तु मे॥<br>या देवी सर्वभू‍तेषु माँ कूष्माण्डा रूपेण संस्थिता।<br> नमस्तस्यै नमस्तस्यै नमस्तस्यै नमो नमः॥** |
-| Description |  Kushmanda is depicted with eight to ten hands holding a trident, discus, sword, hook, mace, bow, arrow and two jars of honey (Elixir) and blood. Her one hand is always on abhayamudra from which she blesses all her devotees.  |
-| Worship | On this day, as far as possible, a bright married woman with a big forehead should be worshipped. It is preferable to feed them curd, pudding in their food. After this, fruits, dry fruits and good luck items should be offered. Due to which the mother is pleased and the desired results are obtained. |
+| Mantra | **‘ॐ देवी सिद्धिदात्र्यै नमः॥’** <br> **Om Hreem Shri Siddhidatri Durgaaye Namaha ** |
+| Prayer | **सिद्धगन्धर्वयक्षाघैरसुरैरमरैरपि। <br>सेव्यमाना सदा भूयात् सिद्धिदा सिद्धिदायिनी॥ <br>वन्दे वांछित मनोरथार्थ चन्द्रार्घकृत शेखराम्। <br> कमलस्थितां चतुर्भुजा सिद्धीदात्री यशस्वनीम्॥ <br> स्वर्णावर्णा निर्वाणचक्रस्थितां नवम् दुर्गा त्रिनेत्राम्। <br> शख, चक्र, गदा, पदम, धरां सिद्धीदात्री भजेम्॥ <br> नमस्तस्यै नमस्तस्यै नमस्तस्यै नमो नमः॥** |
+| Description |  Siddhidhatri is the moola roopa of goddess Parvati. She has four hands holding a discus, conch shell, mace, and lotus. She is sitting on a fully bloomed lotus or a lion. She possesses eight supernatural powers, or the siddhis, called Anima, Mahima, Garima, Laghima, Prapti, Prakambya, Ishitva and Vashitva. Anima means reducing one's body to the size of an atom; Mahima means expanding one's body to an infinitely large size; Garima means becoming infinitely heavy; Laghima means becoming weightless; Prapti means having omnipresence; Prakambya achieving whatever one desire; Ishitva means possessing absolute lordship; and Vashitva means having the power to subjugate all. Lord Shiva was blessed by Siddhidatri by being given by all the eight powers.  |
+| Worship | On this day, Butter and Khoi (sweet made with popped rice) are unique offerings made to Devi Siddhidatri on the final day of Navratri Pooja to receive her unconditional love and fulfillment of your desires.  |
 

@@ -10,7 +10,7 @@
     <pubDate>Mon, 19 Jul 2021 20:05:33 &#43;0545</pubDate>
     <author>Author</author>
     <guid>http://sumityadav.com.np/autoencoder/</guid>
-    <description><![CDATA[AUTO ENCODER   In this notebook you will find how auto encoder are trained in tensorflow(Keras). This notebook have two different type of encoder i.e normal * Auto Encoder * and * Denoising Auto Encoder * .  Normal Encoder   LIBRARY ARE LOADED
- 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16  %matplotlib inline %config InlineBackend.figure_format = &#39;retina&#39; import matplotlib.]]></description>
+    <description><![CDATA[AUTO ENCODER In this notebook you will find how auto encoder are trained in tensorflow(Keras). This notebook have two different type of encoder i.e normal * Auto Encoder * and * Denoising Auto Encoder * . Normal Encoder LIBRARY ARE LOADED
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 %matplotlib inline %config InlineBackend.figure_format = &#39;retina&#39; import matplotlib.pyplot as plt import pandas as pd import numpy as np import seaborn as sns import warnings warnings.]]></description>
 </item></channel>
 </rss>

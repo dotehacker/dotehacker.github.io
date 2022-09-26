@@ -10,16 +10,16 @@
     <pubDate>Mon, 19 Jul 2021 20:05:33 &#43;0545</pubDate>
     <author>Author</author>
     <guid>http://sumityadav.com.np/autoencoder/</guid>
-    <description><![CDATA[AUTO ENCODER   In this notebook you will find how auto encoder are trained in tensorflow(Keras). This notebook have two different type of encoder i.e normal * Auto Encoder * and * Denoising Auto Encoder * .  Normal Encoder   LIBRARY ARE LOADED
- 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16  %matplotlib inline %config InlineBackend.figure_format = &#39;retina&#39; import matplotlib.]]></description>
+    <description><![CDATA[AUTO ENCODER In this notebook you will find how auto encoder are trained in tensorflow(Keras). This notebook have two different type of encoder i.e normal * Auto Encoder * and * Denoising Auto Encoder * . Normal Encoder LIBRARY ARE LOADED
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 %matplotlib inline %config InlineBackend.figure_format = &#39;retina&#39; import matplotlib.pyplot as plt import pandas as pd import numpy as np import seaborn as sns import warnings warnings.]]></description>
 </item><item>
     <title>Unsupervised</title>
     <link>http://sumityadav.com.np/supervised/</link>
     <pubDate>Fri, 09 Jul 2021 13:52:07 &#43;0545</pubDate>
     <author>Author</author>
     <guid>http://sumityadav.com.np/supervised/</guid>
-    <description><![CDATA[VAE  VAE TYPES
- Auto Encoder This is like a simple generative algorithm in which one model is used to reduce the data like simple compression and other is for increasing data like decompressor. This model contain different neural network model for both of task. Here there is difficult to develop or generate determined image from compressed laten space. Variational Autoencoders Up to now, we have discussed dimensionality reduction problem and introduce autoencoders that are encoder-decoder architectures that can be trained by gradient descent.]]></description>
+    <description><![CDATA[VAE VAE TYPES
+Auto Encoder This is like a simple generative algorithm in which one model is used to reduce the data like simple compression and other is for increasing data like decompressor. This model contain different neural network model for both of task. Here there is difficult to develop or generate determined image from compressed laten space. Variational Autoencoders Up to now, we have discussed dimensionality reduction problem and introduce autoencoders that are encoder-decoder architectures that can be trained by gradient descent.]]></description>
 </item><item>
     <title>Nepali_Devanagari_Letter_Classifier</title>
     <link>http://sumityadav.com.np/first_post/</link>

@@ -55,6 +55,7 @@ see [Publications](/posts).
 
 ## Other
 
+- [Winner of Image Challenge](https://www.linkedin.com/feed/update/urn:li:activity:6967119637503238144?updateEntityUrn=urn%3Ali%3Afs_updateV2%3A%28urn%3Ali%3Aactivity%3A6967119637503238144%2CFEED_DETAIL%2CEMPTY%2CDEFAULT%2Cfalse%29&lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base%3B4K0ROXY%2FTDCmHHIuQn%2FISg%3D%3D) - AI Competition - Kathmandu University Computer Club - IT Meet 2022.
 - Second Place - [Docsumo DataRush, an AI and Data Science Competition 2022.](https://www.facebook.com/locus.data.rush/photos/pcb.117726577459745/117726310793105/)
 - Advance Level Winner- [Capture The Flag 2022](https://www.facebook.com/locus.ioe/photos/a.202948823208958/1667487916755034/)
 - AI and Robotics [Member](/rockerriteshrancard.jpg) - RAN.

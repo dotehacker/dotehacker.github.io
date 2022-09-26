@@ -1,7 +1,7 @@
 {
 	"version": 3,
 	"file": "style.min.css",
-	"sourceRoot": "/home/sumit/Desktop/my_website",
+	"sourceRoot": "/run/media/sumit/bfdbc74f-b552-4374-ba9a-547a2744681b/sumit/Desktop/my_website",
 	"sources": [
 		"themes/LoveIt/assets/css/style.scss",
 		"themes/LoveIt/assets/css/_variables.scss",
