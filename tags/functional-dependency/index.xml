@@ -1,0 +1,17 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Functional dependency - Tag - Sumit Yadav</title>
+        <link>http://sumityadav.com.np/tags/functional-dependency/</link>
+        <description>Functional dependency - Tag - Sumit Yadav</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>rockerritesh4@gmail.com (rockerritesh)</managingEditor>
+            <webMaster>rockerritesh4@gmail.com (rockerritesh)</webMaster><lastBuildDate>Sun, 09 Apr 2023 18:07:21 &#43;0545</lastBuildDate><atom:link href="http://sumityadav.com.np/tags/functional-dependency/" rel="self" type="application/rss+xml" /><item>
+    <title>Functional dependency</title>
+    <link>http://sumityadav.com.np/functional-dependency/</link>
+    <pubDate>Sun, 09 Apr 2023 18:07:21 &#43;0545</pubDate>
+    <author>Author</author>
+    <guid>http://sumityadav.com.np/functional-dependency/</guid>
+    <description><![CDATA[Functional dependency explained. You Functional dependency
+ChatGPT In the context of relational databases, a functional dependency is a relationship between two or more attributes (or columns) in a table where the value of one attribute determines the value of another.
+For example, if we have a table called &ldquo;Students&rdquo; with the columns &ldquo;Student_ID,&rdquo; &ldquo;First_Name,&rdquo; &ldquo;Last_Name,&rdquo; and &ldquo;Email,&rdquo; we can say that the attribute &ldquo;Email&rdquo; is functionally dependent on the attributes &ldquo;First_Name&rdquo; and &ldquo;Last_Name.]]></description>
+</item></channel>
+</rss>

@@ -1,0 +1,19 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Operating_System - Tag - Sumit Yadav</title>
+        <link>http://sumityadav.com.np/tags/operating_system/</link>
+        <description>Operating_System - Tag - Sumit Yadav</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>rockerritesh4@gmail.com (rockerritesh)</managingEditor>
+            <webMaster>rockerritesh4@gmail.com (rockerritesh)</webMaster><lastBuildDate>Sun, 09 Apr 2023 18:07:21 &#43;0545</lastBuildDate><atom:link href="http://sumityadav.com.np/tags/operating_system/" rel="self" type="application/rss+xml" /><item>
+    <title>Operating_System</title>
+    <link>http://sumityadav.com.np/operating_system/</link>
+    <pubDate>Sun, 09 Apr 2023 18:07:21 &#43;0545</pubDate>
+    <author>Author</author>
+    <guid>http://sumityadav.com.np/operating_system/</guid>
+    <description><![CDATA[OPerating system and function
+1 / 1
+An operating system (OS) is a software system that manages computer hardware and software resources and provides common services for computer programs. The main functions of an operating system include:
+Process management: The OS manages the execution of computer programs, called processes, by allocating system resources such as memory, CPU time, and input/output devices.
+Memory management: The OS manages the allocation and deallocation of memory resources to processes, ensuring that each process has the necessary memory to execute.]]></description>
+</item></channel>
+</rss>

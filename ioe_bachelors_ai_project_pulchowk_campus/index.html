@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>Mathili_Script - Sumit Yadav</title><meta name="Description" content="Still Backpropagating Through My Learning that I have done a year Ago."><meta property="og:title" content="Mathili_Script" />
+<meta property="og:description" content="TRIBHUVAN UNIVERSITY INSTITUTE OF ENGINEERING PULCHOWK CAMPUS
+Machine Learning Analysis of Tirhuta Lipi
+By:
+Sumit Yadav (076/BCT/088) Raju Kumar Yadav (076/BCT/100) Prashant Bhandari (076/BCT/049)
+AN AI PROJECT REPORT TO THE DEPARTMENT OF ELECTRONICS AND COMPUTER ENGINEERING.
+DEPARTMENT OF ELECTRONICS AND COMPUTER ENGINEERING LALITPUR, NEPAL
+March, 2023
+ii
+ACKNOWLEDGEMENT
+This project is prepared in partial fulfilment of the requirement for for the the bachelor’s degree in Electronics and Communication Engineering. First and foremost, We would also like to extend our sincere thanks to our passout seniors, friends, and family for their support and guidance throughout our research project." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://sumityadav.com.np/ioe_bachelors_ai_project_pulchowk_campus/" /><meta property="og:image" content="http://sumityadav.com.np/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-04-01T18:07:21+05:45" />
+<meta property="article:modified_time" content="2023-04-01T18:07:21+05:45" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="http://sumityadav.com.np/logo.png"/>
+
+<meta name="twitter:title" content="Mathili_Script"/>
+<meta name="twitter:description" content="TRIBHUVAN UNIVERSITY INSTITUTE OF ENGINEERING PULCHOWK CAMPUS
+Machine Learning Analysis of Tirhuta Lipi
+By:
+Sumit Yadav (076/BCT/088) Raju Kumar Yadav (076/BCT/100) Prashant Bhandari (076/BCT/049)
+AN AI PROJECT REPORT TO THE DEPARTMENT OF ELECTRONICS AND COMPUTER ENGINEERING.
+DEPARTMENT OF ELECTRONICS AND COMPUTER ENGINEERING LALITPUR, NEPAL
+March, 2023
+ii
+ACKNOWLEDGEMENT
+This project is prepared in partial fulfilment of the requirement for for the the bachelor’s degree in Electronics and Communication Engineering. First and foremost, We would also like to extend our sincere thanks to our passout seniors, friends, and family for their support and guidance throughout our research project."/>
+<meta name="application-name" content="LoveIt">
+<meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="canonical" href="http://sumityadav.com.np/ioe_bachelors_ai_project_pulchowk_campus/" /><link rel="prev" href="http://sumityadav.com.np/mithila_festivals/" /><link rel="next" href="http://sumityadav.com.np/queryoptimizationtechniques/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.055364f5be272caa092b0e6654c165828707f8ab971e2656383a6d6392bc345e.css" integrity="sha256-BVNk9b4nLKoJKw5mVMFlgocH&#43;KuXHiZWODptY5K8NF4="><link rel="stylesheet" href="/css/style.min.1e2694bed152fa2922dbe909a441838ed693d88b1330f97485bfa8ed78da42df.css" integrity="sha256-HiaUvtFS&#43;iki2&#43;kJpEGDjtaT2IsTMPl0hb&#43;o7XjaQt8="><link rel="stylesheet" href="/lib/fontawesome-free/all.min.876d023d9d10c97941b80c3b03e2a5b94631ff7a4af9cee5604a6a2d39718d84.css" integrity="sha256-h20CPZ0QyXlBuAw7A&#43;KluUYx/3pK&#43;c7lYEpqLTlxjYQ="><link rel="stylesheet" href="/lib/animate/animate.min.3c770e90f98eb21b0c042fafb49755af93306fbaf42e449524f94fae9fc83295.css" integrity="sha256-PHcOkPmOshsMBC&#43;vtJdVr5Mwb7r0LkSVJPlPrp/IMpU="><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Mathili_Script",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/sumityadav.com.np\/ioe_bachelors_ai_project_pulchowk_campus\/"
+        },"genre": "posts","keywords": "Machile Learning, Tirhuta Lipi","wordcount":  6482 ,
+        "url": "http:\/\/sumityadav.com.np\/ioe_bachelors_ai_project_pulchowk_campus\/","datePublished": "2023-04-01T18:07:21+05:45","dateModified": "2023-04-01T18:07:21+05:45","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "rockerritesh"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Sumit Yadav">Sumit Yadav</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/" title="POST"> Posts </a><a class="menu-item" href="/biography/"> Biography </a><a class="menu-item" href="/photography/"> Photography </a><a class="menu-item" href="/vim/">  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Sumit Yadav">Sumit Yadav</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="POST">Posts</a><a class="menu-item" href="/biography/" title="">Biography</a><a class="menu-item" href="/photography/" title="">Photography</a><a class="menu-item" href="/vim/" title=""></a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">Mathili_Script</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="http://sumityadav.com.np" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>rockerritesh</a></span>&nbsp;<span class="post-category">included in <a href="/categories/ai-project-report/"><i class="far fa-folder fa-fw"></i>AI Project Report</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2023-04-01">2023-04-01</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;6482 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;31 minutes&nbsp;<span id="/ioe_bachelors_ai_project_pulchowk_campus/" class="leancloud_visitors" data-flag-title="Mathili_Script">
+                        <i class="far fa-eye fa-fw"></i>&nbsp;<span class=leancloud-visitors-count></span>&nbsp;views
+                    </span>&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents"></nav></div>
+            </div><div class="content" id="content"><p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.001.jpeg"
+        data-srcset="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.001.jpeg, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.001.jpeg 1.5x, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.001.jpeg 2x"
+        data-sizes="auto"
+        alt="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.001.jpeg"
+        title="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.001.jpeg" /></p>
+<p>TRIBHUVAN UNIVERSITY   INSTITUTE OF ENGINEERING PULCHOWK CAMPUS</p>
+<p>Machine Learning Analysis of Tirhuta Lipi</p>
+<p>By:</p>
+<p>Sumit Yadav (076/BCT/088)      Raju Kumar Yadav (076/BCT/100) Prashant Bhandari (076/BCT/049)</p>
+<p>AN AI PROJECT REPORT TO THE DEPARTMENT OF ELECTRONICS AND COMPUTER ENGINEERING.</p>
+<p>DEPARTMENT OF ELECTRONICS AND COMPUTER ENGINEERING LALITPUR, NEPAL</p>
+<p>March, 2023</p>
+<p>ii</p>
+<p>ACKNOWLEDGEMENT</p>
+<p>This project is prepared in partial fulfilment of the requirement for for the the bachelor’s degree in Electronics and Communication Engineering. First and foremost, We would also like to extend our sincere thanks to our passout seniors, friends, and family for their support and guidance throughout our research project. Their valuable inputs and feedback have been instrumental in shaping our ideas and improving our work.</p>
+<p>We would also like to express our gratitude to the Department of Electronics and Computer Engineering, Pulchowk Campus, Tribhuvan University for providing us with the necessary resources and infrastructure to carry out this research.</p>
+<p>Last but not least, we would like to thank our instructor, Basant Joshi, for his guidance, encouragement, and support throughout this project. His expertise and knowledge have been invaluable in helping us to achieve our research objectives.</p>
+<p>Finally, we would like to acknowledge the contribution of all the authors of this research report, namely Sumit Yadav, Raju Kumar Yadav, and Prashant Bhandari, for their hard work, dedication, and collaborative efforts in producing this research.</p>
+<p>Any kind of suggestion or criticism will be highly appreciated and acknowledged.</p>
+<p>iii</p>
+<p>ABSTRACT</p>
+<p>Tirhuta Lipi is a low resource language that is primarily spoken in the Indian states of Bi- har and Terai Belt of Nepal. The script is not widely used, and there are limited resources available for language processing tasks. In this project, we have explored machine learning techniques for character recognition of the low-resource language Tirhuta Lipi. We col- lected a diverse dataset of Tirhuta vowels Lipi and preprocessed it for training machine learning models. We tested different algorithms such as Sklearn and Tensorflow Keras to evaluate their performance in character recognition. Our results showed that the mobile net embedding with logistic regression achieved the highest accuracy of 0.97. We also found that fine-tuning the mobile net model in Tensorflow Keras resulted in an accuracy of 0.965. Our study demonstrates the feasibility of using machine learning for character recognition in TirhutaLipi,whichcouldhaveimportantapplicationsinareassuchastexttranslationandop- tical character recognition. This project contributes to the growing field of natural language processing for low-resource languages and highlights the potential of machine learning in language-related tasks.</p>
+<p>Keywords: Tirhuta Lipi, Character recognition, Digital accessibility</p>
+<p>iv</p>
+<p>TABLE OF CONTENTS</p>
+<p><a href="#_page0_x99.21_y99.21" rel="">TITLE PAGE</a> i <a href="#_page0_x99.21_y99.21" rel="">ACKNOWLEDGEMENT</a> ii <a href="#_page0_x99.21_y99.21" rel="">ABSTRACT</a> iii <a href="#_page0_x99.21_y99.21" rel="">TABLE OF CONTENTS</a> v <a href="#_page0_x99.21_y99.21" rel="">LIST OF FIGURES</a> vi <a href="#_page6_x99.21_y99.21" rel="">1 INTRODUCTION</a> 1</p>
+<ol>
+<li><a href="#_page6_x99.21_y605.12" rel="">Background</a> . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1</li>
+<li><a href="#_page7_x99.21_y509.28" rel="">Objectives</a> . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2</li>
+<li><a href="#_page7_x99.21_y664.04" rel="">Problem statement</a> . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2</li>
+<li><a href="#_page8_x99.21_y113.76" rel="">Scope of Project </a>. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3</li>
+</ol>
+<p><a href="#_page9_x99.21_y99.21" rel="">2 LITERATURE REVIEW</a> 4 <a href="#_page10_x99.21_y99.21" rel="">3 THEORETICAL BACKGROUND</a> 5 <a href="#_page11_x99.21_y99.21" rel="">4 METHODOLOGY</a> 6</p>
+<ol>
+<li><a href="#_page11_x99.21_y190.02" rel="">Data Collection Process</a> . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6</li>
+<li><a href="#_page12_x99.21_y598.49" rel="">Preprocessing and Cleaning of Data</a> . . . . . . . . . . . . . . . . . . . . . 7</li>
+<li><a href="#_page13_x99.21_y336.71" rel="">Data Analysis and Visualization Techniques</a> . . . . . . . . . . . . . . . . . 8</li>
+<li><a href="#_page13_x99.21_y488.89" rel="">Machine Learning Algorithms Used</a> . . . . . . . . . . . . . . . . . . . . . 8</li>
+</ol>
+<p><a href="#_page14_x99.21_y468.73" rel="">4.4.1 Decision Tree Classification</a> . . . . . . . . . . . . . . . . . . . . . 9</p>
+<ol start="5">
+<li><a href="#_page15_x99.21_y664.64" rel="">Mobile Net Embedding</a> . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10</li>
+<li><a href="#_page16_x99.21_y429.12" rel="">Fine Tuning MobileNet</a> . . . . . . . . . . . . . . . . . . . . . . . . . . . . 11</li>
+</ol>
+<p><a href="#_page17_x99.21_y149.61" rel="">5 TOOLS AND TECHNOLOGIES</a> 12 <a href="#_page18_x99.21_y131.68" rel="">6 RESULTS</a> 13</p>
+<ol>
+<li><a href="#_page18_x99.21_y289.83" rel="">Decision Tree</a> . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13</li>
+<li><a href="#_page18_x99.21_y407.39" rel="">Decision Tree Analysis on Raw Data (Image)</a> . . . . . . . . . . . . 13</li>
+<li><a href="#_page18_x99.21_y547.77" rel="">PCA 200 Embedding</a> . . . . . . . . . . . . . . . . . . . . . . . . . 13</li>
+<li><a href="#_page18_x99.21_y685.71" rel="">Feature Vectors from MobileNet</a> . . . . . . . . . . . . . . . . . . . 13</li>
+<li><a href="#_page19_x99.21_y524.52" rel="">Analysis On Different SKLearn Algorith </a>. . . . . . . . . . . . . . . . . . . 14</li>
+</ol>
+<p><a href="#_page19_x99.21_y610.04" rel="">6.2.1 Fine tunning MobileNet</a> . . . . . . . . . . . . . . . . . . . . . . . 14</p>
+<p>v</p>
+<p><a href="#_page20_x99.21_y99.21" rel="">7 DISCUSSION</a> 15 <a href="#_page22_x99.21_y99.21" rel="">8 CONCLUSION</a> 17 <a href="#_page23_x99.21_y99.21" rel="">9 LIMITATIONS AND FUTURE ENHANCEMENTS</a> 18 <a href="#_page24_x99.21_y99.21" rel="">REFERENCES</a> 19 <a href="#_page24_x99.21_y674.85" rel="">10 IMAGES</a> 19</p>
+<p>vi</p>
+<p>List of Figures</p>
+<p><a href="#_page7_x99.21_y192.09" rel="">1.1 Tirhuta Script svara varna.</a> . . . . . . . . . . . . . . . . . . . . . . . . . . 2</p>
+<ol>
+<li><a href="#_page25_x99.21_y206.29" rel="">Written in tirhuta Script </a>. . . . . . . . . . . . . . . . . . . . . . . . . . . . 20</li>
+<li><a href="#_page26_x99.21_y137.09" rel="">Data Collection Process</a> . . . . . . . . . . . . . . . . . . . . . . . . . . . . 21</li>
+<li><a href="#_page26_x99.21_y137.09" rel="">Confusion matrix form the Decision tree scratch.</a> . . . . . . . . . . . . . . 21</li>
+<li><a href="#_page27_x99.21_y138.43" rel="">ROC Score curve of Decision tree scratch.</a> . . . . . . . . . . . . . . . . . . 22</li>
+<li><a href="#_page27_x99.21_y138.43" rel="">Learning curve to Decision tree scratch.</a> . . . . . . . . . . . . . . . . . . . 22</li>
+<li><a href="#_page28_x99.21_y94.28" rel="">Images Counts.</a> . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 23</li>
+<li><a href="#_page28_x99.21_y94.28" rel="">Pixel Distribution of Images (Histogram).</a> . . . . . . . . . . . . . . . . . . 23</li>
+<li><a href="#_page29_x99.21_y114.79" rel="">Correlation between features.</a> . . . . . . . . . . . . . . . . . . . . . . . . . 24</li>
+<li><a href="#_page29_x99.21_y114.79" rel="">2D TSNE.</a> . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 24 <a href="#_page30_x99.21_y112.74" rel="">10.103D T-SNE.</a> . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 25 <a href="#_page30_x99.21_y386.43" rel="">10.112D PCA. </a>. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 25 <a href="#_page31_x99.21_y134.17" rel="">10.123D PCA. </a>. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 26 <a href="#_page31_x99.21_y450.71" rel="">10.13ClassificationReport of Logistic Head of MobileNet</a> . . . . . . . . . . . . 26 <a href="#_page32_x99.21_y248.70" rel="">10.14Confusion Matrix of Logistic regression on MobileNet Embedding.</a> . . . . 27</li>
+</ol>
+<p>27</p>
+<ol>
+<li>INTRODUCTION</li>
+</ol>
+<p>Tirhuta Lipi is a script that is used to write the Tirhuta language, which is primarily spoken in the Indian states of Bihar and the Terai Belt of Nepal. Despite its cultural and linguis- tic significance, the script is not widely used and there are limited resources available for processing Tirhuta Lipi text. This lack of resources has made it difficult to use modern computational techniques to study and analyze the language. In this project, we propose a machine learning-based character recognition system for Tirhuta Lipi that aims to address this challenge.</p>
+<p>Our objective is to build a machine learning model that can accurately recognize individual characters in Tirhuta Lipi text with high precision and recall. This would allow us to create a digital archive of Tirhuta Lipi text, which could be used to promote the study and preser- vation of the language. Moreover, this work could have broader implications for the field of natural language processing, particularly for low resource languages that have limited computational resources available.</p>
+<p>To achieve our objective, we will collect a large and diverse dataset of Tirhuta Lipi text, which will be preprocessed and used to train a machine learning model. We will evaluate the performance of our model using appropriate metrics and compare it to several baseline models. This will allow us to demonstrate the feasibility and effectiveness of using machine learning techniques for Tirhuta Lipi character recognition.</p>
+<p>In this proposal, we provide a detailed description of our methodology, tools and technolo- gies, and expected outcomes. We also review relevant literature in the field of natural lan- guageprocessingforlowresourcelanguagesanddiscussthetheoreticalunderpinningsofour work. Overall, this project seeks to contribute to the growing field of language technology for low resource languages, while promoting the study and preservation of Tirhuta Lipi.</p>
+<ol>
+<li>Background</li>
+</ol>
+<p>Tirhuta Lipi is a script used to write the Tirhuta language, which has roots in the ancient Sanskrit language. The script is known for its complex and intricate design, which includes numerousdiacriticalmarksandligatures. TirhutaLipiisprimarilyusedintheIndianstatesof Bihar and the Terai Belt of Nepal, where it has been used for religious and literary purposes for centuries.</p>
+<p>Despite its cultural and linguistic significance, Tirhuta Lipi is not widely used in modern times, and there are limited resources available for processing text in this script. This has made it difficultto use modern computational techniques to study and analyze the language. As a result, Tirhuta Lipi has received relatively little attention in the fieldof natural language processing and language technology. Recent developments in machine learning have shown</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.002.png"
+        data-srcset="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.002.png, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.002.png 1.5x, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.002.png 2x"
+        data-sizes="auto"
+        alt="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.002.png"
+        title="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.002.png" /></p>
+<p>Figure 1.1: Tirhuta Script svara varna.</p>
+<p>promise for addressing the challenges of low resource languages. In particular, machine learning techniques such as convolutional neural networks have been shown to be effective for character recognition tasks, even with limited amounts of training data. These methods have been used successfully in other low resource language contexts, such as Devanagari, Urdu, and Tibetan.</p>
+<p>In this project, we build on these developments and apply machine learning techniques to the task of Tirhuta vowels Lipi character recognition. We believe that our work will contribute to the growing field of natural language processing for low resource languages, while also promoting the study and preservation of Tirhuta Lipi.</p>
+<ol start="2">
+<li>Objectives</li>
+</ol>
+<p>The objective of this project is to develop a machine learning-based character recognition system for Tirhuta Lipi that can accurately recognize individual characters in Tirhuta Lipi text with a high level of precision and recall. We aim to achieve this by collecting a large and diverse dataset of Tirhuta Lipi text and using it to train a machine learning and neural network based model.</p>
+<ol start="3">
+<li>Problem statement</li>
+</ol>
+<p>Tirhuta Lipi is a low resource language that is not widely used in modern times, making it difficult to use modern computational techniques to study and analyze the language. The lackofresourcesforprocessingtextinTirhutaLipihaslimiteditspotentialforuseinmodern</p>
+<p>contexts, and has hindered efforts to study and preserve the language.</p>
+<ol start="4">
+<li>Scope of Project</li>
+</ol>
+<p>Thescopeofthisprojectistodevelopamachinelearning-basedcharacterrecognitionsystem for Tirhuta Lipi, which has the potential to contribute to the existing body of knowledge on the topic. This study aims to provide new insights, perspectives, and solutions to the research problem, with the ultimate goal of informing policy decisions, guiding future research, and improving practices related to Tirhuta Lipi language technology.</p>
+<ol start="2">
+<li>LITERATURE REVIEW</li>
+</ol>
+<p>Tirhuta Lipi is a unique script that is primarily used for writing the Tirhuta language, which is spoken in the Mithila region of India and Nepal. While there are some resources available for studying and analyzing the script, it remains a low resource language that is not widely used in modern times. As such, there is limited literature on Tirhuta Lipi and the application of computational techniques to its analysis.</p>
+<p>Recent advances in machine learning and natural language processing, however, have shown promise for analyzing and processing low resource languages such as Tirhuta. Researchers have explored the use of machine learning techniques for language identification, part-of- speech tagging, and sentiment analysis, among other tasks. While much of this work has focusedonmorewidelyspokenlanguages,suchasHindiorBengali,thereisgrowinginterest in applying these techniques to less commonly studied languages.</p>
+<p>In the specific context of Tirhuta Lipi character recognition, there is a dearth of literature. However, researchonrelatedscriptssuchasDevanagariandBengalihasshownthatmachine learning techniques can achieve high levels of accuracy for character recognition tasks. We aim to build on this prior work and apply it to the specific context of Tirhuta Lipi character recognition. Ourliteraturereviewshows thatourproposedproject istimelyandrelevant, and hasthepotentialtocontributetothegrowingbodyofresearchonnaturallanguageprocessing for low resource languages.</p>
+<ol start="3">
+<li>THEORETICAL BACKGROUND</li>
+</ol>
+<p>Tirhuta Lipi is a script used for writing the Tirhuta language, which is a member of the Indo- Aryan language family. The script has 14 vowels and 38 consonants, along with a number of diacritics and modifiers. Each character in the script has a unique shape and can be written in several different forms, depending on its position in a word and the characters that surround it.</p>
+<p>Character recognition is the task of identifying and classifying individual characters in a given text. This is an important task in natural language processing and can have applica- tions in areas such as optical character recognition and text translation. Machine learning techniques have shown great promise in recent years for character recognition tasks, espe- cially in low resource language settings.</p>
+<p>The project will use a machine learning-based approach to recognize individual characters in Tirhuta vowels Lipi text. The model will be trained on a large and diverse dataset of Tirhuta Lipi text, which will be preprocessed to prepare it for training. The model will be built using neural networks, which have been shown to be effective for character recognition tasks in other scripts such as Devanagari and Bengali.</p>
+<p>Overall, theprojectbuildsonthetheoreticalfoundationofcharacterrecognitionandmachine learning, and applies it to the specific context of Tirhuta Lipi. By using machine learning techniques to recognize characters in Tirhuta Lipi text, we aim to make the language more accessible in the digital realm and contribute to efforts to preserve and study the language.</p>
+<ol start="4">
+<li>METHODOLOGY</li>
+</ol>
+<p>To achieve our objective of building a machine learning-based character recognition system for Tirhuta Lipi, we will follow the methodology described below.</p>
+<ol>
+<li>Data Collection Process</li>
+</ol>
+<p>WewillcollectalargeanddiversedatasetofTirhutaLipitextfromvarioussources,including books, manuscripts, and by writing by our self. The dataset will be carefully curated to ensure that it covers a broad range of topics and styles of writing, including handwritten and printed text. We will also ensure that the dataset includes a variety of fonts and styles of Tirhuta Lipi writing.</p>
+<p>The flowchart given below describes the steps involved in preprocessing raw images to ex- tract individual characters. The process starts by loading an image and converting it to grayscale. Then, thresholding is applied to convert the image to a binary format. The next step involves using morphological operations to remove noise from the image. This is done by dilating and eroding the image using a kernel.</p>
+<p>After the image has been cleaned up, contours are found in the binary image. These contours are then iterated through, and for each contour, a bounding box is extracted. The bounding box is used to isolate the individual character in the image, and this character image is saved to a separate file.</p>
+<p>Overall, the flowchart outlines the steps needed to preprocess an image in order to extract individual characters. These characters can then be used for further analysis. After the indi- vidual images are extracted and placed in same folder which contains images of all classes. We have applied unsupervised method to separate the images into different classes of differ- ent images. For that we have used K Means cluster to build algorithm and then we separate that into respective folder. As images have same pixel distribution it’s difficult to correctly classify images into different classes, so for outlier we did manually.</p>
+<p>Load the image <img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.003.png"
+        data-srcset="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.003.png, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.003.png 1.5x, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.003.png 2x"
+        data-sizes="auto"
+        alt="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.003.png"
+        title="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.003.png" />Convert to grayscale</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.004.png"
+        data-srcset="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.004.png, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.004.png 1.5x, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.004.png 2x"
+        data-sizes="auto"
+        alt="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.004.png"
+        title="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.004.png" /></p>
+<p>Apply thresholding</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.005.png"
+        data-srcset="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.005.png, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.005.png 1.5x, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.005.png 2x"
+        data-sizes="auto"
+        alt="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.005.png"
+        title="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.005.png" /></p>
+<p>Remove noise using morphological operations</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.006.png"
+        data-srcset="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.006.png, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.006.png 1.5x, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.006.png 2x"
+        data-sizes="auto"
+        alt="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.006.png"
+        title="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.006.png" /></p>
+<p>Find contours in the binary image</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.007.png"
+        data-srcset="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.007.png, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.007.png 1.5x, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.007.png 2x"
+        data-sizes="auto"
+        alt="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.007.png"
+        title="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.007.png" /></p>
+<p>Iterate through each contour<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.008.png"
+        data-srcset="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.008.png, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.008.png 1.5x, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.008.png 2x"
+        data-sizes="auto"
+        alt="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.008.png"
+        title="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.008.png" /></p>
+<p>yes</p>
+<p>no Extract the bounding box? Save the letter image to a separate file</p>
+<ol start="2">
+<li>Preprocessing and Cleaning of Data</li>
+</ol>
+<p>In this step, we aim to preprocess and clean the collected Tirhuta Lipi dataset to make it suitable for machine learning. The primary objective of this step is to prepare a standardized dataset that can be used to train and test our machine learning models.</p>
+<p>The first step in this process is to remove any non-Tirhuta Lipi characters from the dataset. This is essential to ensure that we only have relevant data for our machine learning models. We only take Tirhuta Lipi characters with vowels for this project.</p>
+<p>The next step is to standardize the font and size of the characters. This is crucial because different fonts and sizes can affect the performance of our machine learning models. We resize all images to 50 x 50, which is a common size used for similar projects.</p>
+<p>Finally, we perform some basic data augmentation techniques to increase the size and di- versity of the dataset. This involves applying transformations such as rotation, flipping, and translation to the images to create additional variations of the same character. This helps to improve the robustness of our machine learning models, making them less sensitive to variations in the input data.</p>
+<p>Overall, the Preprocessing and Cleaning of Data step is critical to ensuring that our machine learning models can perform effectively on the Tirhuta Lipi dataset. By removing irrelevant data, standardizing the font and size of the characters, and augmenting the dataset, we can create a high-quality dataset that is suitable for training and testing machine learning models.</p>
+<ol start="3">
+<li>Data Analysis and Visualization Techniques</li>
+</ol>
+<p>In this section, we have performed various data analysis and visualization techniques on our preprocessed dataset. These techniques are aimed at gaining a deeper understanding of the dataset and identifying any patterns or trends that may be present.</p>
+<p>Specifically, we have done the following:</p>
+<ol start="4">
+<li>Machine Learning Algorithms Used</li>
+</ol>
+<p>Inthisproject, wehavedevelopedamachinelearningalgorithmfromscratchforTirhutaLipi character recognition. We started with implementing the Decision Tree Classifieralgorithm and passed the whole image into it.</p>
+<p>To improve the accuracy, we performed dimensionality reduction on the images using PCA and passed 200 embeddings of the whole images into the Decision Tree Classifier.</p>
+<p>Next, we utilized transfer learning techniques and extracted feature embeddings from the MobileNet architecture. We then passed these embeddings into the Decision Tree Classi- fier and achieved an F1 score of 0.56, which is a significant improvement from our initial attempts.</p>
+<p>Overall, we have used decision tree classifieralgorithm and implemented various techniques</p>
+<table>
+<thead>
+<tr>
+<th>Technique</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pixel Distribution</td>
+<td>Plotted using the Insight Toolkit (ITK) library to visualize the distribution of pixel values across the images and identify any outliers or anomalies.</td>
+</tr>
+<tr>
+<td>t-SNE</td>
+<td>Used t-distributed stochastic neighbor embedding (t-SNE) visualization technique to reduce the high-dimensional data into a two-dimensional space. This allowed us to visualize the dataset and identify any clusters or patterns that may be present.</td>
+</tr>
+<tr>
+<td>PCA</td>
+<td><p>Applied principal component analysis (PCA) to reduce the dimensionality of the dataset and visualize it in a lower-dimensional space. This helped us to identify</p><p>the most important features of the dataset and understand the relationships between different variables.</p></td>
+</tr>
+<tr>
+<td>Correlation Vector Heatmap</td>
+<td>Generated a heatmap of the correlation vector to visualize the correlation between different features of the dataset. This allowed us to identify any strong correlations between features and remove any redundant features.</td>
+</tr>
+<tr>
+<td>Class Frequency Analysis</td>
+<td><p>Analyzed the frequency of different classes in the dataset.</p><p>We have a total of 14 classes, and each class has approximately 70-100 instances in the dataset. This helped us to identify</p><p>any class imbalances that may be present and adjust the dataset accordingly.</p></td>
+</tr>
+<tr>
+<td>such as PCA and transfer learning to improve the accuracy of our algorithm. 4.4.1. Decision Tree Classification</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Decision tree is a popular machine learning algorithm used for classification and regression tasks. It is a tree-structured model where internal nodes represent features, branches repre- sent decisions based on the values of these features, and leaf nodes represent the output or class label. The DecisionTreeClassifier class provided in the code implements the decision tree algorithm for classificationtasks.</p>
+<p>The decision tree is grown recursively using a top-down, greedy approach. At each node, the algorithm searches for the feature and threshold that gives the maximum information gain. The information gain is calculated using a splitting criterion, such as entropy or Gini impurity. The algorithm continues to split the data at each internal node until a stopping criterionismet, suchasreachingamaximumdepthorhavingaminimumnumberofsamples in a leaf node.</p>
+<p>The implementation of the decision tree algorithm in the code can be explained as follows:</p>
+<p>Node class:</p>
+<p>The Node class represents each node in the decision tree. It contains the following attributes:</p>
+<p>feature: the feature used for splitting the data at this node. threshold: the threshold value used for splitting the data at this node. left: the left subtree of this node.</p>
+<p>right: the right subtree of this node.</p>
+<p>value: the predicted output value or class label if this is a leaf node. class probs: the probabilities of each class if this is a leaf node.</p>
+<p>DecisionTreeClassifierclass:</p>
+<p>init method: The constructor method initializes the maximum depth of the tree.</p>
+<p>fitmethod: The fitmethod is used to train the decision tree using the input data X and labels y. It initializes the number of classes and grows the decision tree by calling the grow tree method. grow tree method: The grow tree method is the heart of the decision tree algorithm. It recur- sively grows the tree by findingthe best split at each internal node and creating left and right subtrees. The stopping criteria are checked at each internal node, and if met, a leaf node is created with the class probabilities.</p>
+<p>information gain method: The information gain method calculates the information gain of a split using the entropy criterion.</p>
+<p>entropy method: The entropy method calculates the entropy of a given set of labels using the Shannon entropy formula.</p>
+<p>predict method: The predict method predicts the class labels for new input data X by travers- ing the decision tree from the root node to a leaf node and returning the class probabilities. predict proba method: The predict proba method returns the class probabilities for new input data X by traversing the decision tree from the root node to a leaf node and returning the class probabilities.</p>
+<ol start="5">
+<li>Mobile Net Embedding</li>
+</ol>
+<p>The code we used defines a function named dir to category that takes two arguments: Cate- gories and datadir.</p>
+<p>The Categories parameter is a list of categories or labels that will be used to classify the images. datadir parameter is the path to the directory where the images are located.</p>
+<p>The function then loops over each category in Categories and reads all the images in the corresponding subdirectory of datadir. It loads each image and converts it into an array of shape (224, 224, 3), which is the expected input shape for the pre-trained MobileNet model.</p>
+<p>Next, the code passes the image array through the MobileNet model to obtain the output of the layer named ’reshape 2’. This output is then flattened and added to a list called flat data arr.</p>
+<p>The function also creates another list called target arr that contains the corresponding target values for each image. The target value is the index of the category in the Categories list.</p>
+<p>Finally, the it converts the flat data arr and target arr lists to numpy arrays and creates a pandas dataframe from the flattened arrays. It adds a new column named ’Target’ to the dataframe, which contains the target values.</p>
+<p>The function then returns two values: x and y. x contains the flattened image arrays and y contains the target values.</p>
+<ol start="6">
+<li>Fine Tuning MobileNet</li>
+</ol>
+<p>The fine-tuning pre-trained MobileNet v2 model to classify images into 14 different cate- gories.</p>
+<p>First, the pre-trained MobileNetv2 model is loaded and the last fully connected layer is replaced with a new layer with 14 output features to match the number of categories. Then, all the pre-trained layers except the last layer are frozen to avoid overfitting.</p>
+<p>The data is loaded from the ’New’ folder using ImageFolder, and data transformations are applied to each image. The dataset is split into training and validation sets using the train test split method from sklearn. Data loaders are created for both the training and validation sets.</p>
+<p>A cross-entropy loss function and SGD optimizer are defined, and a cyclic learning rate scheduler is applied to the optimizer. The model is trained for 10 epochs, with each epoch iterating over the training set and updating the weights using backpropagation. After each epoch, the model is evaluated on the validation set and the accuracy is printed.</p>
+<p>The output shows the accuracy on the validation set after each epoch of training. The accu- racy improves with each epoch and reaches a high of 0.9655. This indicates that the model is learning to classify the images accurately and effectively.</p>
+<ol start="5">
+<li>TOOLS AND TECHNOLOGIES</li>
+</ol>
+<p>The proposed project is developed using the following tools and technologies:</p>
+<ul>
+<li>Python: Python is a widely-used programming language with a rich set of libraries and frameworks for machine learning and natural language processing. It is used as the primary language for developing the machine learning-based character recognition system.</li>
+<li>Scikit-learn (sklearn): Sklearn is a popular open-source machine learning library for Python. It provides a range of tools for data mining, data analysis, and machine learn- ing, including classification, regression, and clustering algorithms. Sklearn is used for implementing the machine learning algorithms for character recognition of Tirhuta Lipi.</li>
+<li>TensorFlow: TensorFlowisanopen-sourcemachinelearningframeworkdevelopedby Google that can be used to build neural networks and other machine learning models. It is used to build and train a convolutional neural network for recognizing Tirhuta Lipi characters.</li>
+<li>Keras: Keras is a high-level neural network API that is built on top of TensorFlow. It is used to simplify the process of building, training, and evaluating the neural network for character recognition.</li>
+<li>OpenCV: OpenCV is an open-source computer vision library that provides a wide range of image processing and computer vision algorithms. It is used for image pre- processing and feature extraction to improve the accuracy of the character recognition system.</li>
+<li>Flask: Flask is a lightweight web framework for Python that can be used to build web- based applications. It is used to develop a simple web-based interface for users to upload Tirhuta Lipi images and receive the recognized characters.</li>
+</ul>
+<p>The combination of these tools and technologies is used to develop a robust and accurate character recognition system for Tirhuta Lipi.</p>
+<ol start="6">
+<li>RESULTS</li>
+</ol>
+<p>For this project, we have tried many algorithms, which include the model written from scratch i.e. Decision tree and other classic machine learning model from sklearn repository and Tensorflow pretrained network like MobileNet.</p>
+<ol>
+<li>Decision Tree</li>
+</ol>
+<p>In this section, we present the results of our analysis using three different approaches: de- cision tree analysis on raw data (image), PCA 200 embedding, and feature vectors from MobileNet.</p>
+<ol>
+<li>Decision Tree Analysis on Raw Data (Image)</li>
+</ol>
+<p>We trained a decision tree classifier on the raw image data, and the accuracy of the model was found to be 0.12. This low accuracy can be attributed to the high dimensionality of the image data and the complex relationships between the pixels. The decision tree was not able to capture these complex relationships, leading to poor performance.</p>
+<ol start="2">
+<li>PCA 200 Embedding</li>
+</ol>
+<p>We applied PCA to reduce the dimensionality of the image data to 200, and then trained a decision tree classifier on this reduced dataset. The accuracy of the model was found to be 0.3-0.35. This is a significant improvement over the raw image data, indicating that PCA was able to capture the most important features of the images.</p>
+<ol start="3">
+<li>Feature Vectors from MobileNet</li>
+</ol>
+<p>We extracted feature vectors from the pre-trained MobileNet model and trained a decision tree classifier on these vectors. The accuracy of the model was found to be 0.56, which is</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Accuracy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SVC (raw image)</td>
+<td>0.61</td>
+</tr>
+<tr>
+<td>KNN (raw image)</td>
+<td>0.47</td>
+</tr>
+<tr>
+<td>MobileNet embedding + Decision Tree</td>
+<td>0.55</td>
+</tr>
+<tr>
+<td>MobileNet embedding + Gradient Boosting</td>
+<td>0.86</td>
+</tr>
+<tr>
+<td>MobileNet embedding + Logistic Regression</td>
+<td>0.97</td>
+</tr>
+<tr>
+<td>MobileNet embedding + SVC</td>
+<td>0.95</td>
+</tr>
+<tr>
+<td>MobileNet embedding + KNN</td>
+<td>0.94</td>
+</tr>
+<tr>
+<td>significantlyhigherthanboththerawimagedataandthePCA200embedding. Thisindicates that the pre-trained MobileNet model was able to capture the most important features of the images, and the decision tree was able to learn from these features.</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>To further evaluate the performance of our model, we plotted the ROC curve and calculated the area under the curve (AUC) for each class. The AUC values for each class are as follows: class 0 (0.69), class 1 (0.71), class 2 (0.75), class 3 (0.76), class 4 (0.71), class 5 (0.79), class 6 (0.93), class 7 (0.85), class 8 (0.73), class 9 (0.75), class 10 (0.90), and class 13 (0.82).</p>
+<p>We also calculated the confusion matrix and classification report for our model. The con- fusion matrix shows that our model performed well for most classes, with some confusion between classes 0 and 1, and classes 3 and 4. The classificationreport shows that our model had reasonable precision, recall, and f1-score for most classes, with lower performance for classes 0, 1, and 4.</p>
+<p>Overall, our results show that using feature vectors from a pre-trained model like MobileNet can significantlyimprove the accuracy of a decision tree classifieron image data.</p>
+<ol start="2">
+<li>Analysis On Different SKLearn Algorith Below is the results got from different moddels.</li>
+</ol>
+<p>6.2.1. Fine tunning MobileNet</p>
+<p>From PyTorch model library, we used MobileNet and fine-tunedit to achieve an accuracy of 0.965.</p>
+<ol start="7">
+<li>DISCUSSION</li>
+</ol>
+<p>Decision trees are a popular method for classification and regression analysis, particularly in the field of machine learning. In this discussion, we analyze the results obtained from three decision tree models trained on different types of input data: raw images, PCA 200 embedding, and feature vectors extracted from MobileNet.</p>
+<p>The decision tree model trained on raw images had an accuracy of 0.12, which is quite low. This indicates that the model was not able to learn meaningful features from the raw image data. The low accuracy may be due to the high dimensionality of the raw image data and the lack of feature engineering.</p>
+<p>The decision tree model trained on PCA 200 embedding had an accuracy of 0.3-0.35. While this accuracy is an improvement over the raw image model, it is still quite low. PCA was used to reduce the dimensionality of the data, but it may not have been able to capture all of the relevant features. The low accuracy suggests that more sophisticated feature engineering may be necessary to improve the performance of the model.</p>
+<p>The decision tree model trained on feature vectors extracted from MobileNet had the highest accuracy of 0.56. The model was able to learn meaningful features from the pre-trained MobileNet network, which contributed to the improved accuracy. The ROC curve analysis showed that the model had good performance for most classes, with areas under the curve ranging from 0.65 to 0.93. The confusion matrix and classification report showed that the model had reasonable precision and recall for most classes, with some classes performing better than others. However, there is still room for improvement, particularly for classes with lower precision and recall.</p>
+<p>Wecanobservethattherawimage-basedmodels, SVCandKNN,havethelowestaccuracies of 0.61 and 0.47, respectively. This could be because raw images have high dimensionality, making it difficultfor these models to effectively capture the relevant features for classifica- tion.</p>
+<p>On the other hand, the models that use MobileNet embeddings perform significantly better, with accuracy ranging from 0.55 to 0.97. MobileNet is a pre-trained model that has been trainedonalargedatasetandhaslearnedtoextractrelevantfeatureseffectively. Thedecision tree-based model using MobileNet embeddings has an accuracy of 0.55, which is the lowest among all the MobileNet-based models. This could be because decision trees are prone to overfittingand may not generalize well on unseen data.</p>
+<p>The Gradient Boosting-based model using MobileNet embeddings has the highest accuracy of 0.86. Gradient Boosting is an ensemble-based method that combines multiple weak learn- ers to create a strong learner. It is known for its ability to handle complex datasets and produce accurate results.</p>
+<p>LogisticRegression-basedmodelusingMobileNetembeddingshasthesecond-highestaccu- racyof0.97. Logisticregressionisalinearmodelthatissimpletoimplementandinterpret. It works well on linearly separable data, and the use of MobileNet embeddings helps to reduce the dimensionality of the data.</p>
+<p>The SVC and KNN-based models using MobileNet embeddings also perform well with ac- curacies of 0.95 and 0.94, respectively. SVC is a kernel-based method that works well on non-linearly separable data. KNN is a lazy learning method that stores all the training data and uses it for classification.</p>
+<p>The result of 0.965 accuracy achieved using Tensorflow Keras/ PyTorch with MobileNet fine-tuning is impressive. Fine-tuning is the process of adjusting the pre-trained model’s parameters to fit the new dataset better. In this case, MobileNet, which is a pre-trained model on a large-scale dataset, was fine-tunedto improve its performance on a specifictask.</p>
+<p>The MobileNet architecture is popular in computer vision tasks due to its high accuracy and lowcomputationalrequirements. Itachievesthisby using depth-wiseseparableconvolutions that reduce the number of parameters in the model significantly. This makes it a great choice for transfer learning, where pre-trained models are used as a starting point for training on new data.</p>
+<p>In this case, fine-tuning MobileNet has led to a significant improvement in accuracy com- pared to the Sklearn algorithms. This result shows the power of transfer learning, especially when combined with fine-tuning,to improve the accuracy of deep learning models.</p>
+<p>It is worth noting that the accuracy achieved using MobileNet fine-tuning can still be im- proved further by experimenting with different hyperparameters, changing the number of layers, or using a different pre-trained model. It is also essential to ensure that the model is not overfittingor underfittingthe data by using techniques like cross-validation and regular- ization.</p>
+<p>Overall, the result shows the effectiveness of using transfer learning and fine-tuning to im- prove the accuracy of deep learning models, especially in computer vision tasks like image classification.</p>
+<ol start="8">
+<li>CONCLUSION</li>
+</ol>
+<p>In conclusion, our research aimed to explore the performance of various machine learning algorithms and deep learning techniques on image classification using a dataset of diverse images.</p>
+<p>The first set of experiments involved the implementation of the Scikit-learn algorithms on raw images. The highest accuracy achieved was 0.61 using the Support Vector Machine (SVM) model, while the K-Nearest Neighbor (KNN) model had an accuracy of 0.47. These results indicate that Scikit-learn models on raw images may not be sufficient for accurate image classification.</p>
+<p>In the second set of experiments, we used transfer learning with MobileNet embedding and implemented three different algorithms. The results demonstrated a significantimprovement in accuracy compared to the raw image implementation. The highest accuracy was achieved using logistic regression (0.97), followed by the Support Vector Classifier(SVC) (0.95) and the K-Nearest Neighbors (KNN) model (0.94). The Gradient Boosting Classifier(0.86) and Decision Tree Classifier (0.55) had lower accuracies in comparison. These results suggest that transfer learning with MobileNet embedding could be a promising approach for image classification.</p>
+<p>Finally, we fine-tuned the MobileNet model using TensorFlow Keras, which resulted in an accuracy of 0.965. This approach outperformed all other experiments, including the Mo- bileNet with transfer learning using logistic regression. These results demonstrate the effec- tiveness of deep learning techniques, particularly fine-tuning, in achieving high accuracy in image classificationtasks.</p>
+<p>Overall, the results suggest that deep learning techniques such as fine-tuning MobileNet models using TensorFlow Keras can be highly effective for image classification tasks, out- performing traditional machine learning models. Additionally, transfer learning using Mo- bileNet embedding with logistic regression, SVC, or KNN could also be effective for achiev- ing high accuracy in image classificationtasks.</p>
+<ol start="9">
+<li>LIMITATIONS AND FUTURE ENHANCEMENTS</li>
+</ol>
+<p>Limitations of this project include the fact that the model may not generalize well to other types of characters or scripts, as it has been trained and tested only on Tirhuta vowels Lipi. Additionally, there may be some limitations due to the size and diversity of the dataset used, which could affect the overall accuracy of the model.</p>
+<p>In future work, it would be beneficialto add more data per class to increase the overall diver- sity and size of the dataset. Pretrained models could also be used to improve the performance of the model. Additionally, more characters from the Tirhuta Lipi script could be added to the dataset to enhance the model’s ability to recognize a wider range of characters. Further- more, experiments with other machine learning algorithms or techniques could be explored to determine their effectiveness for character recognition in Tirhuta Lipi.</p>
+<p>References References</p>
+<ol>
+<li>A.Pandey,”N4035: ProposaltoEncodetheTirhutaScriptinISO/IEC10646,”Working Group Document, ISO/IEC JTC1/SC2/WG2, May 2011.</li>
+<li>P. T. Daniels, ”Writing systems of major and minor languages,” January 2008.</li>
+<li>R. Salomon, ”Indian Epigraphy,” 1998, pp. 41.</li>
+<li>B. Zhou et al., ”Learning Deep Features for Discriminative Localization,” in Proceed- ings of the IEEE Conference on Computer Vision and Pattern Recognition, Las Vegas, NV, USA, 2016, pp. 2921-2929, doi: 10.1109/CVPR.2016.315.</li>
+<li>K. He et al., ”Deep Residual Learning for Image Recognition,” in Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition, Las Vegas, NV, USA, 2016, pp. 770-778, doi: 10.1109/CVPR.2016.90.</li>
+<li>A. Krizhevsky et al., ”ImageNet Classification with Deep Convolutional Neural Net- works,” in Communications of the ACM, vol. 60, no. 6, pp. 84-90, June 2017, doi: 10.1145/3065386.</li>
+<li>Y. Kim, ”Convolutional Neural Networks for Sentence Classification,” in Proceedings of the Conference on Empirical Methods in Natural Language Processing, Doha, Qatar, 2014, pp. 1746-1751, doi: 10.1162/153244303322533223.</li>
+<li>”Decision tree,” Wikipedia, last modifiedJanuary 31, 2022.<a href="https://en.wikipedia.org/wiki/Decision_tree" target="_blank" rel="noopener noreffer"> https://en.wikipedia. org/wiki/Decision_tree</a></li>
+<li>”Decision tree learning - Gini impurity,” Wikipedia, last modified January 17, 2022. <a href="https://en.wikipedia.org/wiki/Decision_tree_learning#Gini_impurity" target="_blank" rel="noopener noreffer">https://en.wikipedia.org/wiki/Decision_tree_learning#Gini_impurity</a></li>
+<li>IMAGES</li>
+</ol>
+<p>This page contains images, and visualizations.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.009.jpeg"
+        data-srcset="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.009.jpeg, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.009.jpeg 1.5x, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.009.jpeg 2x"
+        data-sizes="auto"
+        alt="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.009.jpeg"
+        title="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.009.jpeg" /></p>
+<p>Figure 10.1: Written in tirhuta Script</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.010.png"
+        data-srcset="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.010.png, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.010.png 1.5x, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.010.png 2x"
+        data-sizes="auto"
+        alt="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.010.png"
+        title="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.010.png" /></p>
+<p>Figure 10.2: Data Collection Process</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.011.png"
+        data-srcset="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.011.png, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.011.png 1.5x, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.011.png 2x"
+        data-sizes="auto"
+        alt="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.011.png"
+        title="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.011.png" /></p>
+<p>Figure 10.3: Confusion matrix form the Decision tree scratch.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.012.png"
+        data-srcset="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.012.png, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.012.png 1.5x, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.012.png 2x"
+        data-sizes="auto"
+        alt="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.012.png"
+        title="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.012.png" /></p>
+<p>Figure 10.4: ROC Score curve of Decision tree scratch.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.013.png"
+        data-srcset="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.013.png, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.013.png 1.5x, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.013.png 2x"
+        data-sizes="auto"
+        alt="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.013.png"
+        title="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.013.png" /></p>
+<p>Figure 10.5: Learning curve to Decision tree scratch.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.014.png"
+        data-srcset="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.014.png, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.014.png 1.5x, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.014.png 2x"
+        data-sizes="auto"
+        alt="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.014.png"
+        title="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.014.png" /></p>
+<p>Figure 10.6: Images Counts.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.015.png"
+        data-srcset="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.015.png, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.015.png 1.5x, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.015.png 2x"
+        data-sizes="auto"
+        alt="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.015.png"
+        title="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.015.png" /></p>
+<p>Figure 10.7: Pixel Distribution of Images (Histogram).</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.016.png"
+        data-srcset="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.016.png, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.016.png 1.5x, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.016.png 2x"
+        data-sizes="auto"
+        alt="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.016.png"
+        title="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.016.png" /></p>
+<p>Figure 10.8: Correlation between features.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.017.png"
+        data-srcset="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.017.png, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.017.png 1.5x, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.017.png 2x"
+        data-sizes="auto"
+        alt="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.017.png"
+        title="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.017.png" /></p>
+<p>Figure 10.9: 2D TSNE.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.018.png"
+        data-srcset="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.018.png, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.018.png 1.5x, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.018.png 2x"
+        data-sizes="auto"
+        alt="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.018.png"
+        title="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.018.png" /></p>
+<p>Figure 10.10: 3D T-SNE.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.019.png"
+        data-srcset="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.019.png, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.019.png 1.5x, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.019.png 2x"
+        data-sizes="auto"
+        alt="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.019.png"
+        title="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.019.png" /></p>
+<p>Figure 10.11: 2D PCA.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.020.png"
+        data-srcset="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.020.png, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.020.png 1.5x, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.020.png 2x"
+        data-sizes="auto"
+        alt="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.020.png"
+        title="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.020.png" /></p>
+<p>Figure 10.12: 3D PCA.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.021.png"
+        data-srcset="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.021.png, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.021.png 1.5x, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.021.png 2x"
+        data-sizes="auto"
+        alt="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.021.png"
+        title="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.021.png" /></p>
+<p>Figure 10.13: ClassificationReport of Logistic Head of MobileNet</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.022.png"
+        data-srcset="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.022.png, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.022.png 1.5x, /posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.022.png 2x"
+        data-sizes="auto"
+        alt="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.022.png"
+        title="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.022.png" /></p>
+<p>Figure 10.14: Confusion Matrix of Logistic regression on MobileNet Embedding.</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2023-04-01</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/ioe_bachelors_ai_project_pulchowk_campus/index.md" target="_blank">Read Markdown</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="http://sumityadav.com.np/ioe_bachelors_ai_project_pulchowk_campus/" data-title="Mathili_Script" data-via="Rocker_Ritesh" data-hashtags="Machile Learning,Tirhuta Lipi"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://sumityadav.com.np/ioe_bachelors_ai_project_pulchowk_campus/" data-hashtag="Machile Learning"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="http://sumityadav.com.np/ioe_bachelors_ai_project_pulchowk_campus/" data-title="Mathili_Script" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="http://sumityadav.com.np/ioe_bachelors_ai_project_pulchowk_campus/" data-title="Mathili_Script"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="http://sumityadav.com.np/ioe_bachelors_ai_project_pulchowk_campus/" data-title="Mathili_Script"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="Share on Myspace" data-sharer="myspace" data-url="http://sumityadav.com.np/ioe_bachelors_ai_project_pulchowk_campus/" data-title="Mathili_Script" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg"></i></a><a href="javascript:void(0);" title="Share on Blogger" data-sharer="blogger" data-url="http://sumityadav.com.np/ioe_bachelors_ai_project_pulchowk_campus/" data-title="Mathili_Script" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="Share on Evernote" data-sharer="evernote" data-url="http://sumityadav.com.np/ioe_bachelors_ai_project_pulchowk_campus/" data-title="Mathili_Script"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/machile-learning/">Machile Learning</a>,&nbsp;<a href="/tags/tirhuta-lipi/">Tirhuta Lipi</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/mithila_festivals/" class="prev" rel="prev" title="Mithila_festivals"><i class="fas fa-angle-left fa-fw"></i>Mithila_festivals</a>
+            <a href="/queryoptimizationtechniques/" class="next" rel="next" title="Query optimization">Query optimization<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="valine" class="comment"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://valine.js.org/">Valine</a>.
+            </noscript></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.111.3">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="http://sumityadav.com.np" target="_blank">rockerritesh</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/valine/valine.min.css"><link rel="stylesheet" href="/lib/lightgallery/lightgallery.min.814eba54011def7fdeead06ae5cf964a245c347d0f4972e71cc3de1482b1b473.css" integrity="sha256-gU66VAEd73/e6tBq5c&#43;WSiRcNH0PSXLnHMPeFIKxtHM="><link rel="stylesheet" href="/lib/katex/katex.min.4710034e669c7ff17f823f9ba12cf8a36582d65b007f79cbc4a3c11d7db2e4ca.css" integrity="sha256-RxADTmacf/F/gj&#43;boSz4o2WC1lsAf3nLxKPBHX2y5Mo="><link rel="stylesheet" href="/lib/katex/copy-tex.min.bf9ff4137fec38f6255419e142d0883c9c52090885d746f80eee12b273d9b3e0.css" integrity="sha256-v5/0E3/sOPYlVBnhQtCIPJxSCQiF10b4Du4SsnPZs&#43;A="><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.cd0d0b6e50ff01ff2f3a9a70d7cfb66a7c6cb9acf7a566325568be6d3bd31fc4.css" integrity="sha256-zQ0LblD/Af8vOppw18&#43;2anxsuaz3pWYyVWi&#43;bTvTH8Q="><script type="text/javascript" src="/lib/valine/Valine.min.7cfa8c02c5b7143b7facdca779227b1cea59351b3f3b6accd35e92534f09b429.js" integrity="sha256-fPqMAsW3FDt/rNyneSJ7HOpZNRs/O2rM016SU08JtCk="></script><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.bcff85fb5e00d68802850b393ac7792c997f722f536f38e26638c46dca8e5eb6.js" integrity="sha256-vP&#43;F&#43;14A1ogChQs5Osd5LJl/ci9TbzjiZjjEbcqOXrY="></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.615590a2ca2b667afa7c02ef396f5500b62e22795ddbb46448f90494605d09a5.js" integrity="sha256-YVWQosorZnr6fALvOW9VALYuInld27RkSPkElGBdCaU="></script><script type="text/javascript" src="/lib/lunr/lunr.min.df84a2d58ea594c04a3371b48d020b55ea10284c2ec636e4e331965d7313e29b.js" integrity="sha256-34Si1Y6llMBKM3G0jQILVeoQKEwuxjbk4zGWXXMT4ps="></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.fb649fcae62177dfe63e67081ddceb830b5ce1f05a4184e9bbb7d87ac4b8f4e5.js" integrity="sha256-&#43;2SfyuYhd9/mPmcIHdzrgwtc4fBaQYTpu7fYesS49OU="></script><script type="text/javascript" src="/lib/lightgallery/lightgallery.min.0ef47b3aa47d71accebfc4c7029c37f43d35f3ef43cda0e706c7adb8851f9554.js" integrity="sha256-DvR7OqR9cazOv8THApw39D018&#43;9DzaDnBsetuIUflVQ="></script><script type="text/javascript" src="/lib/lightgallery/lg-thumbnail.min.87bd0bf4ede9af1be2287acf1f0ac8777dc76a49209d44620752811c3c993897.js" integrity="sha256-h70L9O3prxviKHrPHwrId33HakkgnURiB1KBHDyZOJc="></script><script type="text/javascript" src="/lib/lightgallery/lg-zoom.min.5993efde07d6b1a88dd5d5ff00cf5c0178d1d8c7f682eae59546a8e144aac57e.js" integrity="sha256-WZPv3gfWsaiN1dX/AM9cAXjR2Mf2gurllUao4USqxX4="></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.8a7739925f4c03586479852df840b7061948832a7fda30c8c812d2ea4dd4c4f2.js" integrity="sha256-inc5kl9MA1hkeYUt&#43;EC3BhlIgyp/2jDIyBLS6k3UxPI="></script><script type="text/javascript" src="/lib/sharer/sharer.min.9c88f86c7f0820287113f6236200459832693656e80d7556cc80a93dfbd45813.js" integrity="sha256-nIj4bH8IIChxE/YjYgBFmDJpNlboDXVWzICpPfvUWBM="></script><script type="text/javascript" src="/lib/katex/katex.min.17f5dd6b9f123dd7140abfb18521b3f4c036cd004f6f40121182a8865f140877.js" integrity="sha256-F/Xda58SPdcUCr&#43;xhSGz9MA2zQBPb0ASEYKohl8UCHc="></script><script type="text/javascript" src="/lib/katex/auto-render.min.f74776a677f0d2be0af0264058f928e2ba455d0b19bc985304660d922a43a6b2.js" integrity="sha256-90d2pnfw0r4K8CZAWPko4rpFXQsZvJhTBGYNkipDprI="></script><script type="text/javascript" src="/lib/katex/copy-tex.min.2ab2237329021bc443986c8327f6e61357fb68a54e5d233d224023718c02207d.js" integrity="sha256-KrIjcykCG8RDmGyDJ/bmE1f7aKVOXSM9IkAjcYwCIH0="></script><script type="text/javascript" src="/lib/katex/mhchem.min.5cea356d6025c5a2f18c454c83ec5674dbb04fab1cd1d75569e77788c6b6f888.js" integrity="sha256-XOo1bWAlxaLxjEVMg&#43;xWdNuwT6sc0ddVaed3iMa2&#43;Ig="></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.e55842a856a6d829feca3c3ad736c136b6c7549e9247274f78aa296259e06e24.js" integrity="sha256-5VhCqFam2Cn&#43;yjw61zbBNrbHVJ6SRydPeKopYlngbiQ="></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{"valine":{"appId":"FSqhkgyQFDNIpfQkmjfHBbAR-MdYXbMMI","appKey":"NgAel1py68SE57WT9l4zDAhT","avatar":"mp","el":"#valine","emojiCDN":"https://cdn.jsdelivr.net/npm/emoji-datasource-google@5.0.1/img/google/64/","emojiMaps":{"100":"1f4af.png","alien":"1f47d.png","anger":"1f4a2.png","angry":"1f620.png","anguished":"1f627.png","astonished":"1f632.png","black_heart":"1f5a4.png","blue_heart":"1f499.png","blush":"1f60a.png","bomb":"1f4a3.png","boom":"1f4a5.png","broken_heart":"1f494.png","brown_heart":"1f90e.png","clown_face":"1f921.png","cold_face":"1f976.png","cold_sweat":"1f630.png","confounded":"1f616.png","confused":"1f615.png","cry":"1f622.png","crying_cat_face":"1f63f.png","cupid":"1f498.png","dash":"1f4a8.png","disappointed":"1f61e.png","disappointed_relieved":"1f625.png","dizzy":"1f4ab.png","dizzy_face":"1f635.png","drooling_face":"1f924.png","exploding_head":"1f92f.png","expressionless":"1f611.png","face_vomiting":"1f92e.png","face_with_cowboy_hat":"1f920.png","face_with_hand_over_mouth":"1f92d.png","face_with_head_bandage":"1f915.png","face_with_monocle":"1f9d0.png","face_with_raised_eyebrow":"1f928.png","face_with_rolling_eyes":"1f644.png","face_with_symbols_on_mouth":"1f92c.png","face_with_thermometer":"1f912.png","fearful":"1f628.png","flushed":"1f633.png","frowning":"1f626.png","ghost":"1f47b.png","gift_heart":"1f49d.png","green_heart":"1f49a.png","grimacing":"1f62c.png","grin":"1f601.png","grinning":"1f600.png","hankey":"1f4a9.png","hear_no_evil":"1f649.png","heart":"2764-fe0f.png","heart_decoration":"1f49f.png","heart_eyes":"1f60d.png","heart_eyes_cat":"1f63b.png","heartbeat":"1f493.png","heartpulse":"1f497.png","heavy_heart_exclamation_mark_ornament":"2763-fe0f.png","hole":"1f573-fe0f.png","hot_face":"1f975.png","hugging_face":"1f917.png","hushed":"1f62f.png","imp":"1f47f.png","innocent":"1f607.png","japanese_goblin":"1f47a.png","japanese_ogre":"1f479.png","joy":"1f602.png","joy_cat":"1f639.png","kiss":"1f48b.png","kissing":"1f617.png","kissing_cat":"1f63d.png","kissing_closed_eyes":"1f61a.png","kissing_heart":"1f618.png","kissing_smiling_eyes":"1f619.png","laughing":"1f606.png","left_speech_bubble":"1f5e8-fe0f.png","love_letter":"1f48c.png","lying_face":"1f925.png","mask":"1f637.png","money_mouth_face":"1f911.png","nauseated_face":"1f922.png","nerd_face":"1f913.png","neutral_face":"1f610.png","no_mouth":"1f636.png","open_mouth":"1f62e.png","orange_heart":"1f9e1.png","partying_face":"1f973.png","pensive":"1f614.png","persevere":"1f623.png","pleading_face":"1f97a.png","pouting_cat":"1f63e.png","purple_heart":"1f49c.png","rage":"1f621.png","relaxed":"263a-fe0f.png","relieved":"1f60c.png","revolving_hearts":"1f49e.png","right_anger_bubble":"1f5ef-fe0f.png","robot_face":"1f916.png","rolling_on_the_floor_laughing":"1f923.png","scream":"1f631.png","scream_cat":"1f640.png","see_no_evil":"1f648.png","shushing_face":"1f92b.png","skull":"1f480.png","skull_and_crossbones":"2620-fe0f.png","sleeping":"1f634.png","sleepy":"1f62a.png","slightly_frowning_face":"1f641.png","slightly_smiling_face":"1f642.png","smile":"1f604.png","smile_cat":"1f638.png","smiley":"1f603.png","smiley_cat":"1f63a.png","smiling_face_with_3_hearts":"1f970.png","smiling_imp":"1f608.png","smirk":"1f60f.png","smirk_cat":"1f63c.png","sneezing_face":"1f927.png","sob":"1f62d.png","space_invader":"1f47e.png","sparkling_heart":"1f496.png","speak_no_evil":"1f64a.png","speech_balloon":"1f4ac.png","star-struck":"1f929.png","stuck_out_tongue":"1f61b.png","stuck_out_tongue_closed_eyes":"1f61d.png","stuck_out_tongue_winking_eye":"1f61c.png","sunglasses":"1f60e.png","sweat":"1f613.png","sweat_drops":"1f4a6.png","sweat_smile":"1f605.png","thinking_face":"1f914.png","thought_balloon":"1f4ad.png","tired_face":"1f62b.png","triumph":"1f624.png","two_hearts":"1f495.png","unamused":"1f612.png","upside_down_face":"1f643.png","weary":"1f629.png","white_frowning_face":"2639-fe0f.png","white_heart":"1f90d.png","wink":"1f609.png","woozy_face":"1f974.png","worried":"1f61f.png","yawning_face":"1f971.png","yellow_heart":"1f49b.png","yum":"1f60b.png","zany_face":"1f92a.png","zipper_mouth_face":"1f910.png","zzz":"1f4a4.png"},"enableQQ":false,"highlight":true,"lang":"en","pageSize":10,"placeholder":"Your comment ...","recordIP":true,"visitor":true}},"cookieconsent":{"content":{"dismiss":"Got it!","link":"Learn more","message":"This website uses Cookies to improve your experience."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"lightGallery":{"actualSize":false,"exThumbImage":"data-thumbnail","hideBarsDelay":2000,"selector":".lightgallery","speed":400,"thumbContHeight":80,"thumbWidth":80,"thumbnail":true},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.f51938f3065a40ee841bcb558e4330e31fd26c0ea55343fff8770b88b0319a3c.js" integrity="sha256-9Rk48wZaQO6EG8tVjkMw4x/SbA6lU0P/&#43;HcLiLAxmjw="></script></body>
+</html>

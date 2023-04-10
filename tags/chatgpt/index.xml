@@ -1,0 +1,37 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>ChatGPT - Tag - Sumit Yadav</title>
+        <link>http://sumityadav.com.np/tags/chatgpt/</link>
+        <description>ChatGPT - Tag - Sumit Yadav</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>rockerritesh4@gmail.com (rockerritesh)</managingEditor>
+            <webMaster>rockerritesh4@gmail.com (rockerritesh)</webMaster><lastBuildDate>Sun, 09 Apr 2023 18:07:21 &#43;0545</lastBuildDate><atom:link href="http://sumityadav.com.np/tags/chatgpt/" rel="self" type="application/rss+xml" /><item>
+    <title>Functional dependency</title>
+    <link>http://sumityadav.com.np/functional-dependency/</link>
+    <pubDate>Sun, 09 Apr 2023 18:07:21 &#43;0545</pubDate>
+    <author>Author</author>
+    <guid>http://sumityadav.com.np/functional-dependency/</guid>
+    <description><![CDATA[Functional dependency explained. You Functional dependency
+ChatGPT In the context of relational databases, a functional dependency is a relationship between two or more attributes (or columns) in a table where the value of one attribute determines the value of another.
+For example, if we have a table called &ldquo;Students&rdquo; with the columns &ldquo;Student_ID,&rdquo; &ldquo;First_Name,&rdquo; &ldquo;Last_Name,&rdquo; and &ldquo;Email,&rdquo; we can say that the attribute &ldquo;Email&rdquo; is functionally dependent on the attributes &ldquo;First_Name&rdquo; and &ldquo;Last_Name.]]></description>
+</item><item>
+    <title>Operating_System</title>
+    <link>http://sumityadav.com.np/operating_system/</link>
+    <pubDate>Sun, 09 Apr 2023 18:07:21 &#43;0545</pubDate>
+    <author>Author</author>
+    <guid>http://sumityadav.com.np/operating_system/</guid>
+    <description><![CDATA[OPerating system and function
+1 / 1
+An operating system (OS) is a software system that manages computer hardware and software resources and provides common services for computer programs. The main functions of an operating system include:
+Process management: The OS manages the execution of computer programs, called processes, by allocating system resources such as memory, CPU time, and input/output devices.
+Memory management: The OS manages the allocation and deallocation of memory resources to processes, ensuring that each process has the necessary memory to execute.]]></description>
+</item><item>
+    <title>Query optimization</title>
+    <link>http://sumityadav.com.np/queryoptimizationtechniques/</link>
+    <pubDate>Sun, 09 Apr 2023 18:07:21 &#43;0545</pubDate>
+    <author>Author</author>
+    <guid>http://sumityadav.com.np/queryoptimizationtechniques/</guid>
+    <description><![CDATA[Query optimization techniques. You query peocessing and optimization
+ChatGPT Query processing and optimization are two important aspects of database management systems that deal with the execution of user queries on a database.
+Query processing involves transforming a user query written in a high-level language (such as SQL) into a series of lower-level operations that can be executed by the database system. The process of query processing typically involves parsing the query, checking it for syntactic and semantic errors, optimizing the query execution plan, and executing the query to retrieve the desired data.]]></description>
+</item></channel>
+</rss>

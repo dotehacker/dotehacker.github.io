@@ -4,9 +4,54 @@
         <link>http://sumityadav.com.np/</link>
         <description>Still Backpropagating Through My Learning that I have done a year Ago.</description>
         <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>rockerritesh4@gmail.com (rockerritesh)</managingEditor>
-            <webMaster>rockerritesh4@gmail.com (rockerritesh)</webMaster><lastBuildDate>Mon, 28 Nov 2022 07:47:26 &#43;0545</lastBuildDate>
+            <webMaster>rockerritesh4@gmail.com (rockerritesh)</webMaster><lastBuildDate>Sun, 09 Apr 2023 18:07:21 &#43;0545</lastBuildDate>
             <atom:link href="http://sumityadav.com.np/index.xml" rel="self" type="application/rss+xml" />
         <item>
+    <title>Functional dependency</title>
+    <link>http://sumityadav.com.np/functional-dependency/</link>
+    <pubDate>Sun, 09 Apr 2023 18:07:21 &#43;0545</pubDate>
+    <author>Author</author>
+    <guid>http://sumityadav.com.np/functional-dependency/</guid>
+    <description><![CDATA[Functional dependency explained. You Functional dependency
+ChatGPT In the context of relational databases, a functional dependency is a relationship between two or more attributes (or columns) in a table where the value of one attribute determines the value of another.
+For example, if we have a table called &ldquo;Students&rdquo; with the columns &ldquo;Student_ID,&rdquo; &ldquo;First_Name,&rdquo; &ldquo;Last_Name,&rdquo; and &ldquo;Email,&rdquo; we can say that the attribute &ldquo;Email&rdquo; is functionally dependent on the attributes &ldquo;First_Name&rdquo; and &ldquo;Last_Name.]]></description>
+</item><item>
+    <title>Operating_System</title>
+    <link>http://sumityadav.com.np/operating_system/</link>
+    <pubDate>Sun, 09 Apr 2023 18:07:21 &#43;0545</pubDate>
+    <author>Author</author>
+    <guid>http://sumityadav.com.np/operating_system/</guid>
+    <description><![CDATA[OPerating system and function
+1 / 1
+An operating system (OS) is a software system that manages computer hardware and software resources and provides common services for computer programs. The main functions of an operating system include:
+Process management: The OS manages the execution of computer programs, called processes, by allocating system resources such as memory, CPU time, and input/output devices.
+Memory management: The OS manages the allocation and deallocation of memory resources to processes, ensuring that each process has the necessary memory to execute.]]></description>
+</item><item>
+    <title>Query optimization</title>
+    <link>http://sumityadav.com.np/queryoptimizationtechniques/</link>
+    <pubDate>Sun, 09 Apr 2023 18:07:21 &#43;0545</pubDate>
+    <author>Author</author>
+    <guid>http://sumityadav.com.np/queryoptimizationtechniques/</guid>
+    <description><![CDATA[Query optimization techniques. You query peocessing and optimization
+ChatGPT Query processing and optimization are two important aspects of database management systems that deal with the execution of user queries on a database.
+Query processing involves transforming a user query written in a high-level language (such as SQL) into a series of lower-level operations that can be executed by the database system. The process of query processing typically involves parsing the query, checking it for syntactic and semantic errors, optimizing the query execution plan, and executing the query to retrieve the desired data.]]></description>
+</item><item>
+    <title>Mathili_Script</title>
+    <link>http://sumityadav.com.np/ioe_bachelors_ai_project_pulchowk_campus/</link>
+    <pubDate>Sat, 01 Apr 2023 18:07:21 &#43;0545</pubDate>
+    <author>Author</author>
+    <guid>http://sumityadav.com.np/ioe_bachelors_ai_project_pulchowk_campus/</guid>
+    <description><![CDATA[TRIBHUVAN UNIVERSITY INSTITUTE OF ENGINEERING PULCHOWK CAMPUS
+Machine Learning Analysis of Tirhuta Lipi
+By:
+Sumit Yadav (076/BCT/088) Raju Kumar Yadav (076/BCT/100) Prashant Bhandari (076/BCT/049)
+AN AI PROJECT REPORT TO THE DEPARTMENT OF ELECTRONICS AND COMPUTER ENGINEERING.
+DEPARTMENT OF ELECTRONICS AND COMPUTER ENGINEERING LALITPUR, NEPAL
+March, 2023
+ii
+ACKNOWLEDGEMENT
+This project is prepared in partial fulfilment of the requirement for for the the bachelor’s degree in Electronics and Communication Engineering. First and foremost, We would also like to extend our sincere thanks to our passout seniors, friends, and family for their support and guidance throughout our research project.]]></description>
+</item><item>
     <title>Mithila_festivals</title>
     <link>http://sumityadav.com.np/mithila_festivals/</link>
     <pubDate>Mon, 28 Nov 2022 07:47:26 &#43;0545</pubDate>
@@ -63,39 +108,5 @@ Day 1 Maa Shailaputri Name Shailaputri Image Meaning Daughter of Mountain Father
     <description><![CDATA[In order to view the advance real time nepsa data as well as other nepse related things please visit &ndash;&gt; nepse. This website run an automatic command on github to take data from nepse related website and display data.
 nepse.sumityadav.com.np
 Today GRAPH This below is the graph of taday nepse value with other day value.]]></description>
-</item><item>
-    <title>Syllabus of BCT</title>
-    <link>http://sumityadav.com.np/syllabus/</link>
-    <pubDate>Thu, 19 Aug 2021 20:17:03 &#43;0545</pubDate>
-    <author>Author</author>
-    <guid>http://sumityadav.com.np/syllabus/</guid>
-    <description><![CDATA[Course Structure for Bachelor&rsquo;s Degree in Computer Engineering
-Here I presented the TU, IOE Syllabus of BCT.
-1. Year: 1, Semester: Odd Code Title Exam Type Theory Ass Theory Final Practical Ass Practical Final Total SH401 Engineering Mathematics I T 20 80 100 CT401 Computer Programming B 20 80 50 150 ME401 Engineering Drawing I P 60 40 100 SH402 Engineering Physics B 20 80 20 30 150 CE401 Applied Mechanics T 20 80 100 EE401 Basic Electrical Engineering B 20 80 25 125 Total Marks 725 2.]]></description>
-</item><item>
-    <title>Nepali_OCR_Python</title>
-    <link>http://sumityadav.com.np/nepali_ocr/</link>
-    <pubDate>Mon, 16 Aug 2021 12:02:51 &#43;0545</pubDate>
-    <author>Author</author>
-    <guid>http://sumityadav.com.np/nepali_ocr/</guid>
-    <description><![CDATA[Nepali OCR detector In this post I am going to present Nepali Optical Character Recognition (OCR) that extracts Nepali text from images and scanned documents so that it can be edited, formatted, indexed, searched, or translated. Below mentioned code are written in python, using easyocr as a heart of this post.
-OCR Optical character recognition or optical character reader (OCR) is the electronic or mechanical conversion of images of typed, handwritten or printed text into machine-encoded text, whether from a scanned document, a photo of a document, a scene-photo (for example the text on signs and billboards in a landscape photo) or from subtitle text superimposed on an image (for example: from a television broadcast).]]></description>
-</item><item>
-    <title>Julia_Set_Fractal</title>
-    <link>http://sumityadav.com.np/julia_set_fractal/</link>
-    <pubDate>Thu, 22 Jul 2021 08:53:14 &#43;0545</pubDate>
-    <author>Author</author>
-    <guid>http://sumityadav.com.np/julia_set_fractal/</guid>
-    <description><![CDATA[Julia Set The Julia set is named after the French mathematician Gaston Julia who investigated their properties circa 1915 and culminated in his famous paper in 1918. While the Julia set is now associated with a simpler polynomial, Julia was interested in the iterative properties of a more general expression, namely
-z4 + z3/(z-1) + z2/(z3 + 4 z2 + 5) + c.
-The Julia set is now associated with those points z = x + iy on the complex plane for which the series zn+1 = zn2 + c does not tend to infinity.]]></description>
-</item><item>
-    <title>AutoEncoder</title>
-    <link>http://sumityadav.com.np/autoencoder/</link>
-    <pubDate>Mon, 19 Jul 2021 20:05:33 &#43;0545</pubDate>
-    <author>Author</author>
-    <guid>http://sumityadav.com.np/autoencoder/</guid>
-    <description><![CDATA[AUTO ENCODER In this notebook you will find how auto encoder are trained in tensorflow(Keras). This notebook have two different type of encoder i.e normal * Auto Encoder * and * Denoising Auto Encoder * . Normal Encoder LIBRARY ARE LOADED
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 %matplotlib inline %config InlineBackend.figure_format = &#39;retina&#39; import matplotlib.pyplot as plt import pandas as pd import numpy as np import seaborn as sns import warnings warnings.]]></description>
 </item></channel>
 </rss>
