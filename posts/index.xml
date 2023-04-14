@@ -4,7 +4,15 @@
         <link>http://sumityadav.com.np/posts/</link>
         <description>All Posts | Sumit Yadav</description>
         <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>rockerritesh4@gmail.com (rockerritesh)</managingEditor>
-            <webMaster>rockerritesh4@gmail.com (rockerritesh)</webMaster><lastBuildDate>Sun, 09 Apr 2023 18:07:21 &#43;0545</lastBuildDate><atom:link href="http://sumityadav.com.np/posts/" rel="self" type="application/rss+xml" /><item>
+            <webMaster>rockerritesh4@gmail.com (rockerritesh)</webMaster><lastBuildDate>Fri, 14 Apr 2023 06:07:21 &#43;0545</lastBuildDate><atom:link href="http://sumityadav.com.np/posts/" rel="self" type="application/rss+xml" /><item>
+    <title>Jur Shital: A Celebration of Water and Life in Mithila</title>
+    <link>http://sumityadav.com.np/jur_shital/</link>
+    <pubDate>Fri, 14 Apr 2023 06:07:21 &#43;0545</pubDate>
+    <author>Author</author>
+    <guid>http://sumityadav.com.np/jur_shital/</guid>
+    <description><![CDATA[Jur Shital is a vibrant and colorful festival celebrated by the people of Mithila region, which comprises parts of India and Nepal. This festival is celebrated on the 2nd of Baisakh, the second month of the Hindu calendar. Jur Shital is a festival that celebrates water and life, and it is a time when people come together to pray for good health, prosperity, and longevity.
+One of the most interesting aspects of Jur Shital is the tradition of watering the head of the younger members of the family.]]></description>
+</item><item>
     <title>Functional dependency</title>
     <link>http://sumityadav.com.np/functional-dependency/</link>
     <pubDate>Sun, 09 Apr 2023 18:07:21 &#43;0545</pubDate>
@@ -57,7 +65,7 @@ This project is prepared in partial fulfilment of the requirement for for the th
     <guid>http://sumityadav.com.np/mithila_festivals/</guid>
     <description><![CDATA[Here in this post you will find different festivals, that are celebrated in the region of Mithila (side of Nepal janakpur, tirhut, and parts of Bihar). Mithila festivals is very much hidden from rest of the worlds. As mentioned in ramayan, every day in mithila is a day of new festival and tradition.
 They are Lets go with day in weeks.
-Sunday &mdash;&gt; Raib Fasting Monday &mdash;&gt; Sombarii Tuesday &mdash;&gt; Mangal Bari Thruesday &mdash;&gt; Bairaspat Bari Friday &mdash;&gt; Sukra Bari Sunday.]]></description>
+Sunday &mdash;&gt; Raib Fasting Monday &mdash;&gt; Sombarii Tuesday &mdash;&gt; Mangal Bari Thursday &mdash;&gt; Bairaspat Bari Friday &mdash;&gt; Sukra Bari Saturday &mdash;&gt; Jai Hanuman Sunday.]]></description>
 </item><item>
     <title>Tensor_processing_units</title>
     <link>http://sumityadav.com.np/tensor_processing_units/</link>
@@ -97,14 +105,5 @@ Lets start, for this challenge we have give data sets which contain a train data
 Day 1 Maa Shailaputri Name Shailaputri Image Meaning Daughter of Mountain Father and Mother Himavan and Menavati Husband Lord Shiva Recarnarion Sati(Parvati) Chakra Root Chakra(Muladhara Charkra) Mount(Vahan) Nandi bull Colour Yellow Mantra ॐ देवी शैलपुत्र्यै नमः॥ Om Devi Shailaputryai Namah । Prayer वन्दे वाञ्छितलाभाय चन्द्रार्ध कृतशेखराम् ॥
 वृषारूढाम् शूलधराम् शैलपुत्रीम् यशस्विनीम् । या देवी सर्वभू‍तेषु माँ शैलपुत्री रूपेण संस्थिता ।
 नमस्तस्यै नमस्तस्यै नमस्तस्यै नमो नमः ॥ Description Portrayed with a half-moon on her forehead.]]></description>
-</item><item>
-    <title>Nepal Company Status</title>
-    <link>http://sumityadav.com.np/test/</link>
-    <pubDate>Wed, 01 Sep 2021 21:57:40 &#43;0800</pubDate>
-    <author>Author</author>
-    <guid>http://sumityadav.com.np/test/</guid>
-    <description><![CDATA[In order to view the advance real time nepsa data as well as other nepse related things please visit &ndash;&gt; nepse. This website run an automatic command on github to take data from nepse related website and display data.
-nepse.sumityadav.com.np
-Today GRAPH This below is the graph of taday nepse value with other day value.]]></description>
 </item></channel>
 </rss>

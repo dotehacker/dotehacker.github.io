@@ -8,8 +8,9 @@ Lets go with day in weeks.
 1. Sunday ---> Raib Fasting
 2. Monday ---> Sombarii
 3. Tuesday ---> Mangal Bari
-4. Thruesday ---> Bairaspat Bari
+4. Thursday ---> Bairaspat Bari
 5. Friday ---> Sukra Bari
+6. Saturday ---> Jai Hanuman
 
 <br> </br>
 1. Sunday.
