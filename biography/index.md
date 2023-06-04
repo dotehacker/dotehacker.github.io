@@ -36,11 +36,19 @@ Tribhuvan University, Nepal
 
 ## Publications
 
+- [Introduction to UNIX Commands and Shell Programming](/LAB/Introduction%20to%20UNIX%20Commands%20and%20Shell%20Programming.pdf)
+- [Lab Report on A Gentics Algorithm](/LAB/Lab%20Report%20on%20A%20Gentics%20Algorithm.pdf)
+- [Lab Report on An Artificial Neural Network](/LAB/Lab%20Report%20on%20An%20Artificial%20Neural%20Network.pdf)
+- [Lab Report on Constraint Programming](/LAB/Lab%20Report%20on%20Constraint%20Programming.pdf)
+- [Lab Report on Propositional Logic](/LAB/Lab%20Report%20on%20Propositional%20Logic.pdf)
+- [Familiarization with basic CT/DT functions](/LAB/Familiarization%20with%20basic%20CT⁄DT%20functions.pdf)
+
 see [Publications](/posts).
+
 
 ## Educational/Work history
 
-- 2022/06/01~ Software Coordinator of [PDSC](pdscnepal.org)
+- 2022/06/01(End on 2023/06/01)~ Software Coordinator of [PDSC](pdscnepal.org)
 - 2019/08/01~ Pulchowk campus, Computer Engineering.
 - 2017/04/01~ Kathmandu Bernhardt School, +2 level.
 - 2007/03/01~ School Level.
@@ -54,7 +62,7 @@ see [Publications](/posts).
 
 ## Honors and Awards
 
-- Winner of GritFeat AI Hackathon 2023, Locus - Feb, 2022,([SWIFT](https://www.linkedin.com/feed/update/urn:li:activity:7025771930481803264?utm_source=share&utm_medium=member_desktop)’ is a wearable devices with hardware and AI
+- [Winner of GritFeat AI Hackathon 2023](https://locus.com.np/verify?id=36b03d92-3c03-4591-ac60-779f6aec27e5), Locus - Feb, 2022,([SWIFT](https://www.linkedin.com/feed/update/urn:li:activity:7025771930481803264?utm_source=share&utm_medium=member_desktop)’ is a wearable devices with hardware and AI
 models that detect falls in elderly people with 0.7986 accuracy, resulting in immediate emergency alerts to
 contacts.)
 - Second RunnerUP of Dataverse, Locus - Jan, 2022,[Dataverse Solution](https://github.com/rockerritesh/Datarush-2023-DataVerse-) (NLP pased problem to classify abstract.)
