@@ -36,6 +36,9 @@ Tribhuvan University, Nepal
 
 ## Publications
 
+- [SUPPORT VECTORS ARE A BETTER WAY OF TEXT CLASSIFICATION FOR IMBALANCED DATA](https://www.researchgate.net/publication/371514138_SUPPORT_VECTORS_ARE_A_BETTER_WAY_OF_TEXT_CLASSIFICATION_FOR_IMBALANCED_DATA)
+
+## Lab Files
 - [Introduction to UNIX Commands and Shell Programming](/LAB/Introduction%20to%20UNIX%20Commands%20and%20Shell%20Programming.pdf)
 - [Lab Report on A Gentics Algorithm](/LAB/Lab%20Report%20on%20A%20Gentics%20Algorithm.pdf)
 - [Lab Report on An Artificial Neural Network](/LAB/Lab%20Report%20on%20An%20Artificial%20Neural%20Network.pdf)
