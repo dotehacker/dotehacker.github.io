@@ -3,7 +3,7 @@
 
 
 
-<img src="/rockerritesh_sumityadav.jpg" alt="Sumit_Yadav"> <style>
+<img src="/rockerritesh.png" alt="Sumit_Yadav"> <style>
         img{
         display: block;
         margin-left: auto;
