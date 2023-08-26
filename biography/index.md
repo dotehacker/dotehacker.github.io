@@ -24,6 +24,7 @@ Tribhuvan University, Nepal
 ## Interests
 
 - Data Manupulation (Machine Learning)
+- Project Management
 - Software Engineering (C++, Python)
 - Photography
 
@@ -37,6 +38,8 @@ Tribhuvan University, Nepal
 ## Publications
 
 - [SUPPORT VECTORS ARE A BETTER WAY OF TEXT CLASSIFICATION FOR IMBALANCED DATA](https://www.researchgate.net/publication/371514138_SUPPORT_VECTORS_ARE_A_BETTER_WAY_OF_TEXT_CLASSIFICATION_FOR_IMBALANCED_DATA)
+
+- [MACHINE LEARNING ANALYSIS OF TIRHUTA LIPI](https://www.researchgate.net/publication/373370042_Machine_Learning_Analysis_of_Tirhuta_Lipi)
 
 ## Lab Files
 - [Introduction to UNIX Commands and Shell Programming](/LAB/Introduction%20to%20UNIX%20Commands%20and%20Shell%20Programming.pdf)
