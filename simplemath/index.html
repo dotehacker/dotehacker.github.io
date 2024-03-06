@@ -8,14 +8,14 @@
         <title>Simple Math - Sumit Yadav</title><meta name="Description" content="Math and Python"><meta property="og:title" content="Simple Math" />
 <meta property="og:description" content="Math and Python" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://sumityadav.com.np/simplemath/" /><meta property="og:image" content="http://sumityadav.com.np/logo.png"/><meta property="article:section" content="posts" />
+<meta property="og:url" content="http://sumityadav.com.np/simplemath/" /><meta property="og:image" content="http://sumityadav.com.np/logo.png" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-07-10T08:12:36+05:45" />
 <meta property="article:modified_time" content="2021-07-10T08:12:36+05:45" />
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="http://sumityadav.com.np/logo.png"/>
 
-<meta name="twitter:title" content="Simple Math"/>
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="http://sumityadav.com.np/logo.png" /><meta name="twitter:title" content="Simple Math"/>
 <meta name="twitter:description" content="Math and Python"/>
+<meta name="twitter:site" content="@Rocker_Ritesh"/>
 <meta name="application-name" content="LoveIt">
 <meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="canonical" href="http://sumityadav.com.np/simplemath/" /><link rel="prev" href="http://sumityadav.com.np/supervised/" /><link rel="next" href="http://sumityadav.com.np/autoencoder/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.055364f5be272caa092b0e6654c165828707f8ab971e2656383a6d6392bc345e.css" integrity="sha256-BVNk9b4nLKoJKw5mVMFlgocH&#43;KuXHiZWODptY5K8NF4="><link rel="stylesheet" href="/css/style.min.1e2694bed152fa2922dbe909a441838ed693d88b1330f97485bfa8ed78da42df.css" integrity="sha256-HiaUvtFS&#43;iki2&#43;kJpEGDjtaT2IsTMPl0hb&#43;o7XjaQt8="><link rel="stylesheet" href="/lib/fontawesome-free/all.min.876d023d9d10c97941b80c3b03e2a5b94631ff7a4af9cee5604a6a2d39718d84.css" integrity="sha256-h20CPZ0QyXlBuAw7A&#43;KluUYx/3pK&#43;c7lYEpqLTlxjYQ="><link rel="stylesheet" href="/lib/animate/animate.min.3c770e90f98eb21b0c042fafb49755af93306fbaf42e449524f94fae9fc83295.css" integrity="sha256-PHcOkPmOshsMBC&#43;vtJdVr5Mwb7r0LkSVJPlPrp/IMpU="><script type="application/ld+json">
     {
@@ -178,22 +178,22 @@
 </span><span class="lnt">16
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">print(f&#39;your equation is {d[0]}+{d[1]}x +{d[2]}x^2-----&#39;)
-</span></span><span class="line"><span class="cl">#TO FIND LENGTH
-</span></span><span class="line"><span class="cl">e=len(d)
-</span></span><span class="line"><span class="cl">y=e-1
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;your equation is {d[0]}+{d[1]}x +{d[2]}x^2-----&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#TO FIND LENGTH</span>
+</span></span><span class="line"><span class="cl"><span class="n">e</span><span class="o">=</span><span class="n">len</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">y</span><span class="o">=</span><span class="n">e</span><span class="o">-</span><span class="mi">1</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">#RESHAPE
-</span></span><span class="line"><span class="cl">d=d.reshape(e,1)
+</span></span><span class="line"><span class="cl"><span class="c1">#RESHAPE</span>
+</span></span><span class="line"><span class="cl"><span class="n">d</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">#CALLING BASIS FUNCTION
-</span></span><span class="line"><span class="cl">f=basis_function(y)
+</span></span><span class="line"><span class="cl"><span class="c1">#CALLING BASIS FUNCTION</span>
+</span></span><span class="line"><span class="cl"><span class="n">f</span><span class="o">=</span><span class="n">basis_function</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">#FINDING DERIVATIVE
-</span></span><span class="line"><span class="cl">g=f@d
+</span></span><span class="line"><span class="cl"><span class="c1">#FINDING DERIVATIVE</span>
+</span></span><span class="line"><span class="cl"><span class="n">g</span><span class="o">=</span><span class="n">f</span><span class="err">@</span><span class="n">d</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">#PRINTING OUT
-</span></span><span class="line"><span class="cl">print(f&#39;your derivative coeff. in order of constant,x,x^2,x^3,.... term is:- {g.reshape(1,-1)} &#39;)
+</span></span><span class="line"><span class="cl"><span class="c1">#PRINTING OUT</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;your derivative coeff. in order of constant,x,x^2,x^3,.... term is:- {g.reshape(1,-1)} &#39;</span><span class="p">)</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><blockquote>
@@ -233,8 +233,8 @@ your derivative coeff. in order of constant,x,x^2,x^3,&hellip;. term is:- [[ 90.
                 Please enable JavaScript to view the comments powered by <a href="https://valine.js.org/">Valine</a>.
             </noscript></div></article></div>
             </main><footer class="footer">
-        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.119.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
-                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="http://sumityadav.com.np" target="_blank">rockerritesh</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.122.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2024</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="http://sumityadav.com.np" target="_blank">rockerritesh</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
         </div>
     </footer></div>
 
