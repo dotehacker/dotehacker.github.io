@@ -147,8 +147,14 @@
     <div class="pub"><span class="n">3.</span>
       <span class="t">Geometric Phases of Mechanism Formation in Neural Networks.</span>
       <span class="venue">GLOW 2026 — Workshop on Generalizing from Limited Resources in the Open World @ IJCAI 2026 (Poster).</span>
-      Traces how internal mechanisms form across training using linear probes, CKA, and targeted
-      ablations (CIFAR-10/100). <span style="color:var(--muted)">arXiv &amp; code coming soon.</span></div>
+      Using linear probes and centered kernel alignment (CKA) across dense training checkpoints, finds that
+      classification mechanisms form <b>output-layer-first</b> and within the <b>first ~5% of training</b>:
+      output layers reach &gt;70% probe accuracy by epoch 5 while input layers stay below 50% (Cohen's <i>d</i> = 3.68).
+      The same deep-first pattern holds in the first ~200M tokens of from-scratch LLM pretraining (GPT-2 Small,
+      SmolLM2-135M) and reproduces on public Pythia / OLMo-2 checkpoints — and isn't explained by gradient
+      magnitude (input layers receive up to 6.9× more gradient yet learn less). A temporal map of <i>when</i>
+      and <i>where</i> mechanisms emerge (CIFAR-10/100, decoder-only LLMs).
+      <span style="color:var(--muted)">arXiv &amp; code coming soon.</span></div>
 
     <div class="pub"><span class="n">4.</span>
       <span class="t">Can maiBERT Speak for Maithili?</span>
