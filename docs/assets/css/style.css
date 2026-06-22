@@ -12,7 +12,7 @@
   --accent: #5b4b9e; /* indigo */
   --accent-soft: #efeaf8;
   --chip-bg: #f4f3f7;
-  --maxw: 880px;
+  --maxw: 1040px;
   --radius: 10px;
   --serif: "Crimson Pro", Georgia, "Times New Roman", serif;
   --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -202,6 +202,7 @@ a:hover {
   margin: 14px 0 0;
   font-size: 1rem;
   color: var(--ink);
+  max-width: 680px;
 }
 
 .intro .bio a {
