@@ -6,6 +6,7 @@ on:
     paths:
       - '_posts/**'
       - 'data/**'
+      - 'study/**'
       - '*.md'
       - '_layouts/**'
       - '_includes/**'

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Q5 — Node Voltage Analysis with Dependent Sources</title>
+
+<!-- MathJax -->
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']]
+    }
+  };
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+  :root {
+    --bg: #fdfcf9;
+    --ink: #1a1a1a;
+    --muted: #555;
+    --accent: #0b6efd;
+    --accent-soft: #e7f0ff;
+    --green: #1f8a4c;
+    --green-soft: #e7f7ee;
+    --orange: #d97706;
+    --orange-soft: #fff4e0;
+    --purple: #6b21a8;
+    --purple-soft: #f3e8ff;
+    --red: #b91c1c;
+    --red-soft: #fee2e2;
+    --border: #d8d4cc;
+    --shadow: 0 2px 6px rgba(0,0,0,0.06);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.65;
+  }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 40px 28px 80px; }
+  header { border-bottom: 2px solid var(--ink); padding-bottom: 16px; margin-bottom: 28px; }
+  header .tag {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  h1 { font-size: 1.5rem; margin: 10px 0 6px; }
+  h2 {
+    font-size: 1.2rem;
+    border-left: 4px solid var(--accent);
+    padding-left: 10px;
+    margin-top: 32px;
+    color: #0b3d91;
+  }
+  h3 { font-size: 1.02rem; margin-top: 18px; color: #333; }
+  p, li { font-size: 0.98rem; }
+  .question {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--orange);
+    padding: 16px 20px;
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+    margin-bottom: 24px;
+  }
+  .step {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    box-shadow: var(--shadow);
+  }
+  .definition {
+    background: var(--accent-soft);
+    border-left: 4px solid var(--accent);
+    padding: 12px 18px;
+    border-radius: 6px;
+    margin: 14px 0;
+  }
+  .answer-box {
+    background: var(--green-soft);
+    border: 2px solid var(--green);
+    border-radius: 8px;
+    padding: 14px 20px;
+    margin: 18px 0;
+    text-align: center;
+  }
+  .answer-box .label {
+    font-size: 0.85rem;
+    color: var(--green);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .note {
+    background: var(--orange-soft);
+    border-left: 4px solid var(--orange);
+    padding: 10px 16px;
+    border-radius: 4px;
+    margin: 12px 0;
+    font-size: 0.95rem;
+  }
+  table { border-collapse: collapse; width: 100%; margin: 14px 0; background: white; }
+  th, td { border: 1px solid var(--border); padding: 10px 12px; text-align: left; vertical-align: top; }
+  th { background: #f0eee7; font-weight: 600; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .figure { margin: 22px auto; text-align: center; }
+  .figure svg {
+    max-width: 100%; height: auto; background: #fff;
+    border: 1px solid var(--border); border-radius: 6px;
+    padding: 8px; box-shadow: var(--shadow);
+  }
+  .caption { font-size: 0.9rem; color: var(--muted); margin-top: 6px; font-style: italic; }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+    margin-top: 14px;
+  }
+  .summary-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--accent);
+    border-radius: 6px;
+    padding: 14px;
+    box-shadow: var(--shadow);
+  }
+  .summary-card .v { font-size: 1.25rem; font-weight: 700; color: var(--accent); margin-top: 4px; }
+  .summary-card .l { font-size: 0.85rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+  ul.tight li { margin-bottom: 4px; }
+  footer {
+    margin-top: 40px; color: var(--muted); font-size: 0.85rem;
+    text-align: center; border-top: 1px solid var(--border); padding-top: 16px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <span class="tag">Q5 (a)</span>
+  <h1>Node-Voltage Analysis · Circuit with Dependent Sources</h1>
+</header>
+
+<div class="question">
+  <strong>Problem.</strong> In the circuit shown below, find the value of <em>v</em> using the <strong>node-voltage method</strong>.
+</div>
+
+<!-- Annotated circuit -->
+<div class="figure">
+  <svg viewBox="0 0 760 460" xmlns="http://www.w3.org/2000/svg">
+    <!-- outer rectangle -->
+    <rect x="40" y="60" width="680" height="320" fill="none" stroke="#222" stroke-width="2"/>
+
+    <!-- 4Ω resistor on left vertical -->
+    <polyline points="40,180 32,190 48,210 32,230 48,250 32,270 40,280"
+              fill="none" stroke="#222" stroke-width="2"/>
+    <text x="10" y="230" font-size="13" font-weight="bold">4 Ω</text>
+
+    <!-- 16V source — vertical -->
+    <line x1="210" y1="60"  x2="210" y2="150" stroke="#222" stroke-width="2"/>
+    <circle cx="210" cy="170" r="20" fill="white" stroke="#222" stroke-width="2"/>
+    <text x="202" y="158" font-size="14" font-weight="bold">−</text>
+    <text x="202" y="190" font-size="14" font-weight="bold">+</text>
+    <text x="230" y="172" font-size="13" font-weight="bold">16 V</text>
+    <line x1="210" y1="190" x2="210" y2="260" stroke="#222" stroke-width="2"/>
+
+    <!-- 8i_x dependent voltage source (in top wire) — − on LEFT, + on RIGHT (as per problem) -->
+    <line x1="40" y1="60" x2="440" y2="60" stroke="#222" stroke-width="2"/>
+    <polygon points="470,60 490,40 510,60 490,80" fill="white" stroke="#222" stroke-width="2"/>
+    <text x="455" y="65" font-size="14" font-weight="bold" fill="#b91c1c">−</text>
+    <text x="515" y="65" font-size="14" font-weight="bold" fill="#b91c1c">+</text>
+    <text x="450" y="30" font-size="13" font-weight="bold">8 i_x  V</text>
+    <line x1="510" y1="60" x2="720" y2="60" stroke="#222" stroke-width="2"/>
+
+    <!-- node markers -->
+    <circle cx="210" cy="60" r="3.5" fill="#0b6efd"/>
+    <text x="218" y="55" font-size="12" fill="#0b6efd"><tspan font-weight="bold">V₁</tspan></text>
+
+    <circle cx="720" cy="60" r="3.5" fill="#0b6efd"/>
+    <text x="700" y="55" font-size="12" fill="#0b6efd"><tspan font-weight="bold">V₂</tspan></text>
+
+    <!-- 5A current source -->
+    <line x1="210" y1="260" x2="260" y2="260" stroke="#222" stroke-width="2"/>
+    <circle cx="290" cy="260" r="18" fill="white" stroke="#222" stroke-width="2"/>
+    <line x1="280" y1="260" x2="300" y2="260" stroke="#222" stroke-width="2"/>
+    <polygon points="300,260 293,256 293,264" fill="#222"/>
+    <text x="270" y="245" font-size="13" font-weight="bold">5 A</text>
+    <line x1="308" y1="260" x2="450" y2="260" stroke="#222" stroke-width="2"/>
+
+    <!-- 2Ω with i_x (lower left, vertical between V_3 and ground) -->
+    <line x1="210" y1="260" x2="210" y2="290" stroke="#222" stroke-width="2"/>
+    <polyline points="210,290 202,300 218,316 202,332 218,348 210,358"
+              fill="none" stroke="#222" stroke-width="2"/>
+    <line x1="210" y1="358" x2="210" y2="380" stroke="#222" stroke-width="2"/>
+    <text x="158" y="325" font-size="13" font-weight="bold">2 Ω</text>
+    <!-- i_x arrow upward -->
+    <line x1="245" y1="350" x2="245" y2="295" stroke="#1f8a4c" stroke-width="2"/>
+    <polygon points="245,295 240,305 250,305" fill="#1f8a4c"/>
+    <text x="252" y="325" font-size="13" font-weight="bold" fill="#1f8a4c">i_x</text>
+
+    <!-- 4Ω with v (middle right vertical between V_4 and ground) -->
+    <line x1="450" y1="260" x2="450" y2="290" stroke="#222" stroke-width="2"/>
+    <polyline points="450,290 442,300 458,316 442,332 458,348 450,358"
+              fill="none" stroke="#222" stroke-width="2"/>
+    <line x1="450" y1="358" x2="450" y2="380" stroke="#222" stroke-width="2"/>
+    <text x="408" y="325" font-size="13" font-weight="bold">4 Ω</text>
+    <!-- v + on top -->
+    <text x="468" y="305" font-size="13" font-weight="bold" fill="#d97706">+</text>
+    <text x="468" y="345" font-size="13" font-weight="bold" fill="#d97706">−</text>
+    <text x="486" y="325" font-size="14" font-weight="bold" fill="#d97706">v</text>
+
+    <!-- 2Ω with v_y (right horizontal between V_4 and V_2 via right top wire) -->
+    <line x1="450" y1="260" x2="500" y2="260" stroke="#222" stroke-width="2"/>
+    <polyline points="500,260 510,252 530,268 550,252 570,268 580,260"
+              fill="none" stroke="#222" stroke-width="2"/>
+    <line x1="580" y1="260" x2="720" y2="260" stroke="#222" stroke-width="2"/>
+    <line x1="720" y1="60" x2="720" y2="260" stroke="#222" stroke-width="2"/>
+    <text x="525" y="245" font-size="13" font-weight="bold">2 Ω</text>
+    <text x="505" y="282" font-size="13" font-weight="bold" fill="#6b21a8">+</text>
+    <text x="585" y="282" font-size="13" font-weight="bold" fill="#6b21a8">−</text>
+    <text x="540" y="298" font-size="14" font-weight="bold" fill="#6b21a8">v_y</text>
+
+    <!-- (3/4) v_y dependent current source — right side, between V_2 and ground, arrow down -->
+    <line x1="720" y1="260" x2="720" y2="285" stroke="#222" stroke-width="2"/>
+    <polygon points="700,310 720,290 740,310 720,330" fill="white" stroke="#222" stroke-width="2"/>
+    <line x1="720" y1="295" x2="720" y2="325" stroke="#222" stroke-width="2"/>
+    <polygon points="720,325 716,318 724,318" fill="#222"/>
+    <line x1="720" y1="330" x2="720" y2="380" stroke="#222" stroke-width="2"/>
+    <text x="745" y="315" font-size="13" font-weight="bold">(3/4) v_y A</text>
+
+    <!-- ground symbol on bottom -->
+    <line x1="200" y1="395" x2="220" y2="395" stroke="#222" stroke-width="2"/>
+    <line x1="205" y1="400" x2="215" y2="400" stroke="#222" stroke-width="2"/>
+    <line x1="208" y1="405" x2="212" y2="405" stroke="#222" stroke-width="2"/>
+
+    <!-- node V_3 -->
+    <circle cx="210" cy="260" r="3.5" fill="#0b6efd"/>
+    <text x="173" y="265" font-size="12" fill="#0b6efd" font-weight="bold">V₃</text>
+
+    <!-- node V_4 -->
+    <circle cx="450" cy="260" r="3.5" fill="#0b6efd"/>
+    <text x="425" y="252" font-size="12" fill="#0b6efd" font-weight="bold">V₄</text>
+
+    <text x="280" y="430" font-size="13" fill="#555" font-style="italic">Bottom rail = reference (ground)</text>
+  </svg>
+  <div class="caption">Fig. 1 — Annotated circuit with chosen nodes V₁ (top-left), V₂ (top-right), V₃ (middle-left), V₄ (middle-right). Ground = bottom rail.</div>
+</div>
+
+<!-- ============ Step 1: Define variables ============ -->
+<h2>Step 1 · Choose Reference and Define Node Voltages</h2>
+
+<p>Take the bottom rail as the reference (ground). Four essential node voltages remain:</p>
+<table>
+  <tr><th>Node</th><th>Location</th></tr>
+  <tr><td>$V_1$</td><td>Top-left rail (top of left 4 Ω, − terminal of 16 V source, left terminal of 8i_x source)</td></tr>
+  <tr><td>$V_2$</td><td>Top-right rail (right terminal of 8i_x source, right end of 2 Ω-with-$v_y$, top of dependent current source)</td></tr>
+  <tr><td>$V_3$</td><td>Middle-left (+ of 16 V, top of 2 Ω-with-$i_x$, left of 5 A source)</td></tr>
+  <tr><td>$V_4$</td><td>Middle-right (right of 5 A, top of 4 Ω-with-$v$, left of 2 Ω-with-$v_y$)</td></tr>
+</table>
+
+<p>Controlling variables expressed in terms of node voltages:</p>
+$$i_x = \frac{0 - V_3}{2} = -\frac{V_3}{2} \qquad \text{(current flowing UP through left 2 Ω)}$$
+$$v_y = V_4 - V_2 \qquad \text{(}+ \text{ on left of the 2 Ω-}v_y\text{ resistor)}$$
+$$v = V_4 \qquad \text{(}+ \text{ on top of right 4 Ω, − at ground)}$$
+
+<!-- ============ Step 2: source constraints ============ -->
+<h2>Step 2 · Constraint Equations from Voltage Sources</h2>
+
+<div class="step">
+  <h3>16 V independent source (between V₃ and V₁)</h3>
+  <p>+ at bottom (V₃), − at top (V₁):</p>
+  $$V_3 - V_1 = 16 \;\;\Rightarrow\;\; V_1 = V_3 - 16 \quad(\text{A})$$
+</div>
+
+<div class="step">
+  <h3>8i_x dependent voltage source (between V₁ and V₂)</h3>
+  <p>− on left (V₁), + on right (V₂):</p>
+  $$V_2 - V_1 = 8 i_x = 8\!\left(-\frac{V_3}{2}\right) = -4 V_3$$
+  $$V_2 = V_1 - 4V_3 = (V_3 - 16) - 4V_3 = -3V_3 - 16 \quad(\text{B})$$
+</div>
+
+<div class="note">
+  Since V₁ and V₃ are tied by the 16 V source, and V₁ and V₂ are tied by the 8i_x source, the three nodes {V₁, V₂, V₃} form a single <strong>supernode</strong>. Write one KCL for the whole supernode plus the two constraint equations above.
+</div>
+
+<!-- ============ Step 3: KCL at V_4 ============ -->
+<h2>Step 3 · KCL at Node V₄</h2>
+
+<div class="step">
+  <p>Currents leaving V₄:</p>
+  <ul class="tight">
+    <li>Through 4 Ω-with-$v$ to ground: $\dfrac{V_4}{4}$</li>
+    <li>Through 2 Ω-with-$v_y$ to V₂: $\dfrac{V_4 - V_2}{2}$</li>
+    <li>5 A current source enters V₄ from the left ⇒ contributes $-5$ to "leaving"</li>
+  </ul>
+
+  $$\frac{V_4}{4} + \frac{V_4 - V_2}{2} - 5 = 0$$
+
+  <p>Multiply by 4:</p>
+  $$V_4 + 2(V_4 - V_2) = 20 \;\;\Rightarrow\;\; 3V_4 - 2V_2 = 20 \quad(\text{C})$$
+</div>
+
+<!-- ============ Step 4: Supernode KCL ============ -->
+<h2>Step 4 · KCL for Supernode {V₁, V₂, V₃}</h2>
+
+<div class="step">
+  <p>Sum of currents leaving the supernode through external branches:</p>
+  <ul class="tight">
+    <li>From V₁ down through 4 Ω(left) to ground: $\dfrac{V_1}{4}$</li>
+    <li>From V₃ down through 2 Ω-with-$i_x$ to ground: $\dfrac{V_3}{2}$</li>
+    <li>From V₃ rightward through 5 A source to V₄: $+5$ (leaves V₃)</li>
+    <li>From V₂ leftward through 2 Ω-with-$v_y$ to V₄: $\dfrac{V_2 - V_4}{2}$</li>
+    <li>From V₂ down through (3/4)$v_y$ source to ground: $\dfrac{3}{4} v_y$</li>
+  </ul>
+
+  $$\frac{V_1}{4} + \frac{V_3}{2} + 5 + \frac{V_2 - V_4}{2} + \frac{3}{4}v_y = 0$$
+
+  <p>Multiply by 4:</p>
+  $$V_1 + 2V_3 + 20 + 2(V_2 - V_4) + 3v_y = 0$$
+  <p>Substitute $v_y = V_4 - V_2$:</p>
+  $$V_1 + 2V_3 + 20 + 2V_2 - 2V_4 + 3V_4 - 3V_2 = 0$$
+  $$V_1 + 2V_3 - V_2 + V_4 + 20 = 0 \quad(\text{D})$$
+</div>
+
+<!-- ============ Step 5: solve ============ -->
+<h2>Step 5 · Solve the System</h2>
+
+<div class="step">
+  <p>Substitute (A) and (B) into (D):</p>
+  $$(V_3 - 16) + 2V_3 - (-3V_3 - 16) + V_4 + 20 = 0$$
+  $$V_3 - 16 + 2V_3 + 3V_3 + 16 + V_4 + 20 = 0$$
+  $$6V_3 + V_4 + 20 = 0 \;\;\Rightarrow\;\; V_4 = -6V_3 - 20 \quad(\text{E})$$
+
+  <p>Substitute (B) into (C):</p>
+  $$3V_4 - 2(-3V_3 - 16) = 20$$
+  $$3V_4 + 6V_3 + 32 = 20 \;\;\Rightarrow\;\; V_4 = \frac{-12 - 6V_3}{3} = -2V_3 - 4 \quad(\text{F})$$
+
+  <p>Equate (E) and (F):</p>
+  $$-6V_3 - 20 = -2V_3 - 4$$
+  $$-4V_3 = 16 \;\;\Rightarrow\;\; V_3 = -4\ \text{V}$$
+
+  <p>Back-substitute:</p>
+  $$V_4 = -2(-4) - 4 = 4\ \text{V}$$
+  $$V_1 = V_3 - 16 = -20\ \text{V}, \quad V_2 = -3(-4) - 16 = -4\ \text{V}$$
+  $$i_x = -V_3/2 = 2\ \text{A}, \quad v_y = V_4 - V_2 = 4 - (-4) = 8\ \text{V}$$
+</div>
+
+<div class="answer-box">
+  <div class="label">Required answer</div>
+  $$\boxed{\,v \;=\; V_4 \;=\; 4\ \text{V}\,}$$
+</div>
+
+<!-- ============ Verification ============ -->
+<h2>Step 6 · Verification</h2>
+<div class="step">
+  <p>Constraint (B): $V_2 - V_1 = -4 - (-20) = 16,\ \ 8 i_x = 8(2) = 16$ ✓</p>
+  <p>Constraint (A): $V_3 - V_1 = -4 - (-20) = 16$ ✓</p>
+  <p>KCL at V₄:</p>
+  $$\frac{V_4}{4} + \frac{V_4 - V_2}{2} - 5
+    = \frac{4}{4} + \frac{4-(-4)}{2} - 5 = 1 + 4 - 5 = 0 \;\;\checkmark$$
+  <p>KCL at ground (total current into ground from all branches):</p>
+  <ul class="tight">
+    <li>From 4 Ω(left): $V_1/4 = -5$ A into ground</li>
+    <li>From 2 Ω-$i_x$: $V_3/2 = -2$ A into ground</li>
+    <li>From 4 Ω-$v$: $V_4/4 = +1$ A into ground</li>
+    <li>From (3/4)$v_y$ source: $+\tfrac34(8) = +6$ A into ground</li>
+  </ul>
+  $$-5 -2 + 1 + 6 = 0 \;\;\checkmark$$
+</div>
+
+<!-- ============ Summary ============ -->
+<h2>Summary of Node Voltages</h2>
+<table>
+  <thead>
+    <tr><th>Symbol</th><th>Meaning</th><th class="num">Value</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>$V_1$</td><td>Top-left node</td><td class="num">−20 V</td></tr>
+    <tr><td>$V_2$</td><td>Top-right node</td><td class="num">−4 V</td></tr>
+    <tr><td>$V_3$</td><td>Middle-left node</td><td class="num">−4 V</td></tr>
+    <tr><td>$V_4$</td><td>Middle-right node</td><td class="num"><strong>4 V (= v)</strong></td></tr>
+    <tr><td>$i_x$</td><td>Current through left 2 Ω (upward)</td><td class="num">2 A</td></tr>
+    <tr><td>$v_y$</td><td>Voltage across right 2 Ω</td><td class="num">8 V</td></tr>
+  </tbody>
+</table>
+
+<div class="summary-grid">
+  <div class="summary-card" style="border-top-color: var(--green);">
+    <div class="l">Required quantity</div>
+    <div class="v" style="color:var(--green);">v = 4 V</div>
+  </div>
+  <div class="summary-card" style="border-top-color: var(--orange);">
+    <div class="l">Controlling current</div>
+    <div class="v" style="color:var(--orange);">i_x = 2 A</div>
+  </div>
+  <div class="summary-card" style="border-top-color: var(--purple);">
+    <div class="l">Controlling voltage</div>
+    <div class="v" style="color:var(--purple);">v_y = 8 V</div>
+  </div>
+</div>
+
+<footer>
+  Solution rendered with MathJax · Node-voltage method with supernode and dependent sources
+</footer>
+
+</div>
+</body>
+</html>

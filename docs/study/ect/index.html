@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECT Study Material — Electric Circuit Theory (EE 501)</title>
+
+    <!-- marked.js for Markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- KaTeX for LaTeX math rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <!-- highlight.js for code blocks -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/highlight.min.js"></script>
+
+    <style>
+        :root {
+            --bg-primary: #0f0f1a;
+            --bg-secondary: #1a1a2e;
+            --bg-card: #16213e;
+            --bg-code: #0d1117;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0b0;
+            --accent-blue: #00d2ff;
+            --accent-red: #ff6b6b;
+            --accent-yellow: #ffd93d;
+            --accent-green: #6bcb77;
+            --accent-purple: #c56cf0;
+            --border: #2a2a4a;
+            --sidebar-width: 280px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+            z-index: 100;
+            transition: transform 0.3s ease;
+            padding-bottom: 2rem;
+        }
+
+        .sidebar.collapsed {
+            transform: translateX(calc(-1 * var(--sidebar-width)));
+        }
+
+        .sidebar-header {
+            padding: 1.5rem 1.2rem;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            background: var(--bg-secondary);
+            z-index: 2;
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.1rem;
+            color: var(--accent-blue);
+            margin-bottom: 0.3rem;
+        }
+
+        .sidebar-header p {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .nav-section {
+            padding: 0.8rem 0;
+        }
+
+        .nav-section-title {
+            padding: 0.5rem 1.2rem;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 0.6rem 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+            font-size: 0.88rem;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .nav-item:hover {
+            background: rgba(0, 210, 255, 0.08);
+            border-left-color: var(--accent-blue);
+        }
+
+        .nav-item.active {
+            background: rgba(0, 210, 255, 0.12);
+            border-left-color: var(--accent-blue);
+            color: var(--accent-blue);
+            font-weight: 600;
+        }
+
+        .nav-item .ch-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            background: var(--bg-card);
+            font-size: 0.72rem;
+            font-weight: 700;
+            margin-right: 0.7rem;
+            flex-shrink: 0;
+            color: var(--accent-yellow);
+        }
+
+        .nav-item.active .ch-num {
+            background: var(--accent-blue);
+            color: var(--bg-primary);
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        .main.expanded {
+            margin-left: 0;
+        }
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(15, 15, 26, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 0.8rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .menu-btn {
+            display: none;
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.4rem 0.6rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .breadcrumb {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .breadcrumb span {
+            color: var(--accent-blue);
+        }
+
+        .topbar-right {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .topbar-right button {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.82rem;
+            transition: all 0.2s;
+        }
+
+        .topbar-right button:hover {
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
+
+        .topbar-right button.active-btn {
+            background: var(--accent-blue);
+            color: var(--bg-primary);
+            border-color: var(--accent-blue);
+        }
+
+        .content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 2.5rem 4rem;
+        }
+
+        /* ===== MARKDOWN RENDERED CONTENT ===== */
+        .content h1 {
+            font-size: 2rem;
+            color: var(--accent-blue);
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .content h2 {
+            font-size: 1.5rem;
+            color: var(--accent-yellow);
+            margin: 2rem 0 0.8rem;
+            padding-bottom: 0.3rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .content h3 {
+            font-size: 1.2rem;
+            color: var(--accent-green);
+            margin: 1.5rem 0 0.6rem;
+        }
+
+        .content h4 {
+            font-size: 1.05rem;
+            color: var(--accent-purple);
+            margin: 1.2rem 0 0.5rem;
+        }
+
+        .content p {
+            margin: 0.6rem 0;
+        }
+
+        .content ul, .content ol {
+            margin: 0.5rem 0 0.5rem 1.5rem;
+        }
+
+        .content li {
+            margin: 0.3rem 0;
+        }
+
+        .content strong {
+            color: var(--accent-yellow);
+        }
+
+        .content em {
+            color: var(--accent-purple);
+            font-style: italic;
+        }
+
+        .content a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--accent-blue);
+        }
+
+        .content a:hover {
+            border-bottom-style: solid;
+        }
+
+        .content code {
+            background: var(--bg-code);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.88em;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            color: var(--accent-red);
+        }
+
+        .content pre {
+            background: var(--bg-code);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.2rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        .content pre code {
+            background: none;
+            padding: 0;
+            color: var(--text-primary);
+        }
+
+        .content blockquote {
+            border-left: 4px solid var(--accent-blue);
+            padding: 0.8rem 1.2rem;
+            margin: 1rem 0;
+            background: rgba(0, 210, 255, 0.06);
+            border-radius: 0 8px 8px 0;
+        }
+
+        .content blockquote p {
+            color: var(--text-secondary);
+        }
+
+        .content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+
+        .content th {
+            background: var(--bg-card);
+            padding: 0.7rem 1rem;
+            text-align: left;
+            border: 1px solid var(--border);
+            color: var(--accent-blue);
+            font-weight: 600;
+        }
+
+        .content td {
+            padding: 0.6rem 1rem;
+            border: 1px solid var(--border);
+        }
+
+        .content tr:nth-child(even) {
+            background: rgba(22, 33, 62, 0.5);
+        }
+
+        .content hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 2rem 0;
+        }
+
+        .content img {
+            max-width: 100%;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            margin: 1rem 0;
+            display: block;
+        }
+
+        .content video {
+            max-width: 100%;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            margin: 1rem 0;
+        }
+
+        /* Formula boxes */
+        .content .formula-box,
+        .content blockquote:has(strong:first-child) {
+            background: rgba(255, 217, 61, 0.06);
+            border-left-color: var(--accent-yellow);
+        }
+
+        /* Tip boxes */
+        .content blockquote:has(em:first-child) {
+            background: rgba(107, 203, 119, 0.06);
+            border-left-color: var(--accent-green);
+        }
+
+        /* KaTeX overrides */
+        .katex-display {
+            margin: 1rem 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 0.5rem 0;
+        }
+
+        .katex {
+            font-size: 1.05em;
+        }
+
+        /* ===== SEARCH ===== */
+        .search-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 200;
+            justify-content: center;
+            padding-top: 15vh;
+        }
+
+        .search-overlay.open {
+            display: flex;
+        }
+
+        .search-box {
+            width: 600px;
+            max-width: 90vw;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            max-height: 60vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: var(--bg-card);
+            border: none;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            outline: none;
+        }
+
+        .search-results {
+            overflow-y: auto;
+            padding: 0.5rem;
+        }
+
+        .search-result-item {
+            padding: 0.7rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .search-result-item:hover {
+            background: var(--bg-card);
+        }
+
+        .search-result-item .sr-title {
+            color: var(--accent-blue);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .search-result-item .sr-preview {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-top: 0.2rem;
+        }
+
+        .search-result-item .sr-preview mark {
+            background: rgba(255, 217, 61, 0.3);
+            color: var(--accent-yellow);
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+
+        /* ===== PROGRESS BAR ===== */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: var(--sidebar-width);
+            right: 0;
+            height: 3px;
+            background: var(--border);
+            z-index: 200;
+        }
+
+        .progress-bar .fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+            width: 0%;
+            transition: width 0.1s;
+        }
+
+        /* ===== TOC (Table of Contents for current page) ===== */
+        .toc-float {
+            position: fixed;
+            right: 1.5rem;
+            top: 5rem;
+            width: 200px;
+            max-height: calc(100vh - 7rem);
+            overflow-y: auto;
+            font-size: 0.75rem;
+            display: none;
+        }
+
+        .toc-float.visible {
+            display: block;
+        }
+
+        .toc-float a {
+            display: block;
+            padding: 0.25rem 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-left: 2px solid var(--border);
+            transition: all 0.2s;
+        }
+
+        .toc-float a:hover,
+        .toc-float a.active {
+            color: var(--accent-blue);
+            border-left-color: var(--accent-blue);
+        }
+
+        .toc-float a.h3 {
+            padding-left: 1.2rem;
+        }
+
+        /* ===== DARK/LIGHT THEME (future) ===== */
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .sidebar {
+                transform: translateX(calc(-1 * var(--sidebar-width)));
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main {
+                margin-left: 0;
+            }
+            .menu-btn {
+                display: block;
+            }
+            .progress-bar {
+                left: 0;
+            }
+            .toc-float {
+                display: none !important;
+            }
+            .content {
+                padding: 1.5rem 1rem 3rem;
+            }
+        }
+
+        @media (min-width: 1300px) {
+            .toc-float.visible {
+                display: block;
+            }
+        }
+
+        /* ===== LOADING ===== */
+        .loader {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 60vh;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .loader .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent-blue);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Print styles */
+        @media print {
+            .sidebar, .topbar, .progress-bar, .toc-float, .menu-btn { display: none !important; }
+            .main { margin-left: 0 !important; }
+            .content { max-width: 100%; padding: 0; }
+            body { background: white; color: black; }
+            .content h1, .content h2, .content h3 { color: black; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div class="progress-bar"><div class="fill" id="progressFill"></div></div>
+
+<!-- Sidebar -->
+<nav class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <h1>ECT (EE 501)</h1>
+        <p>Electric Circuit Theory</p>
+        <p style="font-size:0.65rem; color: var(--accent-purple); margin-top:0.3rem;">Tribhuvan University, IOE</p>
+    </div>
+
+    <div class="nav-section">
+        <div class="nav-section-title">Chapters</div>
+        <div class="nav-item" data-chapter="ch1_network_analysis">
+            <span class="ch-num">1</span> Network Analysis & Resonance
+        </div>
+        <div class="nav-item" data-chapter="ch2_initial_conditions">
+            <span class="ch-num">2</span> Initial Conditions
+        </div>
+        <div class="nav-item" data-chapter="ch3_transient_direct">
+            <span class="ch-num">3</span> Transient (Direct Method)
+        </div>
+        <div class="nav-item" data-chapter="ch4_laplace_transform">
+            <span class="ch-num">4</span> Laplace Transform
+        </div>
+        <div class="nav-item" data-chapter="ch5_frequency_response">
+            <span class="ch-num">5</span> Frequency Response & Bode
+        </div>
+        <div class="nav-item" data-chapter="ch6_fourier_series">
+            <span class="ch-num">6</span> Fourier Series
+        </div>
+        <div class="nav-item" data-chapter="ch7_two_port_networks">
+            <span class="ch-num">7</span> Two-Port Networks
+        </div>
+    </div>
+
+    <div class="nav-section">
+        <div class="nav-section-title">Resources</div>
+        <div class="nav-item" data-chapter="exam_questions">
+            <span class="ch-num">Q</span> Exam Questions Bank
+        </div>
+    </div>
+
+    <div class="nav-section">
+        <div class="nav-section-title">Past Question Solutions</div>
+        <a class="nav-item" href="solutions/Q1_RLC_PowerFactor/solution.html" target="_blank" rel="noopener" title="Series R-L-C — Power Factor Correction">
+            <span class="ch-num">1</span> Series RLC · PF Correction
+        </a>
+        <a class="nav-item" href="solutions/Q2_Resonance_Bandwidth/solution.html" target="_blank" rel="noopener" title="Resonance, Half-Power Frequencies & Bandwidth (Series RLC)">
+            <span class="ch-num">2</span> Resonance &amp; Bandwidth
+        </a>
+        <a class="nav-item" href="solutions/Q3_Parallel_Resonance_SeriesNumerical/solution.html" target="_blank" rel="noopener" title="Parallel Resonance (Theory) + Series Resonance (Numerical)">
+            <span class="ch-num">3</span> Parallel/Series Resonance
+        </a>
+        <a class="nav-item" href="solutions/Q4_Series_RLC_Find_RLC/solution.html" target="_blank" rel="noopener" title="Series R-L-C: Determine R, L, C from Resonance Data">
+            <span class="ch-num">4</span> Find R, L, C from Data
+        </a>
+        <a class="nav-item" href="solutions/Q5_NodeVoltage_DependentSources/solution.html" target="_blank" rel="noopener" title="Node Voltage Analysis with Dependent Sources">
+            <span class="ch-num">5</span> Node Voltage · Dep. Sources
+        </a>
+        <a class="nav-item" href="solutions/Q6_Nodal_4Ohm_AB/solution.html" target="_blank" rel="noopener" title="Nodal Analysis — Current through 4Ω between A and B">
+            <span class="ch-num">6</span> Nodal · 4Ω A–B Current
+        </a>
+        <a class="nav-item" href="solutions/Bode_Plots/bode_plots.html" target="_blank" rel="noopener" title="Bode Plot Numericals — Textbook-Style Solutions">
+            <span class="ch-num">B</span> Bode Plot Numericals
+        </a>
+    </div>
+</nav>
+
+<!-- Search Overlay -->
+<div class="search-overlay" id="searchOverlay">
+    <div class="search-box">
+        <input type="text" class="search-input" id="searchInput" placeholder="Search across all chapters... (Esc to close)">
+        <div class="search-results" id="searchResults"></div>
+    </div>
+</div>
+
+<!-- Floating TOC -->
+<div class="toc-float" id="tocFloat"></div>
+
+<!-- Main Content -->
+<div class="main" id="main">
+    <div class="topbar">
+        <div class="topbar-left">
+            <button class="menu-btn" id="menuBtn">&#9776;</button>
+            <div class="breadcrumb" id="breadcrumb">
+                ECT &rsaquo; <span>Select a chapter</span>
+            </div>
+        </div>
+        <div class="topbar-right">
+            <button onclick="openSearch()" title="Search (Ctrl+K)">Search</button>
+            <button onclick="increaseFontSize()">A+</button>
+            <button onclick="decreaseFontSize()">A-</button>
+        </div>
+    </div>
+
+    <div class="content" id="content">
+        <!-- Welcome screen -->
+        <div style="text-align:center; padding-top: 10vh;">
+            <h1 style="border:none; color: var(--accent-blue); font-size: 2.4rem;">Electric Circuit Theory</h1>
+            <p style="font-size: 1.2rem; color: var(--text-secondary); margin: 1rem 0;">EE 501 &mdash; Complete Study Material</p>
+            <p style="color: var(--accent-yellow);">Tribhuvan University, Institute of Engineering</p>
+            <p style="color: var(--text-secondary); margin-top: 0.5rem;">BE (BEL/BEX/BCT) &bull; Year II / Part I</p>
+
+            <div style="margin: 3rem auto; max-width: 500px; text-align: left;">
+                <p style="color: var(--accent-green); margin-bottom: 1rem; font-weight: 600;">What's inside:</p>
+                <ul style="line-height: 2.2;">
+                    <li>7 comprehensive chapters with theory & formulas</li>
+                    <li>Worked solutions for representative exam questions</li>
+                    <li>Matplotlib visualizations for every concept</li>
+                    <li>Manim animations for key topics</li>
+                    <li>50+ past exam questions (2078-2082)</li>
+                    <li>Quick-reference formula boxes & exam tips</li>
+                </ul>
+            </div>
+
+            <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 2rem;">
+                Select a chapter from the sidebar to get started &nbsp;|&nbsp; Press <kbd style="background:var(--bg-card);padding:2px 8px;border-radius:4px;border:1px solid var(--border);">Ctrl+K</kbd> to search
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+// ===== STATE =====
+let chaptersCache = {};
+let currentChapter = null;
+let fontSize = 16;
+
+// ===== CHAPTER LOADING =====
+const chapterFiles = {
+    'ch1_network_analysis': 'chapters/ch1_network_analysis.md',
+    'ch2_initial_conditions': 'chapters/ch2_initial_conditions.md',
+    'ch3_transient_direct': 'chapters/ch3_transient_direct.md',
+    'ch4_laplace_transform': 'chapters/ch4_laplace_transform.md',
+    'ch5_frequency_response': 'chapters/ch5_frequency_response.md',
+    'ch6_fourier_series': 'chapters/ch6_fourier_series.md',
+    'ch7_two_port_networks': 'chapters/ch7_two_port_networks.md',
+    'exam_questions': 'questions/exam_questions.md',
+};
+
+const chapterNames = {
+    'ch1_network_analysis': 'Ch 1: Network Analysis & Resonance',
+    'ch2_initial_conditions': 'Ch 2: Initial Conditions',
+    'ch3_transient_direct': 'Ch 3: Transient (Direct Method)',
+    'ch4_laplace_transform': 'Ch 4: Laplace Transform',
+    'ch5_frequency_response': 'Ch 5: Frequency Response & Bode',
+    'ch6_fourier_series': 'Ch 6: Fourier Series',
+    'ch7_two_port_networks': 'Ch 7: Two-Port Networks',
+    'exam_questions': 'Exam Questions Bank',
+};
+
+async function loadChapter(chapterId) {
+    const content = document.getElementById('content');
+    const breadcrumb = document.getElementById('breadcrumb');
+
+    // Show loader
+    content.innerHTML = '<div class="loader"><div class="spinner"></div><p style="color:var(--text-secondary)">Loading...</p></div>';
+
+    // Update nav
+    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+    document.querySelector(`[data-chapter="${chapterId}"]`)?.classList.add('active');
+
+    // Update breadcrumb
+    breadcrumb.innerHTML = `ECT &rsaquo; <span>${chapterNames[chapterId] || chapterId}</span>`;
+    currentChapter = chapterId;
+
+    // Update URL hash
+    window.location.hash = chapterId;
+
+    try {
+        let markdown;
+        if (chaptersCache[chapterId]) {
+            markdown = chaptersCache[chapterId];
+        } else {
+            const response = await fetch(chapterFiles[chapterId]);
+            if (!response.ok) throw new Error(`Failed to load: ${response.status}`);
+            markdown = await response.text();
+            chaptersCache[chapterId] = markdown;
+        }
+
+        // Render markdown
+        const html = renderMarkdown(markdown);
+        content.innerHTML = html;
+
+        // Render math
+        renderMathInElement(content, {
+            delimiters: [
+                { left: '$$', right: '$$', display: true },
+                { left: '$', right: '$', display: false },
+                { left: '\\[', right: '\\]', display: true },
+                { left: '\\(', right: '\\)', display: false },
+            ],
+            throwOnError: false,
+            trust: true,
+        });
+
+        // Highlight code
+        if (typeof hljs !== 'undefined') {
+            content.querySelectorAll('pre code').forEach(block => {
+                hljs.highlightElement(block);
+            });
+        }
+
+        // Build floating TOC
+        buildTOC();
+
+        // Scroll to top
+        content.scrollTop = 0;
+        window.scrollTo(0, 0);
+
+        // Close sidebar on mobile
+        if (window.innerWidth <= 900) {
+            document.getElementById('sidebar').classList.remove('open');
+        }
+
+    } catch (error) {
+        content.innerHTML = `
+            <div style="text-align:center; padding-top:10vh;">
+                <h2 style="color:var(--accent-red);">Could not load chapter</h2>
+                <p style="color:var(--text-secondary); margin-top:1rem;">${error.message}</p>
+                <p style="color:var(--text-secondary); margin-top:0.5rem; font-size:0.85rem;">
+                    Make sure the markdown file exists at: <code>${chapterFiles[chapterId]}</code>
+                </p>
+            </div>
+        `;
+    }
+}
+
+// ===== MARKDOWN RENDERING =====
+function renderMarkdown(md) {
+    // Pre-process: protect math from markdown parser
+    let processed = md;
+
+    // Protect display math $$...$$
+    const displayMathBlocks = [];
+    processed = processed.replace(/\$\$([\s\S]*?)\$\$/g, (match) => {
+        const idx = displayMathBlocks.length;
+        displayMathBlocks.push(match);
+        return `%%DISPLAYMATH${idx}%%`;
+    });
+
+    // Protect inline math $...$
+    const inlineMathBlocks = [];
+    processed = processed.replace(/\$([^\$\n]+?)\$/g, (match) => {
+        const idx = inlineMathBlocks.length;
+        inlineMathBlocks.push(match);
+        return `%%INLINEMATH${idx}%%`;
+    });
+
+    // Fix relative paths: chapters reference ../plots/ and ../videos/ relative to chapters/ dir
+    // but we render from index.html at /study/ect/, so rewrite to plots/ and videos/
+    processed = processed.replace(/\]\(\.\.\//g, '](');
+    processed = processed.replace(/src="\.\.\//g, 'src="');
+
+    // Configure marked
+    marked.setOptions({
+        breaks: false,
+        gfm: true,
+        headerIds: true,
+    });
+
+    // Custom renderer for images (handle video files)
+    const renderer = new marked.Renderer();
+
+    renderer.image = function(token) {
+        const href = token.href || '';
+        const text = token.text || '';
+        const title = token.title || '';
+
+        if (href.endsWith('.mp4') || href.endsWith('.webm')) {
+            return `
+                <div style="margin:1.5rem 0;">
+                    <video controls preload="metadata" style="width:100%;border-radius:8px;border:1px solid var(--border);">
+                        <source src="${href}" type="video/${href.split('.').pop()}">
+                        Your browser does not support video playback.
+                    </video>
+                    ${text ? `<p style="text-align:center;color:var(--text-secondary);font-size:0.85rem;margin-top:0.3rem;">${text}</p>` : ''}
+                </div>`;
+        }
+
+        return `<img src="${href}" alt="${text}" title="${title}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <p style="display:none;color:var(--text-secondary);font-size:0.8rem;font-style:italic;">[Image: ${text || href.split('/').pop()}]</p>`;
+    };
+
+    marked.use({ renderer });
+
+    let html = marked.parse(processed);
+
+    // Restore math
+    html = html.replace(/%%DISPLAYMATH(\d+)%%/g, (_, idx) => displayMathBlocks[parseInt(idx)]);
+    html = html.replace(/%%INLINEMATH(\d+)%%/g, (_, idx) => inlineMathBlocks[parseInt(idx)]);
+
+    return html;
+}
+
+// ===== TABLE OF CONTENTS =====
+function buildTOC() {
+    const toc = document.getElementById('tocFloat');
+    const headings = document.querySelectorAll('.content h2, .content h3');
+
+    if (headings.length < 3) {
+        toc.classList.remove('visible');
+        return;
+    }
+
+    let tocHTML = '';
+    headings.forEach((h, i) => {
+        const id = `heading-${i}`;
+        h.id = id;
+        const level = h.tagName.toLowerCase();
+        const text = h.textContent.substring(0, 40) + (h.textContent.length > 40 ? '...' : '');
+        tocHTML += `<a href="#${id}" class="${level}" onclick="event.preventDefault(); document.getElementById('${id}').scrollIntoView({behavior:'smooth'})">${text}</a>`;
+    });
+
+    toc.innerHTML = tocHTML;
+    toc.classList.add('visible');
+}
+
+// ===== SEARCH =====
+function openSearch() {
+    document.getElementById('searchOverlay').classList.add('open');
+    document.getElementById('searchInput').value = '';
+    document.getElementById('searchInput').focus();
+    document.getElementById('searchResults').innerHTML = '<p style="padding:1rem;color:var(--text-secondary);font-size:0.85rem;">Type to search across all chapters...</p>';
+}
+
+function closeSearch() {
+    document.getElementById('searchOverlay').classList.remove('open');
+}
+
+async function performSearch(query) {
+    const results = document.getElementById('searchResults');
+    if (query.length < 2) {
+        results.innerHTML = '<p style="padding:1rem;color:var(--text-secondary);font-size:0.85rem;">Type at least 2 characters...</p>';
+        return;
+    }
+
+    const matches = [];
+    for (const [id, file] of Object.entries(chapterFiles)) {
+        try {
+            let text;
+            if (chaptersCache[id]) {
+                text = chaptersCache[id];
+            } else {
+                const resp = await fetch(file);
+                if (resp.ok) {
+                    text = await resp.text();
+                    chaptersCache[id] = text;
+                } else continue;
+            }
+
+            const lines = text.split('\n');
+            const lowerQuery = query.toLowerCase();
+
+            for (let i = 0; i < lines.length; i++) {
+                if (lines[i].toLowerCase().includes(lowerQuery)) {
+                    const context = lines.slice(Math.max(0, i - 1), i + 2).join(' ').substring(0, 200);
+                    matches.push({
+                        chapter: id,
+                        title: chapterNames[id],
+                        line: i + 1,
+                        preview: context,
+                    });
+                    if (matches.length >= 20) break;
+                }
+            }
+        } catch (e) { /* skip */ }
+        if (matches.length >= 20) break;
+    }
+
+    if (matches.length === 0) {
+        results.innerHTML = '<p style="padding:1rem;color:var(--text-secondary);">No results found.</p>';
+        return;
+    }
+
+    const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    results.innerHTML = matches.map(m => `
+        <div class="search-result-item" onclick="loadChapter('${m.chapter}'); closeSearch();">
+            <div class="sr-title">${m.title}</div>
+            <div class="sr-preview">${m.preview.replace(new RegExp(escapedQuery, 'gi'), '<mark>$&</mark>')}</div>
+        </div>
+    `).join('');
+}
+
+// ===== FONT SIZE =====
+function increaseFontSize() {
+    fontSize = Math.min(fontSize + 1, 22);
+    document.getElementById('content').style.fontSize = fontSize + 'px';
+}
+
+function decreaseFontSize() {
+    fontSize = Math.max(fontSize - 1, 12);
+    document.getElementById('content').style.fontSize = fontSize + 'px';
+}
+
+// ===== SCROLL PROGRESS =====
+window.addEventListener('scroll', () => {
+    const winHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrolled = window.scrollY;
+    const pct = winHeight > 0 ? (scrolled / winHeight) * 100 : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+});
+
+// ===== EVENT LISTENERS =====
+// Nav items (only chapter-backed ones; external anchor nav-items navigate natively)
+document.querySelectorAll('.nav-item[data-chapter]').forEach(item => {
+    item.addEventListener('click', () => loadChapter(item.dataset.chapter));
+});
+
+// Mobile menu
+document.getElementById('menuBtn').addEventListener('click', () => {
+    document.getElementById('sidebar').classList.toggle('open');
+});
+
+// Search
+document.getElementById('searchOverlay').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) closeSearch();
+});
+
+let searchTimeout;
+document.getElementById('searchInput').addEventListener('input', (e) => {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => performSearch(e.target.value), 300);
+});
+
+// Keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+    // Ctrl+K or Cmd+K for search
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        openSearch();
+    }
+    // Escape to close search
+    if (e.key === 'Escape') {
+        closeSearch();
+    }
+    // Arrow keys for chapter navigation
+    if (!document.getElementById('searchOverlay').classList.contains('open')) {
+        const chapters = Object.keys(chapterFiles);
+        const currentIdx = chapters.indexOf(currentChapter);
+        if (e.altKey && e.key === 'ArrowRight' && currentIdx < chapters.length - 1) {
+            loadChapter(chapters[currentIdx + 1]);
+        }
+        if (e.altKey && e.key === 'ArrowLeft' && currentIdx > 0) {
+            loadChapter(chapters[currentIdx - 1]);
+        }
+    }
+});
+
+// Load chapter from URL hash
+window.addEventListener('load', () => {
+    const hash = window.location.hash.substring(1);
+    if (hash && chapterFiles[hash]) {
+        loadChapter(hash);
+    }
+});
+
+window.addEventListener('hashchange', () => {
+    const hash = window.location.hash.substring(1);
+    if (hash && chapterFiles[hash] && hash !== currentChapter) {
+        loadChapter(hash);
+    }
+});
+</script>
+</body>
+</html>

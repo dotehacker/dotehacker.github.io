@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Q2 — Resonance, Half-Power Frequencies &amp; Bandwidth (Series RLC)</title>
+
+<!-- MathJax -->
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']]
+    }
+  };
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+  :root {
+    --bg: #fdfcf9;
+    --ink: #1a1a1a;
+    --muted: #555;
+    --accent: #0b6efd;
+    --accent-soft: #e7f0ff;
+    --green: #1f8a4c;
+    --green-soft: #e7f7ee;
+    --orange: #d97706;
+    --orange-soft: #fff4e0;
+    --purple: #6b21a8;
+    --purple-soft: #f3e8ff;
+    --border: #d8d4cc;
+    --shadow: 0 2px 6px rgba(0,0,0,0.06);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.65;
+  }
+  .wrap {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 40px 28px 80px;
+  }
+  header {
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 16px;
+    margin-bottom: 28px;
+  }
+  header .tag {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  h1 { font-size: 1.5rem; margin: 10px 0 6px; }
+  h2 {
+    font-size: 1.2rem;
+    border-left: 4px solid var(--accent);
+    padding-left: 10px;
+    margin-top: 32px;
+    color: #0b3d91;
+  }
+  h3 { font-size: 1.02rem; margin-top: 18px; color: #333; }
+  p, li { font-size: 0.98rem; }
+  .question {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--orange);
+    padding: 16px 20px;
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+    margin-bottom: 24px;
+  }
+  .step {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    box-shadow: var(--shadow);
+  }
+  .definition {
+    background: var(--accent-soft);
+    border-left: 4px solid var(--accent);
+    padding: 12px 18px;
+    border-radius: 6px;
+    margin: 14px 0;
+  }
+  .answer-box {
+    background: var(--green-soft);
+    border: 2px solid var(--green);
+    border-radius: 8px;
+    padding: 14px 20px;
+    margin: 18px 0;
+    text-align: center;
+  }
+  .answer-box .label {
+    font-size: 0.85rem;
+    color: var(--green);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .note {
+    background: var(--orange-soft);
+    border-left: 4px solid var(--orange);
+    padding: 10px 16px;
+    border-radius: 4px;
+    margin: 12px 0;
+    font-size: 0.95rem;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 14px 0;
+    background: white;
+  }
+  th, td {
+    border: 1px solid var(--border);
+    padding: 10px 12px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th {
+    background: #f0eee7;
+    font-weight: 600;
+  }
+  .figure {
+    margin: 22px auto;
+    text-align: center;
+  }
+  .figure svg {
+    max-width: 100%;
+    height: auto;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+  }
+  .caption {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-top: 6px;
+    font-style: italic;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+    margin-top: 14px;
+  }
+  .summary-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--accent);
+    border-radius: 6px;
+    padding: 14px;
+    box-shadow: var(--shadow);
+  }
+  .summary-card .v {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-top: 4px;
+  }
+  .summary-card .l {
+    font-size: 0.85rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  ul.tight li { margin-bottom: 4px; }
+  footer {
+    margin-top: 40px;
+    color: var(--muted);
+    font-size: 0.85rem;
+    text-align: center;
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <span class="tag">Q2 (a) — [8 marks]</span>
+  <h1>Resonance, Half-Power Frequencies &amp; Bandwidth in Series R-L-C Circuit</h1>
+</header>
+
+<div class="question">
+  <strong>Problem.</strong> What do you mean by <em>resonance</em> in an R-L-C series circuit? Define <em>half-power frequencies</em> and <em>bandwidth</em> in an R-L-C series circuit and obtain an expression for them.
+</div>
+
+<!-- ============ Section 1: Resonance ============ -->
+<h2>1 · Resonance in a Series R-L-C Circuit</h2>
+
+<div class="figure">
+  <svg viewBox="0 0 600 180" xmlns="http://www.w3.org/2000/svg">
+    <!-- outer loop -->
+    <rect x="60" y="40" width="480" height="100" fill="none" stroke="#222" stroke-width="2"/>
+
+    <!-- Resistor R -->
+    <text x="120" y="32" font-size="14" font-weight="bold">R</text>
+    <polyline points="100,40 110,30 130,50 150,30 170,50 190,30 210,40"
+              fill="none" stroke="#222" stroke-width="2"/>
+
+    <!-- Inductor L -->
+    <text x="265" y="32" font-size="14" font-weight="bold">L</text>
+    <path d="M 230 40 q 8 -16 16 0 q 8 -16 16 0 q 8 -16 16 0 q 8 -16 16 0"
+          fill="none" stroke="#222" stroke-width="2"/>
+
+    <!-- Capacitor C -->
+    <text x="365" y="32" font-size="14" font-weight="bold">C</text>
+    <line x1="310" y1="40" x2="350" y2="40" stroke="#222" stroke-width="2"/>
+    <line x1="350" y1="25" x2="350" y2="55" stroke="#222" stroke-width="2.5"/>
+    <line x1="358" y1="25" x2="358" y2="55" stroke="#222" stroke-width="2.5"/>
+    <line x1="358" y1="40" x2="540" y2="40" stroke="#222" stroke-width="2"/>
+
+    <!-- Source -->
+    <line x1="300" y1="140" x2="300" y2="160" stroke="#222" stroke-width="2"/>
+    <circle cx="300" cy="140" r="18" fill="white" stroke="#222" stroke-width="2"/>
+    <path d="M 288 140 q 6 -10 12 0 t 12 0" fill="none" stroke="#222" stroke-width="2"/>
+    <text x="245" y="175" font-size="14" font-weight="bold">V, ω (variable)</text>
+  </svg>
+  <div class="caption">Fig. 1 — Series R-L-C circuit driven by an ac source of variable frequency.</div>
+</div>
+
+<p>The impedance of the series circuit is</p>
+$$Z = R + j\!\left(\omega L - \frac{1}{\omega C}\right) = R + j(X_L - X_C)$$
+
+<p>Magnitude:</p>
+$$|Z| = \sqrt{R^2 + \left(\omega L - \frac{1}{\omega C}\right)^{\!2}}$$
+
+<div class="definition">
+  <strong>Resonance:</strong> A series R-L-C circuit is said to be in <em>resonance</em> when the inductive reactance equals the capacitive reactance, i.e. the net reactance is zero and the circuit behaves as a pure resistance.
+</div>
+
+<p>At resonance:</p>
+$$X_L = X_C \;\Rightarrow\; \omega_0 L = \frac{1}{\omega_0 C}$$
+
+$$\boxed{\;\omega_0 = \frac{1}{\sqrt{LC}} \quad\text{or}\quad f_0 = \frac{1}{2\pi\sqrt{LC}}\;}$$
+
+<h3>Properties at Resonance</h3>
+<ul class="tight">
+  <li>Impedance is minimum: $\;Z_{\min} = R$.</li>
+  <li>Current is maximum: $\;I_0 = V/R$.</li>
+  <li>Power factor is unity ($\cos\varphi = 1$); voltage and current are in phase.</li>
+  <li>$V_L$ and $V_C$ are equal in magnitude and 180° out of phase, so they cancel.</li>
+  <li>The circuit absorbs maximum power: $P_{\max} = V^2/R$.</li>
+</ul>
+
+<!-- ============ Section 2: Resonance curve ============ -->
+<h2>2 · Frequency Response &amp; Half-Power Frequencies</h2>
+
+<div class="figure">
+  <svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg">
+    <!-- Axes -->
+    <line x1="70"  y1="310" x2="610" y2="310" stroke="#222" stroke-width="1.5"/>
+    <line x1="70"  y1="310" x2="70"  y2="40"  stroke="#222" stroke-width="1.5"/>
+    <text x="615" y="315" font-size="13">ω</text>
+    <text x="40"  y="50"  font-size="13">I</text>
+
+    <!-- Resonance curve (smooth bell) -->
+    <path d="M 80 300 C 200 295, 280 200, 320 70 C 360 200, 440 295, 600 300"
+          fill="none" stroke="#0b6efd" stroke-width="2.5"/>
+
+    <!-- Imax line -->
+    <line x1="70"  y1="70"  x2="320" y2="70"  stroke="#1f8a4c" stroke-width="1.2" stroke-dasharray="4 4"/>
+    <text x="78"  y="64"  font-size="13" fill="#1f8a4c">$I_{max}$ = V/R</text>
+
+    <!-- 0.707 Imax line -->
+    <line x1="70"  y1="140" x2="430" y2="140" stroke="#d97706" stroke-width="1.2" stroke-dasharray="4 4"/>
+    <text x="78"  y="134" font-size="13" fill="#d97706">0.707 I_max  (half-power)</text>
+
+    <!-- vertical drop at ω0 -->
+    <line x1="320" y1="70"  x2="320" y2="310" stroke="#888" stroke-width="1" stroke-dasharray="3 3"/>
+    <text x="312" y="328" font-size="13" font-weight="bold">ω₀</text>
+
+    <!-- ω1 and ω2 verticals -->
+    <line x1="220" y1="140" x2="220" y2="310" stroke="#888" stroke-width="1" stroke-dasharray="3 3"/>
+    <text x="212" y="328" font-size="13" font-weight="bold">ω₁</text>
+
+    <line x1="420" y1="140" x2="420" y2="310" stroke="#888" stroke-width="1" stroke-dasharray="3 3"/>
+    <text x="412" y="328" font-size="13" font-weight="bold">ω₂</text>
+
+    <!-- bandwidth bracket -->
+    <line x1="220" y1="345" x2="420" y2="345" stroke="#6b21a8" stroke-width="2"/>
+    <line x1="220" y1="340" x2="220" y2="350" stroke="#6b21a8" stroke-width="2"/>
+    <line x1="420" y1="340" x2="420" y2="350" stroke="#6b21a8" stroke-width="2"/>
+    <text x="285" y="358" font-size="13" font-weight="bold" fill="#6b21a8">BW = ω₂ − ω₁</text>
+
+    <text x="200" y="25" font-size="14" font-weight="bold">Resonance curve of series R-L-C</text>
+  </svg>
+  <div class="caption">Fig. 2 — Current vs. frequency. At $\omega_0$ current is maximum; at $\omega_1$ and $\omega_2$ the current is $I_{\max}/\sqrt{2}$ (half-power points).</div>
+</div>
+
+<div class="definition">
+  <strong>Half-power frequencies ($\omega_1, \omega_2$):</strong> The two frequencies on either side of $\omega_0$ at which the current falls to $\dfrac{I_{\max}}{\sqrt{2}}$ (i.e., $0.707\,I_{\max}$) and consequently the power dissipated drops to <em>half</em> of its maximum value $P_{\max}$. <br>
+  $\omega_1$ = lower half-power (cut-off) frequency, $\omega_2$ = upper half-power (cut-off) frequency.
+</div>
+
+<div class="definition">
+  <strong>Bandwidth (BW):</strong> The frequency range between the two half-power points:
+  $$\text{BW} = \omega_2 - \omega_1 \quad (\text{rad/s}) \quad\text{or}\quad f_2 - f_1 \;(\text{Hz}).$$
+</div>
+
+<!-- ============ Section 3: Derivation ============ -->
+<h2>3 · Derivation of $\omega_1$, $\omega_2$ and Bandwidth</h2>
+
+<div class="step">
+  <h3>Power at resonance vs. at half-power point</h3>
+  <p>Maximum power dissipated occurs at $\omega_0$:</p>
+  $$P_{\max} = I_{\max}^2\,R = \frac{V^2}{R}$$
+  <p>At half-power frequencies, by definition,</p>
+  $$P = \frac{P_{\max}}{2} = I^2 R \;\Rightarrow\; I = \frac{I_{\max}}{\sqrt{2}}$$
+</div>
+
+<div class="step">
+  <h3>Condition on impedance</h3>
+  <p>Since $I = V/|Z|$ and $I_{\max} = V/R$, the half-power condition becomes</p>
+  $$\frac{V}{|Z|} = \frac{1}{\sqrt{2}}\cdot\frac{V}{R} \;\Rightarrow\; |Z| = \sqrt{2}\,R$$
+  <p>Substituting $|Z|^2 = R^2 + (\omega L - 1/\omega C)^2$:</p>
+  $$R^2 + \left(\omega L - \frac{1}{\omega C}\right)^{\!2} = 2R^2$$
+  $$\left(\omega L - \frac{1}{\omega C}\right)^{\!2} = R^2$$
+  $$\boxed{\;\omega L - \frac{1}{\omega C} = \pm R\;}$$
+</div>
+
+<div class="step">
+  <h3>Upper half-power frequency $\omega_2$ (take $+R$, since $\omega_2 &gt; \omega_0$ ⇒ $X_L &gt; X_C$)</h3>
+  $$\omega_2 L - \frac{1}{\omega_2 C} = +R$$
+  <p>Multiplying by $\omega_2$:</p>
+  $$L\,\omega_2^2 - R\,\omega_2 - \frac{1}{C} = 0$$
+  <p>Solving the quadratic and taking the positive root:</p>
+  $$\omega_2 = \frac{R}{2L} + \sqrt{\left(\frac{R}{2L}\right)^{\!2} + \frac{1}{LC}}$$
+</div>
+
+<div class="step">
+  <h3>Lower half-power frequency $\omega_1$ (take $-R$)</h3>
+  $$\omega_1 L - \frac{1}{\omega_1 C} = -R \;\Rightarrow\; L\,\omega_1^2 + R\,\omega_1 - \frac{1}{C} = 0$$
+  $$\omega_1 = -\frac{R}{2L} + \sqrt{\left(\frac{R}{2L}\right)^{\!2} + \frac{1}{LC}}$$
+</div>
+
+<div class="step">
+  <h3>Bandwidth — subtract $\omega_1$ from $\omega_2$</h3>
+  $$\omega_2 - \omega_1 = \left[\frac{R}{2L} + \sqrt{\cdots}\right] - \left[-\frac{R}{2L} + \sqrt{\cdots}\right] = \frac{R}{L}$$
+
+  <div class="answer-box">
+    <div class="label">Bandwidth</div>
+    $$\boxed{\;\text{BW} = \omega_2 - \omega_1 = \dfrac{R}{L}\ \text{rad/s}\;}\qquad
+       \text{or}\qquad f_2 - f_1 = \dfrac{R}{2\pi L}\ \text{Hz}$$
+  </div>
+</div>
+
+<div class="step">
+  <h3>Useful relation: $\omega_0$ is the geometric mean of $\omega_1, \omega_2$</h3>
+  <p>Multiplying $\omega_1$ and $\omega_2$:</p>
+  $$\omega_1\,\omega_2 = \left[\sqrt{\left(\tfrac{R}{2L}\right)^{\!2} + \tfrac{1}{LC}}\right]^{\!2} - \left(\tfrac{R}{2L}\right)^{\!2} = \frac{1}{LC} = \omega_0^2$$
+  $$\boxed{\;\omega_0 = \sqrt{\omega_1\,\omega_2}\;}$$
+</div>
+
+<!-- ============ Section 4: Q factor ============ -->
+<h2>4 · Quality Factor (Q) and its Link with Bandwidth</h2>
+
+<p>The selectivity of the circuit is measured by the quality factor:</p>
+$$Q = \frac{\omega_0 L}{R} = \frac{1}{\omega_0 C R} = \frac{1}{R}\sqrt{\frac{L}{C}}$$
+
+<p>Combining with bandwidth:</p>
+$$\text{BW} = \frac{R}{L} = \frac{\omega_0}{Q} \;\Rightarrow\; \boxed{\;Q = \dfrac{\omega_0}{\text{BW}}\;}$$
+
+<div class="note">
+  <strong>Interpretation:</strong> A higher Q-factor means a narrower bandwidth, sharper resonance peak, and higher selectivity — desirable in tuning circuits (radio, filters).
+</div>
+
+<!-- ============ Summary ============ -->
+<h2>Summary of Key Expressions</h2>
+<table>
+  <thead>
+    <tr><th>Quantity</th><th>Expression</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Resonant (angular) frequency</td><td>$\omega_0 = \dfrac{1}{\sqrt{LC}}, \quad f_0 = \dfrac{1}{2\pi\sqrt{LC}}$</td></tr>
+    <tr><td>Maximum current</td><td>$I_{\max} = V/R$</td></tr>
+    <tr><td>Lower half-power freq.</td><td>$\omega_1 = -\dfrac{R}{2L} + \sqrt{\left(\dfrac{R}{2L}\right)^{\!2}+\dfrac{1}{LC}}$</td></tr>
+    <tr><td>Upper half-power freq.</td><td>$\omega_2 = +\dfrac{R}{2L} + \sqrt{\left(\dfrac{R}{2L}\right)^{\!2}+\dfrac{1}{LC}}$</td></tr>
+    <tr><td>Bandwidth</td><td>$\text{BW} = \omega_2 - \omega_1 = \dfrac{R}{L}$</td></tr>
+    <tr><td>Geometric mean property</td><td>$\omega_0 = \sqrt{\omega_1 \omega_2}$</td></tr>
+    <tr><td>Quality factor</td><td>$Q = \dfrac{\omega_0 L}{R} = \dfrac{\omega_0}{\text{BW}}$</td></tr>
+  </tbody>
+</table>
+
+<div class="summary-grid">
+  <div class="summary-card">
+    <div class="l">Resonance condition</div>
+    <div class="v">X_L = X_C</div>
+  </div>
+  <div class="summary-card">
+    <div class="l">Resonant frequency</div>
+    <div class="v">ω₀ = 1/√(LC)</div>
+  </div>
+  <div class="summary-card" style="border-top-color: var(--orange);">
+    <div class="l">Half-power current</div>
+    <div class="v" style="color:var(--orange);">I_max / √2</div>
+  </div>
+  <div class="summary-card" style="border-top-color: var(--green);">
+    <div class="l">Bandwidth</div>
+    <div class="v" style="color:var(--green);">BW = R / L</div>
+  </div>
+</div>
+
+<footer>
+  Solution rendered with MathJax · Series R-L-C resonance &amp; bandwidth derivation
+</footer>
+
+</div>
+</body>
+</html>

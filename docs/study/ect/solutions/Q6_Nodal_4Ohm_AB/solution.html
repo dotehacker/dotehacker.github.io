@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Q6 — Nodal Analysis · Current through 4Ω between A and B</title>
+
+<!-- MathJax -->
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']]
+    }
+  };
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+  :root {
+    --bg: #fdfcf9;
+    --ink: #1a1a1a;
+    --muted: #555;
+    --accent: #0b6efd;
+    --accent-soft: #e7f0ff;
+    --green: #1f8a4c;
+    --green-soft: #e7f7ee;
+    --orange: #d97706;
+    --orange-soft: #fff4e0;
+    --purple: #6b21a8;
+    --red: #b91c1c;
+    --border: #d8d4cc;
+    --shadow: 0 2px 6px rgba(0,0,0,0.06);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.65;
+  }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 40px 28px 80px; }
+  header { border-bottom: 2px solid var(--ink); padding-bottom: 16px; margin-bottom: 28px; }
+  header .tag {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  h1 { font-size: 1.5rem; margin: 10px 0 6px; }
+  h2 {
+    font-size: 1.2rem;
+    border-left: 4px solid var(--accent);
+    padding-left: 10px;
+    margin-top: 32px;
+    color: #0b3d91;
+  }
+  h3 { font-size: 1.02rem; margin-top: 18px; color: #333; }
+  p, li { font-size: 0.98rem; }
+  .question {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--orange);
+    padding: 16px 20px;
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+    margin-bottom: 24px;
+  }
+  .step {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    box-shadow: var(--shadow);
+  }
+  .definition {
+    background: var(--accent-soft);
+    border-left: 4px solid var(--accent);
+    padding: 12px 18px;
+    border-radius: 6px;
+    margin: 14px 0;
+  }
+  .answer-box {
+    background: var(--green-soft);
+    border: 2px solid var(--green);
+    border-radius: 8px;
+    padding: 14px 20px;
+    margin: 18px 0;
+    text-align: center;
+  }
+  .answer-box .label {
+    font-size: 0.85rem;
+    color: var(--green);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .note {
+    background: var(--orange-soft);
+    border-left: 4px solid var(--orange);
+    padding: 10px 16px;
+    border-radius: 4px;
+    margin: 12px 0;
+    font-size: 0.95rem;
+  }
+  table { border-collapse: collapse; width: 100%; margin: 14px 0; background: white; }
+  th, td { border: 1px solid var(--border); padding: 10px 12px; text-align: left; vertical-align: top; }
+  th { background: #f0eee7; font-weight: 600; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .figure { margin: 22px auto; text-align: center; }
+  .figure svg {
+    max-width: 100%; height: auto; background: #fff;
+    border: 1px solid var(--border); border-radius: 6px;
+    padding: 8px; box-shadow: var(--shadow);
+  }
+  .caption { font-size: 0.9rem; color: var(--muted); margin-top: 6px; font-style: italic; }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+    margin-top: 14px;
+  }
+  .summary-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--accent);
+    border-radius: 6px;
+    padding: 14px;
+    box-shadow: var(--shadow);
+  }
+  .summary-card .v { font-size: 1.25rem; font-weight: 700; color: var(--accent); margin-top: 4px; }
+  .summary-card .l { font-size: 0.85rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+  ul.tight li { margin-bottom: 4px; }
+  footer {
+    margin-top: 40px; color: var(--muted); font-size: 0.85rem;
+    text-align: center; border-top: 1px solid var(--border); padding-top: 16px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <span class="tag">Q6 (a) — [8 marks]</span>
+  <h1>Nodal Analysis · Current through the 4 Ω resistor between A and B</h1>
+</header>
+
+<div class="question">
+  <strong>Problem.</strong> Using nodal analysis, determine the current through the <strong>4 Ω</strong> resistor connected between terminals A and B for the network shown.
+</div>
+
+<!-- Annotated circuit -->
+<div class="figure">
+  <svg viewBox="0 0 820 460" xmlns="http://www.w3.org/2000/svg">
+    <!-- outer rectangle -->
+    <rect x="50" y="60" width="720" height="320" fill="none" stroke="#222" stroke-width="2"/>
+
+    <!-- 24V source on left, + on top -->
+    <line x1="50" y1="60"  x2="50" y2="200" stroke="#222" stroke-width="2"/>
+    <circle cx="50" cy="225" r="22" fill="white" stroke="#222" stroke-width="2"/>
+    <text x="44" y="217" font-size="14" font-weight="bold">+</text>
+    <text x="44" y="245" font-size="14" font-weight="bold">−</text>
+    <text x="14" y="230" font-size="13" font-weight="bold">24 V</text>
+    <line x1="50" y1="248" x2="50" y2="380" stroke="#222" stroke-width="2"/>
+
+    <!-- TOP 4Ω with V_m label (+ on left, − on right) -->
+    <line x1="50" y1="60" x2="370" y2="60" stroke="#222" stroke-width="2"/>
+    <polyline points="370,60 380,50 400,70 420,50 440,70 460,50 470,60"
+              fill="none" stroke="#222" stroke-width="2"/>
+    <text x="395" y="42" font-size="13" font-weight="bold">4 Ω</text>
+    <text x="345" y="88" font-size="13" font-weight="bold" fill="#b91c1c">+</text>
+    <text x="490" y="88" font-size="13" font-weight="bold" fill="#b91c1c">−</text>
+    <text x="410" y="105" font-size="14" font-weight="bold" fill="#b91c1c">V_m</text>
+    <line x1="470" y1="60" x2="770" y2="60" stroke="#222" stroke-width="2"/>
+
+    <!-- nodes C (top-left), D (top-right) -->
+    <circle cx="50" cy="60" r="3.5" fill="#0b6efd"/>
+    <text x="58" y="56" font-size="12" font-weight="bold" fill="#0b6efd">C</text>
+    <circle cx="770" cy="60" r="3.5" fill="#0b6efd"/>
+    <text x="752" y="56" font-size="12" font-weight="bold" fill="#0b6efd">D</text>
+
+    <!-- middle horizontal wire at y = 200 -->
+    <line x1="50" y1="200" x2="120" y2="200" stroke="#222" stroke-width="2"/>
+    <!-- 1Ω with V_n -->
+    <polyline points="120,200 130,190 150,210 170,190 190,210 200,200"
+              fill="none" stroke="#222" stroke-width="2"/>
+    <text x="148" y="182" font-size="13" font-weight="bold">1 Ω</text>
+    <text x="115" y="220" font-size="13" font-weight="bold" fill="#6b21a8">+</text>
+    <text x="205" y="220" font-size="13" font-weight="bold" fill="#6b21a8">−</text>
+    <text x="148" y="240" font-size="13" font-weight="bold" fill="#6b21a8">V_n</text>
+
+    <!-- Node A -->
+    <line x1="200" y1="200" x2="290" y2="200" stroke="#222" stroke-width="2"/>
+    <circle cx="290" cy="200" r="3.5" fill="#0b6efd"/>
+    <text x="297" y="194" font-size="13" font-weight="bold" fill="#0b6efd">A</text>
+
+    <!-- middle 4Ω (no voltage label; this is the resistor whose current we want) -->
+    <polyline points="290,200 300,190 320,210 340,190 360,210 380,190 390,200"
+              fill="none" stroke="#222" stroke-width="2"/>
+    <text x="320" y="240" font-size="13" font-weight="bold">4 Ω</text>
+    <line x1="390" y1="200" x2="500" y2="200" stroke="#222" stroke-width="2"/>
+
+    <!-- Node B -->
+    <circle cx="500" cy="200" r="3.5" fill="#0b6efd"/>
+    <text x="490" y="192" font-size="13" font-weight="bold" fill="#0b6efd">B</text>
+
+    <!-- 0.2 V_m dependent voltage source: + on LEFT (B side), − on RIGHT (D side) -->
+    <line x1="500" y1="200" x2="560" y2="200" stroke="#222" stroke-width="2"/>
+    <polygon points="580,200 600,180 620,200 600,220" fill="white" stroke="#222" stroke-width="2"/>
+    <text x="565" y="205" font-size="14" font-weight="bold" fill="#b91c1c">+</text>
+    <text x="625" y="205" font-size="14" font-weight="bold" fill="#b91c1c">−</text>
+    <text x="565" y="170" font-size="13" font-weight="bold">0.2 V_m</text>
+    <line x1="620" y1="200" x2="770" y2="200" stroke="#222" stroke-width="2"/>
+
+    <!-- 10A current source -->
+    <line x1="290" y1="200" x2="290" y2="270" stroke="#222" stroke-width="2"/>
+    <circle cx="290" cy="290" r="18" fill="white" stroke="#222" stroke-width="2"/>
+    <line x1="290" y1="305" x2="290" y2="278" stroke="#222" stroke-width="2"/>
+    <polygon points="290,278 285,287 295,287" fill="#222"/>
+    <text x="305" y="295" font-size="13" font-weight="bold">10 A</text>
+    <line x1="290" y1="308" x2="290" y2="380" stroke="#222" stroke-width="2"/>
+
+    <!-- 0.4 V_n dependent current source (arrow up) -->
+    <line x1="500" y1="200" x2="500" y2="280" stroke="#222" stroke-width="2"/>
+    <polygon points="480,305 500,285 520,305 500,325" fill="white" stroke="#222" stroke-width="2"/>
+    <line x1="500" y1="318" x2="500" y2="293" stroke="#222" stroke-width="2"/>
+    <polygon points="500,293 495,302 505,302" fill="#222"/>
+    <text x="525" y="312" font-size="13" font-weight="bold">0.4 V_n</text>
+    <line x1="500" y1="325" x2="500" y2="380" stroke="#222" stroke-width="2"/>
+
+    <!-- 2Ω resistor on right side -->
+    <line x1="770" y1="200" x2="770" y2="240" stroke="#222" stroke-width="2"/>
+    <polyline points="770,240 760,250 780,266 760,282 780,298 760,314 770,324"
+              fill="none" stroke="#222" stroke-width="2"/>
+    <text x="785" y="282" font-size="13" font-weight="bold">2 Ω</text>
+    <line x1="770" y1="324" x2="770" y2="380" stroke="#222" stroke-width="2"/>
+
+    <!-- ground -->
+    <line x1="395" y1="395" x2="415" y2="395" stroke="#222" stroke-width="2"/>
+    <line x1="400" y1="400" x2="410" y2="400" stroke="#222" stroke-width="2"/>
+    <line x1="403" y1="405" x2="407" y2="405" stroke="#222" stroke-width="2"/>
+    <text x="424" y="402" font-size="12" fill="#555" font-style="italic">Reference (ground)</text>
+  </svg>
+  <div class="caption">Fig. 1 — Annotated network. <strong>V<sub>m</sub> is across the TOP 4 Ω</strong> (between nodes C and D, + on left); V<sub>n</sub> is across the 1 Ω. The 0.2 V_m source has + on left (B-side) and − on right (D-side).</div>
+</div>
+
+<!-- ============ Step 1 ============ -->
+<h2>Step 1 · Reference, Nodes, and Controlling Variables</h2>
+
+<p>Take the bottom rail as ground. Four essential node voltages: $V_C, V_A, V_B, V_D$.</p>
+
+<p>The 24 V source fixes:</p>
+$$V_C = 24\ \text{V}$$
+
+<p>Controlling variables (+ terminals as marked in the figure):</p>
+$$V_n = V_C - V_A = 24 - V_A \qquad \text{(across the 1 Ω)}$$
+$$V_m = V_C - V_D = 24 - V_D \qquad \text{(across the TOP 4 Ω)}$$
+
+<!-- ============ Step 2 ============ -->
+<h2>Step 2 · Voltage-Source Constraint (Supernode B–D)</h2>
+<div class="step">
+  <p>The dependent voltage source 0.2 V_m sits between B and D with <strong>+ on left (at B)</strong>, <strong>− on right (at D)</strong>:</p>
+  $$V_B - V_D = 0.2\,V_m = 0.2\,(24 - V_D)$$
+  $$5(V_B - V_D) = 24 - V_D \;\Rightarrow\; 5V_B - 4V_D = 24$$
+  $$\boxed{\,V_B = \tfrac{4V_D + 24}{5}\,} \quad(\text{A})$$
+</div>
+
+<!-- ============ Step 3 ============ -->
+<h2>Step 3 · KCL at Node A</h2>
+<div class="step">
+  <p>Sum of currents leaving A (the 10 A source enters A from below):</p>
+  $$\frac{V_A - 24}{1} + \frac{V_A - V_B}{4} - 10 = 0$$
+  <p>Multiply by 4:</p>
+  $$4V_A - 96 + V_A - V_B - 40 = 0$$
+  $$\boxed{\,5V_A - V_B = 136\,}\quad(\text{B})$$
+</div>
+
+<!-- ============ Step 4 ============ -->
+<h2>Step 4 · KCL at Supernode {B, D}</h2>
+<div class="step">
+  <p>Currents leaving the supernode:</p>
+  <ul class="tight">
+    <li>From B back to A through middle 4 Ω: $\dfrac{V_B - V_A}{4}$</li>
+    <li>From B to ground through the 0.4 V_n current source (arrow UP into B): $-\,0.4\,V_n$</li>
+    <li>From D back to C through the top 4 Ω: $\dfrac{V_D - 24}{4}$</li>
+    <li>From D to ground through the 2 Ω: $\dfrac{V_D}{2}$</li>
+  </ul>
+
+  $$\frac{V_B - V_A}{4} - 0.4\,(24 - V_A) + \frac{V_D - 24}{4} + \frac{V_D}{2} = 0$$
+
+  <p>Multiply by 20:</p>
+  $$5(V_B - V_A) - 8(24 - V_A) + 5(V_D - 24) + 10V_D = 0$$
+  $$5V_B - 5V_A - 192 + 8V_A + 5V_D - 120 + 10V_D = 0$$
+  $$\boxed{\,3V_A + 5V_B + 15V_D = 312\,}\quad(\text{C})$$
+</div>
+
+<!-- ============ Step 5 ============ -->
+<h2>Step 5 · Solve the System</h2>
+<div class="step">
+  <p>From (B): $V_B = 5V_A - 136$. Substitute into (A):</p>
+  $$5V_A - 136 = \frac{4V_D + 24}{5}$$
+  $$25V_A - 680 = 4V_D + 24$$
+  $$25V_A - 4V_D = 704 \quad(\text{i})$$
+
+  <p>Substitute $V_B = 5V_A - 136$ into (C):</p>
+  $$3V_A + 5(5V_A - 136) + 15V_D = 312$$
+  $$28V_A + 15V_D = 992 \quad(\text{ii})$$
+
+  <p>From (i): $V_A = \dfrac{704 + 4V_D}{25}$. Substitute into (ii):</p>
+  $$28 \cdot \frac{704 + 4V_D}{25} + 15V_D = 992$$
+  $$28(704 + 4V_D) + 375V_D = 24\,800$$
+  $$19\,712 + 112V_D + 375V_D = 24\,800$$
+  $$487\,V_D = 5\,088 \;\Rightarrow\; V_D = \frac{5088}{487} \approx 10.45\ \text{V}$$
+
+  <p>Back-substitute:</p>
+  $$V_A = \frac{704 + 4(5088/487)}{25} = \frac{14\,528}{487} \approx 29.83\ \text{V}$$
+  $$V_B = 5V_A - 136 = \frac{6408}{487} \approx 13.16\ \text{V}$$
+</div>
+
+<!-- ============ Step 6 ============ -->
+<h2>Step 6 · Current through the 4 Ω between A and B</h2>
+<div class="step">
+  <p>Take the reference direction from A → B:</p>
+  $$I_{AB} = \frac{V_A - V_B}{4} = \frac{(14\,528 - 6\,408)/487}{4} = \frac{8120}{4 \cdot 487} = \frac{2030}{487}$$
+
+  <div class="answer-box">
+    <div class="label">Current through 4 Ω (A → B)</div>
+    $$\boxed{\,I_{AB} \;=\; \dfrac{2030}{487} \;\approx\; 4.17\ \text{A}\,}$$
+  </div>
+  <p>The positive sign confirms conventional current flows from A to B.</p>
+</div>
+
+<!-- ============ Verification ============ -->
+<h2>Step 7 · Verification</h2>
+<div class="step">
+  <p>$V_n = 24 - V_A = \tfrac{11\,688 - 14\,528}{487} = -\tfrac{2840}{487} \approx -5.83$ V</p>
+  <p>$V_m = 24 - V_D = \tfrac{11\,688 - 5088}{487} = \tfrac{6600}{487} \approx 13.55$ V</p>
+
+  <p><strong>Source constraint:</strong></p>
+  $$V_B - V_D = \frac{6408 - 5088}{487} = \frac{1320}{487}$$
+  $$0.2\,V_m = 0.2 \cdot \frac{6600}{487} = \frac{1320}{487} \;\checkmark$$
+
+  <p><strong>KCL at A:</strong></p>
+  $$5V_A - V_B = \frac{5 \cdot 14\,528 - 6408}{487} = \frac{66\,232}{487} = 136 \;\checkmark$$
+
+  <p><strong>KCL at supernode {B, D}:</strong></p>
+  $$3V_A + 5V_B + 15V_D = \frac{3 \cdot 14528 + 5 \cdot 6408 + 15 \cdot 5088}{487}$$
+  $$= \frac{43\,584 + 32\,040 + 76\,320}{487} = \frac{151\,944}{487} = 312 \;\checkmark$$
+</div>
+
+<!-- ============ Summary ============ -->
+<h2>Summary of Node Voltages</h2>
+<table>
+  <thead>
+    <tr><th>Symbol</th><th>Meaning</th><th class="num">Value</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>$V_C$</td><td>Top-left node (top of 24 V)</td><td class="num">24 V</td></tr>
+    <tr><td>$V_A$</td><td>Node A</td><td class="num">14528/487 ≈ 29.83 V</td></tr>
+    <tr><td>$V_B$</td><td>Node B</td><td class="num">6408/487 ≈ 13.16 V</td></tr>
+    <tr><td>$V_D$</td><td>Top-right node (top of 2 Ω)</td><td class="num">5088/487 ≈ 10.45 V</td></tr>
+    <tr><td>$V_n$</td><td>Voltage across 1 Ω</td><td class="num">−2840/487 ≈ −5.83 V</td></tr>
+    <tr><td>$V_m$</td><td>Voltage across TOP 4 Ω</td><td class="num">6600/487 ≈ 13.55 V</td></tr>
+    <tr><td>$I_{AB}$</td><td>Current through middle 4 Ω (A→B)</td><td class="num"><strong>2030/487 ≈ 4.17 A</strong></td></tr>
+  </tbody>
+</table>
+
+<div class="summary-grid">
+  <div class="summary-card" style="border-top-color: var(--green);">
+    <div class="l">Required answer</div>
+    <div class="v" style="color:var(--green);">I_AB ≈ 4.17 A</div>
+  </div>
+  <div class="summary-card" style="border-top-color: var(--orange);">
+    <div class="l">Controlling V_n</div>
+    <div class="v" style="color:var(--orange);">−5.83 V</div>
+  </div>
+  <div class="summary-card" style="border-top-color: var(--purple);">
+    <div class="l">Controlling V_m</div>
+    <div class="v" style="color:var(--purple);">13.55 V</div>
+  </div>
+</div>
+
+<footer>
+  Solution rendered with MathJax · Nodal analysis with two dependent sources and a supernode
+</footer>
+
+</div>
+</body>
+</html>
