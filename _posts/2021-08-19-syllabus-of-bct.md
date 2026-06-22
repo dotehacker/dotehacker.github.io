@@ -132,4 +132,4 @@ Here I presented the **TU, IOE** Syllabus of **BCT**.
 
 ## PDF File
 
-[BCT PDF](https://sumityadav.com.np/posts/syllabus/syb.pdf)
+[BCT PDF](/posts/syllabus/syb.pdf)

@@ -17,7 +17,7 @@ Computer Organization and Architecture — 09 June 2022
 
 ![TPU cover image](/posts/2022/06/09/tensor-processing-units/tensor-processing-units-image9.png)
 
-> Full paper PDF: [TPUs-2.pdf](https://sumityadav.com.np/TPUs-2.pdf)
+> Full paper PDF: [TPUs-2.pdf](/TPUs-2.pdf)
 
 ---
 

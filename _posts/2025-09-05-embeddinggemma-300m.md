@@ -4,7 +4,7 @@ date: 2025-09-05
 category: "AI & ML"
 ---
 
-<img src="https://tatva.sumityadav.com.np/posts/2025/09/05/embeddinggemma-300m/embed.png" alt="embeddinggemma-300m" width="100%">
+<img src="/posts/2025/09/05/embeddinggemma-300m/embed.png" alt="embeddinggemma-300m" width="100%">
 
 # Understanding Text Embeddings: A Comprehensive Quality Analysis
 
@@ -642,7 +642,7 @@ The visualization includes three datasets:
 
 <script>
     let currentData = null;
-    const JSON_FILE_PATH = 'https://tatva.sumityadav.com.np/posts/2025/09/05/embeddinggemma-300m/all_layerwise_embeddings.json';
+    const JSON_FILE_PATH = '/posts/2025/09/05/embeddinggemma-300m/all_layerwise_embeddings.json';
     
     // Color palette for categories
     const colors = [

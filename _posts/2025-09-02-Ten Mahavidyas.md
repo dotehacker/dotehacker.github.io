@@ -3,7 +3,7 @@ title: Ten Mahavidyas
 date: 2025-09-02
 category: "Culture & Mithila"
 ---
-<img src="https://tatva.sumityadav.com.np/posts/2025/09/02/Ten%20Mahavidyas/mahavidyas.png" alt="Mahavidyas" width="100%">
+<img src="/posts/2025/09/02/Ten%20Mahavidyas/mahavidyas.png" alt="Mahavidyas" width="100%">
 # Exploring the Ten Mahavidyas: The Profound Wisdom Goddesses of Tantra
 
 Jai Shree Ganesh! Welcome to this super detailed blog post on the Ten Mahavidyas, the powerful and enigmatic group of Hindu Tantric goddesses who embody various aspects of the divine feminine energy, Shakti. These Mahavidyas—Kali, Tara, Tripura Sundari (Shodashi), Bhuvaneshvari, Bhairavi, Chhinnamasta, Dhumavati, Bagalamukhi, Matangi, and Kamala—represent the ultimate knowledge (vidya) and are central to Shaktism, particularly in Tantric traditions. They symbolize destruction, creation, beauty, wisdom, and transcendence, drawing from Shaivism, Vaishnavism, and even Buddhist influences.

@@ -15,7 +15,7 @@ tags: [kaggle, birdclef, bioacoustics, transfer-learning, perch, frozen-features
 
 A two-week sprint on [BirdCLEF+ 2026](https://www.kaggle.com/competitions/birdclef-2026) — Cornell Lab's flagship bird-sound competition — wrapped up with an **official Kaggle Competition Bronze Medal**: **rank 354 / 4084 (top 8.7%)**, **public LB 0.950**, **private LB 0.942**, and a **+590-place jump** going from public to final standings.
 
-> 📄 **Read the paper:** [birdclef-2026-working-note.pdf](https://sumityadav.com.np/files/birdclef-2026-working-note.pdf) (drafted for LifeCLEF 2026 working notes, CEUR-WS)
+> 📄 **Read the paper:** [birdclef-2026-working-note.pdf](/files/birdclef-2026-working-note.pdf) (drafted for LifeCLEF 2026 working notes, CEUR-WS)
 >
 > 💻 **Code:** [github.com/rockerritesh/BirdCLEF2026](https://github.com/rockerritesh/BirdCLEF2026)
 >
@@ -186,6 +186,6 @@ In rough order of expected payoff for next year's BirdCLEF:
 - The methodology contribution is the **per-block kNN probe**: a cheap, training-free way to choose which layer of a frozen backbone to tap for transfer.
 - A small ($\sim$430k params) attention-pool sequence head over Perch~v2 features hit **standalone LB 0.879**; the medal came from blending with the dominant public baseline.
 - **Standalones generalised; blends overfit to public.** The +590-place public → final rerank is the punchline.
-- **Code is public** at [github.com/rockerritesh/BirdCLEF2026](https://github.com/rockerritesh/BirdCLEF2026); the full working note is on [sumityadav.com.np/files/birdclef-2026-working-note.pdf](https://sumityadav.com.np/files/birdclef-2026-working-note.pdf).
+- **Code is public** at [github.com/rockerritesh/BirdCLEF2026](https://github.com/rockerritesh/BirdCLEF2026); the full working note is on [sumityadav.com.np/files/birdclef-2026-working-note.pdf](/files/birdclef-2026-working-note.pdf).
 
 If you're running BirdCLEF 2027 or any similar bioacoustics / fine-grained-audio task: **probe before you fine-tune**. The penultimate block of a wide-pretraining classifier is, more often than the literature implies, the right place to tap.
