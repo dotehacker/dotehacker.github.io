@@ -205,6 +205,7 @@ class JekyllLikeBuilder {
       ${p.photo ? `<img class="intro-photo" src="${this.esc(p.photo)}" alt="${this.esc(p.name)}">` : ''}
       <div class="intro-body">
         <h1>${this.esc(p.name)}</h1>
+        ${p.aka ? `<p class="aka">aka ${this.esc(p.aka)}</p>` : ''}
         ${p.role ? `<p class="role">${this.esc(p.role)}</p>` : ''}
         ${p.affiliation ? `<p class="affil">${this.esc(p.affiliation)}</p>` : ''}
         ${p.bioSummary ? `<p class="bio">${p.bioSummary}</p>` : ''}

@@ -84,14 +84,15 @@ a:hover { text-decoration: underline; }
   padding: 52px 0 28px;
 }
 .intro-photo {
-  width: 150px; height: 150px; border-radius: 50%; object-fit: cover;
+  width: 200px; height: 200px; border-radius: 50%; object-fit: cover;
   flex: 0 0 auto; border: 1px solid var(--rule);
 }
 .intro-body { min-width: 0; }
 .intro-body h1 {
   font-family: var(--serif); font-weight: 700; font-size: 2.3rem;
-  margin: 0 0 2px; letter-spacing: -.01em;
+  margin: 0; letter-spacing: -.01em;
 }
+.intro .aka { color: var(--faint); font-size: .92rem; font-style: italic; margin: 1px 0 6px; }
 .intro .role { font-weight: 600; margin: 0; color: var(--ink); }
 .intro .affil { color: var(--muted); font-size: .92rem; margin: 2px 0 0; }
 .intro .bio { margin: 14px 0 0; font-size: 1rem; color: var(--ink); }
@@ -283,7 +284,7 @@ a:hover { text-decoration: underline; }
 /* ---- responsive ---- */
 @media (max-width: 620px) {
   .intro { flex-direction: column; gap: 18px; padding-top: 36px; }
-  .intro-photo { width: 110px; height: 110px; }
+  .intro-photo { width: 150px; height: 150px; }
   .intro-body h1 { font-size: 1.9rem; }
   .blog-date { flex-basis: 74px; }
   .blog-cat { display: none; }
