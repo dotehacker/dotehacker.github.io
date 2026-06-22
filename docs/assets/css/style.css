@@ -158,10 +158,11 @@ a:hover {
 }
 
 .intro-photo {
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
+  width: 210px;
+  height: 252px;
+  border-radius: 12px;
   object-fit: cover;
+  object-position: top center;
   flex: 0 0 auto;
   border: 1px solid var(--rule);
 }
@@ -814,8 +815,8 @@ a:hover {
     padding-top: 36px;
   }
   .intro-photo {
-    width: 150px;
-    height: 150px;
+    width: 160px;
+    height: 192px;
   }
   .intro-body h1 {
     font-size: 1.9rem;

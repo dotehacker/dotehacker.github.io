@@ -84,7 +84,7 @@ a:hover { text-decoration: underline; }
   padding: 52px 0 28px;
 }
 .intro-photo {
-  width: 200px; height: 200px; border-radius: 50%; object-fit: cover;
+  width: 210px; height: 252px; border-radius: 12px; object-fit: cover; object-position: top center;
   flex: 0 0 auto; border: 1px solid var(--rule);
 }
 .intro-body { min-width: 0; }
@@ -284,7 +284,7 @@ a:hover { text-decoration: underline; }
 /* ---- responsive ---- */
 @media (max-width: 620px) {
   .intro { flex-direction: column; gap: 18px; padding-top: 36px; }
-  .intro-photo { width: 150px; height: 150px; }
+  .intro-photo { width: 160px; height: 192px; }
   .intro-body h1 { font-size: 1.9rem; }
   .blog-date { flex-basis: 74px; }
   .blog-cat { display: none; }
