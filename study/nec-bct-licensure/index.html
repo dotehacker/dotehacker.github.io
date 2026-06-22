@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEC BCT Licensure Past Questions — Tatva</title>
+    <meta name="description" content="Nepal Engineering Council (NEC) Bachelor of Computer Engineering (BCT) licensure exam — question bank with solutions and key concepts.">
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/languages/python.min.js"></script>
+
+    <style>
+        :root {
+            --bg-primary: #0f0f1a;
+            --bg-secondary: #1a1a2e;
+            --bg-card: #16213e;
+            --bg-code: #0d1117;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0b0;
+            --accent-blue: #00d2ff;
+            --accent-yellow: #ffd93d;
+            --accent-green: #6bcb77;
+            --accent-purple: #c56cf0;
+            --accent-red: #ff6b6b;
+            --border: #2a2a4a;
+            --sidebar-width: 300px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* ===== TOP BAR ===== */
+        .topbar {
+            position: sticky;
+            top: 0;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            padding: 0.8rem 1.5rem;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .topbar a.home-link {
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        .topbar a.home-link:hover { text-decoration: underline; }
+        .topbar .crumb {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        .topbar .crumb strong {
+            color: var(--text-primary);
+        }
+        .sidebar-toggle {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.4rem 0.7rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin-left: auto;
+        }
+        .sidebar-toggle:hover { border-color: var(--accent-blue); }
+
+        /* ===== LAYOUT ===== */
+        .layout {
+            display: flex;
+            min-height: calc(100vh - 56px);
+        }
+
+        /* ===== SIDEBAR (TOC) ===== */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            position: sticky;
+            top: 56px;
+            height: calc(100vh - 56px);
+            overflow-y: auto;
+            padding: 1.5rem 1rem;
+            transition: transform 0.3s ease;
+        }
+        .sidebar.collapsed { transform: translateX(calc(-1 * var(--sidebar-width))); margin-left: calc(-1 * var(--sidebar-width)); }
+
+        .sidebar h2 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-secondary);
+            margin-bottom: 0.8rem;
+            padding-left: 0.5rem;
+        }
+        .sidebar ol {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar li {
+            margin: 0.1rem 0;
+        }
+        .sidebar a {
+            display: block;
+            padding: 0.4rem 0.6rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.88rem;
+            border-radius: 6px;
+            transition: all 0.15s ease;
+            border-left: 2px solid transparent;
+        }
+        .sidebar a:hover {
+            color: var(--accent-blue);
+            background: var(--bg-card);
+        }
+        .sidebar a.active {
+            color: var(--accent-yellow);
+            background: var(--bg-card);
+            border-left-color: var(--accent-yellow);
+        }
+        .sidebar a.toc-h3 {
+            padding-left: 1.5rem;
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+        }
+
+        /* ===== CONTENT ===== */
+        .content-wrap {
+            flex: 1;
+            padding: 2rem 3rem;
+            max-width: 980px;
+        }
+
+        .loader {
+            text-align: center;
+            padding-top: 6rem;
+            color: var(--text-secondary);
+        }
+        .spinner {
+            width: 36px;
+            height: 36px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent-blue);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ===== MARKDOWN STYLES ===== */
+        .content h1 {
+            font-size: 2rem;
+            color: var(--accent-blue);
+            margin: 0 0 1.5rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 2px solid var(--border);
+        }
+        .content h2 {
+            font-size: 1.5rem;
+            color: var(--accent-yellow);
+            margin: 2.5rem 0 1rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 1px solid var(--border);
+            scroll-margin-top: 70px;
+        }
+        .content h3 {
+            font-size: 1.2rem;
+            color: var(--accent-green);
+            margin: 2rem 0 0.8rem;
+            scroll-margin-top: 70px;
+        }
+        .content h4 {
+            font-size: 1.05rem;
+            color: var(--accent-purple);
+            margin: 1.5rem 0 0.6rem;
+        }
+        .content p {
+            margin: 0.7rem 0;
+            color: var(--text-primary);
+        }
+        .content a {
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
+        .content a:hover { text-decoration: underline; }
+
+        .content ul, .content ol {
+            margin: 0.7rem 0;
+            padding-left: 1.8rem;
+        }
+        .content li { margin: 0.3rem 0; }
+
+        .content code {
+            background: var(--bg-code);
+            color: var(--accent-yellow);
+            padding: 0.15em 0.4em;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+            font-size: 0.9em;
+        }
+        .content pre {
+            background: var(--bg-code);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem 1.2rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-size: 0.88rem;
+            line-height: 1.55;
+        }
+        .content pre code {
+            background: transparent;
+            color: var(--text-primary);
+            padding: 0;
+            font-size: inherit;
+        }
+
+        .content blockquote {
+            border-left: 4px solid var(--accent-purple);
+            background: var(--bg-card);
+            padding: 0.8rem 1.2rem;
+            margin: 1rem 0;
+            color: var(--text-secondary);
+            border-radius: 0 6px 6px 0;
+        }
+
+        .content table {
+            border-collapse: collapse;
+            margin: 1rem 0;
+            width: 100%;
+            font-size: 0.9rem;
+            background: var(--bg-card);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .content th, .content td {
+            border: 1px solid var(--border);
+            padding: 0.6rem 0.9rem;
+            text-align: left;
+        }
+        .content th {
+            background: var(--bg-secondary);
+            color: var(--accent-blue);
+            font-weight: 600;
+        }
+        .content tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+
+        .content hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 2.5rem 0;
+        }
+
+        .content strong { color: var(--accent-yellow); }
+        .content em { color: var(--accent-purple); }
+
+        /* ===== ERROR ===== */
+        .error-box {
+            background: var(--bg-card);
+            border-left: 4px solid var(--accent-red);
+            padding: 1rem 1.2rem;
+            border-radius: 6px;
+        }
+        .error-box h2 { color: var(--accent-red); margin-bottom: 0.5rem; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .sidebar {
+                position: fixed;
+                left: 0;
+                top: 56px;
+                z-index: 40;
+                transform: translateX(calc(-1 * var(--sidebar-width)));
+                margin-left: 0;
+            }
+            .sidebar.open { transform: translateX(0); }
+            .content-wrap { padding: 1.5rem 1rem; }
+            .content h1 { font-size: 1.6rem; }
+            .content h2 { font-size: 1.3rem; }
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-secondary); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent-blue); }
+    </style>
+</head>
+<body>
+
+<div class="topbar">
+    <a href="../../" class="home-link">Tatva</a>
+    <span class="crumb">› <a href="../" class="home-link">Study</a> › <strong>NEC BCT Licensure</strong></span>
+    <button class="sidebar-toggle" id="sidebarToggle">☰ TOC</button>
+</div>
+
+<div class="layout">
+    <aside class="sidebar" id="sidebar">
+        <h2>Contents</h2>
+        <ol id="toc">
+            <li><a href="#" style="color:var(--text-secondary);font-style:italic;">Building TOC…</a></li>
+        </ol>
+    </aside>
+
+    <main class="content-wrap">
+        <article class="content" id="content">
+            <div class="loader">
+                <div class="spinner"></div>
+                <p>Loading notes…</p>
+            </div>
+        </article>
+    </main>
+</div>
+
+<script>
+const NOTES_URL = 'questions.md';
+
+async function load() {
+    const content = document.getElementById('content');
+    try {
+        const resp = await fetch(NOTES_URL);
+        if (!resp.ok) throw new Error(`HTTP ${resp.status} fetching ${NOTES_URL}`);
+        const md = await resp.text();
+
+        marked.setOptions({
+            gfm: true,
+            breaks: false,
+            headerIds: true,
+            mangle: false,
+            highlight: function(code, lang) {
+                if (typeof hljs !== 'undefined') {
+                    try {
+                        if (lang && hljs.getLanguage(lang)) {
+                            return hljs.highlight(code, { language: lang }).value;
+                        }
+                        return hljs.highlightAuto(code).value;
+                    } catch (e) { /* fall through */ }
+                }
+                return code;
+            },
+        });
+
+        content.innerHTML = marked.parse(md);
+
+        // Assign IDs to all headings for anchoring (marked.js may not always)
+        const headings = content.querySelectorAll('h1, h2, h3, h4');
+        headings.forEach(h => {
+            if (!h.id) {
+                h.id = h.textContent
+                    .toLowerCase()
+                    .replace(/[^\w\s-]/g, '')
+                    .trim()
+                    .replace(/\s+/g, '-');
+            }
+        });
+
+        // Highlight any code blocks marked.js's highlight didn't catch
+        if (typeof hljs !== 'undefined') {
+            content.querySelectorAll('pre code').forEach(block => {
+                if (!block.classList.contains('hljs')) {
+                    hljs.highlightElement(block);
+                }
+            });
+        }
+
+        buildTOC();
+        setupScrollSpy();
+        handleInitialHash();
+
+    } catch (err) {
+        content.innerHTML = `
+            <div class="error-box">
+                <h2>Could not load notes</h2>
+                <p>${err.message}</p>
+                <p style="margin-top:0.5rem;color:var(--text-secondary);font-size:0.85rem;">
+                    Expected at <code>${NOTES_URL}</code>
+                </p>
+            </div>`;
+    }
+}
+
+function buildTOC() {
+    const toc = document.getElementById('toc');
+    toc.innerHTML = '';
+    const headings = document.querySelectorAll('.content h2, .content h3');
+    if (headings.length === 0) {
+        toc.innerHTML = '<li><a href="#" style="color:var(--text-secondary);font-style:italic;">No headings</a></li>';
+        return;
+    }
+    headings.forEach(h => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = '#' + h.id;
+        a.textContent = h.textContent;
+        if (h.tagName === 'H3') a.classList.add('toc-h3');
+        a.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById(h.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            history.replaceState(null, '', '#' + h.id);
+            if (window.innerWidth <= 900) {
+                document.getElementById('sidebar').classList.remove('open');
+            }
+        });
+        li.appendChild(a);
+        toc.appendChild(li);
+    });
+}
+
+function setupScrollSpy() {
+    const links = document.querySelectorAll('.sidebar a[href^="#"]');
+    const map = {};
+    links.forEach(a => { map[a.getAttribute('href').slice(1)] = a; });
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const id = entry.target.id;
+            const link = map[id];
+            if (!link) return;
+            if (entry.isIntersecting) {
+                links.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            }
+        });
+    }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+
+    document.querySelectorAll('.content h2, .content h3').forEach(h => observer.observe(h));
+}
+
+function handleInitialHash() {
+    if (window.location.hash) {
+        const target = document.getElementById(window.location.hash.slice(1));
+        if (target) target.scrollIntoView({ behavior: 'auto', block: 'start' });
+    }
+}
+
+document.getElementById('sidebarToggle').addEventListener('click', () => {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('sidebar').classList.toggle('collapsed');
+});
+
+load();
+</script>
+</body>
+</html>

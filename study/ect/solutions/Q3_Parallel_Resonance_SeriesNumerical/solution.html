@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Q3 — Parallel Resonance (Theory) + Series Resonance (Numerical)</title>
+
+<!-- MathJax -->
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']]
+    }
+  };
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+  :root {
+    --bg: #fdfcf9;
+    --ink: #1a1a1a;
+    --muted: #555;
+    --accent: #0b6efd;
+    --accent-soft: #e7f0ff;
+    --green: #1f8a4c;
+    --green-soft: #e7f7ee;
+    --orange: #d97706;
+    --orange-soft: #fff4e0;
+    --red: #b91c1c;
+    --red-soft: #fee2e2;
+    --border: #d8d4cc;
+    --shadow: 0 2px 6px rgba(0,0,0,0.06);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.65;
+  }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 40px 28px 80px; }
+  header { border-bottom: 2px solid var(--ink); padding-bottom: 16px; margin-bottom: 28px; }
+  header .tag {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  h1 { font-size: 1.5rem; margin: 10px 0 6px; }
+  h2 {
+    font-size: 1.2rem;
+    border-left: 4px solid var(--accent);
+    padding-left: 10px;
+    margin-top: 32px;
+    color: #0b3d91;
+  }
+  h3 { font-size: 1.02rem; margin-top: 18px; color: #333; }
+  p, li { font-size: 0.98rem; }
+  .question {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--orange);
+    padding: 16px 20px;
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+    margin-bottom: 24px;
+  }
+  .step {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    box-shadow: var(--shadow);
+  }
+  .definition {
+    background: var(--accent-soft);
+    border-left: 4px solid var(--accent);
+    padding: 12px 18px;
+    border-radius: 6px;
+    margin: 14px 0;
+  }
+  .given {
+    background: var(--accent-soft);
+    padding: 14px 18px;
+    border-radius: 6px;
+    margin: 14px 0;
+    border-left: 4px solid var(--accent);
+  }
+  .answer-box {
+    background: var(--green-soft);
+    border: 2px solid var(--green);
+    border-radius: 8px;
+    padding: 14px 20px;
+    margin: 18px 0;
+    text-align: center;
+  }
+  .answer-box .label {
+    font-size: 0.85rem;
+    color: var(--green);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .warn {
+    background: var(--red-soft);
+    border-left: 4px solid var(--red);
+    padding: 10px 16px;
+    border-radius: 4px;
+    margin: 12px 0;
+    font-size: 0.95rem;
+  }
+  .note {
+    background: var(--orange-soft);
+    border-left: 4px solid var(--orange);
+    padding: 10px 16px;
+    border-radius: 4px;
+    margin: 12px 0;
+    font-size: 0.95rem;
+  }
+  table { border-collapse: collapse; width: 100%; margin: 14px 0; background: white; }
+  th, td { border: 1px solid var(--border); padding: 10px 12px; text-align: left; vertical-align: top; }
+  th { background: #f0eee7; font-weight: 600; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .figure { margin: 22px auto; text-align: center; }
+  .figure svg {
+    max-width: 100%; height: auto; background: #fff;
+    border: 1px solid var(--border); border-radius: 6px;
+    padding: 8px; box-shadow: var(--shadow);
+  }
+  .caption { font-size: 0.9rem; color: var(--muted); margin-top: 6px; font-style: italic; }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+    margin-top: 14px;
+  }
+  .summary-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--accent);
+    border-radius: 6px;
+    padding: 14px;
+    box-shadow: var(--shadow);
+  }
+  .summary-card .v { font-size: 1.2rem; font-weight: 700; color: var(--accent); margin-top: 4px; }
+  .summary-card .l { font-size: 0.85rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+  ul.tight li { margin-bottom: 4px; }
+  footer {
+    margin-top: 40px; color: var(--muted); font-size: 0.85rem;
+    text-align: center; border-top: 1px solid var(--border); padding-top: 16px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <span class="tag">Q3 (a) — [8 marks]</span>
+  <h1>Parallel R-L-C Resonance — Ideal &amp; Practical (Theory) + Series Resonance (Numerical)</h1>
+</header>
+
+<div class="question">
+  <strong>Problem.</strong> Define resonance in parallel R-L-C circuit with the help of a phasor diagram.
+  A <strong>220 V, 100 Hz</strong> AC source supplies a <em>series</em> circuit with a capacitor and a coil. If the coil has <strong>50 mΩ</strong> resistance and <strong>5 mH</strong> inductance, find the value of capacitor to create resonance. Also calculate:
+  <ol type="i">
+    <li>Voltage across R, L and C</li>
+    <li>Quality factor</li>
+  </ol>
+</div>
+
+<!-- ============== PART A: PARALLEL RLC THEORY ============== -->
+<h2>Part A · Resonance in a Parallel R-L-C Circuit</h2>
+
+<!-- Circuit -->
+<div class="figure">
+  <svg viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg">
+    <!-- Source -->
+    <line x1="50" y1="80"  x2="50" y2="180" stroke="#222" stroke-width="2"/>
+    <circle cx="50" cy="130" r="18" fill="white" stroke="#222" stroke-width="2"/>
+    <path d="M 38 130 q 6 -10 12 0 t 12 0" fill="none" stroke="#222" stroke-width="2"/>
+    <text x="20" y="200" font-size="13" font-weight="bold">V, ω</text>
+
+    <!-- Top rail -->
+    <line x1="50" y1="80"  x2="540" y2="80" stroke="#222" stroke-width="2"/>
+    <!-- Bottom rail -->
+    <line x1="50" y1="180" x2="540" y2="180" stroke="#222" stroke-width="2"/>
+
+    <!-- R branch -->
+    <line x1="170" y1="80"  x2="170" y2="105" stroke="#222" stroke-width="2"/>
+    <polyline points="170,105 160,113 180,127 160,141 180,155 170,163"
+              fill="none" stroke="#222" stroke-width="2"/>
+    <line x1="170" y1="163" x2="170" y2="180" stroke="#222" stroke-width="2"/>
+    <text x="186" y="135" font-size="14" font-weight="bold">R</text>
+    <text x="186" y="152" font-size="12" fill="#0b6efd">I_R</text>
+
+    <!-- L branch -->
+    <line x1="320" y1="80"  x2="320" y2="100" stroke="#222" stroke-width="2"/>
+    <path d="M 320 100 q -14 8 0 16 q -14 8 0 16 q -14 8 0 16 q -14 8 0 16"
+          fill="none" stroke="#222" stroke-width="2"/>
+    <line x1="320" y1="164" x2="320" y2="180" stroke="#222" stroke-width="2"/>
+    <text x="336" y="135" font-size="14" font-weight="bold">L</text>
+    <text x="336" y="152" font-size="12" fill="#d97706">I_L</text>
+
+    <!-- C branch -->
+    <line x1="470" y1="80"  x2="470" y2="120" stroke="#222" stroke-width="2"/>
+    <line x1="455" y1="120" x2="485" y2="120" stroke="#222" stroke-width="2.5"/>
+    <line x1="455" y1="128" x2="485" y2="128" stroke="#222" stroke-width="2.5"/>
+    <line x1="470" y1="128" x2="470" y2="180" stroke="#222" stroke-width="2"/>
+    <text x="490" y="135" font-size="14" font-weight="bold">C</text>
+    <text x="490" y="152" font-size="12" fill="#1f8a4c">I_C</text>
+
+    <!-- Total current arrow -->
+    <text x="80" y="70" font-size="13" fill="#444">I →</text>
+  </svg>
+  <div class="caption">Fig. 1 — Ideal parallel R-L-C circuit. The same voltage V appears across each branch.</div>
+</div>
+
+<p>Each branch sees the same supply voltage $V$. The branch currents are:</p>
+$$I_R = \frac{V}{R}\;(\text{in phase with }V),\quad I_L = \frac{V}{\omega L}\;(\text{lags }V \text{ by } 90^\circ),\quad I_C = V\omega C\;(\text{leads }V \text{ by } 90^\circ)$$
+
+<p>The total line current is</p>
+$$\bar{I} = \bar{I}_R + \bar{I}_L + \bar{I}_C = \frac{V}{R} + j\!\left(V\omega C - \frac{V}{\omega L}\right)$$
+
+<div class="definition">
+  <strong>Resonance (parallel R-L-C):</strong> The condition at which the inductive susceptance equals the capacitive susceptance, so the reactive components of $I_L$ and $I_C$ cancel. The line current $I$ is then in phase with $V$ (unity p.f.) and is minimum.
+</div>
+
+$$I_C = I_L \;\Rightarrow\; V\omega_0 C = \frac{V}{\omega_0 L} \;\Rightarrow\; \boxed{\;\omega_0 = \dfrac{1}{\sqrt{LC}}\;}$$
+
+<!-- Phasor diagram for parallel resonance -->
+<div class="figure">
+  <svg viewBox="0 0 540 320" xmlns="http://www.w3.org/2000/svg">
+    <!-- axes -->
+    <line x1="60"  y1="180" x2="500" y2="180" stroke="#bbb" stroke-width="1"/>
+    <line x1="270" y1="40"  x2="270" y2="300" stroke="#bbb" stroke-width="1"/>
+
+    <!-- V phasor (reference, along +x) -->
+    <line x1="270" y1="180" x2="470" y2="180" stroke="#0b6efd" stroke-width="3"/>
+    <polygon points="470,180 460,174 460,186" fill="#0b6efd"/>
+    <text x="475" y="185" font-size="13" font-weight="bold" fill="#0b6efd">V</text>
+
+    <!-- I_R along V -->
+    <line x1="270" y1="180" x2="400" y2="180" stroke="#444" stroke-width="3"/>
+    <polygon points="400,180 392,175 392,185" fill="#444"/>
+    <text x="345" y="172" font-size="13" font-weight="bold" fill="#444">I_R</text>
+
+    <!-- I_C up (leads) -->
+    <line x1="270" y1="180" x2="270" y2="80" stroke="#1f8a4c" stroke-width="3"/>
+    <polygon points="270,80 264,90 276,90" fill="#1f8a4c"/>
+    <text x="278" y="100" font-size="13" font-weight="bold" fill="#1f8a4c">I_C (leads V by 90°)</text>
+
+    <!-- I_L down (lags) -->
+    <line x1="270" y1="180" x2="270" y2="280" stroke="#d97706" stroke-width="3"/>
+    <polygon points="270,280 264,270 276,270" fill="#d97706"/>
+    <text x="278" y="265" font-size="13" font-weight="bold" fill="#d97706">I_L (lags V by 90°)</text>
+
+    <!-- Note: At resonance |I_C| = |I_L| ⇒ they cancel -->
+    <text x="60" y="30" font-size="14" font-weight="bold">Phasor diagram — parallel R-L-C at resonance</text>
+    <text x="60" y="305" font-size="12" fill="#555">At resonance: |I_L| = |I_C| → they cancel; total line current I = I_R only, in phase with V.</text>
+  </svg>
+  <div class="caption">Fig. 2 — At resonance $|I_L|=|I_C|$ but oppositely directed, so they cancel. Net current $I = I_R$, minimum and in phase with V.</div>
+</div>
+
+<h3>Properties at parallel resonance</h3>
+<ul class="tight">
+  <li>Net susceptance is zero ⇒ admittance is minimum, equal to $1/R$.</li>
+  <li>Impedance is <em>maximum</em> (≈ R for ideal case): often called a <strong>rejector circuit</strong>.</li>
+  <li>Line current $I = V/R$ is <strong>minimum</strong>.</li>
+  <li>Power factor is unity, current in phase with voltage.</li>
+  <li>Branch currents $I_L$ and $I_C$ can be much larger than the line current $I$ (current magnification by $Q$).</li>
+</ul>
+
+<!-- ============== NEW PART: PRACTICAL PARALLEL RESONANT CIRCUIT ============== -->
+<h2>Part A · 2 — <em>Practical</em> Parallel Resonant Circuit (Tank Circuit)</h2>
+
+<p>In a real-world parallel resonant circuit, the inductor is not pure — its winding has a small resistance $R$ in series with $L$. The capacitor is taken as essentially loss-free. This R–L branch is placed in parallel with C and is the <strong>practical parallel (or "tank") circuit</strong>.</p>
+
+<!-- Practical tank circuit -->
+<div class="figure">
+  <svg viewBox="0 0 600 240" xmlns="http://www.w3.org/2000/svg">
+    <!-- source -->
+    <line x1="50" y1="80"  x2="50" y2="180" stroke="#222" stroke-width="2"/>
+    <circle cx="50" cy="130" r="18" fill="white" stroke="#222" stroke-width="2"/>
+    <path d="M 38 130 q 6 -10 12 0 t 12 0" fill="none" stroke="#222" stroke-width="2"/>
+    <text x="20" y="200" font-size="13" font-weight="bold">V, ω</text>
+
+    <!-- top + bottom rails -->
+    <line x1="50" y1="80"  x2="540" y2="80"  stroke="#222" stroke-width="2"/>
+    <line x1="50" y1="180" x2="540" y2="180" stroke="#222" stroke-width="2"/>
+
+    <!-- Coil branch: R in series with L (vertical) -->
+    <line x1="240" y1="80" x2="240" y2="100" stroke="#222" stroke-width="2"/>
+    <polyline points="240,100 230,108 250,122 230,136 250,150 240,158"
+              fill="none" stroke="#222" stroke-width="2"/>
+    <text x="258" y="130" font-size="14" font-weight="bold">R</text>
+    <path d="M 240 158 q -14 8 0 16 q -14 8 0 16"
+          fill="none" stroke="#222" stroke-width="2"/>
+    <line x1="240" y1="158" x2="240" y2="170" stroke="#222" stroke-width="2"/>
+    <text x="258" y="180" font-size="14" font-weight="bold">L</text>
+    <line x1="240" y1="178" x2="240" y2="180" stroke="#222" stroke-width="2"/>
+    <text x="200" y="70" font-size="12" fill="#d97706">Coil branch (R + jωL)</text>
+
+    <!-- C branch -->
+    <line x1="440" y1="80"  x2="440" y2="120" stroke="#222" stroke-width="2"/>
+    <line x1="425" y1="120" x2="455" y2="120" stroke="#222" stroke-width="2.5"/>
+    <line x1="425" y1="128" x2="455" y2="128" stroke="#222" stroke-width="2.5"/>
+    <line x1="440" y1="128" x2="440" y2="180" stroke="#222" stroke-width="2"/>
+    <text x="465" y="130" font-size="14" font-weight="bold">C</text>
+
+    <text x="80" y="70" font-size="13" fill="#444">I →</text>
+  </svg>
+  <div class="caption">Fig. 3 — Practical parallel resonant ("tank") circuit: the inductor's winding resistance R is in series with L; this branch is in parallel with the capacitor C.</div>
+</div>
+
+<h3>Derivation of the resonant frequency $f_r$</h3>
+
+<p>Admittance of the coil branch:</p>
+$$Y_L = \frac{1}{R + j\omega L} = \frac{R - j\omega L}{R^2 + \omega^2 L^2}$$
+
+<p>Admittance of the capacitor branch:</p>
+$$Y_C = j\omega C$$
+
+<p>Total admittance of the parallel combination:</p>
+$$Y = Y_L + Y_C = \underbrace{\frac{R}{R^2 + \omega^2 L^2}}_{\text{conductance } G} + j\!\left[\omega C - \frac{\omega L}{R^2 + \omega^2 L^2}\right]$$
+
+<div class="definition">
+  <strong>Resonance condition:</strong> The circuit is at resonance when the supply current is in phase with the supply voltage, i.e. when the imaginary part of $Y$ (the net susceptance) is zero.
+</div>
+
+<p>Setting the imaginary part to zero:</p>
+$$\omega_r C = \frac{\omega_r L}{R^2 + \omega_r^2 L^2}$$
+$$R^2 + \omega_r^2 L^2 = \frac{L}{C}$$
+$$\omega_r^2 L^2 = \frac{L}{C} - R^2$$
+$$\omega_r^2 = \frac{1}{LC} - \frac{R^2}{L^2}$$
+
+<div class="answer-box">
+  <div class="label">Resonant frequency — practical parallel circuit</div>
+  $$\boxed{\;\omega_r = \sqrt{\dfrac{1}{LC} - \dfrac{R^2}{L^2}}\;}$$
+  $$\boxed{\;f_r = \dfrac{1}{2\pi}\sqrt{\dfrac{1}{LC} - \dfrac{R^2}{L^2}}\;}$$
+</div>
+
+<p>This can also be written as $\;f_r = \dfrac{1}{2\pi\sqrt{LC}}\sqrt{1 - \dfrac{R^2 C}{L}}\;$ — the ideal resonant frequency multiplied by the "practical" correction factor.</p>
+
+<h3>Dynamic resistance (impedance at resonance)</h3>
+<p>At $\omega = \omega_r$ the susceptance vanishes, so the admittance is purely real:</p>
+$$Y(\omega_r) = \frac{R}{R^2 + \omega_r^2 L^2} = \frac{R}{L/C} = \frac{RC}{L}$$
+
+$$\boxed{\;Z_r \;=\; \dfrac{1}{Y(\omega_r)} \;=\; \dfrac{L}{RC}\;}$$
+
+<p>$Z_r$ is called the <strong>dynamic resistance</strong>. It is large but <em>finite</em>, unlike the ideal case (∞). The line current at resonance is the minimum:</p>
+$$I_{\min} = \frac{V}{Z_r} = \frac{V R C}{L}$$
+
+<!-- Comparison table -->
+<h3>How does the practical circuit differ from the ideal?</h3>
+<table>
+  <thead>
+    <tr><th>Property</th><th>Ideal (R = 0)</th><th>Practical (R ≠ 0)</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Resonant frequency</td>
+      <td>$\omega_0 = \dfrac{1}{\sqrt{LC}}$</td>
+      <td>$\omega_r = \sqrt{\dfrac{1}{LC} - \dfrac{R^2}{L^2}} &lt; \omega_0$</td>
+    </tr>
+    <tr>
+      <td>Impedance at resonance</td>
+      <td>$Z \to \infty$</td>
+      <td>$Z_r = \dfrac{L}{RC}$ (finite — "dynamic resistance")</td>
+    </tr>
+    <tr>
+      <td>Line current at resonance</td>
+      <td>$I = 0$</td>
+      <td>$I_{\min} = \dfrac{V R C}{L}$ (small but non-zero)</td>
+    </tr>
+    <tr>
+      <td>Power factor at resonance</td>
+      <td>Unity (cos φ = 1)</td>
+      <td>Unity (cos φ = 1) — same condition, by definition</td>
+    </tr>
+    <tr>
+      <td>Quality factor</td>
+      <td>Q → ∞ (no losses)</td>
+      <td>$Q = \dfrac{\omega_r L}{R} = \dfrac{1}{R}\sqrt{\dfrac{L}{C} - R^2}$ (finite)</td>
+    </tr>
+    <tr>
+      <td>Bandwidth</td>
+      <td>Zero (infinitely sharp peak)</td>
+      <td>BW $= \dfrac{R}{L}$ (finite, non-zero)</td>
+    </tr>
+    <tr>
+      <td>Selectivity</td>
+      <td>Perfect — passes only $f_0$</td>
+      <td>Limited by R; broader peak as R increases</td>
+    </tr>
+    <tr>
+      <td>Energy loss</td>
+      <td>None — sustained oscillation</td>
+      <td>Resistor dissipates $I^2 R$ each cycle</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="note">
+  <strong>Key insight:</strong> The presence of coil resistance does <em>two</em> important things:
+  <ol style="margin: 6px 0 0 18px;">
+    <li>Shifts the resonant frequency <em>down</em> (by the $R^2/L^2$ term), and</li>
+    <li>Keeps the line current finite, giving the circuit a measurable bandwidth and a finite Q-factor.</li>
+  </ol>
+  If $\dfrac{R^2 C}{L} \geq 1$, the inner expression becomes zero or negative — no resonance is possible. Practical circuits are designed so that $R \ll \sqrt{L/C}$, keeping $f_r$ very close to the ideal $f_0$.
+</div>
+
+<!-- ============== PART B: NUMERICAL ============== -->
+<h2>Part B · Numerical — Series R-L-C Resonance</h2>
+
+<div class="given">
+  <strong>Given:</strong> $V = 220\ \text{V},\ f = 100\ \text{Hz},\ R = 50\ \text{m}\Omega = 0.05\ \Omega,\ L = 5\ \text{mH} = 5\times10^{-3}\ \text{H}.$
+</div>
+
+<div class="note">
+  The numerical describes a <em>series</em> connection of coil and capacitor (a series R-L-C). The resonance condition for a series circuit is also $\omega_0 = 1/\sqrt{LC}$.
+</div>
+
+<!-- Step 1: Find C -->
+<div class="step">
+  <h3>Step 1 — Capacitance for resonance</h3>
+  <p>At resonance $X_L = X_C$:</p>
+  $$\omega_0 L = \frac{1}{\omega_0 C} \;\Rightarrow\; C = \frac{1}{\omega_0^{2}\,L}$$
+  <p>With $\omega_0 = 2\pi f = 2\pi(100) = 628.32\ \text{rad/s}$:</p>
+  $$C = \frac{1}{(628.32)^2 \times 5\times10^{-3}} = \frac{1}{394\,784 \times 5\times10^{-3}} = \frac{1}{1973.92}$$
+
+  <div class="answer-box">
+    <div class="label">Resonating capacitance</div>
+    $$\boxed{\,C \;\approx\; 5.066\times 10^{-4}\ \text{F} \;=\; 506.6\ \mu\text{F}\,}$$
+  </div>
+</div>
+
+<!-- Step 2: reactances and current -->
+<div class="step">
+  <h3>Step 2 — Reactances and resonant current</h3>
+  $$X_L = \omega_0 L = 628.32 \times 0.005 = 3.1416\ \Omega$$
+  $$X_C = \frac{1}{\omega_0 C} = X_L = 3.1416\ \Omega \;(\text{by resonance})$$
+  <p>Net impedance at resonance is purely resistive: $Z = R = 0.05\ \Omega$.</p>
+  $$I_0 = \frac{V}{R} = \frac{220}{0.05} = 4400\ \text{A}$$
+  <div class="warn">
+    <strong>Note (sanity check):</strong> The 4.4 kA current is enormous because $R$ is only 50 mΩ — a textbook idealization to show the dramatic voltage magnification at resonance, not a practical circuit.
+  </div>
+</div>
+
+<!-- Step 3: voltages -->
+<div class="step">
+  <h3>Step 3 (i) — Voltages across R, L and C</h3>
+  $$V_R = I_0\,R = 4400 \times 0.05 = 220\ \text{V}$$
+  $$V_L = I_0\,X_L = 4400 \times 3.1416 = 13\,823\ \text{V} \;\approx\; 13.82\ \text{kV}$$
+  $$V_C = I_0\,X_C = 4400 \times 3.1416 = 13\,823\ \text{V} \;\approx\; 13.82\ \text{kV}$$
+  <p>$V_L$ and $V_C$ are equal in magnitude but $180°$ out of phase, so they cancel — only $V_R = V$ appears across the series combination, as expected at resonance.</p>
+</div>
+
+<!-- Phasor diagram for series resonance -->
+<div class="figure">
+  <svg viewBox="0 0 580 280" xmlns="http://www.w3.org/2000/svg">
+    <!-- axes -->
+    <line x1="50"  y1="160" x2="540" y2="160" stroke="#bbb" stroke-width="1"/>
+    <line x1="180" y1="20"  x2="180" y2="260" stroke="#bbb" stroke-width="1"/>
+
+    <!-- I along +x (in phase with V at resonance) -->
+    <line x1="180" y1="160" x2="350" y2="160" stroke="#444" stroke-width="3"/>
+    <polygon points="350,160 342,154 342,166" fill="#444"/>
+    <text x="280" y="152" font-size="13" font-weight="bold" fill="#444">I (= V/R)</text>
+
+    <!-- V_R along I -->
+    <line x1="180" y1="175" x2="280" y2="175" stroke="#0b6efd" stroke-width="3"/>
+    <polygon points="280,175 272,170 272,180" fill="#0b6efd"/>
+    <text x="200" y="195" font-size="13" font-weight="bold" fill="#0b6efd">V_R = 220 V</text>
+
+    <!-- V_L upward -->
+    <line x1="180" y1="160" x2="180" y2="50" stroke="#1f8a4c" stroke-width="3"/>
+    <polygon points="180,50 174,60 186,60" fill="#1f8a4c"/>
+    <text x="190" y="80" font-size="13" font-weight="bold" fill="#1f8a4c">V_L ≈ 13.82 kV (leads I by 90°)</text>
+
+    <!-- V_C downward -->
+    <line x1="180" y1="160" x2="180" y2="250" stroke="#d97706" stroke-width="3"/>
+    <polygon points="180,250 174,240 186,240" fill="#d97706"/>
+    <text x="190" y="240" font-size="13" font-weight="bold" fill="#d97706">V_C ≈ 13.82 kV (lags I by 90°)</text>
+
+    <text x="60" y="20" font-size="14" font-weight="bold">Phasor diagram — series R-L-C at resonance</text>
+  </svg>
+  <div class="caption">Fig. 3 — Series resonance: $V_L$ and $V_C$ are equal &amp; opposite, leaving only $V_R = V$. Note $V_L$ and $V_C$ here are ~63× the supply voltage — voltage magnification.</div>
+</div>
+
+<!-- Step 4: Q factor -->
+<div class="step">
+  <h3>Step 3 (ii) — Quality factor</h3>
+  $$Q = \frac{\omega_0 L}{R} = \frac{X_L}{R} = \frac{3.1416}{0.05}$$
+
+  <div class="answer-box">
+    <div class="label">Quality factor</div>
+    $$\boxed{\,Q \;\approx\; 62.83\,}$$
+  </div>
+
+  <p>Cross-check using $Q = \dfrac{1}{R}\sqrt{\dfrac{L}{C}}$:</p>
+  $$Q = \frac{1}{0.05}\sqrt{\frac{5\times 10^{-3}}{506.6\times 10^{-6}}} = 20 \times \sqrt{9.869} = 20 \times 3.1416 = 62.83\ \checkmark$$
+
+  <p>Consistency with voltage magnification: $V_L / V = 13823 / 220 \approx 62.83 = Q$ ✓</p>
+</div>
+
+<!-- ============ Final summary ============ -->
+<h2>Final Answers</h2>
+<table>
+  <thead>
+    <tr><th>Quantity</th><th class="num">Value</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Capacitance for resonance, $C$</td><td class="num"><strong>506.6 µF</strong></td></tr>
+    <tr><td>Resonant (line) current, $I_0$</td><td class="num">4400 A</td></tr>
+    <tr><td>Voltage across $R$</td><td class="num">220 V</td></tr>
+    <tr><td>Voltage across $L$</td><td class="num"><strong>≈ 13.82 kV</strong></td></tr>
+    <tr><td>Voltage across $C$</td><td class="num"><strong>≈ 13.82 kV</strong></td></tr>
+    <tr><td>Quality factor, $Q$</td><td class="num"><strong>62.83</strong></td></tr>
+  </tbody>
+</table>
+
+<div class="summary-grid">
+  <div class="summary-card" style="border-top-color: var(--green);">
+    <div class="l">Capacitor</div>
+    <div class="v" style="color:var(--green);">C ≈ 506.6 µF</div>
+  </div>
+  <div class="summary-card">
+    <div class="l">V across R</div>
+    <div class="v">220 V</div>
+  </div>
+  <div class="summary-card" style="border-top-color: var(--orange);">
+    <div class="l">V across L = V across C</div>
+    <div class="v" style="color:var(--orange);">≈ 13.82 kV</div>
+  </div>
+  <div class="summary-card" style="border-top-color: var(--red);">
+    <div class="l">Quality factor</div>
+    <div class="v" style="color:var(--red);">Q ≈ 62.83</div>
+  </div>
+</div>
+
+<footer>
+  Solution rendered with MathJax · Parallel resonance theory + Series resonance numerical
+</footer>
+
+</div>
+</body>
+</html>

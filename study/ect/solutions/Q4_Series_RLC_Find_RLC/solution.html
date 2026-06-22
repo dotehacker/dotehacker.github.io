@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Q4 — Series R-L-C: Determine R, L, C from Resonance Data</title>
+
+<!-- MathJax -->
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']]
+    }
+  };
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+  :root {
+    --bg: #fdfcf9;
+    --ink: #1a1a1a;
+    --muted: #555;
+    --accent: #0b6efd;
+    --accent-soft: #e7f0ff;
+    --green: #1f8a4c;
+    --green-soft: #e7f7ee;
+    --orange: #d97706;
+    --orange-soft: #fff4e0;
+    --purple: #6b21a8;
+    --purple-soft: #f3e8ff;
+    --border: #d8d4cc;
+    --shadow: 0 2px 6px rgba(0,0,0,0.06);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.65;
+  }
+  .wrap { max-width: 940px; margin: 0 auto; padding: 40px 28px 80px; }
+  header { border-bottom: 2px solid var(--ink); padding-bottom: 16px; margin-bottom: 28px; }
+  header .tag {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  h1 { font-size: 1.5rem; margin: 10px 0 6px; }
+  h2 {
+    font-size: 1.2rem;
+    border-left: 4px solid var(--accent);
+    padding-left: 10px;
+    margin-top: 32px;
+    color: #0b3d91;
+  }
+  h3 { font-size: 1.02rem; margin-top: 18px; color: #333; }
+  p, li { font-size: 0.98rem; }
+  .question {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--orange);
+    padding: 16px 20px;
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+    margin-bottom: 24px;
+  }
+  .step {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    box-shadow: var(--shadow);
+  }
+  .given {
+    background: var(--accent-soft);
+    padding: 14px 18px;
+    border-radius: 6px;
+    margin: 14px 0;
+    border-left: 4px solid var(--accent);
+  }
+  .answer-box {
+    background: var(--green-soft);
+    border: 2px solid var(--green);
+    border-radius: 8px;
+    padding: 14px 20px;
+    margin: 18px 0;
+    text-align: center;
+  }
+  .answer-box .label {
+    font-size: 0.85rem;
+    color: var(--green);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .note {
+    background: var(--orange-soft);
+    border-left: 4px solid var(--orange);
+    padding: 10px 16px;
+    border-radius: 4px;
+    margin: 12px 0;
+    font-size: 0.95rem;
+  }
+  table { border-collapse: collapse; width: 100%; margin: 14px 0; background: white; }
+  th, td { border: 1px solid var(--border); padding: 10px 12px; text-align: left; vertical-align: top; }
+  th { background: #f0eee7; font-weight: 600; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .figure { margin: 22px auto; text-align: center; }
+  .figure svg {
+    max-width: 100%; height: auto; background: #fff;
+    border: 1px solid var(--border); border-radius: 6px;
+    padding: 8px; box-shadow: var(--shadow);
+  }
+  .caption { font-size: 0.9rem; color: var(--muted); margin-top: 6px; font-style: italic; }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+    margin-top: 14px;
+  }
+  .summary-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--accent);
+    border-radius: 6px;
+    padding: 14px;
+    box-shadow: var(--shadow);
+  }
+  .summary-card .v { font-size: 1.25rem; font-weight: 700; color: var(--accent); margin-top: 4px; }
+  .summary-card .l { font-size: 0.85rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+  ul.tight li { margin-bottom: 4px; }
+  footer {
+    margin-top: 40px; color: var(--muted); font-size: 0.85rem;
+    text-align: center; border-top: 1px solid var(--border); padding-top: 16px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <span class="tag">Q4 (a)</span>
+  <h1>Series R-L-C: Determine R, L and C from Resonance Conditions</h1>
+</header>
+
+<div class="question">
+  <strong>Problem.</strong> A <strong>50 Ω</strong> resistor is connected in series with a coil having resistance $R$, inductance $L$, and a capacitor $C$, supplied from a <strong>100 V</strong> variable-frequency supply. At a frequency of <strong>200 Hz</strong> the <em>maximum current</em> of <strong>0.7 A</strong> flows through the circuit, and the voltage across the capacitor is <strong>200 V</strong>. Determine the values of R, L and C.
+</div>
+
+<!-- Circuit diagram -->
+<div class="figure">
+  <svg viewBox="0 0 640 240" xmlns="http://www.w3.org/2000/svg">
+    <!-- outer loop -->
+    <rect x="50" y="40" width="540" height="140" fill="none" stroke="#222" stroke-width="2"/>
+
+    <!-- 50 ohm resistor -->
+    <text x="80" y="32" font-size="13" font-weight="bold">R₁ = 50 Ω</text>
+    <polyline points="80,40 90,30 110,50 130,30 150,50 170,30 190,40"
+              fill="none" stroke="#222" stroke-width="2"/>
+
+    <!-- coil R -->
+    <text x="225" y="32" font-size="13" font-weight="bold">R</text>
+    <polyline points="220,40 228,32 244,48 260,32 276,48 292,32 300,40"
+              fill="none" stroke="#222" stroke-width="2"/>
+
+    <!-- coil L -->
+    <text x="335" y="32" font-size="13" font-weight="bold">L</text>
+    <path d="M 320 40 q 8 -16 16 0 q 8 -16 16 0 q 8 -16 16 0 q 8 -16 16 0"
+          fill="none" stroke="#222" stroke-width="2"/>
+
+    <!-- bracket showing 'coil' -->
+    <path d="M 215 60 v 8 h 175 v -8" fill="none" stroke="#888" stroke-width="1.2" stroke-dasharray="4 3"/>
+    <text x="280" y="84" font-size="12" fill="#666">coil (R, L)</text>
+
+    <!-- Capacitor C -->
+    <text x="455" y="32" font-size="13" font-weight="bold">C</text>
+    <line x1="400" y1="40" x2="450" y2="40" stroke="#222" stroke-width="2"/>
+    <line x1="450" y1="25" x2="450" y2="55" stroke="#222" stroke-width="2.5"/>
+    <line x1="458" y1="25" x2="458" y2="55" stroke="#222" stroke-width="2.5"/>
+    <line x1="458" y1="40" x2="590" y2="40" stroke="#222" stroke-width="2"/>
+
+    <!-- V_C label with arrow brackets -->
+    <text x="430" y="80" font-size="12" fill="#d97706">V_C = 200 V</text>
+
+    <!-- Source -->
+    <line x1="320" y1="180" x2="320" y2="200" stroke="#222" stroke-width="2"/>
+    <circle cx="320" cy="180" r="18" fill="white" stroke="#222" stroke-width="2"/>
+    <path d="M 308 180 q 6 -10 12 0 t 12 0" fill="none" stroke="#222" stroke-width="2"/>
+    <text x="245" y="220" font-size="13" font-weight="bold">100 V, f = 200 Hz (variable)</text>
+  </svg>
+  <div class="caption">Fig. 1 — Series circuit: external 50 Ω, coil (R, L), capacitor C. Maximum current at f = 200 Hz indicates resonance.</div>
+</div>
+
+<div class="given">
+  <strong>Given:</strong>
+  $R_1 = 50\ \Omega,\;\; V = 100\ \text{V},\;\; f_0 = 200\ \text{Hz (resonant)},\;\; I_{\max} = 0.7\ \text{A},\;\; V_C = 200\ \text{V}.$
+</div>
+
+<div class="note">
+  "Maximum current" at f = 200 Hz ⇒ this is the <strong>resonant frequency</strong> $f_0$. At resonance $X_L = X_C$, so the impedance is purely resistive: $Z = R_1 + R$.
+</div>
+
+<!-- Step 1: Find R -->
+<div class="step">
+  <h3>Step 1 — Total resistance and coil resistance R</h3>
+  <p>At resonance, current is maximum and the impedance equals total resistance:</p>
+  $$I_{\max} = \frac{V}{R_1 + R} \;\Rightarrow\; R_1 + R = \frac{V}{I_{\max}} = \frac{100}{0.7} = 142.857\ \Omega$$
+  $$R = 142.857 - 50 = 92.857\ \Omega$$
+
+  <div class="answer-box">
+    <div class="label">Coil resistance</div>
+    $$\boxed{\,R \;\approx\; 92.86\ \Omega\,}$$
+  </div>
+</div>
+
+<!-- Step 2: Find C -->
+<div class="step">
+  <h3>Step 2 — Capacitance C from voltage across C</h3>
+  <p>Voltage across the capacitor:</p>
+  $$V_C = I_{\max}\,X_C \;\Rightarrow\; X_C = \frac{V_C}{I_{\max}} = \frac{200}{0.7} = 285.71\ \Omega$$
+  <p>With $\omega_0 = 2\pi f_0 = 2\pi(200) = 1256.64\ \text{rad/s}$:</p>
+  $$C = \frac{1}{\omega_0\,X_C} = \frac{1}{1256.64 \times 285.71} = \frac{1}{359\,040}$$
+
+  <div class="answer-box">
+    <div class="label">Capacitance</div>
+    $$\boxed{\,C \;\approx\; 2.785\times 10^{-6}\ \text{F} \;=\; 2.785\ \mu\text{F}\,}$$
+  </div>
+</div>
+
+<!-- Step 3: Find L -->
+<div class="step">
+  <h3>Step 3 — Inductance L (using $X_L = X_C$ at resonance)</h3>
+  $$X_L = X_C = 285.71\ \Omega$$
+  $$L = \frac{X_L}{\omega_0} = \frac{285.71}{1256.64}$$
+
+  <div class="answer-box">
+    <div class="label">Inductance</div>
+    $$\boxed{\,L \;\approx\; 0.2274\ \text{H} \;=\; 227.4\ \text{mH}\,}$$
+  </div>
+</div>
+
+<!-- Verification -->
+<div class="step">
+  <h3>Verification</h3>
+  <p>Resonant frequency from computed L and C:</p>
+  $$f_0 = \frac{1}{2\pi\sqrt{LC}} = \frac{1}{2\pi\sqrt{0.2274 \times 2.785\times10^{-6}}}
+        = \frac{1}{2\pi\sqrt{6.333\times10^{-7}}}
+        \approx 200\ \text{Hz}\;\;\checkmark$$
+  <p>Voltage magnification factor $= V_C / V = 200/100 = 2$. Compare with the quality factor:</p>
+  $$Q = \frac{X_L}{R_1 + R} = \frac{285.71}{142.857} = 2 \;\;\checkmark$$
+</div>
+
+<!-- Final summary -->
+<h2>Final Answers</h2>
+<table>
+  <thead>
+    <tr><th>Quantity</th><th>Symbol</th><th class="num">Value</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Coil resistance</td><td>R</td><td class="num"><strong>92.86 Ω</strong></td></tr>
+    <tr><td>Coil inductance</td><td>L</td><td class="num"><strong>0.2274 H (227.4 mH)</strong></td></tr>
+    <tr><td>Capacitance</td><td>C</td><td class="num"><strong>2.785 µF</strong></td></tr>
+    <tr><td>Total circuit resistance</td><td>R₁ + R</td><td class="num">142.86 Ω</td></tr>
+    <tr><td>Reactances at resonance</td><td>X_L = X_C</td><td class="num">285.71 Ω</td></tr>
+    <tr><td>Quality factor</td><td>Q</td><td class="num">2</td></tr>
+  </tbody>
+</table>
+
+<div class="summary-grid">
+  <div class="summary-card">
+    <div class="l">Coil resistance</div>
+    <div class="v">R ≈ 92.86 Ω</div>
+  </div>
+  <div class="summary-card" style="border-top-color: var(--orange);">
+    <div class="l">Inductance</div>
+    <div class="v" style="color:var(--orange);">L ≈ 227.4 mH</div>
+  </div>
+  <div class="summary-card" style="border-top-color: var(--green);">
+    <div class="l">Capacitance</div>
+    <div class="v" style="color:var(--green);">C ≈ 2.785 µF</div>
+  </div>
+</div>
+
+<footer>
+  Solution rendered with MathJax · Series R-L-C resonance — finding R, L, C from current and V_C
+</footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study — Tatva</title>
+    <meta name="description" content="Study materials by Sumit Yadav — electric circuit theory notes, astronomy visualizations, lunar calendar, and Python coding-screen prep.">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-primary: #0f0f1a;
+            --bg-secondary: #1a1a2e;
+            --bg-card: #16213e;
+            --bg-card-hover: #1e2a4e;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0b0;
+            --accent-blue: #00d2ff;
+            --accent-yellow: #ffd93d;
+            --accent-green: #6bcb77;
+            --accent-purple: #c56cf0;
+            --accent-red: #ff6b6b;
+            --border: #2a2a4a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            padding: 0.9rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .topbar a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .topbar a:hover { text-decoration: underline; }
+        .topbar .crumb {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        .topbar .crumb strong { color: var(--text-primary); }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem 4rem;
+        }
+
+        header.hero {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        header.hero h1 {
+            font-size: 2.4rem;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.6rem;
+        }
+        header.hero p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.6rem 1.6rem 1.4rem;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .card:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent-blue);
+            background: var(--bg-card-hover);
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--accent-color, var(--accent-blue));
+        }
+        .card[data-accent="blue"] { --accent-color: var(--accent-blue); }
+        .card[data-accent="purple"] { --accent-color: var(--accent-purple); }
+        .card[data-accent="yellow"] { --accent-color: var(--accent-yellow); }
+        .card[data-accent="green"] { --accent-color: var(--accent-green); }
+        .card[data-accent="red"] { --accent-color: var(--accent-red); }
+
+        .card .icon {
+            font-size: 1.8rem;
+            margin-bottom: 0.8rem;
+        }
+        .card h3 {
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            margin-bottom: 0.4rem;
+        }
+        .card .tagline {
+            color: var(--accent-color, var(--accent-blue));
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 0.7rem;
+            font-weight: 600;
+        }
+        .card p {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            flex-grow: 1;
+            margin-bottom: 1rem;
+        }
+        .card .meta {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+        .card .meta span {
+            background: var(--bg-secondary);
+            padding: 0.15rem 0.55rem;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
+
+        footer.back {
+            text-align: center;
+            margin-top: 3rem;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+        footer.back a {
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
+        footer.back a:hover { text-decoration: underline; }
+
+        @media (max-width: 600px) {
+            header.hero h1 { font-size: 1.8rem; }
+            .container { padding: 2rem 1rem 3rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="topbar">
+    <a href="../">Tatva</a>
+    <span class="crumb">› <strong>Study</strong></span>
+</div>
+
+<div class="container">
+    <header class="hero">
+        <h1>Study Materials</h1>
+        <p>Notes, visualizations, and references I've made for myself and shared in case they're useful to others.</p>
+    </header>
+
+    <div class="grid">
+
+        <a class="card" data-accent="red" href="nepal-budget-2083-84/">
+            <div class="icon">🇳🇵</div>
+            <div class="tagline">Public Finance</div>
+            <h3>Nepal Federal Budget 2083/84</h3>
+            <p>A visual explainer of the बजेट भाषण (FY 2083/84) — headline numbers, sector allocations and structural reforms — plus the full speech in Nepali with English summaries, fully searchable.</p>
+            <div class="meta">
+                <span>रु २१,२४ अर्ब</span>
+                <span>22 sections</span>
+                <span>Searchable</span>
+            </div>
+        </a>
+
+        <a class="card" data-accent="yellow" href="../posts/2026/05/23/git-govind/">
+            <div class="icon">🪈</div>
+            <div class="tagline">Literature</div>
+            <h3>Gita Govinda</h3>
+            <p>Jayadeva's song of Radha and Govinda — a chapter-by-chapter retelling across all twelve cantos, with the famed Sanskrit verses.</p>
+            <div class="meta">
+                <span>12 cantos</span>
+                <span>Sanskrit verses</span>
+            </div>
+        </a>
+
+        <a class="card" data-accent="blue" href="ect/">
+            <div class="icon">⚡</div>
+            <div class="tagline">Engineering</div>
+            <h3>Electric Circuit Theory (EE 501)</h3>
+            <p>Seven-chapter reference covering network analysis, transients, Laplace, frequency response, Fourier series, and two-port networks. Includes a question bank and worked past-paper solutions.</p>
+            <div class="meta">
+                <span>7 chapters</span>
+                <span>Solutions</span>
+                <span>Figures</span>
+            </div>
+        </a>
+
+        <a class="card" data-accent="purple" href="stellar-steering/">
+            <div class="icon">✨</div>
+            <div class="tagline">Astronomy</div>
+            <h3>Stellar Steering</h3>
+            <p>Interactive plots and notes on celestial navigation — using stars to find direction, time, and position without instruments.</p>
+            <div class="meta">
+                <span>Visualizations</span>
+                <span>Reference</span>
+            </div>
+        </a>
+
+        <a class="card" data-accent="yellow" href="tithi-wheel/">
+            <div class="icon">🌙</div>
+            <div class="tagline">Calendar</div>
+            <h3>Tithi Wheel</h3>
+            <p>Interactive lunar calendar — visualizing tithis, paksha, and the rhythms of the Hindu month.</p>
+            <div class="meta">
+                <span>Interactive</span>
+            </div>
+        </a>
+
+        <a class="card" data-accent="red" href="nec-bct-licensure/">
+            <div class="icon">📜</div>
+            <div class="tagline">Licensure Exam</div>
+            <h3>NEC BCT Past Questions</h3>
+            <p>Question bank for the Nepal Engineering Council BCT licensure exam — three sets of MCQs with answers and a one-line key concept on each question.</p>
+            <div class="meta">
+                <span>3 sets</span>
+                <span>240+ Qs</span>
+                <span>Key concepts</span>
+            </div>
+        </a>
+
+        <a class="card" data-accent="green" href="python-codesignal-prep/">
+            <div class="icon">🐍</div>
+            <div class="tagline">Programming</div>
+            <h3>Python CodeSignal Prep</h3>
+            <p>Dense reference for a 90-minute Python coding screen — functions, lists/dicts, threading vs asyncio side-by-side, <code style="background:transparent;color:var(--accent-green);padding:0;">unittest</code>, and LeetCode-style patterns with worked examples.</p>
+            <div class="meta">
+                <span>11 sections</span>
+                <span>Concurrency</span>
+                <span>LeetCode</span>
+            </div>
+        </a>
+
+    </div>
+
+    <footer class="back">
+        <a href="../">← Back to Tatva home</a>
+    </footer>
+</div>
+
+</body>
+</html>

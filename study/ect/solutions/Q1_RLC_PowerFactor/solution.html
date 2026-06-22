@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Q1 — Series R-L-C Power Factor Correction</title>
+
+<!-- MathJax for proper formula rendering -->
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']]
+    }
+  };
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+  :root {
+    --bg: #fdfcf9;
+    --ink: #1a1a1a;
+    --muted: #555;
+    --accent: #0b6efd;
+    --accent-soft: #e7f0ff;
+    --green: #1f8a4c;
+    --green-soft: #e7f7ee;
+    --orange: #d97706;
+    --orange-soft: #fff4e0;
+    --border: #d8d4cc;
+    --shadow: 0 2px 6px rgba(0,0,0,0.06);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.65;
+  }
+  .wrap {
+    max-width: 940px;
+    margin: 0 auto;
+    padding: 40px 28px 80px;
+  }
+  header {
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 16px;
+    margin-bottom: 28px;
+  }
+  header .tag {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  h1 { font-size: 1.55rem; margin: 10px 0 6px; }
+  h2 {
+    font-size: 1.2rem;
+    border-left: 4px solid var(--accent);
+    padding-left: 10px;
+    margin-top: 32px;
+    color: #0b3d91;
+  }
+  h3 { font-size: 1.02rem; margin-top: 20px; color: #333; }
+  p, li { font-size: 0.98rem; }
+  .question {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--orange);
+    padding: 16px 20px;
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+    margin-bottom: 24px;
+  }
+  .given {
+    background: var(--accent-soft);
+    padding: 14px 18px;
+    border-radius: 6px;
+    margin: 14px 0;
+    border-left: 4px solid var(--accent);
+  }
+  .step {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    box-shadow: var(--shadow);
+  }
+  .answer-box {
+    background: var(--green-soft);
+    border: 2px solid var(--green);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 18px 0;
+    text-align: center;
+  }
+  .answer-box .label {
+    font-size: 0.85rem;
+    color: var(--green);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 14px 0;
+    background: white;
+  }
+  th, td {
+    border: 1px solid var(--border);
+    padding: 10px 12px;
+    text-align: left;
+  }
+  th {
+    background: #f0eee7;
+    font-weight: 600;
+  }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .figure {
+    margin: 22px auto;
+    text-align: center;
+  }
+  .figure svg {
+    max-width: 100%;
+    height: auto;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+  }
+  .caption {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-top: 6px;
+    font-style: italic;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+    margin-top: 14px;
+  }
+  .summary-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--accent);
+    border-radius: 6px;
+    padding: 14px;
+    box-shadow: var(--shadow);
+  }
+  .summary-card .v {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-top: 4px;
+  }
+  .summary-card .l {
+    font-size: 0.85rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  footer {
+    margin-top: 40px;
+    color: var(--muted);
+    font-size: 0.85rem;
+    text-align: center;
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <span class="tag">Q1 (a) — [2 + 6]</span>
+  <h1>Series R-L-C Circuit · Active &amp; Reactive Current and Power-Factor Correction</h1>
+</header>
+
+<div class="question">
+  <strong>Problem.</strong> Find the <em>active</em> and <em>reactive</em> components of the current taken by a series circuit consisting of a coil of inductance <strong>0.1 H</strong> &amp; resistance <strong>8 Ω</strong>, and a capacitor of <strong>120 µF</strong>, connected to a <strong>240 V, 50 Hz</strong> supply main. Find the value of capacitor <em>C′</em> that must be connected in <strong>parallel</strong> with the above circuit so that the power factor of the entire circuit is <strong>unity</strong>.
+</div>
+
+<!-- Circuit diagram -->
+<div class="figure">
+  <svg viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg">
+    <!-- outer loop -->
+    <rect x="60" y="40" width="480" height="180" fill="none" stroke="#222" stroke-width="2"/>
+
+    <!-- Resistor R -->
+    <text x="120" y="32" font-size="14" font-weight="bold">R = 8 Ω</text>
+    <polyline points="100,40 110,30 130,50 150,30 170,50 190,30 210,40"
+              fill="none" stroke="#222" stroke-width="2"/>
+
+    <!-- Inductor L -->
+    <text x="245" y="32" font-size="14" font-weight="bold">L = 0.1 H</text>
+    <path d="M 230 40 q 8 -16 16 0 q 8 -16 16 0 q 8 -16 16 0 q 8 -16 16 0"
+          fill="none" stroke="#222" stroke-width="2"/>
+
+    <!-- Capacitor C -->
+    <text x="345" y="32" font-size="14" font-weight="bold">C = 120 µF</text>
+    <line x1="310" y1="40" x2="350" y2="40" stroke="#222" stroke-width="2"/>
+    <line x1="350" y1="25" x2="350" y2="55" stroke="#222" stroke-width="2.5"/>
+    <line x1="358" y1="25" x2="358" y2="55" stroke="#222" stroke-width="2.5"/>
+    <line x1="358" y1="40" x2="540" y2="40" stroke="#222" stroke-width="2"/>
+
+    <!-- Parallel branch C' (dashed) -->
+    <line x1="60" y1="130" x2="280" y2="130" stroke="#888" stroke-width="2" stroke-dasharray="6 4"/>
+    <line x1="280" y1="115" x2="280" y2="145" stroke="#d97706" stroke-width="3"/>
+    <line x1="288" y1="115" x2="288" y2="145" stroke="#d97706" stroke-width="3"/>
+    <line x1="288" y1="130" x2="540" y2="130" stroke="#888" stroke-width="2" stroke-dasharray="6 4"/>
+    <text x="265" y="170" font-size="14" font-weight="bold" fill="#d97706">C′ = ?</text>
+
+    <!-- Source -->
+    <line x1="300" y1="220" x2="300" y2="240" stroke="#222" stroke-width="2"/>
+    <circle cx="300" cy="220" r="18" fill="white" stroke="#222" stroke-width="2"/>
+    <path d="M 288 220 q 6 -10 12 0 t 12 0" fill="none" stroke="#222" stroke-width="2"/>
+    <text x="245" y="255" font-size="14" font-weight="bold">240 V, 50 Hz</text>
+  </svg>
+  <div class="caption">Fig. 1 — Series R-L-C circuit; capacitor C′ to be added in parallel for unity p.f.</div>
+</div>
+
+<div class="given">
+  <strong>Given:</strong>
+  $R = 8\,\Omega,\;\; L = 0.1\,\text{H},\;\; C = 120\,\mu\text{F},\;\; V = 240\,\text{V},\;\; f = 50\,\text{Hz}.$
+</div>
+
+<!-- Step 1 -->
+<div class="step">
+  <h3>Step 1 — Angular frequency &amp; reactances</h3>
+  $$\omega = 2\pi f = 2\pi(50) = 314.16\ \text{rad/s}$$
+  $$X_L = \omega L = 314.16 \times 0.1 = 31.42\ \Omega$$
+  $$X_C = \frac{1}{\omega C} = \frac{1}{314.16 \times 120 \times 10^{-6}} = 26.53\ \Omega$$
+  <p>Net reactance:</p>
+  $$X = X_L - X_C = 31.42 - 26.53 = 4.89\ \Omega \quad \text{(inductive)}$$
+</div>
+
+<!-- Step 2 -->
+<div class="step">
+  <h3>Step 2 — Impedance and line current</h3>
+  $$Z = \sqrt{R^2 + X^2} = \sqrt{8^2 + 4.89^2} = \sqrt{87.91} = 9.376\ \Omega$$
+  $$I = \frac{V}{Z} = \frac{240}{9.376} = 25.60\ \text{A}$$
+  <p>Phase angle (current lags voltage as $X_L &gt; X_C$):</p>
+  $$\varphi = \tan^{-1}\!\left(\frac{X}{R}\right) = \tan^{-1}\!\left(\frac{4.89}{8}\right) = 31.42^\circ$$
+  $$\cos\varphi = \frac{R}{Z} = \frac{8}{9.376} = 0.8533 \;\;(\text{lagging})$$
+  $$\sin\varphi = \frac{X}{Z} = \frac{4.89}{9.376} = 0.5216$$
+</div>
+
+<!-- Step 3 -->
+<div class="step">
+  <h3>Step 3 — Active &amp; reactive components of current <em>(2 marks)</em></h3>
+  <table>
+    <thead>
+      <tr><th>Component</th><th>Formula</th><th class="num">Value</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Active (in-phase) $I_a$</td>
+        <td>$I\cos\varphi = 25.60 \times 0.8533$</td>
+        <td class="num"><strong>21.84 A</strong></td>
+      </tr>
+      <tr>
+        <td>Reactive (quadrature) $I_r$</td>
+        <td>$I\sin\varphi = 25.60 \times 0.5216$</td>
+        <td class="num"><strong>13.35 A (lagging)</strong></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Phasor diagram -->
+<div class="figure">
+  <svg viewBox="0 0 480 280" xmlns="http://www.w3.org/2000/svg">
+    <!-- axes -->
+    <line x1="60" y1="200" x2="440" y2="200" stroke="#bbb" stroke-width="1"/>
+    <line x1="80" y1="40"  x2="80"  y2="240" stroke="#bbb" stroke-width="1"/>
+
+    <!-- V phasor (along +x) -->
+    <line x1="80" y1="200" x2="400" y2="200" stroke="#0b6efd" stroke-width="3"
+          marker-end="url(#arrV)"/>
+    <text x="405" y="195" font-size="14" font-weight="bold" fill="#0b6efd">V = 240 V</text>
+
+    <!-- Current phasor I (lagging by 31.42°) -->
+    <line x1="80" y1="200" x2="350" y2="365" stroke="#d97706" stroke-width="3"
+          marker-end="url(#arrI)" transform="translate(0,-200) scale(1, -1) translate(0, -200)"/>
+    <!-- We'll just draw it manually below the axis since lagging means below for our convention -->
+
+    <!-- I active (horizontal projection) -->
+    <line x1="80" y1="200" x2="350" y2="200" stroke="#1f8a4c" stroke-width="3"
+          stroke-dasharray="6 4"/>
+    <text x="200" y="194" font-size="13" fill="#1f8a4c">I cos φ = 21.84 A</text>
+
+    <!-- I vertical (reactive) drop -->
+    <line x1="350" y1="200" x2="350" y2="280" stroke="#1f8a4c" stroke-width="3"
+          stroke-dasharray="6 4"/>
+    <text x="358" y="245" font-size="13" fill="#1f8a4c">I sin φ = 13.35 A</text>
+
+    <!-- I phasor (resultant, lagging) -->
+    <line x1="80" y1="200" x2="350" y2="280" stroke="#d97706" stroke-width="3"/>
+    <polygon points="350,280 339,272 343,283" fill="#d97706"/>
+    <text x="355" y="285" font-size="14" font-weight="bold" fill="#d97706">I = 25.60 A</text>
+
+    <!-- angle arc -->
+    <path d="M 130 200 A 50 50 0 0 0 122 215" fill="none" stroke="#444" stroke-width="1.5"/>
+    <text x="130" y="230" font-size="13" fill="#444">φ = 31.42°</text>
+
+    <!-- title -->
+    <text x="160" y="30" font-size="14" font-weight="bold">Phasor diagram (lagging p.f.)</text>
+  </svg>
+  <div class="caption">Fig. 2 — Voltage taken as reference. Current $I$ lags $V$ by $\varphi = 31.42^\circ$. The two dashed legs are the active and reactive components.</div>
+</div>
+
+<!-- Step 4 -->
+<div class="step">
+  <h3>Step 4 — Capacitor C′ for unity power factor <em>(6 marks)</em></h3>
+  <p>For overall unity p.f., the parallel capacitor must draw a leading current equal in magnitude to the lagging reactive current of the original circuit:</p>
+  $$I_{C'} = I_r = 13.35\ \text{A}$$
+  <p>The current through C′ is given by:</p>
+  $$I_{C'} = \frac{V}{X_{C'}} = V\,\omega\,C'$$
+  <p>Solving for C′:</p>
+  $$C' = \frac{I_{C'}}{\omega V} = \frac{13.35}{314.16 \times 240} = \frac{13.35}{75\,398.2}$$
+  $$C' = 1.770 \times 10^{-4}\ \text{F}$$
+
+  <div class="answer-box">
+    <div class="label">Required parallel capacitor</div>
+    $$\boxed{\,C' \;\approx\; 177\ \mu\text{F}\,}$$
+  </div>
+</div>
+
+<!-- Verification -->
+<div class="step">
+  <h3>Verification (using reactive power)</h3>
+  <p>Reactive power consumed by series circuit:</p>
+  $$Q = V\,I_r = 240 \times 13.35 = 3204\ \text{VAR}$$
+  <p>Capacitor must supply this reactive power:</p>
+  $$Q = V^2\,\omega\,C' \;\Rightarrow\; C' = \frac{Q}{V^2\,\omega} = \frac{3204}{240^2 \times 314.16} = 177\ \mu\text{F} \;\checkmark$$
+</div>
+
+<h2>Final Answers</h2>
+<div class="summary-grid">
+  <div class="summary-card">
+    <div class="l">Active component</div>
+    <div class="v">21.84 A</div>
+  </div>
+  <div class="summary-card">
+    <div class="l">Reactive component</div>
+    <div class="v">13.35 A</div>
+    <div style="font-size:0.8rem;color:#888;">(lagging)</div>
+  </div>
+  <div class="summary-card">
+    <div class="l">Power factor (before)</div>
+    <div class="v">0.853 lag</div>
+  </div>
+  <div class="summary-card" style="border-top-color: var(--green);">
+    <div class="l">Parallel capacitor C′</div>
+    <div class="v" style="color:var(--green);">177 µF</div>
+  </div>
+</div>
+
+<footer>
+  Solution rendered with MathJax · Series R-L-C with parallel power-factor correction
+</footer>
+
+</div>
+</body>
+</html>

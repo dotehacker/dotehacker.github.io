@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>बजेट २०८३/८४ · Nepal Federal Budget — Tatva</title>
+<meta name="description" content="Nepal Federal Budget FY 2083/84 (बजेट भाषण) — visual summary of the headline numbers, sector allocations and reforms, plus the full searchable speech in Nepali with English explainers.">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg-primary:#0f0f1a; --bg-secondary:#1a1a2e; --bg-card:#16213e; --bg-card-hover:#1e2a4e;
+  --text-primary:#e6e6ee; --text-secondary:#a0a0b0;
+  --accent-blue:#00d2ff; --accent-yellow:#ffd93d; --accent-green:#6bcb77;
+  --accent-purple:#c56cf0; --accent-red:#ff6b6b; --accent-orange:#ff9f43;
+  --crimson:#dc2f4b; --border:#2a2a4a;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Inter','Mukta',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  background:var(--bg-primary); color:var(--text-primary); line-height:1.7; min-height:100vh;
+}
+:lang(ne),.ne{font-family:'Mukta','Inter',sans-serif;}
+mark{background:var(--accent-yellow);color:#1a1a2e;border-radius:3px;padding:0 2px;}
+
+/* topbar */
+.topbar{background:var(--bg-secondary);border-bottom:1px solid var(--border);padding:.9rem 1.5rem;display:flex;align-items:center;gap:.6rem;position:sticky;top:0;z-index:50;}
+.topbar a{color:var(--accent-blue);text-decoration:none;font-weight:600;}
+.topbar a:hover{text-decoration:underline;}
+.topbar .crumb{color:var(--text-secondary);font-size:.9rem;}
+.topbar .crumb strong{color:var(--text-primary);}
+
+/* hero */
+header.hero{
+  text-align:center;padding:3rem 1.5rem 2rem;max-width:1000px;margin:0 auto;
+}
+.flagstripe{display:flex;justify-content:center;gap:.4rem;margin-bottom:1rem;}
+.flagstripe span{width:34px;height:5px;border-radius:3px;}
+header.hero h1{font-size:2.5rem;line-height:1.2;margin-bottom:.5rem;
+  background:linear-gradient(135deg,var(--crimson),var(--accent-orange),var(--accent-yellow));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+header.hero .sub{color:var(--text-secondary);font-size:1.05rem;max-width:680px;margin:.4rem auto 0;}
+header.hero .fy{display:inline-block;margin-top:1rem;background:var(--bg-card);border:1px solid var(--border);
+  padding:.35rem .9rem;border-radius:999px;font-size:.85rem;color:var(--accent-yellow);font-weight:600;letter-spacing:.03em;}
+
+/* view toggle */
+.toggle{display:flex;gap:.5rem;justify-content:center;padding:0 1rem 1.5rem;position:sticky;top:54px;z-index:40;
+  background:linear-gradient(var(--bg-primary),var(--bg-primary) 70%,transparent);}
+.toggle button{font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;color:var(--text-secondary);
+  background:var(--bg-card);border:1px solid var(--border);padding:.6rem 1.2rem;border-radius:999px;transition:all .18s ease;}
+.toggle button:hover{color:var(--text-primary);border-color:var(--accent-blue);}
+.toggle button.active{color:#0f0f1a;background:linear-gradient(135deg,var(--accent-blue),var(--accent-purple));border-color:transparent;}
+
+.container{max-width:1100px;margin:0 auto;padding:0 1.5rem 4rem;}
+.view{display:none;animation:fade .3s ease;}
+.view.active{display:block;}
+@keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+
+/* section heads */
+h2.sec{font-size:1.5rem;margin:2.6rem 0 1.1rem;display:flex;align-items:center;gap:.6rem;}
+h2.sec .en{font-size:.95rem;color:var(--text-secondary);font-weight:500;}
+.lead{color:var(--text-secondary);max-width:760px;margin-bottom:1.4rem;}
+
+/* headline stat cards */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1rem;}
+.stat{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:1.3rem 1.4rem;position:relative;overflow:hidden;}
+.stat::before{content:'';position:absolute;inset:0 auto 0 0;width:4px;background:var(--c,var(--accent-blue));}
+.stat .label{font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--text-secondary);font-weight:600;}
+.stat .num{font-size:1.9rem;font-weight:800;margin:.3rem 0 .1rem;color:var(--text-primary);}
+.stat .num small{font-size:.9rem;font-weight:600;color:var(--text-secondary);}
+.stat .en{font-size:.82rem;color:var(--text-secondary);}
+.stat[data-c="blue"]{--c:var(--accent-blue);} .stat[data-c="green"]{--c:var(--accent-green);}
+.stat[data-c="purple"]{--c:var(--accent-purple);} .stat[data-c="orange"]{--c:var(--accent-orange);}
+.stat[data-c="red"]{--c:var(--accent-red);} .stat[data-c="yellow"]{--c:var(--accent-yellow);}
+
+/* two-col panels */
+.panels{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1.2rem;}
+.panel{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:1.4rem;}
+.panel h3{font-size:1.05rem;margin-bottom:1rem;}
+.panel h3 .en{font-size:.82rem;color:var(--text-secondary);font-weight:500;}
+
+/* horizontal bars */
+.bar{margin-bottom:.85rem;}
+.bar .row{display:flex;justify-content:space-between;font-size:.86rem;margin-bottom:.3rem;}
+.bar .row .v{color:var(--text-secondary);font-variant-numeric:tabular-nums;}
+.bar .track{background:var(--bg-secondary);border-radius:6px;height:12px;overflow:hidden;}
+.bar .fill{height:100%;border-radius:6px;width:0;transition:width 1s cubic-bezier(.2,.7,.3,1);
+  background:linear-gradient(90deg,var(--accent-blue),var(--accent-purple));}
+.bar[data-c="green"] .fill{background:linear-gradient(90deg,var(--accent-green),#3aa0ff);}
+.bar[data-c="orange"] .fill{background:linear-gradient(90deg,var(--accent-orange),var(--accent-yellow));}
+.bar[data-c="red"] .fill{background:linear-gradient(90deg,var(--accent-red),var(--accent-orange));}
+
+/* donut-ish split using stacked bar */
+.split{display:flex;height:38px;border-radius:10px;overflow:hidden;border:1px solid var(--border);}
+.split div{display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;color:#0f0f1a;}
+.legend{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:.8rem;font-size:.82rem;color:var(--text-secondary);}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:.35rem;vertical-align:middle;}
+
+/* sector chart */
+.sector-bar{margin-bottom:1rem;}
+.sector-bar .top{display:flex;justify-content:space-between;align-items:baseline;font-size:.92rem;margin-bottom:.35rem;}
+.sector-bar .top b{font-weight:600;} .sector-bar .top .e{font-size:.78rem;color:var(--text-secondary);}
+.sector-bar .top .amt{font-weight:700;color:var(--accent-yellow);font-variant-numeric:tabular-nums;}
+.sector-bar .track{background:var(--bg-secondary);height:16px;border-radius:8px;overflow:hidden;}
+.sector-bar .fill{height:100%;width:0;border-radius:8px;transition:width 1.1s cubic-bezier(.2,.7,.3,1);}
+
+/* target chips + reform cards */
+.targets{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-top:1rem;}
+.target{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:1.2rem;text-align:center;}
+.target .big{font-size:2.1rem;font-weight:800;color:var(--accent-green);}
+.target .t{font-size:.85rem;color:var(--text-secondary);margin-top:.2rem;}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin-top:1rem;}
+.rc{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:1.3rem;border-left:4px solid var(--c,var(--accent-purple));}
+.rc .ico{font-size:1.5rem;} .rc h4{margin:.5rem 0 .35rem;font-size:1.02rem;}
+.rc p{font-size:.88rem;color:var(--text-secondary);}
+.rc[data-c="blue"]{--c:var(--accent-blue);} .rc[data-c="green"]{--c:var(--accent-green);}
+.rc[data-c="orange"]{--c:var(--accent-orange);} .rc[data-c="red"]{--c:var(--accent-red);} .rc[data-c="yellow"]{--c:var(--accent-yellow);}
+
+.note{font-size:.8rem;color:var(--text-secondary);font-style:italic;margin-top:.8rem;}
+
+/* ===== FULL SPEECH ===== */
+.speech-wrap{display:grid;grid-template-columns:240px 1fr;gap:1.6rem;align-items:start;}
+.speech-side{position:sticky;top:120px;}
+.searchbox{position:relative;margin-bottom:1rem;}
+.searchbox input{width:100%;font-family:inherit;font-size:.95rem;color:var(--text-primary);
+  background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:.7rem .9rem .7rem 2.2rem;}
+.searchbox input:focus{outline:none;border-color:var(--accent-blue);}
+.searchbox .mag{position:absolute;left:.7rem;top:50%;transform:translateY(-50%);color:var(--text-secondary);}
+.searchbox .count{font-size:.78rem;color:var(--text-secondary);margin-top:.4rem;min-height:1em;}
+.toc{list-style:none;font-size:.86rem;border-left:1px solid var(--border);}
+.toc li a{display:block;color:var(--text-secondary);text-decoration:none;padding:.32rem .8rem;border-left:2px solid transparent;margin-left:-1px;}
+.toc li a:hover{color:var(--text-primary);}
+.toc li a.active{color:var(--accent-blue);border-left-color:var(--accent-blue);}
+
+.speech-body{min-width:0;}
+.speech-body .scn{margin-bottom:2.2rem;scroll-margin-top:120px;}
+.speech-body .scn h3{font-size:1.25rem;margin-bottom:.2rem;display:flex;flex-wrap:wrap;align-items:baseline;gap:.5rem;}
+.speech-body .scn h3 .en{font-size:.85rem;color:var(--accent-blue);font-weight:600;}
+.summary{background:rgba(0,210,255,.07);border:1px solid rgba(0,210,255,.25);border-radius:10px;
+  padding:.7rem .9rem;font-size:.85rem;color:#bfe9ff;margin:.6rem 0 1rem;}
+.summary b{color:var(--accent-blue);}
+.speech-body p{margin-bottom:.9rem;}
+.speech-body .fig{color:var(--accent-yellow);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;}
+.hidden-p{display:none !important;}
+.no-results{display:none;color:var(--accent-red);padding:1rem 0;}
+
+footer.back{text-align:center;margin-top:3rem;color:var(--text-secondary);font-size:.85rem;}
+footer.back a{color:var(--accent-blue);text-decoration:none;}
+footer.back a:hover{text-decoration:underline;}
+.disclaimer{max-width:760px;margin:2.5rem auto 0;font-size:.78rem;color:var(--text-secondary);
+  background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:.9rem 1.1rem;}
+
+@media(max-width:860px){
+  .panels{grid-template-columns:1fr;}
+  .speech-wrap{grid-template-columns:1fr;}
+  .speech-side{position:static;}
+  .toc{display:flex;flex-wrap:wrap;border-left:none;gap:.2rem;}
+  .toc li a{border:1px solid var(--border);border-radius:999px;padding:.3rem .7rem;}
+  .toc li a.active{border-color:var(--accent-blue);}
+}
+@media(max-width:600px){
+  header.hero h1{font-size:1.8rem;} header.hero{padding-top:2rem;}
+  .container{padding:0 1rem 3rem;} .stat .num{font-size:1.6rem;}
+  .toggle{top:53px;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../">Tatva</a><span class="crumb">› <a href="../">Study</a> › <strong>बजेट २०८३/८४</strong></span>
+</div>
+
+<header class="hero">
+  <div class="flagstripe"><span style="background:var(--crimson)"></span><span style="background:#003893"></span><span style="background:var(--crimson)"></span></div>
+  <h1 class="ne">बजेट भाषण २०८३/८४</h1>
+  <p class="sub">Nepal Federal Budget — Fiscal Year 2083/84 (2026/27). सम्पूर्ण बजेट भाषणको दृश्यात्मक सारांश र खोज्न मिल्ने पूरा पाठ — A visual summary plus the full, searchable speech.</p>
+  <span class="fy">कुल विनियोजन · Total Outlay · रु २१,२४.३४ अर्ब (NPR 2.12 trillion)</span>
+</header>
+
+<div class="toggle">
+  <button id="tab-overview" class="active" onclick="showView('overview')">📊 सारांश · Overview</button>
+  <button id="tab-speech" onclick="showView('speech')">📖 पूरा भाषण · Full Speech</button>
+</div>
+
+<div class="container">
+
+<!-- ================= OVERVIEW ================= -->
+<section id="view-overview" class="view active">
+
+  <h2 class="sec">💰 मुख्य अंक <span class="en">The headline numbers</span></h2>
+  <p class="lead">आगामी आर्थिक वर्ष २०८३/८४ का लागि कुल <b>रु २१ खर्ब २४ अर्ब ३४ करोड</b> विनियोजन। The four numbers below add up to the total — and the financing sources below add up to the same figure.</p>
+  <div class="stats">
+    <div class="stat" data-c="blue"><div class="label">कुल विनियोजन · Total</div><div class="num">२१,२४.३४ <small>अर्ब</small></div><div class="en">Rs 2,124.34 billion outlay</div></div>
+    <div class="stat" data-c="orange"><div class="label">चालु खर्च · Recurrent</div><div class="num">१२६४.५८ <small>अर्ब</small></div><div class="en">Rs 1,264.58 B · 59.8%</div></div>
+    <div class="stat" data-c="green"><div class="label">पुँजीगत · Capital</div><div class="num">४३१.१० <small>अर्ब</small></div><div class="en">Rs 431.10 B · 20.3%</div></div>
+    <div class="stat" data-c="purple"><div class="label">वित्तीय व्यवस्था · Financing</div><div class="num">४२८.६४ <small>अर्ब</small></div><div class="en">Rs 428.64 B · 20.0% (debt servicing)</div></div>
+  </div>
+
+  <div class="panels">
+    <div class="panel">
+      <h3>खर्चको बाँडफाँट <span class="en">How the rupee is spent</span></h3>
+      <div class="split" id="split-spend">
+        <div style="background:var(--accent-orange)">59.8%</div>
+        <div style="background:var(--accent-green)">20.3%</div>
+        <div style="background:var(--accent-purple)">20.0%</div>
+      </div>
+      <div class="legend">
+        <span><i style="background:var(--accent-orange)"></i>चालु · Recurrent</span>
+        <span><i style="background:var(--accent-green)"></i>पुँजीगत · Capital</span>
+        <span><i style="background:var(--accent-purple)"></i>वित्तीय · Financing</span>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>स्रोत व्यवस्था <span class="en">Where the money comes from</span></h3>
+      <div class="bar" data-c="green"><div class="row"><span>राजस्व · Revenue</span><span class="v">रु १४०५.३१ अर्ब</span></div><div class="track"><div class="fill" data-w="66.2"></div></div></div>
+      <div class="bar"><div class="row"><span>आन्तरिक ऋण · Domestic borrowing</span><span class="v">रु ४१०.०० अर्ब</span></div><div class="track"><div class="fill" data-w="19.3"></div></div></div>
+      <div class="bar" data-c="orange"><div class="row"><span>वैदेशिक ऋण · Foreign loan</span><span class="v">रु २४७.२८ अर्ब</span></div><div class="track"><div class="fill" data-w="11.6"></div></div></div>
+      <div class="bar" data-c="red"><div class="row"><span>वैदेशिक अनुदान · Foreign grant</span><span class="v">रु ६१.७४ अर्ब</span></div><div class="track"><div class="fill" data-w="2.9"></div></div></div>
+    </div>
+  </div>
+
+  <h2 class="sec">🎯 लक्ष्य <span class="en">Macro targets</span></h2>
+  <div class="targets">
+    <div class="target"><div class="big">७%</div><div class="t">आर्थिक वृद्धि<br>Economic growth</div></div>
+    <div class="target"><div class="big" style="color:var(--accent-orange)">६%</div><div class="t">मूल्यवृद्धि सीमा<br>Inflation ceiling</div></div>
+    <div class="target"><div class="big" style="color:var(--accent-blue)">१८</div><div class="t">मन्त्रालय (२२ बाट)<br>Ministries (down from 22)</div></div>
+    <div class="target"><div class="big" style="color:var(--accent-purple)">−१०%</div><div class="t">आयकर अधिकतम दर<br>Top income-tax rate cut</div></div>
+  </div>
+
+  <h2 class="sec">🏗️ प्रमुख क्षेत्रगत विनियोजन <span class="en">Major sector allocations</span></h2>
+  <p class="lead">बजेट भाषणमा उल्लेख भएअनुसार ठूला क्षेत्रहरूको विनियोजन (रु अर्बमा). Largest sector envelopes as stated in the speech (Rs billion).</p>
+  <div class="panel">
+    <div class="sector-bar"><div class="top"><span><b class="ne">सडक तथा सहरी पूर्वाधार</b> <span class="e">Roads &amp; urban infra</span></span><span class="amt">२८६.४८</span></div><div class="track"><div class="fill" data-w="100" style="background:linear-gradient(90deg,#dc2f4b,#ff9f43)"></div></div></div>
+    <div class="sector-bar"><div class="top"><span><b class="ne">शिक्षा</b> <span class="e">Education</span></span><span class="amt">२१८.३०</span></div><div class="track"><div class="fill" data-w="76" style="background:linear-gradient(90deg,#00d2ff,#c56cf0)"></div></div></div>
+    <div class="sector-bar"><div class="top"><span><b class="ne">ऊर्जा / विद्युत्</b> <span class="e">Energy</span></span><span class="amt">८५.५४</span></div><div class="track"><div class="fill" data-w="30" style="background:linear-gradient(90deg,#ffd93d,#6bcb77)"></div></div></div>
+    <div class="sector-bar"><div class="top"><span><b class="ne">कृषि तथा पशुपन्छी</b> <span class="e">Agriculture &amp; livestock</span></span><span class="amt">४६.९२</span></div><div class="track"><div class="fill" data-w="16.4" style="background:linear-gradient(90deg,#6bcb77,#00d2ff)"></div></div></div>
+    <div class="sector-bar"><div class="top"><span><b class="ne">खानेपानी तथा सरसफाइ</b> <span class="e">Water &amp; sanitation</span></span><span class="amt">३७.१७</span></div><div class="track"><div class="fill" data-w="13" style="background:linear-gradient(90deg,#00d2ff,#3aa0ff)"></div></div></div>
+    <div class="sector-bar"><div class="top"><span><b class="ne">वन तथा वातावरण</b> <span class="e">Forest &amp; environment</span></span><span class="amt">३१.००</span></div><div class="track"><div class="fill" data-w="10.8" style="background:linear-gradient(90deg,#6bcb77,#1a8f4e)"></div></div></div>
+    <p class="note">क्षेत्रगत विनियोजनहरू बजेट भाषणका आँकडामा आधारित; स्वास्थ्य लगायतका थप कार्यक्रमको विवरण “पूरा भाषण” ट्याबमा छ। Bars scaled to the roads &amp; urban envelope; see the Full Speech tab for health and every other programme.</p>
+  </div>
+
+  <h2 class="sec">⚙️ संरचनात्मक सुधार <span class="en">Structural reforms</span></h2>
+  <div class="cards">
+    <div class="rc" data-c="blue"><div class="ico">🏛️</div><h4 class="ne">सानो, चुस्त सरकार</h4><p>मन्त्रालय २२ बाट १८ मा, ३१ निकाय खारेज र १८ निकायको पुनर्संरचना। Cabinet trimmed to 18 ministries; 31 agencies dissolved, 18 restructured.</p></div>
+    <div class="rc" data-c="green"><div class="ico">🧾</div><h4 class="ne">कर प्रणाली सरलीकरण</h4><p>व्यक्तिगत आयकरको अधिकतम दर १० प्रतिशत बिन्दुले घटाइयो; भन्सार ११ तह बाट ७ तहमा। Top personal income-tax rate cut 10 points; 11 customs bands collapsed to 7.</p></div>
+    <div class="rc" data-c="orange"><div class="ico">📉</div><h4 class="ne">कच्चा पदार्थमा राहत</h4><p>३६० वस्तुको अन्तःशुल्क खारेज/संशोधन; २७३ प्रकारका कच्चा पदार्थमा भन्सार दर घटाइयो। Excise cut on 360 goods; customs reduced on 273 raw materials.</p></div>
+    <div class="rc" data-c="purple"><div class="ico">💳</div><h4 class="ne">डिजिटल प्रोत्साहन</h4><p>डिजिटल भुक्तानीमार्फत किनमेलमा १० प्रतिशत मूल्य अभिवृद्धि कर फिर्ता; डिजिटल नेपाल। 10% VAT refunded on digital-payment purchases.</p></div>
+    <div class="rc" data-c="yellow"><div class="ico">🤖</div><h4 class="ne">सार्वभौम AI</h4><p>देशकै पहिलो सार्वभौम कम्प्युट केन्द्र — हजारौं GPU प्रोसेसिङ युनिट किनी उद्यमी/स्टार्टअपलाई। Nepal's first sovereign compute centre with thousands of GPUs.</p></div>
+    <div class="rc" data-c="red"><div class="ico">🪙</div><h4 class="ne">डायस्पोरा बन्ड</h4><p>विदेशी मुद्रामा नेपाली ऋणपत्र (Foreign-currency &amp; Diaspora bonds) जारी; सार्वजनिक संस्थानमा विनिवेश। FX &amp; diaspora bonds; disinvestment in SOEs.</p></div>
+  </div>
+
+  <h2 class="sec">🧮 कर तथा राजस्व झलक <span class="en">Tax &amp; revenue at a glance</span></h2>
+  <div class="cards">
+    <div class="rc" data-c="green"><div class="ico">⬇️</div><h4>Income tax</h4><p>Maximum personal income-tax rate reduced by <b>10 percentage points</b>; relief to enterprises and the middle class.</p></div>
+    <div class="rc" data-c="blue"><div class="ico">🚢</div><h4>Customs</h4><p>Tariff structure simplified from <b>11 bands to 7</b>; duties cut on <b>273 raw materials</b> to make domestic industry competitive.</p></div>
+    <div class="rc" data-c="orange"><div class="ico">🏭</div><h4>Excise</h4><p>Excise duty removed or revised on <b>360 goods</b>; "sin tax" raised on liquor &amp; tobacco (excise &gt; ~10pp).</p></div>
+    <div class="rc" data-c="purple"><div class="ico">🧾</div><h4>VAT &amp; digital</h4><p>Faceless / paperless tax administration; <b>10% VAT refund</b> on digital purchases; e-billing made mandatory.</p></div>
+  </div>
+
+  <div class="disclaimer">
+    📌 <b>स्रोत · Source:</b> यो पृष्ठ नेपाल सरकारको बजेट भाषण (आ.व. २०८३/८४) को सार्वजनिक भिडियो पाठ (auto-transcript) मा आधारित हो। शीर्ष वित्तीय आँकडाहरू (कुल, चालु, पुँजीगत, स्रोत) आपसमा मिल्ने गरी रुजु गरिएको छ। केही क्षेत्रगत आँकडा transcript बाट लिइएकाले आधिकारिक “रातो किताब” सँग भिडाउनुहोला। <span style="color:var(--text-secondary)">This explainer is built from the public video transcript of the budget speech; verify exact line items against the official Red Book.</span>
+  </div>
+</section>
+
+<!-- ================= FULL SPEECH ================= -->
+<section id="view-speech" class="view">
+  <div class="speech-wrap">
+    <aside class="speech-side">
+      <div class="searchbox">
+        <span class="mag">🔍</span>
+        <input id="search" type="search" placeholder="भाषणमा खोज्नुहोस् · search the speech…" autocomplete="off">
+        <div class="count" id="count"></div>
+      </div>
+      <ul class="toc" id="toc">
+        <li><a href="#s-intro">प्रारम्भ · Opening</a></li>
+        <li><a href="#s-econ">आर्थिक अवस्था · Economy</a></li>
+        <li><a href="#s-tax">कर तथा राजस्व · Tax &amp; revenue</a></li>
+        <li><a href="#s-gov">शासकीय सुधार · Governance</a></li>
+        <li><a href="#s-finance">लगानी तथा वित्त · Investment &amp; finance</a></li>
+        <li><a href="#s-roads">सडक तथा सहरी · Roads &amp; urban</a></li>
+        <li><a href="#s-energy">ऊर्जा · Energy</a></li>
+        <li><a href="#s-water">खानेपानी · Water</a></li>
+        <li><a href="#s-irrig">सिँचाइ · Irrigation</a></li>
+        <li><a href="#s-agri">कृषि · Agriculture</a></li>
+        <li><a href="#s-forest">वन/वातावरण · Forest</a></li>
+        <li><a href="#s-industry">उद्योग/वाणिज्य · Industry</a></li>
+        <li><a href="#s-tourism">पर्यटन/संस्कृति · Tourism</a></li>
+        <li><a href="#s-labour">श्रम/रोजगार · Labour</a></li>
+        <li><a href="#s-edu">शिक्षा · Education</a></li>
+        <li><a href="#s-health">स्वास्थ्य · Health</a></li>
+        <li><a href="#s-social">सामाजिक सुरक्षा · Social</a></li>
+        <li><a href="#s-sports">खेलकुद · Sports</a></li>
+        <li><a href="#s-it">सूचना प्रविधि · IT</a></li>
+        <li><a href="#s-rule">सुशासन/सुरक्षा · Rule of law</a></li>
+        <li><a href="#s-fy">वित्तीय व्यवस्था · Financing</a></li>
+        <li><a href="#s-end">निष्कर्ष · Conclusion</a></li>
+      </ul>
+    </aside>
+
+    <div class="speech-body" id="speech">
+      <p class="no-results" id="noResults">कुनै नतिजा भेटिएन। · No matching lines.</p>
+
+      <div class="scn" id="s-intro">
+        <h3 class="ne">प्रारम्भ <span class="en">Opening</span></h3>
+        <div class="summary"><b>Summary:</b> The minister opens before a joint session of the federal parliament, seeks permission to present the FY 2083/84 estimates, recalls that Nepal's first finance minister Subarna Shumsher began the practice ~75 years ago, and pays homage to the martyrs of the citizens' movements — including the recent change-seeking youth (Gen-Z) movement that brought the present government a strong mandate.</div>
+        <p class="ne">सम्माननीय सभामुख महोदय, सम्माननीय अध्यक्ष महोदय, संघीय संसदका दुवै सदनको संयुक्त बैठकमा यस गरिमामय सभामार्फत मुलुकको आर्थिक अवस्था र आगामी आर्थिक वर्षको राजस्व र व्ययको वार्षिक अनुमान प्रस्तुत गर्ने अनुमति पाउँदा गौरवान्वित छु।</p>
+        <p class="ne">आधुनिक नेपालका प्रथम अर्थमन्त्री श्री सुवर्ण शमशेरबाट करिब <span class="fig">७५ वर्ष</span> अघि प्रारम्भ भएको मुलुकको आय र व्यय विवरण पेस गर्ने प्रणालीलाई निरन्तरता दिँदै यो सम्मानित सदनमा उपस्थित हुँदा गौरवको अनुभूति भएको छ।</p>
+        <p class="ne">नागरिक स्वतन्त्रता, लोकतान्त्रिक अधिकार, सामाजिक न्याय र समुन्नत नेपालका लागि भएका विभिन्न आन्दोलनहरूमा जीवन उत्सर्ग गर्नुहुने सहिदहरूप्रति हार्दिक श्रद्धाञ्जली अर्पण गर्दै आन्दोलनमा घाइते नागरिकहरूप्रति समानुभूति व्यक्त गर्दछु।</p>
+        <p class="ne">उत्तरदायी शासन, सदाचार र नागरिक सम्मानको पक्षमा उठेको परिवर्तनकामी युवा शक्ति (जेन–जी) को जागरणबाट स्थापित नयाँ राजनीतिक अग्रगमनमा प्राप्त विपुल जनादेशले वर्तमान सरकारलाई असाधारण जिम्मेवारी सुम्पिएको छ। यस बजेटलाई केवल संवैधानिक औपचारिकता होइन, राज्यको चरित्र, शासकीय संस्कार र अर्थतन्त्रको स्वरूप फेर्ने दायित्वका रूपमा ग्रहण गरेको छु।</p>
+      </div>
+
+      <div class="scn" id="s-econ">
+        <h3 class="ne">आर्थिक अवस्था <span class="en">State of the economy</span></h3>
+        <div class="summary"><b>Summary:</b> Years of political instability are ending. Macro fundamentals are sound — sound foreign-exchange reserves, ample liquidity, large remittance-fed savings, big hydro and tech potential — yet the productive economy is weak: low private investment, distrust in public institutions, and youth out-migration. The budget aims to turn this confidence crisis into a transformation opportunity.</div>
+        <p class="ne">वर्तमान आर्थिक स्थितिका परिसूचकहरू, प्रगतिका अवरोध तथा तिनको समाधानका सम्भावित मार्गहरूबारे वर्तमान आर्थिक स्थिति पत्र २०८३ सार्वजनिक गरिएको छ। आर्थिक सर्वेक्षण २०८२/८३ समेत संसदमा पेस भइसकेको छ।</p>
+        <p class="ne">राजनीतिक अस्थिरताको दुष्चक्र समाप्त भएको छ। सुदृढ विदेशी विनिमय सञ्चिति, वित्तीय प्रणालीमा पर्याप्त तरलता, स्वच्छ ऊर्जाको ठूलो सम्भावना, युवा जनसांख्यिक शक्ति र प्रविधिमा विशाल सम्भावना हाम्रा बलिया आधार हुन्।</p>
+        <p class="ne">तथापि उत्पादनशील क्षेत्रमा न्यून लगानी, सार्वजनिक संस्थाप्रतिको अविश्वास, र युवाहरूको बहिर्गमन प्रमुख चुनौती हुन्। यी चुनौतीलाई अवसरमा रूपान्तरण गर्दै राज्यको सेवा प्रदायन क्षमता, निजी क्षेत्रको आत्मविश्वास र नागरिकको भरोसा फर्काउनु यस बजेटको ध्येय हो।</p>
+      </div>
+
+      <div class="scn" id="s-tax">
+        <h3 class="ne">कर तथा राजस्व सुधार <span class="en">Tax &amp; revenue reform</span></h3>
+        <div class="summary"><b>Summary:</b> A pro-growth tax reset. The top personal income-tax rate falls by 10 points; the 11-band customs tariff is cut to 7 bands; excise on 360 goods is scrapped or revised; duties on 273 raw materials are reduced. Digital purchases earn a 10% VAT refund, e-billing is automated, and a high-level Tax Advisory Committee will study the VAT/excise regime.</div>
+        <p class="ne">उद्यम–व्यवसायलाई राहत र मध्यम वर्गलाई विस्तार गरी समग्र अर्थतन्त्रलाई गतिशील बनाउन कर दरमा बृहत् पुनरावलोकन गरेको छु। व्यक्तिगत आयकरको अधिकतम दरलाई <span class="fig">१० प्रतिशत बिन्दु</span>ले घटाइएको छ।</p>
+        <p class="ne">औद्योगिक कच्चा पदार्थको भन्सार महसुल तयारी मालवस्तुभन्दा कम्तीमा एक तह न्यून हुने गरी <span class="fig">२७३ प्रकार</span>का कच्चा पदार्थमा भन्सार दर घटाइएको छ। विद्यमान <span class="fig">११ तह</span>को भन्सार दरलाई <span class="fig">सात तह</span>मा सीमित गरिएको छ। हाल <span class="fig">३६० वस्तु</span>मा लागेको अन्तःशुल्क खारेज/संशोधन गरिएको छ।</p>
+        <p class="ne">वस्तु वा सेवाको किनबेचमा डिजिटल भुक्तानीमार्फत उपभोक्ताले गर्ने किनमेलमा मूल्य अभिवृद्धि करको <span class="fig">१० प्रतिशत</span> फिर्ता पाउने व्यवस्था कार्यान्वयन गरिनेछ; मूल्य अभिवृद्धि कर फिर्ता प्रणाली स्वचालित बनाइनेछ। मूल्य अभिवृद्धि करमा बहुदर सान्दर्भिकताबारे अध्ययन गरी सुझाव दिन उच्चस्तरीय सुझाव समिति गठन गरिनेछ।</p>
+        <p class="ne">कर विवाद निरूपण गरी व्यावसायिक वातावरण तयार पार्न कर छुट तथा सहुलियतसम्बन्धी विशेष व्यवस्था; अदालत/न्यायिक निकायमा विचाराधीन कर विवाद तोकिएको रकम थप गरी तोकिएको म्याद भित्र मुद्दा फिर्ता लिने व्यवस्था; जरिवाना, विलम्ब शुल्क वा ब्याज मिनाहाको व्यवस्था मिलाइएको छ।</p>
+      </div>
+
+      <div class="scn" id="s-gov">
+        <h3 class="ne">शासकीय तथा संस्थागत सुधार <span class="en">Governance &amp; institutional reform</span></h3>
+        <div class="summary"><b>Summary:</b> A leaner state. Ministries cut from 22 to 18; 31 agencies dissolved or merged and 18 restructured (a ~Rs 20 billion saving). Civil-service jobs made performance-based and accountable; out-of-service training and idle vehicle/equipment spending stopped; office running costs capped. The structural-reform package targets cost-cutting and efficiency.</div>
+        <p class="ne">नेपाल सरकारको विद्यमान बोझिलो संगठन संरचनालाई चुस्त बनाइनेछ। संघीय मन्त्रालयको संख्या <span class="fig">२२ बाट १८</span> कायम भएको छ। परिपूरकमा विभाग, कार्यालय र दरबन्दी कटौतीबाट बचत हुने रकमलाई प्रशासनलाई दक्ष बनाउन उपयोग गर्ने नीति लिइएको छ।</p>
+        <p class="ne"><span class="fig">३१ निकाय</span> खारेज र <span class="fig">१८ निकाय</span>को पुनर्संरचना गर्दै कर्मचारी तन्त्रलाई मर्यादित जीवनयापन गर्न सक्षम, कार्यसम्पादन कुशल र जवाफदेही बनाइनेछ। यी कदमबाट करिब <span class="fig">रु २० अर्ब</span> बराबरको बचत हुने प्रारम्भिक अनुमान छ।</p>
+        <p class="ne">लागत न्यूनीकरण र दक्षता अभिवृद्धि संस्थागत सुधारको कोर आयाम हुनेछ। तालिम केन्द्र बाहिरका तालिम, क्यामेरा/जेनेरेटर जस्ता न्यून प्रयोगका उपकरणमा विनियोजन रोक्ने; विभिन्न कोष खडा गरी सुविधा दिने प्रचलन बन्द गर्ने; कार्यालय सञ्चालन खर्च उल्लेख्य रूपमा घटाउने व्यवस्था गरिएको छ।</p>
+      </div>
+
+      <div class="scn" id="s-finance">
+        <h3 class="ne">लगानी, वित्त तथा सहकारी <span class="en">Investment, finance &amp; cooperatives</span></h3>
+        <div class="summary"><b>Summary:</b> Open the economy to capital. The FITTA, Companies Act, PPP &amp; Investment, IPR and FDI rules will be amended; FDI auto-approval expanded and pre-approval removed for many cases. New tools: blended finance, foreign-currency &amp; diaspora bonds, a Hydro/Wealth fund, SOE disinvestment via the capital market, and a cooperative-crisis fix to return savers' money (Rastriya Sahakari regulator strengthened).</div>
+        <p class="ne">अप्रतिगमनीय परिवर्तनलाई आत्मसात् गर्दै नीति, कानुन, संस्था, पद्धति, प्रक्रिया र नियतमा परिष्कारसहित सुशासनको मानक स्थापित गर्न प्रतिबद्ध छौं। लगानी प्रवर्धन, आर्थिक सुधार र सहज सेवा प्रवाहका लागि समुचित नीतिगत तथा कानुनी प्रबन्ध गरिनेछ।</p>
+        <p class="ne">विदेशी लगानी तथा प्रविधि हस्तान्तरण ऐन, कम्पनी ऐन, सार्वजनिक–निजी साझेदारी तथा लगानी ऐन, बौद्धिक सम्पत्ति संरक्षण कानुन लगायतमा संशोधन गरिनेछ। स्वचालित स्वीकृति प्रक्रियामार्फत बढी परियोजनामा पूर्व–स्वीकृतिको झन्झट हटाइनेछ; नेपाली नागरिकलाई विदेशमा लगानी गर्न पाउने व्यवस्थालाई सहज बनाइनेछ।</p>
+        <p class="ne">पूर्वाधार आयोजनामा निजी लगानी जुटाउन ब्लेन्डेड फाइनान्स; नेपाल राष्ट्र बैंकको सुपरिवेक्षणमा फिनटेक/मार्केट प्लेस; नवीन तथा वैकल्पिक वित्तीय उपकरण; र हाइड्रो/वेल्थ फन्ड स्थापना गरिनेछ। सार्वजनिक संस्थानलाई बलियो बनाउन सेयर विनिवेश गरी पुँजी बजारमार्फत साधारण सेयर निष्कासन गरिनेछ।</p>
+        <p class="ne">समस्याग्रस्त सहकारीका बचतकर्ताको रकम फिर्ताका लागि बचत रकम तथा सम्पत्ति बिक्रीबाट सोझै भर्ना हुने व्यवस्था; राष्ट्रिय सहकारी नियमन प्राधिकरणको भूमिका थप प्रभावकारी बनाइनेछ। डायस्पोरा बन्ड र फरेन करेन्सी बन्ड जारी गरी उपलब्ध स्रोतको अधिकतम उपयोग गर्ने नीति लिइएको छ।</p>
+      </div>
+
+      <div class="scn" id="s-roads">
+        <h3 class="ne">सडक तथा सहरी पूर्वाधार <span class="en">Roads &amp; urban infrastructure</span></h3>
+        <div class="summary"><b>Summary:</b> The single biggest envelope — <b>Rs 286.48 billion</b>. Push to complete the East–West Highway four-laning, the Postal (Hulaki) Highway (Rs 37.46 B), Pushpalal Mid-Hill Highway, Madan Bhandari Highway, the Karnali/Koshi/Kaligandaki/Seti corridors, the BP and Siddhartha highways, plus Kathmandu-valley electric public transport, sustainable urban mobility and 12 new "smart" satellite towns along the Mid-Hill route.</div>
+        <p class="ne">सडक, यातायात, खानेपानी, सरसफाइ र आर्थिक पहुँच पूर्वाधारलाई एकीकृत रूपमा विकास गरिनेछ। आगामी पाँच वर्षभित्र सबै जिल्ला सदरमुकाम जोड्ने सडक तथा पुलको स्तरोन्नति गरिनेछ। सडक तथा सहरी पूर्वाधार विकासका लागि <span class="fig">रु २८६.४८ अर्ब</span> विनियोजन गरेको छु।</p>
+        <p class="ne">पूर्व–पश्चिम राजमार्गलाई चार लेनमा स्तरोन्नति गर्ने कार्य पाँच वर्षभित्र सम्पन्न गरिनेछ; कमला–कञ्चनपुर र नारायणगढ–बुटवल खण्डको स्तरोन्नति सम्पन्न हुनेछ। हुलाकी राजमार्गको बाँकी खण्ड निर्माण गर्न <span class="fig">रु ३७.४६ अर्ब</span> विनियोजन गरिएको छ।</p>
+        <p class="ne">पुष्पलाल (मध्यपहाडी) लोकमार्ग, मदन भण्डारी राजमार्ग, हुलाकी राजमार्ग तथा कर्णाली, कोशी, कालीगण्डकी, सेती तथा सिद्धार्थ राजमार्ग करिडोरहरूको निर्माण/स्तरोन्नतिलाई तीव्रता दिइनेछ। बीपी राजमार्ग, पृथ्वी राजमार्ग, त्रिभुवन राजमार्गलगायतमा पुल, सुरुङमार्ग र खण्डहरूको निर्माण क्रमशः अघि बढाइनेछ।</p>
+        <p class="ne">काठमाडौं उपत्यकामा विद्युतीय सार्वजनिक बस सञ्चालन, चार्जिङ स्टेसन, ट्राफिक प्रणाली, स्मार्ट बस पार्क र सुदृढ संस्थागत व्यवस्थासहितको स्मार्ट कार्बन मोबिलिटी कार्यक्रम सुरु हुनेछ। मध्यपहाडी लोकमार्ग वरिपरि <span class="fig">१२ स्थान</span>मा नयाँ सहर (स्मार्ट उपनगर) विकास गरिनेछ।</p>
+      </div>
+
+      <div class="scn" id="s-energy">
+        <h3 class="ne">ऊर्जा <span class="en">Energy</span></h3>
+        <div class="summary"><b>Summary:</b> <b>Rs 85.54 billion</b> for generation, transmission and distribution. Nepal Electricity Authority is unbundled into three companies (generation; transmission; distribution &amp; trade). Target ~11,040 MW on the national grid; fast-track licensing; cross-border power trade with India &amp; Bangladesh; 40% of national-grid solar; reliable supply to industry and households.</div>
+        <p class="ne">विद्युत् उत्पादन, प्रसारण र वितरण तथा व्यापारका लागि तीन कम्पनीमा विभाजन गर्ने गरी नेपाल विद्युत् प्राधिकरणको पुनर्संरचना सम्पन्न गरिनेछ। विद्युत् उत्पादन, प्रसारण र वितरण लाइन निर्माणका लागि <span class="fig">रु ८५.५४ अर्ब</span> विनियोजन गरेको छु।</p>
+        <p class="ne">आगामी वर्षभित्र राष्ट्रिय प्रसारण प्रणालीमा जडित क्षमता करिब <span class="fig">११,०४० मेगावाट</span> पुर्‍याउने लक्ष्य लिइएको छ। विद्युत् खरिद सम्झौता (PPA) र अनुमति पत्र जारीलाई छिटो, पारदर्शी प्रणालीमा रूपान्तरण गरिनेछ; निजी क्षेत्रलाई अन्तर्राष्ट्रिय बजारमा विद्युत् व्यापार गर्न पाउने व्यवस्था मिलाइनेछ।</p>
+        <p class="ne">प्रसारण लाइन तथा सबस्टेसन निर्माण; जलाशययुक्त आयोजना (बूढीगण्डकी, उत्तरगंगा, नलसिंगाड लगायत) को विकासमा निजी क्षेत्र र घरेलु लगानी जुटाउने; र राष्ट्रिय ग्रिडमा सौर्य ऊर्जाको हिस्सा वृद्धि गर्ने नीति लिइएको छ। उद्योग तथा घरायसी उपभोक्तालाई भरपर्दो विद्युत् आपूर्ति सुनिश्चित गरिनेछ।</p>
+      </div>
+
+      <div class="scn" id="s-water">
+        <h3 class="ne">खानेपानी तथा सरसफाइ <span class="en">Water supply &amp; sanitation</span></h3>
+        <div class="summary"><b>Summary:</b> <b>Rs 37.17 billion</b> for water &amp; sanitation. Push to give 65% of citizens piped water within three years (7% with high-grade water in five years); complete Melamchi-stage works for Kathmandu valley; 280 schemes in Tarai–Madhes; deep-boring where groundwater is the only option; and a stronger water-tariff/regulation regime.</div>
+        <p class="ne">खानेपानी तथा सरसफाइ तर्फ <span class="fig">रु ३७.१७ अर्ब</span> विनियोजन गरेको छु। आगामी तीन वर्षभित्र <span class="fig">६५ प्रतिशत</span> र पाँच वर्षभित्र थप नागरिकलाई सुरक्षित र स्वच्छ खानेपानी सेवा उपलब्ध गराइनेछ।</p>
+        <p class="ne">तराई–मधेसमा अधुरा रहेका <span class="fig">२८० वटा</span> खानेपानी आयोजना सम्पन्न गर्न रकम विनियोजन गरिएको छ; जहाँ भूजल नै एक मात्र विकल्प छ, त्यहाँ समुदाय स्तरमा डिप–बोरिङसहित खानेपानी प्रणाली विकास गरिनेछ। काठमाडौं उपत्यकाका लागि मेलम्ची लगायतका आयोजनाको बाँकी काम सम्पन्न गरिनेछ।</p>
+        <p class="ne">खानेपानी सेवाको गुणस्तर, शुल्क संरचना र सेवा दायित्व सुनिश्चित गर्न नियमन प्रणालीलाई सुदृढ बनाइनेछ। खानेपानी आपूर्तिको नियमित परीक्षण र क्योर/गुणस्तर अनुगमनलाई व्यवस्थित गरिनेछ।</p>
+      </div>
+
+      <div class="scn" id="s-irrig">
+        <h3 class="ne">सिँचाइ <span class="en">Irrigation</span></h3>
+        <div class="summary"><b>Summary:</b> Add ~15,800 hectares of new irrigation; finish Bheri–Babai, Sikta, Mahakali, Sunkoshi–Marin, Bagmati, Ranijamara–Kulariya and Babai projects; lift-irrigation from rivers for hill terraces; complete Praganna/Badkapath; raise the year-round irrigated share toward 64%; 70 km of river-control embankments and 210 ha land reclamation.</div>
+        <p class="ne">आगामी आर्थिक वर्ष थप <span class="fig">१५,८००</span> हेक्टर खेतियोग्य जमिनमा सिँचाइ सुविधा पुर्‍याइनेछ; यसबाट खेतियोग्य सिञ्चित जमिनको अनुपात <span class="fig">६४ प्रतिशत</span> पुग्नेछ। निर्माणाधीन सिँचाइ आयोजनाहरू यसै आर्थिक वर्षभित्र सम्पन्न हुने गरी स्रोत व्यवस्था गरिएको छ।</p>
+        <p class="ne">बबई, भेरी–बबई, सिक्टा, महाकाली, सुनकोशी–मरिन डाइभर्सन, बागमती, राजापुर तथा रानीजमरा–कुलरिया सिँचाइ आयोजनाको पुनर्स्थापना तथा बाँकी काम अघि बढाइनेछ। नारायणी, कमला, सुनसरी–मोरङ, चन्द्रनहर लगायत पम्प/नहरमा आधारित सिँचाइ प्रणालीको मर्मतसम्भार र पुनर्स्थापना गरिनेछ।</p>
+        <p class="ne">पहाडी तथा हिमाली क्षेत्रका कृषियोग्य भूभागमा लिफ्ट सिँचाइमार्फत भरपर्दो सिँचाइ सुविधा उपलब्ध गराइनेछ। नदी नियन्त्रणतर्फ करिब <span class="fig">७० किलोमिटर</span> तटबन्ध निर्माण र <span class="fig">२१० हेक्टर</span> जग्गा उकास गरिनेछ।</p>
+      </div>
+
+      <div class="scn" id="s-agri">
+        <h3 class="ne">कृषि <span class="en">Agriculture</span></h3>
+        <div class="summary"><b>Summary:</b> <b>Rs 46.92 billion</b> for agriculture &amp; livestock. Make farming a profitable enterprise: chemical-fertiliser supply (Rs 32.46 B) delivered on time, 40% start-up grant for young commercial farmers, 80% premium subsidy on crop &amp; livestock insurance, improved seed/breed, digital farmer ID cards, contract farming, and a Karnali avocado/fruit programme — with cold-chain and processing.</div>
+        <p class="ne">कृषि तथा पशुपन्छी विकासका लागि <span class="fig">रु ४६.९२ अर्ब</span> विनियोजन गरेको छु। व्यवसायिक कृषकलाई आकर्षित गर्ने र कृषिमा उत्पादकत्व वृद्धि गर्न प्रोत्साहित गर्ने नीति लिएको छु।</p>
+        <p class="ne">रासायनिक मल आपूर्तिका लागि <span class="fig">रु ३२.४६ अर्ब</span> विनियोजन; मल आपूर्ति क्यालेन्डर तयार गरी मुख्य बाली लगाउने समयमा नै सहज वितरण हुने व्यवस्था मिलाइएको छ। न्यूनतम <span class="fig">२ करोड</span> सम्म कृषि तथा पशुपन्छी उत्पादनका लागि प्रारम्भिक पुँजी लगानी गर्ने युवा कृषकलाई <span class="fig">४०%</span> सम्म प्रोत्साहन अनुदान।</p>
+        <p class="ne">कृषि र पशु बिमामा <span class="fig">८०%</span> सम्म प्रिमियम अनुदान; उन्नत बीउ, मल, सिँचाइ, विद्युत् तथा कृषि बिमा सहयोग उपलब्ध गराइनेछ। राष्ट्रिय कृषि आधुनिकीकरण कार्यक्रमका लागि <span class="fig">रु २.७ अर्ब</span> लगायतका कार्यक्रम सञ्चालन हुनेछन्।</p>
+        <p class="ne">कृषि सेवा प्रणालीलाई किसान केन्द्रित सेवा प्रणालीमा रूपान्तरण; प्रत्येक स्थानीय तहमा आवश्यक प्राविधिक जनशक्ति परिचालन; किसानको परिचयपत्र वितरण; र किसानबाट सिधै कृषि उपज खरिद गर्दा सहुलियतपूर्ण ऋण/अनुदान दिने नीति लिइएको छ।</p>
+      </div>
+
+      <div class="scn" id="s-forest">
+        <h3 class="ne">वन तथा वातावरण <span class="en">Forest &amp; environment</span></h3>
+        <div class="summary"><b>Summary:</b> ~<b>Rs 31 billion</b>. Move forests beyond conservation into a green-jobs and import-substitution base: scientific harvesting, herbal/forest-product processing, community-forest enterprises, carbon-trade &amp; ecosystem-service valuation entered into the budget system, and forest carbon income shared with local communities.</div>
+        <p class="ne">वन तथा प्राकृतिक स्रोतलाई संरक्षणको सीमित दायराबाट बाहिर निकाली हरित उद्योग, रोजगारी सिर्जना र आयात प्रतिस्थापनको आधार बनाइनेछ। वन क्षेत्रका लागि करिब <span class="fig">रु ३१ अर्ब</span> विनियोजन गरिएको छ।</p>
+        <p class="ne">दिगो काठ उत्पादन, वनमा आधारित उद्योग, जडीबुटी तथा गैरकाष्ठ वन पैदावारको प्रशोधन र हरित उद्यम प्रवर्धन गरिनेछ; सामुदायिक वन उपभोक्ता समूहलाई उत्पादन/प्रशोधन/ब्रान्डिङमा थप स्वायत्तता दिइनेछ।</p>
+        <p class="ne">वन क्षेत्रको कार्बन सेवा तथा पारिस्थितिक सेवाको आर्थिक मूल्यांकन गरी बजेट तथा योजना प्रणालीमा समावेश गरिनेछ; कार्बन उत्सर्जन घटाएबापत प्राप्त लाभमा स्थानीय समुदायलाई प्राथमिकता दिइनेछ।</p>
+      </div>
+
+      <div class="scn" id="s-industry">
+        <h3 class="ne">उद्योग, वाणिज्य तथा आपूर्ति <span class="en">Industry, commerce &amp; supplies</span></h3>
+        <div class="summary"><b>Summary:</b> Revive sick industries, expand industrial corridors (Motipur, Mayur Dhap, etc.), restart Hetauda/Janakpur/Gorakhkali-type plants on PPP/private models, convert Nepal Oil Corp's ethanol blending, push exports with cash incentives, run a Brand Nepal / "Make in Nepal — Made in Nepal" campaign, and modernise customs (faceless, valuation-based, single-window) and warehouses.</div>
+        <p class="ne">उद्योगको क्षमता वृद्धि, स्वामित्व परिवर्तन र विस्तारमा सहजीकरण गरिनेछ; पूर्ण क्षमतामा सञ्चालन हुन नसकेका उद्योग तथा व्यवसायलाई व्यावसायिक पुनरुत्थानमार्फत क्षमता विस्तार र वृद्धिमा प्रोत्साहित गरिनेछ।</p>
+        <p class="ne">औद्योगिक पूर्वाधार (मोतीपुर, मयूर धाप जस्ता औद्योगिक क्षेत्र), औद्योगिक करिडोर निजी क्षेत्रले निर्माण/सञ्चालन गर्ने; नवप्रवर्तन तथा स्टार्टअपलाई पहिचान, सिप, बजार र वित्तीय पहुँच जुटाउने; नव–उद्यम सञ्चालन प्रणालीलाई सुदृढ बनाइनेछ।</p>
+        <p class="ne">नेपाल आयल निगमबाट इथानोल उत्पादन; घरेलु तथा साना उद्योगलाई वित्तीय पहुँच; “मेक इन नेपाल — मेड इन नेपाल” तथा ब्रान्ड नेपाल अभियान; निर्यात अभिवृद्धिका लागि नगद प्रोत्साहन तथा वस्तुगत निर्यात रणनीति कार्यान्वयन गरिनेछ।</p>
+        <p class="ne">भन्सार जाँच पास प्रणालीलाई फेसलेस, मूल्यमा आधारित र एकद्वार (single window) बनाइनेछ; सुक्खा बन्दरगाह, भण्डारण र आपूर्ति प्रणाली आधुनिकीकरण गरिनेछ। काठ/फलाम जस्ता कच्चा पदार्थमा भन्सार दर समायोजन गरी प्रतिस्पर्धी बनाइनेछ।</p>
+      </div>
+
+      <div class="scn" id="s-tourism">
+        <h3 class="ne">पर्यटन तथा संस्कृति <span class="en">Tourism &amp; culture</span></h3>
+        <div class="summary"><b>Summary:</b> Brand-led tourism — "Visit Nepal 2085" preparation, religious circuits (Lumbini–Muktinath, Pashupatinath, Janakpur–Ram Janaki path, Triveni–Devghat), trekking/adventure trails, homestays, and infrastructure at Lumbini, Kapilvastu and Ramgram. Open EU air-safety listing, restructure CAAN into separate regulator &amp; operator, and upgrade Gautam Buddha &amp; Pokhara international airports.</div>
+        <p class="ne">पर्यटन गतिविधिहरूलाई आकर्षक पर्यटनको मूल विषयवस्तुमा ब्रान्डिङ गरी पर्यटकका स्रोत मुलुकहरूमा विविधीकरण गरिनेछ। “भिजिट नेपाल वर्ष २०८५” सफल बनाउन अहिल्यैदेखि तयारी सुरु गरिनेछ।</p>
+        <p class="ne">लुम्बिनी–मुक्तिनाथ धार्मिक–सांस्कृतिक मार्ग, पशुपतिनाथ, जनकपुर–राम जानकी पथ, त्रिवेणी धाम–देवघाट–रिडी मुक्तिनाथ–दामोदर कुण्ड लगायतका तीर्थस्थललाई एकीकृत गरी सालिग्राम/धार्मिक पर्यटन पथ विकास गरिनेछ। ट्रेकिङ/साहसिक पदमार्ग, होमस्टे र पर्यटन पूर्वाधारमा लगानी बढाइनेछ।</p>
+        <p class="ne">नेपाललाई युरोपियन युनियनको एयर सेफ्टी लिस्टबाट बाहिर निकाल्न पहल; नेपाल नागरिक उड्डयन प्राधिकरणलाई नियामक र सञ्चालकको पृथक् भूमिकामा पुनर्संरचना; गौतम बुद्ध तथा पोखरा अन्तर्राष्ट्रिय विमानस्थलको व्यवस्थापन सुधार र रात्रिकालीन उडान सञ्चालन गरिनेछ।</p>
+      </div>
+
+      <div class="scn" id="s-labour">
+        <h3 class="ne">श्रम, रोजगार तथा वैदेशिक रोजगार <span class="en">Labour &amp; foreign employment</span></h3>
+        <div class="summary"><b>Summary:</b> Turn migration skills into productive return. Compulsory labour-registration with safety cards; written contracts, minimum wage, workplace safety &amp; insurance enforced; a Labour Court for fast dispute resolution. Recognise prior learning (RPL) for returnee workers, run "Returnee-Entrepreneur" and paid-internship schemes, expand social security to informal/self-employed workers, and channel remittances into productive investment.</div>
+        <p class="ne">श्रमिक र रोजगारदाता अनिवार्य रूपमा श्रम रजिस्ट्रीमा आबद्ध हुनुपर्ने व्यवस्था; सुरक्षा कार्ड र गाह्रोसँग जोडिएका निर्माण, कृषि, आतिथ्य, ढुवानी तथा औद्योगिक श्रमिक आपूर्ति गर्ने इजाजतप्राप्त संस्थाले बिमा, आवास र डिजिटल हाजिरी व्यवस्थापनसहित सेवा प्रदान गर्नुपर्ने मापदण्ड लागू गरिनेछ।</p>
+        <p class="ne">श्रम क्षेत्रमा लिखित सम्झौता, न्यूनतम ज्याला, कार्यस्थल सुरक्षा मापदण्ड र बिमामार्फत पारिश्रमिक भुक्तानी अनिवार्य गरिनेछ। कार्यस्थल दुर्घटनामा अनिवार्य क्षतिपूर्ति र बिमा दाबी प्रणाली थप प्रभावकारी बनाइनेछ। श्रम न्यायाधिकरणमार्फत श्रम विवादको शीघ्र समाधान गरिनेछ।</p>
+        <p class="ne">विदेशबाट फर्केका अनौपचारिक तथा अनुभवी श्रमिकको सिपलाई औपचारिक मान्यता (RPL) दिइनेछ; पारिश्रमिकसहितको इन्टर्नसिप प्रणाली संस्थागत गरिनेछ। बेरोजगार युवालाई सिप र दक्षताको सदुपयोग गर्न रिटर्नी–माइग्रेन्ट तथा “रिटर्नी–उद्यमी” कार्यक्रम कार्यान्वयन गरिनेछ।</p>
+        <p class="ne">बैदेशिक रोजगारीलाई थप सुरक्षित र मर्यादित बनाउन श्रम सम्झौताको पुनरावलोकन; मृत्यु भएका श्रमिकको शव सहज ल्याउने प्रबन्ध; र विप्रेषणलाई उपभोगबाट उत्पादनशील प्रयोगमा रूपान्तरण गर्ने नीति लिइएको छ।</p>
+      </div>
+
+      <div class="scn" id="s-edu">
+        <h3 class="ne">शिक्षा <span class="en">Education</span></h3>
+        <div class="summary"><b>Summary:</b> The second-largest envelope — <b>Rs 218.30 billion</b>. School meals, scholarships (Rs 8.60 B), free/scholarship education for Dalit children, model residential schools for poor &amp; backward communities, school-merger &amp; restructuring, teacher training, skill-based &amp; STEM education, clean-toilet campaign in all schools, TU teaching-hospital strengthening, international university campuses in Nepal, and student grants for those in remote areas.</div>
+        <p class="ne">शिक्षा क्षेत्रका लागि <span class="fig">रु २१८.३० अर्ब</span> विनियोजन गरेको छु। विद्यालय शिक्षालाई गुणस्तरीय बनाउन प्रणालीगत पुनर्संरचना; राष्ट्रिय विद्यालय नक्साङ्कन र पूर्वाधार; तथा शिक्षक क्षमता परीक्षण/तालिममा लगानी बढाइनेछ।</p>
+        <p class="ne">लक्षित विद्यार्थी छात्रवृत्तिका लागि <span class="fig">रु ८.६० अर्ब</span> विनियोजन; दलित बालबालिकालाई निःशुल्क/छात्रवृत्तिमा आधारित शिक्षा; गरिब तथा पिछडिएका समुदायका लागि नमुना आवासीय विद्यालय सञ्चालन गरिनेछ। समस्त शैक्षिक संस्थामा “सफा शौचालय” अभियान सञ्चालन गरिनेछ।</p>
+        <p class="ne">उद्योग तथा श्रम बजारसँग प्रत्यक्ष आबद्ध सिप–आधारित तथा STEM शिक्षा विस्तार; प्रवासी श्रमिकको पूर्व–सिकाइ मान्यता; र विद्यालयलाई आधारभूत तह देखि क्रमशः आवासीय/गुणस्तरीय बनाइनेछ। त्रिभुवन विश्वविद्यालय शिक्षण अस्पताल लगायतका शिक्षण–अस्पतालको क्षमता विकास गरिनेछ।</p>
+        <p class="ne">अन्तर्राष्ट्रिय स्तरको विश्वविद्यालयलाई नेपालमा क्याम्पस सञ्चालन गर्न नीतिगत व्यवस्था; स्वदेशी–विदेशी प्राध्यापकबाट प्रत्यक्ष ज्ञान आदानप्रदान; र दुर्गम क्षेत्रका विद्यार्थीलाई आवासीय सुविधासहित अनुदान दिइनेछ।</p>
+      </div>
+
+      <div class="scn" id="s-health">
+        <h3 class="ne">स्वास्थ्य <span class="en">Health</span></h3>
+        <div class="summary"><b>Summary:</b> Universal basic health as the first port of call. Health-insurance reform (toward ~90% population coverage over three years); 25 types of essential medicines manufactured by Nepal Aushadhi Ltd; free treatment of the poor in government hospitals; upgrade TU Teaching, Bir &amp; Kirtipur hospitals; provincial cancer/cardiac/kidney services; helicopter air-ambulance in remote Karnali; doubled night/duty allowance for nurses; real-time digital health profile and a Food &amp; Drug Administration.</div>
+        <p class="ne">सबै नागरिकलाई गुणस्तरीय आधारभूत स्वास्थ्य सेवामा पहुँच तथा उपभोग सुनिश्चित गर्न स्वास्थ्य क्षेत्रमा ठूलो लगानी गरिएको छ; आधारभूत स्वास्थ्य संस्थालाई स्वास्थ्य सेवाको प्रथम बिन्दु बनाइनेछ।</p>
+        <p class="ne">स्वास्थ्य बिमाको सर्वव्यापीकरणबाट आगामी तीन वर्षमा करिब <span class="fig">९० प्रतिशत</span> नागरिकलाई स्वास्थ्य बिमाको दायरामा ल्याइनेछ; स्वास्थ्य बिमा कार्यक्रमको व्यापक पुनर्संरचना गरिनेछ। निःशुल्क उपलब्ध गराइने औषधिको संख्या बढाई <span class="fig">२५ प्रकार</span>का औषधि नेपाल औषधि लिमिटेडबाट उत्पादन गरिनेछ।</p>
+        <p class="ne">त्रिभुवन विश्वविद्यालय शिक्षण अस्पताल, वीर अस्पताल र कीर्तिपुर अस्पतालको क्षमता विकास; प्रदेशमा क्यान्सर, मुटु तथा मिर्गौला उपचार सेवा विस्तार; र निर्माणाधीन आधारभूत अस्पताललाई तीन वर्षभित्र सम्पन्न गरिनेछ। नर्सिङ कर्मचारीको रात्रि ड्युटी भत्ता दोब्बर गरिएको छ।</p>
+        <p class="ne">कर्णाली प्रदेशका दुर्गम स्थानमा एयर एम्बुलेन्स सेवा; सम्पूर्ण स्वास्थ्य संस्थामा रियल टाइम अनुगमन; प्रत्येक नागरिकको एक डिजिटल हेल्थ प्रोफाइल प्रणाली; फूड एन्ड ड्रग एडमिनिस्ट्रेसन स्थापना; र राष्ट्रिय आयुर्वेद/वैकल्पिक चिकित्सालाई स्वास्थ्य पर्यटनसँग जोड्ने व्यवस्था गरिनेछ।</p>
+      </div>
+
+      <div class="scn" id="s-social">
+        <h3 class="ne">सामाजिक सुरक्षा तथा समावेशन <span class="en">Social security &amp; inclusion</span></h3>
+        <div class="summary"><b>Summary:</b> Make social protection fairer and targeted. Continue social-security allowances; double child-nutrition grant for Dalit children (to Rs 1,000/month, expanded to 25 districts of Madhes, Karnali &amp; Sudurpaschim); honour movement martyrs &amp; families; gender-based-violence prevention bill; reunite &amp; rehabilitate street children — and declare Nepal a "street-child-free nation"; budget for women, Dalit, Adivasi/Janajati, persons with disability, and the poor &amp; landless.</div>
+        <p class="ne">सामाजिक सुरक्षा प्रणालीलाई थप न्यायिक र लक्षित बनाइनेछ; आर्थिक रूपमा सक्षम नागरिकलाई सामाजिक सुरक्षा भत्ता स्वेच्छिक रूपमा त्याग्न “छोड्न सक्ने” राष्ट्रिय अभियान सञ्चालन गरिनेछ। ती योगदानलाई पुस्तान्तर न्याय र राष्ट्रिय एकबद्धताको उदाहरणका रूपमा सम्मान गरिनेछ।</p>
+        <p class="ne">देशभरका दलित बालबालिकालाई उपलब्ध गराइएको बाल पोषण भत्तालाई दोब्बर गरी मासिक <span class="fig">रु १,०००</span> बनाइएको छ; मधेस, कर्णाली र सुदूरपश्चिमका <span class="fig">२५ जिल्ला</span>का बालबालिकालाई पोषण भत्तामा निरन्तरता दिइएको छ। दलित समुदायका लागि छुट्टै कार्यक्रम र पहुँच सुनिश्चित गरिनेछ।</p>
+        <p class="ne">लैंगिक हिंसा निवारणसम्बन्धी विधेयक तर्जुमा; सडक बालबालिकालाई पारिवारिक पुनर्मिलन तथा सामाजिक पुनर्स्थापना गरी नेपाललाई “सडक बालबालिका मुक्त राष्ट्र” घोषणा गरिनेछ। समता, सभ्य र सुसंस्कृत समाज निर्माणका लागि छुवाछूत तथा भेदभावविरुद्ध राष्ट्रिय अभियान सञ्चालन गरिनेछ।</p>
+        <p class="ne">महिला, दलित, आदिवासी जनजाति, अपाङ्गता भएका व्यक्ति, गरिब तथा भूमिहीन सुकुम्बासीलक्षित कार्यक्रम; महिला उद्यमशीलता विकास; र अव्यवस्थित बसोबासको व्यवस्थापन यसै आर्थिक वर्षभित्र सम्पन्न गर्ने व्यवस्था मिलाइएको छ।</p>
+      </div>
+
+      <div class="scn" id="s-sports">
+        <h3 class="ne">खेलकुद <span class="en">Sports</span></h3>
+        <div class="summary"><b>Summary:</b> Build core sports infrastructure: floodlights and 10,000-capacity football stadium upgrades within three years, a modern cricket stadium in every major city in five years (Mulpani, Fapla, Gautam Buddha grounds), prepare for the 10th National Games and the proposed 11th National Games in Madhes, jobs/health cover for international medal-winning athletes, and residential coaching with academic schooling for talented students.</div>
+        <p class="ne">खेल पूर्वाधारलाई युवा विकास र स्थानीय अर्थतन्त्रसँग जोड्दै आगामी तीन वर्षभित्र <span class="fig">८ हजार</span> दर्शक क्षमताका <span class="fig">१० वटा</span> फुटबल रंगशालालाई फ्लड लाइटसहित स्तरोन्नति गरिनेछ। प्रमुख सहरमा पाँच वर्षभित्र आधुनिक क्रिकेट रंगशाला निर्माण गरिनेछ।</p>
+        <p class="ne">मूलपानी क्रिकेट रंगशाला, गिरिजाप्रसाद कोइराला क्रिकेट रंगशाला र फाप्ला क्रिकेट रंगशालाको डिजाइन/निर्माण अघि बढाइनेछ। १०औं राष्ट्रिय खेलकुद सम्पन्न गर्ने र मधेस प्रदेशमा प्रस्तावित ११औं राष्ट्रिय खेलकुदका लागि आवश्यक पूर्वाधार निर्माण गरिनेछ।</p>
+        <p class="ne">अन्तर्राष्ट्रिय पदक जित्ने खेलाडीलाई अवसर/रोजगार र निःशुल्क स्वास्थ्य उपचारको व्यवस्था; विशेष रुचि र क्षमता भएका विद्यार्थीलाई आवासीय सुविधासहित तालिम र शैक्षिक अध्ययनको संयुक्त व्यवस्था मिलाइनेछ।</p>
+      </div>
+
+      <div class="scn" id="s-it">
+        <h3 class="ne">सूचना प्रविधि तथा सञ्चार <span class="en">Information technology &amp; communication</span></h3>
+        <div class="summary"><b>Summary:</b> Digital-first state. Nepal's first sovereign compute centre (thousands of GPUs) for entrepreneurs &amp; startups; AI used across public service; high-grade telecom &amp; broadband to Karnali and Sudurpaschim; faceless government services via Citizen App &amp; digital profile; SIP-based digital export of IT services; data-localisation &amp; secure printing; restructure Nepal Telecom toward a company model; and Rs 5.93 B for the IT &amp; communication sector.</div>
+        <p class="ne">सूचना प्रविधि पूर्वाधारको विस्तारमा सरकारको खासगरी दृष्टि रहनेछ। देशकै पहिलो सार्वभौम कम्प्युट केन्द्र स्थापना गरी हजारौं GPU प्रोसेसिङ युनिट किनी उद्यमी र स्टार्टअपलाई सहुलियतपूर्ण कम्प्युट क्षमता उपलब्ध गराइनेछ; नेपालको विद्यमान ऊर्जा शक्तिलाई कृत्रिम बुद्धिमत्ता विकासमा प्रयोग गरी सिप–युक्त रोजगारी तथा डिजिटल निर्यातमा रूपान्तरण गरिनेछ।</p>
+        <p class="ne">कर्णाली र सुदूरपश्चिम प्रदेशमा गुणस्तरीय टेलिफोन सेवा र नेटवर्क विस्तार; नागरिक एप तथा डिजिटल प्रोफाइलमार्फत फेसलेस सार्वजनिक सेवा; डिजिटल सार्वजनिक पूर्वाधार विकास; र सरकारी निकायमा प्रयोग हुने सूचना प्रविधि सफ्टवेयर देशभित्रै विकास गर्ने नीति लिइएको छ।</p>
+        <p class="ne">सूचना प्रविधि सेवा क्षेत्रको विस्तारका लागि विदेशमा लगानी खुला; नेपालमा दर्ता भएका कम्पनीलाई SIP–युक्त डिजिटल निर्यात; डाटा लोकलाइजेसन र सुरक्षित मुद्रण संस्था स्थापना; नेपाल टेलिकमलाई कम्पनी मोडलमा रूपान्तरण; र सूचना प्रविधि तथा सञ्चार क्षेत्रका लागि <span class="fig">रु ५.९३ अर्ब</span> विनियोजन गरिएको छ।</p>
+      </div>
+
+      <div class="scn" id="s-rule">
+        <h3 class="ne">सुशासन, कानुन तथा सुरक्षा <span class="en">Governance, rule of law &amp; security</span></h3>
+        <div class="summary"><b>Summary:</b> Strengthen accountability and safety. Anti-corruption law tightened; faceless/AI-aided service delivery; e-courts &amp; digital case management; legal-aid for the poor; transitional-justice cases settled quickly; review of the National Security Policy 2075; welfare &amp; housing for security personnel and martyrs of the movement; AI &amp; forensic tools for Nepal Police; open-jail concept; and disaster-risk reduction with relief, reconstruction and insurance after the recent unrest and floods.</div>
+        <p class="ne">कानुनी शासन र राष्ट्रिय सुरक्षा न्याय प्रणालीलाई चुस्त र प्रभावकारी बनाउन सूचना प्रविधिको अधिकतम प्रयोग गरी विद्युतीय अदालत व्यवस्थापन प्रणाली विस्तार गरिनेछ। विपन्न तथा दुर्गम क्षेत्रका नागरिकलाई निःशुल्क कानुनी सहायता कार्यक्रम सञ्चालन गरिनेछ।</p>
+        <p class="ne">सुशासन र भ्रष्टाचार नियन्त्रणसम्बन्धी कानुन तर्जुमा गरी नीतिगत भ्रष्टाचार अन्त्य गरिनेछ; बेरुजु तथा सार्वजनिक सम्पत्तिको प्रभावकारी व्यवस्थापन; राष्ट्रिय सम्पत्ति व्यवस्थापन कम्पनी स्थापना गरिनेछ। शान्ति प्रक्रिया तथा संक्रमणकालीन न्यायसम्बन्धी बाँकी काम यथाशीघ्र निष्कर्षमा पुर्‍याइनेछ; राष्ट्रिय सुरक्षा नीति २०७५ को पुनरावलोकन गरिनेछ।</p>
+        <p class="ne">नेपाली सेना, नेपाल प्रहरी, सशस्त्र प्रहरी बल र राष्ट्रिय अनुसन्धानका जवानको आवास/कल्याणकारी कार्यक्रम; नेपाल प्रहरीको अनुसन्धान/अभियोजनमा कृत्रिम बुद्धिमत्ता तथा विधि विज्ञान प्रयोगशाला सुदृढीकरण; र कारागारलाई सुधार गृहको रूपमा रूपान्तरण गरिनेछ। हालैको आन्दोलन र बाढीबाट क्षतिग्रस्त सरकारी भवन/निजी आवासको पुनर्निर्माण, राहत, क्षतिपूर्ति र बिमा दाबी प्रणालीलाई प्रभावकारी बनाइनेछ।</p>
+      </div>
+
+      <div class="scn" id="s-fy">
+        <h3 class="ne">वित्तीय व्यवस्था (स्रोत तथा खर्च) <span class="en">Financing — sources &amp; expenditure</span></h3>
+        <div class="summary"><b>Summary:</b> The arithmetic of the budget. Total outlay <b>Rs 2,124.34 B</b> = Recurrent 1,264.58 (59.8%) + Capital 431.10 (20.3%) + Financing 428.64 (20.0%). Funded by Revenue 1,405.31 + Foreign grants 61.74 + Foreign loans 247.28 + Domestic borrowing 410.00 — which sums back to the same Rs 2,124.34 B. Province &amp; local fiscal transfers continue per the constitution (Art. 60) and the NNRFC's recommendation.</div>
+        <p class="ne">आगामी आर्थिक वर्षका लागि कुल खर्च <span class="fig">रु २१,२४.३४ अर्ब</span> (रु २१ खर्ब २४ अर्ब ३४ करोड) विनियोजन गरेको छु। कुल विनियोजनमध्ये चालुतर्फ <span class="fig">रु १२६४.५८ अर्ब</span> अर्थात् <span class="fig">५९.८%</span>, पुँजीगततर्फ <span class="fig">रु ४३१.१० अर्ब</span> अर्थात् <span class="fig">२०.३%</span>, र वित्तीय व्यवस्थातर्फ <span class="fig">रु ४२८.६४ अर्ब</span> अर्थात् <span class="fig">२०.०%</span> रहेको छ।</p>
+        <p class="ne">व्ययभार व्यहोर्ने स्रोततर्फ राजस्वबाट <span class="fig">रु १४०५.३१ अर्ब</span>, वैदेशिक अनुदानबाट <span class="fig">रु ६१.७४ अर्ब</span> प्राप्त हुने अनुमान छ। न्यून हुने रकम वैदेशिक ऋण <span class="fig">रु २४७.२८ अर्ब</span> र आन्तरिक ऋण <span class="fig">रु ४१०.०० अर्ब</span> बाट व्यवस्थापन गरिनेछ। (स्रोतको जोड पनि रु २१,२४.३३ अर्ब हुन आउँछ।)</p>
+        <p class="ne">नेपालको संविधानको धारा ६० बमोजिम राष्ट्रिय प्राकृतिक स्रोत तथा वित्त आयोगको सिफारिसअनुसार प्रदेशका लागि वित्तीय समानीकरण/सशर्त/समपूरक/विशेष अनुदान र स्थानीय तहलाई वित्तीय हस्तान्तरणको व्यवस्था गरिएको छ। राजस्व बाँडफाँट र विभाज्य कोषमार्फत प्रदेश र स्थानीय तहमा रकम हस्तान्तरण हुनेछ।</p>
+      </div>
+
+      <div class="scn" id="s-end">
+        <h3 class="ne">निष्कर्ष <span class="en">Conclusion</span></h3>
+        <div class="summary"><b>Summary:</b> The closing vision — within five years, a well-governed, prosperous and self-respecting Nepal: 7% growth, inflation under 6%, structural reform, a confident private sector and a state citizens can trust. The minister thanks the President, PM, Speaker, parliament, political parties, civil servants, the private sector, the youth movement and all Nepalis at home and abroad, framing the budget not as one government's document but as a shared national resolve.</div>
+        <p class="ne">यी सुधार र रूपान्तरणका कार्यक्रमको प्रभावस्वरूप आगामी आर्थिक वर्षमा <span class="fig">७ प्रतिशत</span> आर्थिक वृद्धि हासिल हुने तथा मूल्यवृद्धि दर <span class="fig">६ प्रतिशत</span> भित्र सीमित रहने विश्वास लिएको छु। नेपाललाई आगामी पाँच वर्षभित्र सुशासित, समुन्नत र स्वाभिमानी राष्ट्रमा रूपान्तरण गर्ने ध्येयका साथ यो बजेट प्रस्तुत गरेको छु।</p>
+        <p class="ne">यो बजेट केवल सरकारको मात्र दायित्व होइन — राज्य, निजी क्षेत्र र नागरिक समाज बीचको साझा संकल्प, सामूहिक अठोट र समष्टि अभियान हो। यसको सफलतामा सबै राजनीतिक दल, निजी क्षेत्र, श्रमिक, किसान, युवा, उद्यमी, प्रवासी नेपाली र समस्त नागरिकको सार्थक सहभागिता अपरिहार्य छ।</p>
+        <p class="ne">सम्माननीय राष्ट्रपति, सम्माननीय प्रधानमन्त्री, सम्माननीय सभामुख, संघीय संसद, सबै राजनीतिक दल, राष्ट्रसेवक कर्मचारी, निजी क्षेत्र, परिवर्तनकामी युवा शक्ति तथा स्वदेश र विदेशमा रहनुभएका समस्त नेपाली दाजुभाइ तथा दिदीबहिनीप्रति हार्दिक आभार व्यक्त गर्दै यो बजेट प्रस्तुत गरेको छु। धन्यवाद।</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer class="back">
+  <a href="../">← Study मा फर्कनुहोस् · Back to Study</a> · <a href="../../">Tatva home</a>
+</footer>
+</div>
+
+<script>
+// ---- view toggle ----
+function showView(v){
+  document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.toggle button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('view-'+v).classList.add('active');
+  document.getElementById('tab-'+v).classList.add('active');
+  if(v==='overview') animateBars();
+  if(v==='speech') document.getElementById('search').focus();
+  window.scrollTo({top:0,behavior:'smooth'});
+  history.replaceState(null,'',v==='speech'?'#read':'#');
+}
+
+// ---- animate bars when overview shown ----
+let barsDone=false;
+function animateBars(){
+  document.querySelectorAll('.fill[data-w]').forEach(f=>{f.style.width=f.dataset.w+'%';});
+  barsDone=true;
+}
+window.addEventListener('load',()=>{
+  if(location.hash==='#read'){showView('speech');} else {setTimeout(animateBars,200);}
+});
+
+// ---- search (filter + highlight) ----
+const searchEl=document.getElementById('search');
+const countEl=document.getElementById('count');
+const speech=document.getElementById('speech');
+const paras=[...speech.querySelectorAll('p:not(.no-results), .summary')];
+const sections=[...speech.querySelectorAll('.scn')];
+const orig=new Map(); paras.forEach(p=>orig.set(p,p.innerHTML));
+const noRes=document.getElementById('noResults');
+
+function escapeHtml(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}
+let t;
+searchEl.addEventListener('input',()=>{clearTimeout(t);t=setTimeout(runSearch,120);});
+function runSearch(){
+  const q=searchEl.value.trim();
+  // reset
+  paras.forEach(p=>{p.innerHTML=orig.get(p);p.classList.remove('hidden-p');});
+  sections.forEach(s=>s.classList.remove('hidden-p'));
+  noRes.style.display='none';
+  if(!q){countEl.textContent='';return;}
+  const rx=new RegExp('('+escapeHtml(q)+')','gi');
+  let hits=0;
+  paras.forEach(p=>{
+    const txt=p.textContent;
+    if(rx.test(txt)){
+      // highlight text nodes only
+      walkHighlight(p,rx); hits+=(txt.match(rx)||[]).length;
+    } else { p.classList.add('hidden-p'); }
+  });
+  // hide empty sections
+  sections.forEach(s=>{
+    const vis=[...s.querySelectorAll('p, .summary')].some(el=>!el.classList.contains('hidden-p'));
+    if(!vis) s.classList.add('hidden-p');
+  });
+  countEl.textContent = hits ? (hits+' मिलान · matches') : '';
+  noRes.style.display = hits ? 'none':'block';
+}
+function walkHighlight(el,rx){
+  // rebuild from original then wrap matches
+  el.innerHTML=orig.get(el);
+  const tw=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null);
+  const nodes=[];let n;while(n=tw.nextNode())nodes.push(n);
+  nodes.forEach(node=>{
+    if(rx.test(node.nodeValue)){
+      const span=document.createElement('span');
+      span.innerHTML=node.nodeValue.replace(rx,'<mark>$1</mark>');
+      node.parentNode.replaceChild(span,node);
+    }
+  });
+}
+
+// ---- TOC active highlight + smooth scroll ----
+const tocLinks=[...document.querySelectorAll('#toc a')];
+tocLinks.forEach(a=>a.addEventListener('click',e=>{
+  const id=a.getAttribute('href');
+  const tgt=document.querySelector(id);
+  if(tgt){e.preventDefault();tgt.scrollIntoView({behavior:'smooth',block:'start'});}
+}));
+const obs=new IntersectionObserver(es=>{
+  es.forEach(en=>{
+    if(en.isIntersecting){
+      const id='#'+en.target.id;
+      tocLinks.forEach(a=>a.classList.toggle('active',a.getAttribute('href')===id));
+    }
+  });
+},{rootMargin:'-20% 0px -70% 0px'});
+sections.forEach(s=>obs.observe(s));
+</script>
+</body>
+</html>

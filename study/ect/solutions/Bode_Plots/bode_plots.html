@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Bode Plot Numericals — ECT (IOE) — Textbook-Style Solutions</title>
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+<style>
+  :root {
+    --fg: #1a1a1a; --bg: #fafafa; --accent: #1a4d8c; --muted: #666;
+    --border: #c4c4c4; --code-bg: #f0f0f0; --asymp: #d62728; --exact: #1f77b4;
+    --th-bg: #e8eff6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    max-width: 1100px; margin: 0 auto; padding: 24px 32px;
+    color: var(--fg); background: var(--bg); line-height: 1.55;
+  }
+  header { border-bottom: 2px solid var(--accent); padding-bottom: 16px; margin-bottom: 24px; }
+  h1 { color: var(--accent); margin: 0 0 8px 0; font-size: 28px; }
+  header p { color: var(--muted); margin: 4px 0; }
+  nav#toc {
+    background: white; border: 1px solid var(--border); border-radius: 6px;
+    padding: 16px 24px; margin-bottom: 32px;
+  }
+  nav#toc h2 { margin-top: 0; font-size: 18px; color: var(--accent); }
+  nav#toc ol { margin: 0; padding-left: 20px; }
+  nav#toc li { margin: 4px 0; font-size: 14px; }
+  nav#toc a { color: var(--fg); text-decoration: none; }
+  nav#toc a:hover { color: var(--accent); text-decoration: underline; }
+  section.problem {
+    background: white; border: 1px solid var(--border); border-radius: 6px;
+    padding: 20px 28px; margin-bottom: 36px;
+  }
+  section.problem h2 {
+    color: var(--accent); border-bottom: 1px solid var(--border);
+    padding-bottom: 8px; margin-top: 0; font-size: 22px;
+  }
+  section.problem h2 .marks {
+    font-size: 13px; color: var(--muted); float: right; font-weight: normal;
+  }
+  .subhead {
+    color: #333; font-size: 15px; margin: 18px 0 6px 0;
+    font-weight: 600; text-decoration: underline; text-underline-offset: 4px;
+  }
+  .tf { padding: 8px 16px; background: var(--code-bg); border-radius: 4px; margin: 12px 0; }
+  .stepline { margin: 8px 0; }
+  .corners { font-weight: 600; margin: 10px 0 4px 0; }
+  table.derive {
+    border-collapse: collapse; margin: 6px 0 12px 0;
+    font-size: 14px; width: 100%; max-width: 880px;
+    background: white;
+  }
+  table.derive th, table.derive td {
+    border: 1px solid #555; padding: 6px 10px; text-align: center;
+    vertical-align: middle;
+  }
+  table.derive th { background: var(--th-bg); font-weight: 600; }
+  table.derive td.factor { text-align: left; font-size: 13px; min-width: 200px; }
+  .pos { color: #1a7f3a; font-weight: 600; }
+  .neg { color: #c0392b; font-weight: 600; }
+  .plot-row { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 16px; }
+  .plot { flex: 1 1 480px; min-width: 320px; height: 360px; }
+  .note {
+    background: #fff7e0; border-left: 3px solid #d4a017;
+    padding: 8px 12px; margin: 12px 0; font-size: 14px;
+  }
+  .legend-key {
+    display: inline-block; width: 14px; height: 3px; vertical-align: middle;
+    margin: 0 4px 0 10px;
+  }
+  .legend-key.asymp { background: var(--asymp); border-top: 1px dashed var(--asymp); }
+  .legend-key.exact { background: var(--exact); }
+  footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--border);
+    color: var(--muted); font-size: 13px; text-align: center; }
+  .calc { font-family: "SF Mono", Consolas, monospace; font-size: 13.5px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Bode Plot Numericals — ECT (IOE)</h1>
+  <p>Twelve past-exam asymptotic-Bode-plot transfer functions, worked in the standard textbook table format: factor-by-factor magnitude and phase slope tracking with corner / effective-frequency / individual / final-slope columns, followed by computed plots (asymptotic + exact overlay).</p>
+  <p style="margin-top:10px;">
+    <span class="legend-key asymp"></span>Asymptotic (straight-line)
+    <span class="legend-key exact"></span>Exact (computed from $H(j\omega)$)
+  </p>
+</header>
+
+<nav id="toc">
+<h2>Table of Contents</h2>
+<ol>
+  <li><a href="#p1">2082 Baishakh Q4b</a> — $\frac{200(s^2+5s+25)}{s^2(s+10)(s+30)}$</li>
+  <li><a href="#p2">2081 Bhadra Q4b</a> — $\frac{5000(s+2)(s+1)}{s(s^2+11s+18)(s^2+5s+225)}$</li>
+  <li><a href="#p3">2081 Baishakh Q5b</a> — $\frac{1000(s+2)}{s(s^2+21s+20)(s^2+2s+100)}$</li>
+  <li><a href="#p4">2080 Bhadra Q5b</a> — $\frac{15(1+j\omega/10)}{j\omega(1+j\omega/2)[\,1+j0.6(j\omega/50)+(j\omega/50)^2]}$</li>
+  <li><a href="#p5">2080 Baishakh Q4b</a> — $\frac{30(s+10)}{s(s^2+3s+50)}$</li>
+  <li><a href="#p6">2079 Bhadra Q4b</a> — $\frac{50(s+10)}{s(s+20)(s^2+2s+225)}$</li>
+  <li><a href="#p7">2079 Baishakh Q4b</a> — $\frac{s}{s(1+0.5s)(1+0.05s)}$</li>
+  <li><a href="#p8">2078 Kartik Q4b</a> — $\frac{s+3}{s(s+1)(s+2)}$</li>
+  <li><a href="#p9">2078 Bhadra Q5b</a> — $\frac{20(s+2)}{s(s+5)(s^2+4s+16)}$</li>
+  <li><a href="#p10">2076 Chaitra Q5b</a> — $\frac{2(s+5)}{s(s^2+21s+20)(s+10)}$</li>
+  <li><a href="#p11">2076 Ashwin (Back) Q5a</a> — $\frac{(s+5)}{s(s^2+21s+20)(s^2+2s+100)}$</li>
+  <li><a href="#p12">2075 Chaitra Q5b</a> — $\frac{64(s+2)}{s(s+0.5)(s^2+3.2s+64)}$</li>
+</ol>
+</nav>
+
+<main>
+
+<!-- ============================ PROBLEM 1 ============================ -->
+<section class="problem" id="p1">
+<h2>1. 2082 Baishakh Q4b <span class="marks">[8 marks]</span></h2>
+<p><strong>Q.</strong> Draw the approximate Bode plot of the given transfer function:</p>
+<div class="tf">$$H(s) = \frac{200(s^2+5s+25)}{s^2(s+10)(s+30)}$$</div>
+
+<p class="subhead">Solution</p>
+<p>Quadratic numerator: $s^2+5s+25 = 25\!\left[1+\tfrac{s}{5}+\!\left(\tfrac{s}{5}\right)^{\!2}\right]$, so $\omega_n = 5$, $2\zeta\omega_n=5 \Rightarrow \zeta = 0.5$.</p>
+$$H(s) = \frac{200\cdot 25}{10\cdot 30}\cdot\frac{1+\tfrac{s}{5}+\!\left(\tfrac{s}{5}\right)^{\!2}}{s^2(1+\tfrac{s}{10})(1+\tfrac{s}{30})} = \frac{\tfrac{50}{3}\,[\,1+\tfrac{j\omega}{5}+(\tfrac{j\omega}{5})^2\,]}{(j\omega)^2(1+\tfrac{j\omega}{10})(1+\tfrac{j\omega}{30})}$$
+
+<p class="corners">Corner frequencies: <span class="pos">5(+)</span>, <span class="neg">10(−)</span>, <span class="neg">30(−)</span></p>
+<p class="stepline"><strong>Starting frequency</strong> $\omega_0 = 0.1$ rad/s.</p>
+
+<p class="subhead">Magnitude plot</p>
+<p class="calc">Starting magnitude $= 20\log\left|\dfrac{50/3}{(j\omega)^2}\right|_{\omega=0.1} = 20\log\!\left(\dfrac{16.67}{0.01}\right) = 64.44$ dB</p>
+<table class="derive">
+<tr><th>Factors</th><th>Corner frequency</th><th>Individual slope</th><th>Final slope</th></tr>
+<tr><td class="factor">$\tfrac{50}{3}\,[j\omega]^{-2}$</td><td>low(−)</td><td>−40 dB/dec</td><td>−40 dB/dec</td></tr>
+<tr><td class="factor">$[\,1+\tfrac{j\omega}{5}+(\tfrac{j\omega}{5})^2\,]^{+1}$</td><td class="pos">5(+)</td><td>+40 dB/dec</td><td>0 dB/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/10]^{-1}$</td><td class="neg">10(−)</td><td>−20 dB/dec</td><td>−20 dB/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/30]^{-1}$</td><td class="neg">30(−)</td><td>−20 dB/dec</td><td>−40 dB/dec</td></tr>
+</table>
+
+<p class="subhead">Phase plot</p>
+<p class="calc">Starting phase $= 0° + (-90°)\cdot 2 = -180°$ &nbsp; (constant $K_B>0$ plus double pole at origin)</p>
+<table class="derive">
+<tr><th>Factors</th><th>Corner freq</th><th>Effective freq</th><th>Individual slope</th><th>Final slope</th></tr>
+<tr><td class="factor">$\tfrac{50}{3}\,[j\omega]^{-2}$</td><td>low(−)</td><td>low(−)</td><td>0°/dec</td><td>0°/dec</td></tr>
+<tr><td class="factor">Quad zero, $\omega_n=5$</td><td class="pos">5(+)</td><td class="pos">0.5(+)</td><td>+90°/dec</td><td>+90°/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/10]^{-1}$</td><td class="neg">10(−)</td><td class="neg">1(−)</td><td>−45°/dec</td><td>+45°/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/30]^{-1}$</td><td class="neg">30(−)</td><td class="neg">3(−)</td><td>−45°/dec</td><td>0°/dec</td></tr>
+</table>
+
+<div class="plot-row"><div class="plot" id="mag1"></div><div class="plot" id="phase1"></div></div>
+</section>
+
+<!-- ============================ PROBLEM 2 ============================ -->
+<section class="problem" id="p2">
+<h2>2. 2081 Bhadra Q4b <span class="marks">[2+8 marks]</span></h2>
+<p><strong>Q.</strong> Find and plot poles/zeros; draw asymptotic Bode plot of:</p>
+<div class="tf">$$G(s) = \frac{5000(s+2)(s+1)}{s(s^2+11s+18)(s^2+5s+225)}$$</div>
+
+<p class="subhead">Solution</p>
+<div class="note"><strong>Pole–zero cancellation:</strong> $s^2+11s+18 = (s+2)(s+9)$, so $(s+2)$ cancels with the same factor in the numerator:
+$$G(s) = \frac{5000(s+1)}{s(s+9)(s^2+5s+225)}$$</div>
+<p>Quadratic: $s^2+5s+225 \Rightarrow \omega_n=15$, $2\zeta\omega_n=5 \Rightarrow \zeta=\tfrac{1}{6}\approx 0.167$.</p>
+$$G(j\omega) = \frac{2.469\,(1+j\omega)}{j\omega(1+j\omega/9)\,[\,1+j\tfrac{\omega}{45}+(j\omega/15)^2\,]}$$
+<p>$K_B = 5000/2025 \approx 2.469$, so $20\log K_B \approx 7.85$ dB.</p>
+
+<p class="corners">Corner frequencies: <span class="pos">1(+)</span>, <span class="neg">9(−)</span>, <span class="neg">15(−)</span></p>
+<p class="stepline"><strong>Starting frequency</strong> $\omega_0 = 0.01$ rad/s (well below the smallest corner).</p>
+
+<p class="subhead">Magnitude plot</p>
+<p class="calc">Starting magnitude $= 20\log\left|\dfrac{2.469}{j\omega}\right|_{\omega=0.01} = 20\log\!\left(\dfrac{2.469}{0.01}\right) = 47.85$ dB</p>
+<table class="derive">
+<tr><th>Factors</th><th>Corner frequency</th><th>Individual slope</th><th>Final slope</th></tr>
+<tr><td class="factor">$2.469\,[j\omega]^{-1}$</td><td>low(−)</td><td>−20 dB/dec</td><td>−20 dB/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/1]^{+1}$</td><td class="pos">1(+)</td><td>+20 dB/dec</td><td>0 dB/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/9]^{-1}$</td><td class="neg">9(−)</td><td>−20 dB/dec</td><td>−20 dB/dec</td></tr>
+<tr><td class="factor">Quad pole, $\omega_n=15,\,\zeta=0.167$</td><td class="neg">15(−)</td><td>−40 dB/dec</td><td>−60 dB/dec</td></tr>
+</table>
+
+<p class="subhead">Phase plot</p>
+<p class="calc">Starting phase $= 0° + (-90°) = -90°$</p>
+<table class="derive">
+<tr><th>Factors</th><th>Corner freq</th><th>Effective freq</th><th>Individual slope</th><th>Final slope</th></tr>
+<tr><td class="factor">$2.469\,[j\omega]^{-1}$</td><td>low(−)</td><td>low(−)</td><td>0°/dec</td><td>0°/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/1]^{+1}$</td><td class="pos">1(+)</td><td class="pos">0.1(+)</td><td>+45°/dec</td><td>+45°/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/9]^{-1}$</td><td class="neg">9(−)</td><td class="neg">0.9(−)</td><td>−45°/dec</td><td>0°/dec</td></tr>
+<tr><td class="factor">Quad pole, $\omega_n=15$</td><td class="neg">15(−)</td><td class="neg">1.5(−)</td><td>−90°/dec</td><td>−90°/dec</td></tr>
+</table>
+
+<div class="plot-row"><div class="plot" id="mag2"></div><div class="plot" id="phase2"></div></div>
+</section>
+
+<!-- ============================ PROBLEM 3 ============================ -->
+<section class="problem" id="p3">
+<h2>3. 2081 Baishakh Q5b <span class="marks">[8 marks]</span></h2>
+<p><strong>Q.</strong> Draw the asymptotic Bode graph of:</p>
+<div class="tf">$$G(s) = \frac{1000(s+2)}{s(s^2+21s+20)(s^2+2s+100)}$$</div>
+
+<p class="subhead">Solution</p>
+<p>$s^2+21s+20 = (s+1)(s+20)$. The other quadratic is irreducible: $\omega_n=10$, $2\zeta\omega_n=2 \Rightarrow \zeta=0.1$ (sharp resonance).</p>
+$$G(j\omega) = \frac{(1+j\omega/2)}{j\omega(1+j\omega)(1+j\omega/20)\,[\,1+j\tfrac{\omega}{50}+(j\omega/10)^2\,]}, \quad K_B=1 \;\Rightarrow\; 0\text{ dB}$$
+
+<p class="corners">Corner frequencies: <span class="neg">1(−)</span>, <span class="pos">2(+)</span>, <span class="neg">10(−)</span>, <span class="neg">20(−)</span></p>
+<p class="stepline"><strong>Starting frequency</strong> $\omega_0 = 0.1$ rad/s.</p>
+
+<p class="subhead">Magnitude plot</p>
+<p class="calc">Starting magnitude $= 20\log\left|\dfrac{1}{j\omega}\right|_{\omega=0.1} = 20\log(10) = 20$ dB</p>
+<table class="derive">
+<tr><th>Factors</th><th>Corner frequency</th><th>Individual slope</th><th>Final slope</th></tr>
+<tr><td class="factor">$[j\omega]^{-1}$</td><td>low(−)</td><td>−20 dB/dec</td><td>−20 dB/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/1]^{-1}$</td><td class="neg">1(−)</td><td>−20 dB/dec</td><td>−40 dB/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/2]^{+1}$</td><td class="pos">2(+)</td><td>+20 dB/dec</td><td>−20 dB/dec</td></tr>
+<tr><td class="factor">Quad pole, $\omega_n=10,\,\zeta=0.1$</td><td class="neg">10(−)</td><td>−40 dB/dec</td><td>−60 dB/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/20]^{-1}$</td><td class="neg">20(−)</td><td>−20 dB/dec</td><td>−80 dB/dec</td></tr>
+</table>
+
+<p class="subhead">Phase plot</p>
+<p class="calc">Starting phase $= -90°$</p>
+<table class="derive">
+<tr><th>Factors</th><th>Corner freq</th><th>Effective freq</th><th>Individual slope</th><th>Final slope</th></tr>
+<tr><td class="factor">$[j\omega]^{-1}$</td><td>low(−)</td><td>low(−)</td><td>0°/dec</td><td>0°/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/1]^{-1}$</td><td class="neg">1(−)</td><td class="neg">0.1(−)</td><td>−45°/dec</td><td>−45°/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/2]^{+1}$</td><td class="pos">2(+)</td><td class="pos">0.2(+)</td><td>+45°/dec</td><td>0°/dec</td></tr>
+<tr><td class="factor">Quad pole, $\omega_n=10$</td><td class="neg">10(−)</td><td class="neg">1(−)</td><td>−90°/dec</td><td>−90°/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/20]^{-1}$</td><td class="neg">20(−)</td><td class="neg">2(−)</td><td>−45°/dec</td><td>−135°/dec</td></tr>
+</table>
+
+<div class="plot-row"><div class="plot" id="mag3"></div><div class="plot" id="phase3"></div></div>
+</section>
+
+<!-- ============================ PROBLEM 4 ============================ -->
+<section class="problem" id="p4">
+<h2>4. 2080 Bhadra Q5b <span class="marks">[8 marks]</span></h2>
+<p><strong>Q.</strong> Plot the frequency response as asymptotic Bode plot:</p>
+<div class="tf">$$G(j\omega) = \frac{15\!\left(1+\tfrac{j\omega}{10}\right)}{j\omega\!\left(1+\tfrac{j\omega}{2}\right)\!\left[\,1+j\tfrac{0.6\,\omega}{50}+\!\left(\tfrac{j\omega}{50}\right)^{\!2}\,\right]}$$</div>
+
+<p class="subhead">Solution</p>
+<p>Already in standard Bode form. Quadratic: $\omega_n=50$, $2\zeta = 0.6 \Rightarrow \zeta = 0.3$. $K_B=15 \Rightarrow 20\log(15)=23.52$ dB.</p>
+
+<p class="corners">Corner frequencies: <span class="neg">2(−)</span>, <span class="pos">10(+)</span>, <span class="neg">50(−)</span></p>
+<p class="stepline"><strong>Starting frequency</strong> $\omega_0 = 0.1$ rad/s.</p>
+
+<p class="subhead">Magnitude plot</p>
+<p class="calc">Starting magnitude $= 20\log\left|\dfrac{15}{j\omega}\right|_{\omega=0.1} = 20\log(150) = 43.52$ dB</p>
+<table class="derive">
+<tr><th>Factors</th><th>Corner frequency</th><th>Individual slope</th><th>Final slope</th></tr>
+<tr><td class="factor">$15\,[j\omega]^{-1}$</td><td>low(−)</td><td>−20 dB/dec</td><td>−20 dB/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/2]^{-1}$</td><td class="neg">2(−)</td><td>−20 dB/dec</td><td>−40 dB/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/10]^{+1}$</td><td class="pos">10(+)</td><td>+20 dB/dec</td><td>−20 dB/dec</td></tr>
+<tr><td class="factor">Quad pole, $\omega_n=50,\,\zeta=0.3$</td><td class="neg">50(−)</td><td>−40 dB/dec</td><td>−60 dB/dec</td></tr>
+</table>
+
+<p class="subhead">Phase plot</p>
+<p class="calc">Starting phase $= -90°$</p>
+<table class="derive">
+<tr><th>Factors</th><th>Corner freq</th><th>Effective freq</th><th>Individual slope</th><th>Final slope</th></tr>
+<tr><td class="factor">$15\,[j\omega]^{-1}$</td><td>low(−)</td><td>low(−)</td><td>0°/dec</td><td>0°/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/2]^{-1}$</td><td class="neg">2(−)</td><td class="neg">0.2(−)</td><td>−45°/dec</td><td>−45°/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/10]^{+1}$</td><td class="pos">10(+)</td><td class="pos">1(+)</td><td>+45°/dec</td><td>0°/dec</td></tr>
+<tr><td class="factor">Quad pole, $\omega_n=50$</td><td class="neg">50(−)</td><td class="neg">5(−)</td><td>−90°/dec</td><td>−90°/dec</td></tr>
+</table>
+
+<div class="plot-row"><div class="plot" id="mag4"></div><div class="plot" id="phase4"></div></div>
+</section>
+
+<!-- ============================ PROBLEM 5 ============================ -->
+<section class="problem" id="p5">
+<h2>5. 2080 Baishakh Q4b <span class="marks">[8 marks]</span></h2>
+<p><strong>Q.</strong> Sketch the Bode Plot for:</p>
+<div class="tf">$$G(s) = \frac{30(s+10)}{s(s^2+3s+50)}$$</div>
+
+<p class="subhead">Solution</p>
+<p>Quadratic: $\omega_n=\sqrt{50}\approx 7.07$, $2\zeta\omega_n=3 \Rightarrow \zeta \approx 0.212$.</p>
+$$G(j\omega) = \frac{6\,(1+j\omega/10)}{j\omega\,[\,1+j\tfrac{3\omega}{50}+(j\omega/\sqrt{50})^2\,]}, \quad K_B = 6 \Rightarrow 15.56\text{ dB}$$
+
+<p class="corners">Corner frequencies: <span class="neg">7.07(−)</span>, <span class="pos">10(+)</span></p>
+<p class="stepline"><strong>Starting frequency</strong> $\omega_0 = 0.1$ rad/s.</p>
+
+<p class="subhead">Magnitude plot</p>
+<p class="calc">Starting magnitude $= 20\log\left|\dfrac{6}{j\omega}\right|_{\omega=0.1} = 20\log(60) = 35.56$ dB</p>
+<table class="derive">
+<tr><th>Factors</th><th>Corner frequency</th><th>Individual slope</th><th>Final slope</th></tr>
+<tr><td class="factor">$6\,[j\omega]^{-1}$</td><td>low(−)</td><td>−20 dB/dec</td><td>−20 dB/dec</td></tr>
+<tr><td class="factor">Quad pole, $\omega_n=7.07,\,\zeta=0.212$</td><td class="neg">7.07(−)</td><td>−40 dB/dec</td><td>−60 dB/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/10]^{+1}$</td><td class="pos">10(+)</td><td>+20 dB/dec</td><td>−40 dB/dec</td></tr>
+</table>
+
+<p class="subhead">Phase plot</p>
+<p class="calc">Starting phase $= -90°$</p>
+<table class="derive">
+<tr><th>Factors</th><th>Corner freq</th><th>Effective freq</th><th>Individual slope</th><th>Final slope</th></tr>
+<tr><td class="factor">$6\,[j\omega]^{-1}$</td><td>low(−)</td><td>low(−)</td><td>0°/dec</td><td>0°/dec</td></tr>
+<tr><td class="factor">Quad pole, $\omega_n=7.07$</td><td class="neg">7.07(−)</td><td class="neg">0.707(−)</td><td>−90°/dec</td><td>−90°/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/10]^{+1}$</td><td class="pos">10(+)</td><td class="pos">1(+)</td><td>+45°/dec</td><td>−45°/dec</td></tr>
+</table>
+
+<div class="plot-row"><div class="plot" id="mag5"></div><div class="plot" id="phase5"></div></div>
+</section>
+
+<!-- ============================ PROBLEM 6 ============================ -->
+<section class="problem" id="p6">
+<h2>6. 2079 Bhadra Q4b <span class="marks">[8 marks]</span></h2>
+<p><strong>Q.</strong> Draw the asymptotic Bode plot for:</p>
+<div class="tf">$$G(s) = \frac{50(s+10)}{s(s+20)(s^2+2s+225)}$$</div>
+
+<p class="subhead">Solution</p>
+<p>Quadratic: $\omega_n=15$, $2\zeta\omega_n=2 \Rightarrow \zeta=\tfrac{1}{15}\approx 0.067$ (very sharp peak).</p>
+$$G(j\omega) = \frac{(1/9)\,(1+j\omega/10)}{j\omega(1+j\omega/20)\,[\,1+j\tfrac{2\omega}{225}+(j\omega/15)^2\,]}$$
+<p>$K_B = 1/9 \approx 0.111 \Rightarrow 20\log(1/9) = -19.08$ dB.</p>
+
+<p class="corners">Corner frequencies: <span class="pos">10(+)</span>, <span class="neg">15(−)</span>, <span class="neg">20(−)</span></p>
+<p class="stepline"><strong>Starting frequency</strong> $\omega_0 = 0.01$ rad/s.</p>
+
+<p class="subhead">Magnitude plot</p>
+<p class="calc">Starting magnitude $= 20\log\left|\dfrac{1/9}{j\omega}\right|_{\omega=0.01} = 20\log(11.11) = 20.92$ dB</p>
+<table class="derive">
+<tr><th>Factors</th><th>Corner frequency</th><th>Individual slope</th><th>Final slope</th></tr>
+<tr><td class="factor">$\tfrac{1}{9}\,[j\omega]^{-1}$</td><td>low(−)</td><td>−20 dB/dec</td><td>−20 dB/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/10]^{+1}$</td><td class="pos">10(+)</td><td>+20 dB/dec</td><td>0 dB/dec</td></tr>
+<tr><td class="factor">Quad pole, $\omega_n=15,\,\zeta=0.067$</td><td class="neg">15(−)</td><td>−40 dB/dec</td><td>−40 dB/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/20]^{-1}$</td><td class="neg">20(−)</td><td>−20 dB/dec</td><td>−60 dB/dec</td></tr>
+</table>
+
+<p class="subhead">Phase plot</p>
+<p class="calc">Starting phase $= -90°$</p>
+<table class="derive">
+<tr><th>Factors</th><th>Corner freq</th><th>Effective freq</th><th>Individual slope</th><th>Final slope</th></tr>
+<tr><td class="factor">$\tfrac{1}{9}\,[j\omega]^{-1}$</td><td>low(−)</td><td>low(−)</td><td>0°/dec</td><td>0°/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/10]^{+1}$</td><td class="pos">10(+)</td><td class="pos">1(+)</td><td>+45°/dec</td><td>+45°/dec</td></tr>
+<tr><td class="factor">Quad pole, $\omega_n=15$</td><td class="neg">15(−)</td><td class="neg">1.5(−)</td><td>−90°/dec</td><td>−45°/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/20]^{-1}$</td><td class="neg">20(−)</td><td class="neg">2(−)</td><td>−45°/dec</td><td>−90°/dec</td></tr>
+</table>
+
+<div class="plot-row"><div class="plot" id="mag6"></div><div class="plot" id="phase6"></div></div>
+</section>
+
+<!-- ============================ PROBLEM 7 ============================ -->
+<section class="problem" id="p7">
+<h2>7. 2079 Baishakh Q4b <span class="marks">[8 marks]</span></h2>
+<p><strong>Q.</strong> Define frequency response; draw the Bode plot of:</p>
+<div class="tf">$$G(s) = \frac{s}{s(1+0.5s)(1+0.05s)}$$</div>
+
+<p class="subhead">Solution</p>
+<div class="note"><strong>Cancellation:</strong> the $s$ in the numerator cancels the $s$ in the denominator:
+$$G(j\omega) = \frac{1}{(1+j\omega/2)(1+j\omega/20)}, \quad K_B = 1 \Rightarrow 0\text{ dB}$$
+No pole at origin remains — the low-frequency response is flat.</div>
+
+<p class="corners">Corner frequencies: <span class="neg">2(−)</span>, <span class="neg">20(−)</span></p>
+<p class="stepline"><strong>Starting frequency</strong> $\omega_0 = 0.1$ rad/s.</p>
+
+<p class="subhead">Magnitude plot</p>
+<p class="calc">Starting magnitude $= 20\log|K_B|_{\omega=0.1} = 20\log(1) = 0$ dB</p>
+<table class="derive">
+<tr><th>Factors</th><th>Corner frequency</th><th>Individual slope</th><th>Final slope</th></tr>
+<tr><td class="factor">$K_B = 1$</td><td>low(−)</td><td>0 dB/dec</td><td>0 dB/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/2]^{-1}$</td><td class="neg">2(−)</td><td>−20 dB/dec</td><td>−20 dB/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/20]^{-1}$</td><td class="neg">20(−)</td><td>−20 dB/dec</td><td>−40 dB/dec</td></tr>
+</table>
+
+<p class="subhead">Phase plot</p>
+<p class="calc">Starting phase $= 0°$</p>
+<table class="derive">
+<tr><th>Factors</th><th>Corner freq</th><th>Effective freq</th><th>Individual slope</th><th>Final slope</th></tr>
+<tr><td class="factor">$K_B = 1$</td><td>low(−)</td><td>low(−)</td><td>0°/dec</td><td>0°/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/2]^{-1}$</td><td class="neg">2(−)</td><td class="neg">0.2(−)</td><td>−45°/dec</td><td>−45°/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/20]^{-1}$</td><td class="neg">20(−)</td><td class="neg">2(−)</td><td>−45°/dec</td><td>−90°/dec</td></tr>
+</table>
+
+<div class="plot-row"><div class="plot" id="mag7"></div><div class="plot" id="phase7"></div></div>
+</section>
+
+<!-- ============================ PROBLEM 8 ============================ -->
+<section class="problem" id="p8">
+<h2>8. 2078 Kartik Q4b <span class="marks">[5 marks]</span></h2>
+<p><strong>Q.</strong> Draw the Bode log-magnitude and phase plots for:</p>
+<div class="tf">$$G(s) = \frac{s+3}{s(s+1)(s+2)}$$</div>
+
+<p class="subhead">Solution</p>
+$$G(j\omega) = \frac{3\,(1+j\omega/3)}{j\omega\cdot 1\cdot 2\,(1+j\omega)(1+j\omega/2)} = \frac{1.5\,(1+j\omega/3)}{j\omega\,(1+j\omega)(1+j\omega/2)}$$
+<p>$K_B = 1.5 \Rightarrow 20\log(1.5) = 3.52$ dB.</p>
+
+<p class="corners">Corner frequencies: <span class="neg">1(−)</span>, <span class="neg">2(−)</span>, <span class="pos">3(+)</span></p>
+<p class="stepline"><strong>Starting frequency</strong> $\omega_0 = 0.1$ rad/s.</p>
+
+<p class="subhead">Magnitude plot</p>
+<p class="calc">Starting magnitude $= 20\log\left|\dfrac{1.5}{j\omega}\right|_{\omega=0.1} = 20\log(15) = 23.52$ dB</p>
+<table class="derive">
+<tr><th>Factors</th><th>Corner frequency</th><th>Individual slope</th><th>Final slope</th></tr>
+<tr><td class="factor">$1.5\,[j\omega]^{-1}$</td><td>low(−)</td><td>−20 dB/dec</td><td>−20 dB/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/1]^{-1}$</td><td class="neg">1(−)</td><td>−20 dB/dec</td><td>−40 dB/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/2]^{-1}$</td><td class="neg">2(−)</td><td>−20 dB/dec</td><td>−60 dB/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/3]^{+1}$</td><td class="pos">3(+)</td><td>+20 dB/dec</td><td>−40 dB/dec</td></tr>
+</table>
+
+<p class="subhead">Phase plot</p>
+<p class="calc">Starting phase $= -90°$</p>
+<table class="derive">
+<tr><th>Factors</th><th>Corner freq</th><th>Effective freq</th><th>Individual slope</th><th>Final slope</th></tr>
+<tr><td class="factor">$1.5\,[j\omega]^{-1}$</td><td>low(−)</td><td>low(−)</td><td>0°/dec</td><td>0°/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/1]^{-1}$</td><td class="neg">1(−)</td><td class="neg">0.1(−)</td><td>−45°/dec</td><td>−45°/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/2]^{-1}$</td><td class="neg">2(−)</td><td class="neg">0.2(−)</td><td>−45°/dec</td><td>−90°/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/3]^{+1}$</td><td class="pos">3(+)</td><td class="pos">0.3(+)</td><td>+45°/dec</td><td>−45°/dec</td></tr>
+</table>
+
+<div class="plot-row"><div class="plot" id="mag8"></div><div class="plot" id="phase8"></div></div>
+</section>
+
+<!-- ============================ PROBLEM 9 ============================ -->
+<section class="problem" id="p9">
+<h2>9. 2078 Bhadra Q5b <span class="marks">[8 marks]</span></h2>
+<p><strong>Q.</strong> Draw the asymptotic Bode plot for:</p>
+<div class="tf">$$G(s) = \frac{20(s+2)}{s(s+5)(s^2+4s+16)}$$</div>
+
+<p class="subhead">Solution</p>
+<p>Quadratic: $\omega_n=4$, $2\zeta\omega_n=4 \Rightarrow \zeta=0.5$ (no resonant peak above asymptote).</p>
+$$G(j\omega) = \frac{0.5\,(1+j\omega/2)}{j\omega(1+j\omega/5)\,[\,1+j\tfrac{\omega}{4}+(j\omega/4)^2\,]}, \quad K_B=0.5\Rightarrow -6.02\text{ dB}$$
+
+<p class="corners">Corner frequencies: <span class="pos">2(+)</span>, <span class="neg">4(−)</span>, <span class="neg">5(−)</span></p>
+<p class="stepline"><strong>Starting frequency</strong> $\omega_0 = 0.1$ rad/s.</p>
+
+<p class="subhead">Magnitude plot</p>
+<p class="calc">Starting magnitude $= 20\log\left|\dfrac{0.5}{j\omega}\right|_{\omega=0.1} = 20\log(5) = 13.98$ dB</p>
+<table class="derive">
+<tr><th>Factors</th><th>Corner frequency</th><th>Individual slope</th><th>Final slope</th></tr>
+<tr><td class="factor">$0.5\,[j\omega]^{-1}$</td><td>low(−)</td><td>−20 dB/dec</td><td>−20 dB/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/2]^{+1}$</td><td class="pos">2(+)</td><td>+20 dB/dec</td><td>0 dB/dec</td></tr>
+<tr><td class="factor">Quad pole, $\omega_n=4,\,\zeta=0.5$</td><td class="neg">4(−)</td><td>−40 dB/dec</td><td>−40 dB/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/5]^{-1}$</td><td class="neg">5(−)</td><td>−20 dB/dec</td><td>−60 dB/dec</td></tr>
+</table>
+
+<p class="subhead">Phase plot</p>
+<p class="calc">Starting phase $= -90°$</p>
+<table class="derive">
+<tr><th>Factors</th><th>Corner freq</th><th>Effective freq</th><th>Individual slope</th><th>Final slope</th></tr>
+<tr><td class="factor">$0.5\,[j\omega]^{-1}$</td><td>low(−)</td><td>low(−)</td><td>0°/dec</td><td>0°/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/2]^{+1}$</td><td class="pos">2(+)</td><td class="pos">0.2(+)</td><td>+45°/dec</td><td>+45°/dec</td></tr>
+<tr><td class="factor">Quad pole, $\omega_n=4$</td><td class="neg">4(−)</td><td class="neg">0.4(−)</td><td>−90°/dec</td><td>−45°/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/5]^{-1}$</td><td class="neg">5(−)</td><td class="neg">0.5(−)</td><td>−45°/dec</td><td>−90°/dec</td></tr>
+</table>
+
+<div class="plot-row"><div class="plot" id="mag9"></div><div class="plot" id="phase9"></div></div>
+</section>
+
+<!-- ============================ PROBLEM 10 ============================ -->
+<section class="problem" id="p10">
+<h2>10. 2076 Chaitra Q5b <span class="marks">[8 marks]</span></h2>
+<p><strong>Q.</strong> Draw the asymptotic Bode plot for:</p>
+<div class="tf">$$G(s) = \frac{2(s+5)}{s(s^2+21s+20)(s+10)} = \frac{2(s+5)}{s(s+1)(s+10)(s+20)}$$</div>
+
+<p class="subhead">Solution</p>
+$$G(j\omega) = \frac{0.05\,(1+j\omega/5)}{j\omega(1+j\omega)(1+j\omega/10)(1+j\omega/20)}, \quad K_B=0.05\Rightarrow -26.02\text{ dB}$$
+
+<p class="corners">Corner frequencies: <span class="neg">1(−)</span>, <span class="pos">5(+)</span>, <span class="neg">10(−)</span>, <span class="neg">20(−)</span></p>
+<p class="stepline"><strong>Starting frequency</strong> $\omega_0 = 0.1$ rad/s.</p>
+
+<p class="subhead">Magnitude plot</p>
+<p class="calc">Starting magnitude $= 20\log\left|\dfrac{0.05}{j\omega}\right|_{\omega=0.1} = 20\log(0.5) = -6.02$ dB</p>
+<table class="derive">
+<tr><th>Factors</th><th>Corner frequency</th><th>Individual slope</th><th>Final slope</th></tr>
+<tr><td class="factor">$0.05\,[j\omega]^{-1}$</td><td>low(−)</td><td>−20 dB/dec</td><td>−20 dB/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/1]^{-1}$</td><td class="neg">1(−)</td><td>−20 dB/dec</td><td>−40 dB/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/5]^{+1}$</td><td class="pos">5(+)</td><td>+20 dB/dec</td><td>−20 dB/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/10]^{-1}$</td><td class="neg">10(−)</td><td>−20 dB/dec</td><td>−40 dB/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/20]^{-1}$</td><td class="neg">20(−)</td><td>−20 dB/dec</td><td>−60 dB/dec</td></tr>
+</table>
+
+<p class="subhead">Phase plot</p>
+<p class="calc">Starting phase $= -90°$</p>
+<table class="derive">
+<tr><th>Factors</th><th>Corner freq</th><th>Effective freq</th><th>Individual slope</th><th>Final slope</th></tr>
+<tr><td class="factor">$0.05\,[j\omega]^{-1}$</td><td>low(−)</td><td>low(−)</td><td>0°/dec</td><td>0°/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/1]^{-1}$</td><td class="neg">1(−)</td><td class="neg">0.1(−)</td><td>−45°/dec</td><td>−45°/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/5]^{+1}$</td><td class="pos">5(+)</td><td class="pos">0.5(+)</td><td>+45°/dec</td><td>0°/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/10]^{-1}$</td><td class="neg">10(−)</td><td class="neg">1(−)</td><td>−45°/dec</td><td>−45°/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/20]^{-1}$</td><td class="neg">20(−)</td><td class="neg">2(−)</td><td>−45°/dec</td><td>−90°/dec</td></tr>
+</table>
+
+<div class="plot-row"><div class="plot" id="mag10"></div><div class="plot" id="phase10"></div></div>
+</section>
+
+<!-- ============================ PROBLEM 11 ============================ -->
+<section class="problem" id="p11">
+<h2>11. 2076 Ashwin (Back) Q5a <span class="marks">[8 marks]</span></h2>
+<p><strong>Q.</strong> Draw the asymptotic Bode Plot for:</p>
+<div class="tf">$$H(s) = \frac{(s+5)}{s(s^2+21s+20)(s^2+2s+100)} = \frac{(s+5)}{s(s+1)(s+20)(s^2+2s+100)}$$</div>
+
+<p class="subhead">Solution</p>
+<p>Quadratic: $\omega_n=10$, $2\zeta\omega_n=2 \Rightarrow \zeta=0.1$.</p>
+$$H(j\omega) = \frac{0.0025\,(1+j\omega/5)}{j\omega(1+j\omega)(1+j\omega/20)\,[\,1+j\tfrac{\omega}{50}+(j\omega/10)^2\,]}$$
+<p>$K_B = 5/2000 = 0.0025 \Rightarrow 20\log K_B = -52.04$ dB.</p>
+
+<p class="corners">Corner frequencies: <span class="neg">1(−)</span>, <span class="pos">5(+)</span>, <span class="neg">10(−)</span>, <span class="neg">20(−)</span></p>
+<p class="stepline"><strong>Starting frequency</strong> $\omega_0 = 0.1$ rad/s.</p>
+
+<p class="subhead">Magnitude plot</p>
+<p class="calc">Starting magnitude $= 20\log\left|\dfrac{0.0025}{j\omega}\right|_{\omega=0.1} = 20\log(0.025) = -32.04$ dB</p>
+<table class="derive">
+<tr><th>Factors</th><th>Corner frequency</th><th>Individual slope</th><th>Final slope</th></tr>
+<tr><td class="factor">$0.0025\,[j\omega]^{-1}$</td><td>low(−)</td><td>−20 dB/dec</td><td>−20 dB/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/1]^{-1}$</td><td class="neg">1(−)</td><td>−20 dB/dec</td><td>−40 dB/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/5]^{+1}$</td><td class="pos">5(+)</td><td>+20 dB/dec</td><td>−20 dB/dec</td></tr>
+<tr><td class="factor">Quad pole, $\omega_n=10,\,\zeta=0.1$</td><td class="neg">10(−)</td><td>−40 dB/dec</td><td>−60 dB/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/20]^{-1}$</td><td class="neg">20(−)</td><td>−20 dB/dec</td><td>−80 dB/dec</td></tr>
+</table>
+
+<p class="subhead">Phase plot</p>
+<p class="calc">Starting phase $= -90°$</p>
+<table class="derive">
+<tr><th>Factors</th><th>Corner freq</th><th>Effective freq</th><th>Individual slope</th><th>Final slope</th></tr>
+<tr><td class="factor">$0.0025\,[j\omega]^{-1}$</td><td>low(−)</td><td>low(−)</td><td>0°/dec</td><td>0°/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/1]^{-1}$</td><td class="neg">1(−)</td><td class="neg">0.1(−)</td><td>−45°/dec</td><td>−45°/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/5]^{+1}$</td><td class="pos">5(+)</td><td class="pos">0.5(+)</td><td>+45°/dec</td><td>0°/dec</td></tr>
+<tr><td class="factor">Quad pole, $\omega_n=10$</td><td class="neg">10(−)</td><td class="neg">1(−)</td><td>−90°/dec</td><td>−90°/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/20]^{-1}$</td><td class="neg">20(−)</td><td class="neg">2(−)</td><td>−45°/dec</td><td>−135°/dec</td></tr>
+</table>
+
+<div class="plot-row"><div class="plot" id="mag11"></div><div class="plot" id="phase11"></div></div>
+</section>
+
+<!-- ============================ PROBLEM 12 ============================ -->
+<section class="problem" id="p12">
+<h2>12. 2075 Chaitra Q5b <span class="marks">[8 marks]</span></h2>
+<p><strong>Q.</strong> Draw the asymptotic Bode plot for:</p>
+<div class="tf">$$G(s) = \frac{64(s+2)}{s(s+0.5)(s^2+3.2s+64)}$$</div>
+
+<p class="subhead">Solution</p>
+<p>Quadratic: $\omega_n=8$, $2\zeta\omega_n=3.2 \Rightarrow \zeta=0.2$.</p>
+$$G(j\omega) = \frac{4\,(1+j\omega/2)}{j\omega\,(1+j\omega/0.5)\,[\,1+j\tfrac{\omega}{20}+(j\omega/8)^2\,]}$$
+<p>$K_B = 128/32 = 4 \Rightarrow 20\log(4) = 12.04$ dB.</p>
+
+<p class="corners">Corner frequencies: <span class="neg">0.5(−)</span>, <span class="pos">2(+)</span>, <span class="neg">8(−)</span></p>
+<p class="stepline"><strong>Starting frequency</strong> $\omega_0 = 0.01$ rad/s.</p>
+
+<p class="subhead">Magnitude plot</p>
+<p class="calc">Starting magnitude $= 20\log\left|\dfrac{4}{j\omega}\right|_{\omega=0.01} = 20\log(400) = 52.04$ dB</p>
+<table class="derive">
+<tr><th>Factors</th><th>Corner frequency</th><th>Individual slope</th><th>Final slope</th></tr>
+<tr><td class="factor">$4\,[j\omega]^{-1}$</td><td>low(−)</td><td>−20 dB/dec</td><td>−20 dB/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/0.5]^{-1}$</td><td class="neg">0.5(−)</td><td>−20 dB/dec</td><td>−40 dB/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/2]^{+1}$</td><td class="pos">2(+)</td><td>+20 dB/dec</td><td>−20 dB/dec</td></tr>
+<tr><td class="factor">Quad pole, $\omega_n=8,\,\zeta=0.2$</td><td class="neg">8(−)</td><td>−40 dB/dec</td><td>−60 dB/dec</td></tr>
+</table>
+
+<p class="subhead">Phase plot</p>
+<p class="calc">Starting phase $= -90°$</p>
+<table class="derive">
+<tr><th>Factors</th><th>Corner freq</th><th>Effective freq</th><th>Individual slope</th><th>Final slope</th></tr>
+<tr><td class="factor">$4\,[j\omega]^{-1}$</td><td>low(−)</td><td>low(−)</td><td>0°/dec</td><td>0°/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/0.5]^{-1}$</td><td class="neg">0.5(−)</td><td class="neg">0.05(−)</td><td>−45°/dec</td><td>−45°/dec</td></tr>
+<tr><td class="factor">$[1+j\omega/2]^{+1}$</td><td class="pos">2(+)</td><td class="pos">0.2(+)</td><td>+45°/dec</td><td>0°/dec</td></tr>
+<tr><td class="factor">Quad pole, $\omega_n=8$</td><td class="neg">8(−)</td><td class="neg">0.8(−)</td><td>−90°/dec</td><td>−90°/dec</td></tr>
+</table>
+
+<div class="plot-row"><div class="plot" id="mag12"></div><div class="plot" id="phase12"></div></div>
+</section>
+
+</main>
+
+<footer>
+  Plots: asymptotic (dashed red) is the straight-line construction from the slope tables above.
+  Exact (solid blue) is computed from $H(j\omega) = N(j\omega)/D(j\omega)$ over 600 log-spaced points.
+</footer>
+
+<script>
+/* ===================================================================
+   Bode plot helpers
+   =================================================================== */
+
+function logspace(omegaMin, omegaMax, n) {
+  const out = new Array(n);
+  const lo = Math.log10(omegaMin), hi = Math.log10(omegaMax);
+  for (let i = 0; i < n; i++) {
+    out[i] = Math.pow(10, lo + (hi - lo) * i / (n - 1));
+  }
+  return out;
+}
+
+function evalPolyJW(coeffs, omega) {
+  const n = coeffs.length;
+  let re = 0, im = 0;
+  for (let i = 0; i < n; i++) {
+    const power = n - 1 - i;
+    const wPow = Math.pow(omega, power);
+    const phase = power * Math.PI / 2;
+    re += coeffs[i] * wPow * Math.cos(phase);
+    im += coeffs[i] * wPow * Math.sin(phase);
+  }
+  return { re, im };
+}
+
+function complexDivide(a, b) {
+  const d = b.re * b.re + b.im * b.im;
+  return {
+    re: (a.re * b.re + a.im * b.im) / d,
+    im: (a.im * b.re - a.re * b.im) / d
+  };
+}
+
+function bodeExact(numCoeffs, denCoeffs, omegas) {
+  const mag_db = new Array(omegas.length);
+  const phase_deg = new Array(omegas.length);
+  let prev = null;
+  for (let i = 0; i < omegas.length; i++) {
+    const N = evalPolyJW(numCoeffs, omegas[i]);
+    const D = evalPolyJW(denCoeffs, omegas[i]);
+    const H = complexDivide(N, D);
+    mag_db[i] = 20 * Math.log10(Math.sqrt(H.re * H.re + H.im * H.im));
+    let phi = Math.atan2(H.im, H.re) * 180 / Math.PI;
+    if (prev !== null) {
+      while (phi - prev >  180) phi -= 360;
+      while (phi - prev < -180) phi += 360;
+    }
+    prev = phi;
+    phase_deg[i] = phi;
+  }
+  return { mag_db, phase_deg };
+}
+
+function asymptoticMag(blocks, omegas) {
+  const KB_dB = 20 * Math.log10(Math.abs(blocks.KB));
+  const out = new Array(omegas.length);
+  for (let i = 0; i < omegas.length; i++) {
+    const w = omegas[i];
+    let dB = KB_dB + 20 * blocks.originPower * Math.log10(w);
+    for (const wz of blocks.simpleZeros) {
+      if (w > wz) dB += 20 * Math.log10(w / wz);
+    }
+    for (const wp of blocks.simplePoles) {
+      if (w > wp) dB -= 20 * Math.log10(w / wp);
+    }
+    for (const q of (blocks.quadZeros || [])) {
+      if (w > q.wn) dB += 40 * Math.log10(w / q.wn);
+    }
+    for (const q of (blocks.quadPoles || [])) {
+      if (w > q.wn) dB -= 40 * Math.log10(w / q.wn);
+    }
+    out[i] = dB;
+  }
+  return out;
+}
+
+function asymptoticPhase(blocks, omegas) {
+  const baseK = blocks.KB >= 0 ? 0 : -180;
+  const out = new Array(omegas.length);
+  const sZero = (w, wc) =>
+    w <= wc / 10 ? 0 :
+    w >= 10 * wc ? 90 :
+    45 * Math.log10(10 * w / wc);
+  const sPole = (w, wc) => -sZero(w, wc);
+  const qZero = (w, wn) =>
+    w <= wn / 10 ? 0 :
+    w >= 10 * wn ? 180 :
+    90 * Math.log10(10 * w / wn);
+  const qPole = (w, wn) => -qZero(w, wn);
+
+  for (let i = 0; i < omegas.length; i++) {
+    const w = omegas[i];
+    let p = baseK + 90 * blocks.originPower;
+    for (const wz of blocks.simpleZeros) p += sZero(w, wz);
+    for (const wp of blocks.simplePoles) p += sPole(w, wp);
+    for (const q of (blocks.quadZeros || [])) p += qZero(w, q.wn);
+    for (const q of (blocks.quadPoles || [])) p += qPole(w, q.wn);
+    out[i] = p;
+  }
+  return out;
+}
+
+function plotBode(prefix, numCoeffs, denCoeffs, blocks, omegaMin, omegaMax) {
+  const omegas = logspace(omegaMin, omegaMax, 600);
+  const exact = bodeExact(numCoeffs, denCoeffs, omegas);
+  const asMag = asymptoticMag(blocks, omegas);
+  const asPhi = asymptoticPhase(blocks, omegas);
+
+  const layoutCommon = {
+    margin: { l: 56, r: 16, t: 32, b: 48 },
+    xaxis: {
+      type: 'log', title: 'ω (rad/s)',
+      range: [Math.log10(omegaMin), Math.log10(omegaMax)],
+      gridcolor: '#e0e0e0', showgrid: true
+    },
+    legend: { x: 0.02, y: 0.02, bgcolor: 'rgba(255,255,255,0.7)' },
+    font: { size: 11 }
+  };
+
+  Plotly.newPlot('mag' + prefix, [
+    { x: omegas, y: asMag, name: 'Asymptotic', mode: 'lines',
+      line: { color: '#d62728', width: 1.5, dash: 'dash' } },
+    { x: omegas, y: exact.mag_db, name: 'Exact', mode: 'lines',
+      line: { color: '#1f77b4', width: 2 } }
+  ], Object.assign({}, layoutCommon, {
+    title: { text: 'Magnitude', font: { size: 14 } },
+    yaxis: { title: '|H(jω)| (dB)', gridcolor: '#e0e0e0' }
+  }), { displayModeBar: false, responsive: true });
+
+  Plotly.newPlot('phase' + prefix, [
+    { x: omegas, y: asPhi, name: 'Asymptotic', mode: 'lines',
+      line: { color: '#d62728', width: 1.5, dash: 'dash' } },
+    { x: omegas, y: exact.phase_deg, name: 'Exact', mode: 'lines',
+      line: { color: '#1f77b4', width: 2 } }
+  ], Object.assign({}, layoutCommon, {
+    title: { text: 'Phase', font: { size: 14 } },
+    yaxis: { title: '∠H(jω) (deg)', gridcolor: '#e0e0e0' }
+  }), { displayModeBar: false, responsive: true });
+}
+
+/* ===================================================================
+   Per-problem invocations
+   =================================================================== */
+
+plotBode('1', [200, 1000, 5000], [1, 40, 300, 0, 0],
+  { KB: 50/3, originPower: -2,
+    simpleZeros: [], simplePoles: [10, 30],
+    quadZeros: [{wn: 5, zeta: 0.5}], quadPoles: [] }, 0.1, 1000);
+
+plotBode('2', [5000, 5000], [1, 14, 270, 2025, 0],
+  { KB: 5000 / 2025, originPower: -1,
+    simpleZeros: [1], simplePoles: [9],
+    quadZeros: [], quadPoles: [{wn: 15, zeta: 1/6}] }, 0.01, 1000);
+
+plotBode('3', [1000, 2000], [1, 23, 162, 2140, 2000, 0],
+  { KB: 1, originPower: -1,
+    simpleZeros: [2], simplePoles: [1, 20],
+    quadZeros: [], quadPoles: [{wn: 10, zeta: 0.1}] }, 0.01, 1000);
+
+plotBode('4', [7500, 75000], [1, 32, 2560, 5000, 0],
+  { KB: 15, originPower: -1,
+    simpleZeros: [10], simplePoles: [2],
+    quadZeros: [], quadPoles: [{wn: 50, zeta: 0.3}] }, 0.01, 1000);
+
+plotBode('5', [30, 300], [1, 3, 50, 0],
+  { KB: 6, originPower: -1,
+    simpleZeros: [10], simplePoles: [],
+    quadZeros: [], quadPoles: [{wn: Math.sqrt(50), zeta: 3/(2*Math.sqrt(50))}] }, 0.1, 1000);
+
+plotBode('6', [50, 500], [1, 22, 265, 4500, 0],
+  { KB: 1/9, originPower: -1,
+    simpleZeros: [10], simplePoles: [20],
+    quadZeros: [], quadPoles: [{wn: 15, zeta: 1/15}] }, 0.01, 1000);
+
+plotBode('7', [40], [1, 22, 40],
+  { KB: 1, originPower: 0,
+    simpleZeros: [], simplePoles: [2, 20],
+    quadZeros: [], quadPoles: [] }, 0.01, 1000);
+
+plotBode('8', [1, 3], [1, 3, 2, 0],
+  { KB: 1.5, originPower: -1,
+    simpleZeros: [3], simplePoles: [1, 2],
+    quadZeros: [], quadPoles: [] }, 0.01, 1000);
+
+plotBode('9', [20, 40], [1, 9, 36, 80, 0],
+  { KB: 0.5, originPower: -1,
+    simpleZeros: [2], simplePoles: [5],
+    quadZeros: [], quadPoles: [{wn: 4, zeta: 0.5}] }, 0.01, 1000);
+
+plotBode('10', [2, 10], [1, 31, 230, 200, 0],
+  { KB: 0.05, originPower: -1,
+    simpleZeros: [5], simplePoles: [1, 10, 20],
+    quadZeros: [], quadPoles: [] }, 0.01, 1000);
+
+plotBode('11', [1, 5], [1, 23, 162, 2140, 2000, 0],
+  { KB: 0.0025, originPower: -1,
+    simpleZeros: [5], simplePoles: [1, 20],
+    quadZeros: [], quadPoles: [{wn: 10, zeta: 0.1}] }, 0.01, 1000);
+
+plotBode('12', [64, 128], [1, 3.7, 65.6, 32, 0],
+  { KB: 4, originPower: -1,
+    simpleZeros: [2], simplePoles: [0.5],
+    quadZeros: [], quadPoles: [{wn: 8, zeta: 0.2}] }, 0.01, 1000);
+
+</script>
+
+</body>
+</html>

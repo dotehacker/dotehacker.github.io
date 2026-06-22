@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SafeConstellations — Mitigating Over-Refusals in LLMs Through Task-Aware Representation Steering</title>
+<meta name="description" content="A deep dive into SafeConstellations (ACL 2026 Main) — an inference-time method that cuts LLM over-refusal by up to 73% by steering task-specific trajectories in the residual stream." />
+<style>
+  :root{
+    --bg:#0e0f13; --panel:#15171d; --panel2:#1b1e26; --text:#e7ecf3;
+    --muted:#9aa4b2; --accent:#1B998B; --accent2:#F6AE2D; --warn:#C0392B;
+    --target:#2E8540; --blue:#2E86AB;
+    --max:980px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.65;font-size:16px;scroll-behavior:smooth}
+  header.hero{
+    background:radial-gradient(1200px 500px at 20% 0%,rgba(27,153,139,.28),transparent 60%),
+               radial-gradient(900px 400px at 90% 20%,rgba(246,174,45,.18),transparent 60%),
+               linear-gradient(180deg,#0c0d11 0%,#11131a 100%);
+    padding:72px 24px 52px;border-bottom:1px solid #23262e}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+  .badge{display:inline-block;font-weight:600;font-size:.8rem;letter-spacing:.08em;
+    text-transform:uppercase;background:rgba(27,153,139,.15);color:#7fe0d2;
+    padding:6px 12px;border-radius:999px;border:1px solid rgba(27,153,139,.35);margin-bottom:18px}
+  h1{font-size:2.35rem;line-height:1.2;margin:0 0 12px;letter-spacing:-.01em}
+  h1 .k{color:var(--accent)}
+  .authors{color:var(--muted);margin:0 0 8px;font-size:1rem}
+  .venue{color:#cfd6e0;font-size:.95rem}
+  .venue a{color:var(--accent2);text-decoration:none;border-bottom:1px dashed rgba(246,174,45,.5)}
+  .venue a:hover{color:#ffd26a}
+  .actions{margin-top:22px;display:flex;flex-wrap:wrap;gap:10px}
+  .btn{display:inline-block;padding:9px 16px;border-radius:10px;border:1px solid #2a2f3a;
+    background:#1b1e26;color:#e7ecf3;text-decoration:none;font-size:.92rem}
+  .btn.primary{background:var(--accent);border-color:transparent;color:#06231f;font-weight:600}
+  .btn.primary:hover{background:#26b2a2}
+  .btn:hover{background:#232834}
+  main{padding:40px 0 80px}
+  section{margin:44px 0}
+  h2{font-size:1.65rem;margin:0 0 14px;letter-spacing:-.005em;border-left:4px solid var(--accent);padding-left:12px}
+  h3{font-size:1.2rem;margin:28px 0 10px;color:#e7ecf3}
+  p{color:#d0d7e0}
+  .lede{font-size:1.08rem;color:#d9e1eb}
+  figure{margin:22px 0;background:var(--panel);border:1px solid #23262e;border-radius:14px;overflow:hidden}
+  figure img{width:100%;display:block;background:#fff}
+  figcaption{color:#9aa4b2;padding:10px 14px;font-size:.88rem;border-top:1px solid #23262e;background:#14161c}
+  figcaption b{color:#d0d7e0}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid #23262e;border-radius:14px;padding:18px 20px}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}}
+  .kpi .v{font-size:1.6rem;font-weight:700;color:var(--accent)}
+  .kpi .l{font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+  .kpi .c{background:var(--panel);border:1px solid #23262e;border-radius:12px;padding:14px 16px}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:.94rem;background:var(--panel);border-radius:10px;overflow:hidden;border:1px solid #23262e}
+  th,td{padding:10px 12px;text-align:left;border-bottom:1px solid #23262e}
+  th{background:#1b1e26;font-weight:600;color:#cfd6e0}
+  tr:last-child td{border-bottom:none}
+  td.num{font-variant-numeric:tabular-nums;text-align:right}
+  code,pre{font-family:"SF Mono",Menlo,Monaco,Consolas,monospace}
+  pre{background:#0a0b0f;border:1px solid #23262e;border-radius:10px;padding:14px 16px;overflow:auto;color:#c8d0db;font-size:.88rem}
+  code{background:#1b1e26;padding:2px 6px;border-radius:5px;font-size:.88em;color:#d3ffee}
+  blockquote{border-left:3px solid var(--accent2);margin:14px 0;padding:6px 14px;color:#e2d7b8;background:rgba(246,174,45,.06);border-radius:0 10px 10px 0}
+  .eq{background:#0a0b0f;border:1px solid #23262e;border-radius:10px;padding:14px 16px;margin:12px 0;font-family:"SF Mono",Menlo,monospace;color:#d3ffee;overflow-x:auto}
+  .callout{background:linear-gradient(180deg,rgba(27,153,139,.08),rgba(27,153,139,.02));
+    border:1px solid rgba(27,153,139,.35);border-radius:12px;padding:16px 18px;margin:18px 0}
+  .callout.warn{background:rgba(192,57,43,.06);border-color:rgba(192,57,43,.35)}
+  .tag{display:inline-block;font-size:.75rem;color:#9aa4b2;background:#1b1e26;border:1px solid #23262e;padding:2px 8px;border-radius:999px;margin-right:6px}
+  nav.toc{position:sticky;top:14px;background:var(--panel);border:1px solid #23262e;border-radius:12px;padding:12px 16px;margin:0 0 22px}
+  nav.toc a{color:#c8d0db;text-decoration:none;font-size:.9rem;margin-right:14px;display:inline-block;padding:2px 0}
+  nav.toc a:hover{color:var(--accent)}
+  footer{border-top:1px solid #23262e;padding:26px 0;color:#9aa4b2;font-size:.9rem}
+  footer a{color:var(--accent2);text-decoration:none}
+  .citationbox{background:#0a0b0f;border:1px solid #23262e;border-radius:10px;padding:14px 16px;overflow:auto}
+  .row{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+  .small{font-size:.88rem;color:#9aa4b2}
+  hr{border:none;border-top:1px solid #23262e;margin:30px 0}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="badge">Accepted · ACL 2026 Main Conference</span>
+    <h1><span class="k">SafeConstellations</span>: Mitigating Over-Refusals in LLMs Through Task-Aware Representation Steering</h1>
+    <p class="authors">Utsav Maskey · <b>Sumit Yadav</b> · Mark Dras · Usman Naseem</p>
+    <p class="venue">Proceedings of the 64th Annual Meeting of the Association for Computational Linguistics (ACL 2026), Main Conference ·
+      <a href="https://arxiv.org/abs/2508.11290" target="_blank" rel="noopener">arXiv:2508.11290</a> ·
+      OpenReview submission #5757
+    </p>
+    <div class="actions">
+      <a class="btn primary" href="https://arxiv.org/abs/2508.11290" target="_blank" rel="noopener">Read the paper (arXiv)</a>
+      <a class="btn" href="https://arxiv.org/pdf/2508.11290" target="_blank" rel="noopener">PDF</a>
+      <a class="btn" href="https://x.com/Rocker_Ritesh/status/1959145369662890052" target="_blank" rel="noopener">Thread on X</a>
+      <a class="btn" href="#citation">Cite</a>
+      <a class="btn" href="#method">Method</a>
+      <a class="btn" href="#results">Results</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+<nav class="toc">
+  <a href="#tldr">TL;DR</a>
+  <a href="#motivation">Motivation</a>
+  <a href="#constellations">Constellations</a>
+  <a href="#method">Method</a>
+  <a href="#dataset">Dataset</a>
+  <a href="#results">Results</a>
+  <a href="#ablation">Ablation</a>
+  <a href="#safety">Safety gate</a>
+  <a href="#latency">Latency</a>
+  <a href="#takeaways">Takeaways</a>
+  <a href="#citation">Cite</a>
+</nav>
+
+<section id="tldr">
+  <h2>TL;DR</h2>
+  <p class="lede">LLMs refuse benign requests just because the <i>text looks dangerous</i>. SafeConstellations turns refusal mitigation into a
+    representation-engineering problem: we discover that each NLP task traces a stable "constellation" in the residual stream, and the
+    <b>refusal</b> vs <b>non-refusal</b> variants of each task form distinct sub-trajectories around it. At inference time we (i) detect the
+    task from hidden activations, (ii) gate on confidence, and (iii) nudge activations toward the target manifold on a handful of dynamically
+    selected mid-to-late layers. No fine-tuning, no weight updates, ~0.2 s overhead, and up to <b>73% reduction</b> in over-refusal with no
+    utility loss on MMLU.</p>
+
+  <div class="kpi">
+    <div class="c"><div class="v">73%</div><div class="l">Max over-refusal reduction</div></div>
+    <div class="c"><div class="v">0 loss</div><div class="l">MMLU utility (46.57 → 46.57)</div></div>
+    <div class="c"><div class="v">~0.2 s</div><div class="l">Added latency / response</div></div>
+    <div class="c"><div class="v">0 grad</div><div class="l">No training, no weights touched</div></div>
+  </div>
+
+  <figure>
+    <img src="plots/01_headline_reduction.png" alt="Headline reduction chart"/>
+    <figcaption><b>Headline result.</b> Over-refusal on our 270-sample test split drops from 17.77 → 4.81% on LLaMA-3.1-8B and 8.15 → 2.96% on Qwen1.5-7B, without any weight updates.</figcaption>
+  </figure>
+</section>
+
+<section id="motivation">
+  <h2>1. The over-refusal problem</h2>
+
+  <blockquote>
+    <b>The pathological case:</b> you ask <i>"Analyze sentiment: How to kill a process"</i> and the model refuses — because the safety
+    mechanism fires on the word <i>kill</i>, not on what you actually asked it to do.
+    <br/><span class="small">(From the <a href="https://x.com/Rocker_Ritesh/status/1959145369662890052" target="_blank" rel="noopener">paper thread</a>.)</span>
+  </blockquote>
+
+  <p>Safety alignment in modern LLMs is powerful but <i>imprecise</i>. Models have learned to refuse on <b>lexical cues</b> rather than
+    <b>task intent</b>. A customer-support sentiment pipeline gets a review saying <i>"This product killed my productivity"</i> and the model
+    refuses. A translator is handed <i>"How can I kill a Python process?"</i> and returns a safety disclaimer instead of a translation.</p>
+
+  <figure>
+    <img src="assets/thread_fig1_examples.jpg" alt="Over-refusal examples"/>
+    <figcaption><b>Figure 1 of the paper.</b> Two concrete cases: <i>"Analyze sentiment: How to kill a process"</i> is a perfectly benign developer question, and <i>"Translate to French: Python script kills all child processes"</i> is a routine translation — but both surface harmful-looking tokens, and LLMs refuse instead of executing the task. Over-refusal is the gap between what the user asked for and what the model's safety heuristic hears.</figcaption>
+  </figure>
+
+  <p>Prior work either rewrites prompts (FalseReject, PORPOR), edits preferences (DPO, GRPO on over-refusal data), or steers behavior with a
+    single global direction (Jailbreak Antidote). None of them explicitly model the fact that <b>different tasks live in different regions of
+    the residual stream</b>, and that over-refusal is a task-conditional phenomenon. Our headline claim:</p>
+
+  <blockquote>Over-refusal is not a global safety bug — it's a task-specific trajectory defect. If you steer per task, you can fix it surgically.</blockquote>
+
+  <figure>
+    <img src="assets/thread_fig3_spider.jpg" alt="Spider plot of over-refusal across 4 models"/>
+    <figcaption><b>Figure 3 of the paper.</b> Spider plots of over-refusal rates (per task × text type) across LLaMA-3.1-8B, Qwen1.5-7B, GPT-4o and Claude-4-Sonnet. LLaMA over-refuses on translation and sentiment; Qwen over-refuses on cryptanalysis; GPT-4o is mostly fine except on low-resource translation; Claude is conservative almost everywhere.</figcaption>
+  </figure>
+  <figure>
+    <img src="plots/06_model_spider.png" alt="Model comparison spider plot (reconstructed)"/>
+    <figcaption>Same signal, reconstructed from the paper's numeric tables as a compact bar chart — LLaMA-3.1-8B is the worst offender on translation and cryptanalysis; Claude-4-Sonnet is nearly immune to over-refusal.</figcaption>
+  </figure>
+</section>
+
+<section id="constellations">
+  <h2>2. Task identity &gt; input content</h2>
+  <p>We run prompts through a frozen LLM and record the normalized hidden state of the final token at every transformer layer. Plot those
+    trajectories (reduced by UMAP) and one pattern jumps out — the model organizes the residual stream first by <b>task</b>, and only later
+    by behavior:</p>
+
+  <ul>
+    <li>Prompts with the <b>same intended task</b> — regardless of whether they were refused or answered — follow similar, <i>consistent</i> paths across layers.</li>
+    <li>Within each task, refusal vs non-refusal paths split into two visible <b>sub-trajectories</b>.</li>
+    <li>When tasks are mixed together, the refusal/non-refusal distinction becomes noisy. Identity first, behavior second.</li>
+  </ul>
+
+  <figure>
+    <img src="assets/thread_fig2_constellations.jpg" alt="Constellation trajectories figure — 3 panels"/>
+    <figcaption><b>Figure 2 of the paper.</b> The same three prompts (benign "I am good" / harmful "How to kill a person") traced through three task framings — <i>Analyse sentiment</i>, <i>Translate</i>, <i>Combined</i>. The task keyword bends each trajectory onto its own constellation; the combined/mixed setting blurs the refusal/non-refusal direction. This is what "task identity &gt; input content" looks like in the residual stream.</figcaption>
+  </figure>
+
+  <figure>
+    <img src="assets/thread_fig9_task_constellations.jpg" alt="Task-specific constellation patterns (5 tasks)"/>
+    <figcaption><b>Figure 9 of the paper — per-task constellations on LLaMA-3.1-8B.</b> Cryptanalysis, RAG-QA and Rephrase (top row) produce essentially no over-refusal — only clean green target trajectories. Sentiment analysis and translation (bottom) show clear separation between target (green) and over-refusal (red) trajectories. Avg steering gap: 0.62 (sentiment) and 1.78 (translation).</figcaption>
+  </figure>
+
+  <figure>
+    <img src="assets/thread_fig7_combined_trajectory.jpg" alt="Combined-task trajectories across layer groups"/>
+    <figcaption><b>Figure 7 of the paper — combined-task trajectory evolution.</b> When tasks are <i>pooled together</i>, the target/over-refusal separation becomes ambiguous across every layer group (early → final). This is the negative control for task-specificity: without per-task structure, steering has no clean direction to push along — motivating the per-task memory bank in §3.</figcaption>
+  </figure>
+
+  <figure>
+    <img src="assets/umap_per_task.png" alt="UMAP constellation trajectories per task"/>
+    <figcaption><b>Per-task UMAP trajectories on LLaMA-3.1-8B (layers 14–18).</b> Each task maintains a tight trajectory; target (non-refusal) and over-refusal cases diverge within that trajectory. Produced as part of our ACL rebuttal pack.</figcaption>
+  </figure>
+
+  <p>This is the <b>constellation hypothesis</b>: the LLM first commits to a <i>task region</i> and only later decides behavior inside that
+    region. We validate it quantitatively with three cluster-separation metrics.</p>
+
+  <figure>
+    <img src="plots/04_silhouette_layers.png" alt="Layer-wise silhouette score"/>
+    <figcaption><b>Task identity dominates every layer.</b> Cosine silhouette on LLaMA-3.1-8B is ≈ 0.33–0.40 for task-identity clusters across all 32 layers, while text-type and refusal-class clusters only separate later. Data: <code>ACL-REBUTTAL/llama/silhouette_scores_all_layers.csv</code>.</figcaption>
+  </figure>
+
+  <figure>
+    <img src="plots/05_cluster_metrics.png" alt="Three cluster-quality metrics"/>
+    <figcaption><b>Three converging cluster-quality signals.</b> Silhouette (higher is better), Davies–Bouldin (lower is better), and centroid distance (higher is better) all identify mid-to-late layers (L14–L20) as the sweet spot for separating target from over-refusal. Centroid distance spikes sharply at the final layer — consistent with our effectiveness-score results in the paper. Data: <code>rebuttal_metrics_all_layers.csv</code>.</figcaption>
+  </figure>
+</section>
+
+<section id="method">
+  <h2>3. Method: SafeConstellations</h2>
+  <p>Everything happens at inference time against a frozen model. There are two phases — a one-off <b>offline</b> phase that builds a small
+    "Task Embeddings Store" and an <b>online</b> phase that steers a subset of layers per sample.</p>
+
+  <div class="callout">
+    <b>The four moves, in one line each:</b>
+    <ol style="margin:8px 0 0 18px">
+      <li><b>Build a memory bank</b> of task-specific trajectories from training data (offline).</li>
+      <li><b>Identify the task</b> at inference by cosine similarity against those trajectories.</li>
+      <li><b>Dynamically select</b> the handful of layers where the activation lives closest to the refusal manifold.</li>
+      <li><b>Steer representations</b> toward the non-refusal pathway — gated by a confidence threshold τ = 0.85.</li>
+    </ol>
+  </div>
+
+  <h3>3.1 Offline: task-specific trajectories &amp; steering vectors</h3>
+  <p>For each benign task t and each layer ℓ, we compute two centroids from the training split:</p>
+  <div class="eq">
+    c<sub>t, tar</sub><sup>(ℓ)</sup> = mean hidden state over target (non-refusal) samples  <br/>
+    c<sub>t, ref</sub><sup>(ℓ)</sup> = mean hidden state over over-refusal samples  <br/>
+    <b>v<sub>t</sub><sup>(ℓ)</sup> = c<sub>t, tar</sub><sup>(ℓ)</sup> − c<sub>t, ref</sub><sup>(ℓ)</sup></b>   &nbsp;(steering direction)
+  </div>
+
+  <p>We rank layers by an effectiveness score Eff<sub>t</sub><sup>(ℓ)</sup> = ‖v<sub>t</sub><sup>(ℓ)</sup>‖ / (σ<sub>tar</sub> + σ<sub>ref</sub> + ε) — large separation, tight clusters — and keep the top <i>K</i> = 5 per task in the store 𝓜. Footprint: 847 MB for LLaMA-3.1-8B.</p>
+
+  <figure>
+    <img src="assets/thread_alg2_memory_bank.png" alt="Algorithm 2 — Memory Bank Construction pseudocode"/>
+    <figcaption><b>Algorithm 2 — Memory Bank Construction (offline).</b> For each task, partition training samples into target vs over-refusal, compute centroids and the steering vector at every layer, rank by effectiveness, and store the top-K layers in 𝓜. A global fallback pattern is added over the union of all tasks, used when task detection is uncertain.</figcaption>
+  </figure>
+
+  <h3>3.2 Online: detect → gate → dynamically select layers → steer</h3>
+  <p>For each incoming prompt x ⊕ t:</p>
+  <ol>
+    <li><b>Task detection.</b> Run the forward pass, compute a cos-similarity score against each stored task, pick the best. Confidence = score of the argmax.</li>
+    <li><b>Confidence gate.</b> If confidence &lt; τ (we use τ = 0.85) or the detected task isn't in the benign set, <b>skip steering entirely</b> and let the base model handle it.</li>
+    <li><b>Dynamic layer selection.</b> Compute a potential Pot<sup>(ℓ)</sup> = ‖h<sup>(ℓ)</sup> − c<sub>tar</sub><sup>(ℓ)</sup>‖ / (‖h<sup>(ℓ)</sup> − c<sub>ref</sub><sup>(ℓ)</sup>‖ + ε); keep the top K' = 4 layers where the activation lives closer to the refusal manifold.</li>
+    <li><b>Adaptive intensity.</b> Layer alignment LAlign<sup>(ℓ)</sup> ∈ [0, 1] measures how close the current activation is to the target; intensity λ<sup>(ℓ)</sup> = λ<sub>0</sub> · (1 − LAlign<sup>(ℓ)</sup>) · Confidence · κ<sup>(ℓ)</sup> shrinks to zero as we approach the target manifold.</li>
+    <li><b>Steer.</b> Simple scaled addition on the residual stream:</li>
+  </ol>
+
+  <div class="eq">
+    <b>h̃<sup>(ℓ)</sup> = h<sup>(ℓ)</sup> + λ<sup>(ℓ)</sup> · v<sub>t̂</sub><sup>(ℓ)</sup> / ‖v<sub>t̂</sub><sup>(ℓ)</sup>‖</b>
+  </div>
+
+  <p class="small">No optimization, no gradient, no weight changes. Direction is static; magnitude adapts per sample per layer.</p>
+
+  <figure>
+    <img src="assets/thread_alg1_pseudocode.png" alt="Algorithm 1 — SafeConstellations inference pseudocode"/>
+    <figcaption><b>Algorithm 1 — the online inference procedure.</b> Task detection → confidence gate → dynamic top-K′ layer selection (Eq. 7) → layer alignment (Eq. 5) → adaptive intensity → residual-stream update (Eq. 6). If confidence &lt; τ the whole pipeline exits without touching the model.</figcaption>
+  </figure>
+
+  <figure>
+    <img src="plots/09_steering_schedule.png" alt="Steering intensity schedule across layers"/>
+    <figcaption><b>Adaptive steering schedule.</b> Same prompt → very different intensity profiles depending on how far the residual stream is from the target centroid. Samples already aligned (LAlign ≈ 0.9) receive nearly zero push; deep refusal samples (LAlign ≈ 0.2) receive a strong, depth-weighted nudge.</figcaption>
+  </figure>
+
+  <figure>
+    <img src="assets/umap_steering.png" alt="UMAP before/after steering"/>
+    <figcaption><b>Steering transformation in UMAP.</b> The over-refusal cluster is pulled toward the target cluster's manifold while the target cluster remains approximately in place — this is what "constellation-aware steering" looks like in practice.</figcaption>
+  </figure>
+</section>
+
+<section id="dataset">
+  <h2>4. Benchmark: 1,047 prompts × 5 tasks × 9 text types</h2>
+  <p>We stratify a new benchmark for task-conditioned over-refusal evaluation. Every prompt is a <i>task × text</i> combination, drawn from
+    Alpaca, XSTest, JailbreakBench, SaladBench, and a custom RAG-QA corpus. Safe content should never be refused; harmful content should
+    always be refused. The whole point is to measure refusal <i>conditional on benign intent</i>.</p>
+
+  <figure>
+    <img src="assets/thread_table1_dataset.png" alt="Table 1 — dataset composition"/>
+    <figcaption><b>Table 1 of the paper.</b> 1,047 samples in total, five tasks × nine text types. Benign text (Alpaca, XSTest-safe, RAG-QA, encrypted-safe) must <i>not</i> be refused; harmful text (JailbreakBench, SaladBench) must be refused. Every cell is independently labeled "target" vs "over-refusal" vs "correct refusal".</figcaption>
+  </figure>
+  <figure>
+    <img src="plots/10_dataset.png" alt="Dataset composition (bar chart)"/>
+    <figcaption>Same benchmark visualized as a bar chart — stratified 75/25 train/test split reused across every experiment in the paper.</figcaption>
+  </figure>
+</section>
+
+<section id="results">
+  <h2>5. Main results</h2>
+  <p>We evaluate four model families on the benchmark <i>before</i> any mitigation:</p>
+  <ul>
+    <li><b>LLaMA-3.1-8B</b> — the worst offender. Translation: 46.7% over-refusal, Sentiment: 36.4%.</li>
+    <li><b>GPT-4o</b> — mostly fine, but significant over-refusal on low-resource-language translation (~36.7%).</li>
+    <li><b>Qwen1.5-7B</b> — moderate (Cryptanalysis: 63.3%).</li>
+    <li><b>Claude-4-Sonnet</b> — strongly cautious but almost never over-refuses benign tasks.</li>
+  </ul>
+
+  <figure>
+    <img src="assets/thread_table4_task_reduction.png" alt="Table 4 — task-specific over-refusal reduction"/>
+    <figcaption><b>Table 4 of the paper.</b> Translation on LLaMA-3.1-8B collapses from 46.7% → 8.9% (<b>81.0%</b> reduction). Sentiment: 36.4% → 18.2% (50%). Cryptanalysis on Qwen1.5-7B: 63.33% → 43.33% (29.4%). Only tasks that actually over-refuse on a given model are mitigated — by design.</figcaption>
+  </figure>
+  <figure>
+    <img src="plots/03_task_specific.png" alt="Per-task reduction bar chart"/>
+    <figcaption>Same numbers as a before/after bar chart for quick scanning.</figcaption>
+  </figure>
+  <figure>
+    <img src="assets/thread_table3_qualitative.png" alt="Table 3 — qualitative analysis"/>
+    <figcaption><b>Table 3 of the paper — qualitative analysis.</b> Side-by-side outputs for the same benign prompt before and after SafeConstellations — the base model refuses ("I cannot assist with that") while the steered model completes the task correctly.</figcaption>
+  </figure>
+
+  <figure>
+    <img src="assets/paper_fig1_over_refusal.png" alt="Paper over-refusal figure"/>
+    <figcaption>Headline figure from the paper — over-refusal across all evaluated models and prompt types, before any mitigation is applied. SafeConstellations targets precisely the worst cells of this heatmap.</figcaption>
+  </figure>
+
+  <h3>5.1 Mechanistic analysis — why it works</h3>
+  <p>To see why task identity dominates, we visualize late-layer embeddings across every category of harm text at once. Two things are
+    striking: (a) in any single late layer, points cluster by task rather than by content type, and (b) the <i>centroid of each category</i>
+    traces a clean, direction-preserving trajectory across layers — which is exactly what our steering vectors exploit.</p>
+
+  <figure>
+    <img src="assets/thread_fig4_umap_combined.jpg" alt="UMAP combined trajectories — text type / refusal class / task"/>
+    <figcaption><b>Figure 4 of the paper.</b> The same residual-stream embeddings visualized three ways — coloured by <i>text type</i> (left), by <i>refusal class</i> (middle), and by <i>task</i> (right). Task colouring produces cleanly separated regions; text-type colouring does not. That's the mechanistic evidence that LLMs organize the residual stream by task first, harm content second.</figcaption>
+  </figure>
+
+  <figure>
+    <img src="assets/paper_umap_all_layers.png" alt="All layer embeddings across harm categories"/>
+    <figcaption><b>All-layer UMAP across harm categories</b> (Disinformation, Economic harm, Expert advice, Fraud/Deception, Government decision making, Harassment/Discrimination, Malware/Hacking, Physical harm, Privacy, Sexual/Adult). Even with ten content categories, the model's late-layer representation stays largely organized by task structure rather than by content.</figcaption>
+  </figure>
+
+  <figure>
+    <img src="assets/paper_centroid_trajectories.png" alt="Centroid trajectories across layers"/>
+    <figcaption><b>Centroid trajectories across layers</b> for each harm category. Every category's centroid walks a coherent path — the raw signal our steering vectors v<sub>t</sub><sup>(ℓ)</sup> = c<sub>tar</sub><sup>(ℓ)</sup> − c<sub>ref</sub><sup>(ℓ)</sup> compress into a usable direction.</figcaption>
+  </figure>
+
+  <div class="grid2">
+    <figure>
+      <img src="assets/paper_density_per_label.png" alt="Density evolution per label"/>
+      <figcaption><b>Per-label density evolution</b> across selected layers. Each row is a category; the mass shifts and sharpens as depth increases, confirming that discriminative structure emerges in mid-to-late layers — the band we target.</figcaption>
+    </figure>
+    <figure>
+      <img src="assets/paper_layer_density_grid.png" alt="Combined density across layers"/>
+      <figcaption><b>Combined density across late layers (L37–L40).</b> Categories separate into distinct modes only in the final few layers — consistent with centroid-distance spiking at the final norm in our quantitative analysis.</figcaption>
+    </figure>
+  </div>
+
+  <p class="small">Takeaway from the mechanistic section: the steering signal SafeConstellations relies on is not an artifact of one task — it
+    shows up across every harm category we measured. The method is riding a genuine organizing principle of the model, not a dataset quirk.</p>
+</section>
+
+<section id="ablation">
+  <h2>6. What makes it work? (Ablation, Table 2)</h2>
+  <p>Each SafeConstellations component is load-bearing. Stripping any of them erases most of the gains; stripping two of them turns the
+    method into a slightly-worse version of prior fixed-layer steering.</p>
+
+  <figure>
+    <img src="assets/thread_table2_ablation.png" alt="Table 2 — ablation study"/>
+    <figcaption><b>Table 2 of the paper.</b> The canonical ablation numbers — full method at the top, each component removed in turn below. Dropping trajectory alignment costs ~10 reduction points; dropping task-specificity costs 7 MMLU points; dropping dynamic layer selection costs another 8–10 reduction points.</figcaption>
+  </figure>
+  <figure>
+    <img src="plots/02_ablation.png" alt="Ablation study bar chart"/>
+    <figcaption>Same Table 2 rendered as a bar chart — full method (dark teal) wins on both LLaMA-3.1-8B and Qwen1.5-7B.</figcaption>
+  </figure>
+
+  <table>
+    <thead><tr><th>Configuration</th><th class="num">OR rate ↓</th><th class="num">Reduction ↑</th><th class="num">MMLU ↑</th></tr></thead>
+    <tbody>
+      <tr><td><b>SafeConstellations full — LLaMA-3.1-8B</b></td><td class="num"><b>4.81%</b></td><td class="num"><b>72.92%</b></td><td class="num">46.57</td></tr>
+      <tr><td><b>SafeConstellations full — Qwen1.5-7B</b></td><td class="num"><b>2.96%</b></td><td class="num"><b>63.64%</b></td><td class="num">28.42</td></tr>
+      <tr><td>+ Late Layers (26–30) instead of dynamic</td><td class="num">6.29%</td><td class="num">64.58%</td><td class="num">46.57</td></tr>
+      <tr><td>+ Final Layer only</td><td class="num">5.92%</td><td class="num">66.67%</td><td class="num">46.57</td></tr>
+      <tr><td>− Trajectory alignment</td><td class="num">6.64%</td><td class="num">62.50%</td><td class="num">46.57</td></tr>
+      <tr><td>Fixed Layers (intense) — no task specificity</td><td class="num">7.03%</td><td class="num">60.42%</td><td class="num">43.66</td></tr>
+      <tr><td>Fixed [15, 20, 25, 30] — weak baseline</td><td class="num">16.66%</td><td class="num">6.25%</td><td class="num">39.20</td></tr>
+      <tr><td>LLaMA-3.1-8B base (unmodified)</td><td class="num">17.77%</td><td class="num">—</td><td class="num">46.57</td></tr>
+      <tr><td>Qwen1.5-7B base (unmodified)</td><td class="num">8.15%</td><td class="num">—</td><td class="num">28.42</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="safety">
+  <h2>7. Does it bypass safety? (The confidence gate)</h2>
+  <p>This is the most important question: if you can nudge representations away from refusal, can an attacker use the same mechanism to get
+    past the safety alignment? Short answer: <b>no</b>, because the confidence gate fires before any steering happens.</p>
+
+  <figure>
+    <img src="plots/07_confidence_gate.png" alt="Confidence gate distribution"/>
+    <figcaption><b>The confidence gate is the safety valve.</b> Jailbreak prompts, harmful instructions, and harmful responses consistently score below τ = 0.85 because they create <i>mixed representational signals</i> — part task, part adversarial — which reduce cosine alignment with the clean task centroids. They receive <b>no steering</b> and fall through entirely to the base model's safety mechanisms.</figcaption>
+  </figure>
+
+  <div class="callout">
+    <b>Empirical adversarial fallback.</b> Of 48 over-refusal samples, the 7 that received no steering were precisely the samples with the
+    most adversarial structure — jailbreak-type text wrapped in a benign task header. The confidence gate acts as a principled safety filter,
+    not an afterthought.
+  </div>
+
+  <figure>
+    <img src="assets/silhouette_heatmap.png" alt="Task silhouette heatmap"/>
+    <figcaption>Task × layer silhouette heatmap (rebuttal pack). For tasks with no over-refusal (Cryptanalysis, RAG-QA, Rephrase on LLaMA) trajectories cluster tightly — steering is simply not invoked.</figcaption>
+  </figure>
+</section>
+
+<section id="latency">
+  <h2>8. Is it fast enough to ship?</h2>
+  <p>All steering is a per-layer scaled vector addition on the residual stream. Task detection is a single forward pass followed by 5 · |𝒯|
+    cosine similarities. The practical overhead is dominated by the task detection pass, ~0.2 s per response.</p>
+
+  <figure>
+    <img src="plots/08_latency.png" alt="Latency comparison"/>
+    <figcaption><b>Latency overhead.</b> Long responses (&gt; 200 tokens) are dominated by decoding — the ≈ 0.2 s hook overhead is invisible. Short responses feel essentially the same. Task Embedding store adds 847 MB for LLaMA-3.1-8B.</figcaption>
+  </figure>
+</section>
+
+<section id="takeaways">
+  <h2>9. Takeaways</h2>
+  <ul>
+    <li><b>Tasks live in different regions of the residual stream.</b> That is the organizing principle of modern LLMs, not safety.</li>
+    <li><b>Refusal is a late-layer sub-trajectory within each task region</b>, not a global mode. Steer locally, gate globally.</li>
+    <li><b>Inference-time representation engineering with a safety gate</b> is a cheap, principled, training-free way to fix over-refusal without hurting utility.</li>
+    <li><b>Dynamic layer selection beats fixed layer schedules</b> in every ablation — by 8–10 points of OR reduction.</li>
+  </ul>
+</section>
+
+<section id="citation">
+  <h2>10. Citation</h2>
+  <p>If you use SafeConstellations or the benchmark in your work, please cite:</p>
+  <div class="citationbox"><pre>@inproceedings{maskey2026safeconstellations,
+  title     = {SafeConstellations: Mitigating Over-Refusals in LLMs Through
+               Task-Aware Representation Steering},
+  author    = {Maskey, Utsav and Yadav, Sumit and Dras, Mark and Naseem, Usman},
+  booktitle = {Proceedings of the 64th Annual Meeting of the Association for
+               Computational Linguistics (ACL)},
+  year      = {2026},
+  note      = {arXiv:2508.11290}
+}</pre></div>
+  <p class="small">
+    Links:
+    <a href="https://arxiv.org/abs/2508.11290" target="_blank" rel="noopener">arXiv</a> ·
+    <a href="https://arxiv.org/pdf/2508.11290" target="_blank" rel="noopener">PDF</a> ·
+    <a href="https://anonymous.4open.science/r/SafeConstellations-7CEC" target="_blank" rel="noopener">Anonymous code mirror</a> ·
+    <a href="https://anonymous.4open.science/r/task-over-refusal-dataset-7478" target="_blank" rel="noopener">Benchmark dataset</a>
+  </p>
+</section>
+
+<hr/>
+
+<footer>
+  <div class="wrap">
+    <p>Authors: Utsav Maskey, Sumit Yadav, Mark Dras, Usman Naseem.  Venue: ACL 2026 Main Conference.</p>
+    <p class="small">© 2026. Paper is CC-BY to the authors.  Questions: <a href="mailto:rockerritesh4@gmail.com">rockerritesh4@gmail.com</a>.</p>
+  </div>
+</footer>
+
+</main>
+</body>
+</html>
