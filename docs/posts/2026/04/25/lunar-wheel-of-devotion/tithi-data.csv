@@ -1,0 +1,16 @@
+tithi_num,tithi_name,shukla_deity,krishna_deity,jayantis,shiva,shakti,vishnu,dominant
+1,Pratipada,Brahma,Durga,Govardhan Puja (Shukla Pratipada Kartika),0.0435,0.4348,0.5217,Vishnu
+2,Dwitiya,Agni,Dandadhara,Rath Yatra (Shukla Dwitiya Ashadha),0.6818,0.2273,0.0909,Shiva
+3,Tritiya,Virinchi,Shiva,Akshaya Tritiya / Parashurama Jayanti; Matsya Jayanti (Shukla Tritiya Chaitra); Varaha Jayanti (Shukla Tritiya Bhadrapada); Hartalika Teej / Gauri Tritiya,0.3571,0.0714,0.5714,Vishnu
+4,Chaturthi,Vishnu,Vishnu,Ganesh Chaturthi,0.0500,0.1000,0.8500,Vishnu
+5,Panchami,Gauri,Hari,Vasant Panchami / Saraswati Puja; Naga Panchami; Lalita Panchami,0.0370,0.5926,0.3704,Shakti
+6,Shashthi,Ganesha,Ravi,Balarama Jayanti; Skanda Shashthi,0.0400,0.4800,0.4800,Shakti
+7,Saptami,Yama,Kaama,,0.4762,0.4762,0.0476,Shiva
+8,Ashtami,Sarpa,Shankara,Krishna Janmashtami (pan-Hindu); Durga Ashtami; Radhashtami (cross-stream),0.7407,0.1111,0.1481,Shiva
+9,Navami,Chandrama,Kalaadhara,Ram Navami (pan-Hindu); Maha Navami (Sharad Navaratri); Sita Navami (cross-stream),0.3704,0.1111,0.5185,Vishnu
+10,Dashami,Kartikeya,Yama,,0.4762,0.4762,0.0476,Shiva
+11,Ekadashi,Surya,Chandrama,Monthly Ekadashi (systemic recurrence); Vaikuntha Ekadashi (pan-Hindu),0.0750,0.0750,0.8500,Vishnu
+12,Dwadashi,Indra,Vishnu,Vamana Jayanti (Shukla Dwadashi Bhadrapada); Tulsi Vivaha (Shukla Dwadashi Kartika),0.0750,0.0750,0.8500,Vishnu
+13,Trayodashi,Mahendra,Kaama,"Pradosh Vrat (every Trayodashi, systemic)",0.1667,0.4167,0.4167,Shakti
+14,Chaturdashi,Vaasava,Shiva,"Narasimha Jayanti (Shukla Chaturdashi Vaishakha); Maha Shivratri (pan-Hindu); Masik Shivratri (every Krishna Chaturdashi, systemic)",0.5667,0.0333,0.4000,Shiva
+15,Purnima/Amavasya,Naga,Pitrs,"Buddha Purnima / Vaishakha Purnima (pan-Hindu); Kurma Jayanti (Vaishakha Purnima); Hanuman Jayanti (Chaitra Purnima, cross-stream); Tripurari Purnima / Kartik Purnima; Mahalaya Amavasya / Pitr Paksha; Sharad Purnima / Kojagari Lakshmi (cross-stream)",0.7500,0.0294,0.2206,Shiva

@@ -1,0 +1,46 @@
+---
+layout: default
+---
+
+<div class="home">
+    {% if page.title %}
+        <h1 class="page-heading">{{ page.title }}</h1>
+    {% endif %}
+
+    {{ content }}
+
+    <h2 class="post-list-heading">Posts</h2>
+    
+    {% if site.posts.size > 0 %}
+        <ul class="post-list">
+            {% for post in site.posts %}
+            <li class="post-item" onclick="window.location.href='{{ post.url | relative_url }}'">
+                <div class="post-image">
+                    <div class="post-image-overlay">
+                      {{ post.title | escape | slice: 0 }}
+                    </div>
+                </div>
+                <div class="post-info">
+                    <div>
+                        <h3 class="post-link">
+                            <a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a>
+                        </h3>
+                        <p class="post-meta">
+                            <time datetime="{{ post.date | date_to_xmlschema }}">
+                                {{ post.date | date: "%B %d, %Y" }}
+                            </time>
+                        </p>
+                    </div>
+                    {% if post.excerpt %}
+                        <p class="post-excerpt">{{ post.excerpt | strip_html | truncatewords: 15 }}</p>
+                    {% endif %}
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No posts yet.</p>
+    {% endif %}
+    
+    {% include citation.html %}
+</div> 

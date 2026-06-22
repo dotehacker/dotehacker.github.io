@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>An Image Is Worth 16x16 Words: How Vision Transformers Work · Sumit Yadav</title>
+    <meta name="description" content="">
+    <meta name="google-site-verification" content="IVG1y4MVA_6MT0wsjk13ooZDQLWXxvYcPXQlmf83MLM" />
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- Mermaid.js for diagram rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+    <div class="scroll-progress"><div class="scroll-progress-bar" id="scroll-progress-bar"></div></div>
+
+    <header class="site-header">
+    <div class="wrap">
+        <a class="site-title" href="/">Sumit Yadav</a>
+        <nav class="site-nav">
+            <a href="/#publications">Publications</a>
+            <a href="/blog/">Blog</a>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                <span class="theme-icon theme-icon-light">🌙</span>
+                <span class="theme-icon theme-icon-dark">☀️</span>
+            </button>
+        </nav>
+    </div>
+</header>
+
+
+    <main class="page-content">
+        <div class="wrap">
+            <div class="content-area">
+                
+<article class="post">
+    <header class="post-header">
+        <h1 class="post-title">An Image Is Worth 16x16 Words: How Vision Transformers Work</h1>
+        <p class="post-meta">
+            <time datetime="2026-06-09T00:00:00.000Z">June 09, 2026</time>
+             · <span>AI & ML</span>
+        </p>
+    </header>
+
+    <div class="post-content">
+        <script>
+  window.MathJax = {
+    tex: { inlineMath: [['$','$'], ['\\(','\\)']], displayMath: [['$$','$$'], ['\\[','\\]']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+
+<p><img src="vit-architecture.png" alt="The Vision Transformer architecture: patches → linear projection → standard Transformer encoder"></p>
+<p>By 2020, the Transformer had conquered natural language processing. But computer vision was still ruled by <strong>convolutional neural networks (CNNs)</strong>, which had dominated for nearly a decade. Then a team at Google Brain asked a wonderfully simple, almost reckless question:</p>
+<p><em>What if we stop treating an image as a grid of pixels, and instead treat it as a sequence of words — and feed it to a standard Transformer? No convolutions at all.</em></p>
+<p>The paper is <strong>&quot;An Image is Worth 16x16 Words&quot;</strong> (Dosovitskiy et al., ICLR 2021), and the model it introduced is the <strong>Vision Transformer (ViT)</strong>.</p>
+<blockquote>
+<p>🎬 <strong>Watch the full 8-minute explainer:</strong></p>
+</blockquote>
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 24px 0; border-radius: 12px;">
+  <iframe
+    src="https://www.youtube.com/embed/UwxeaIX0rZ4"
+    title="An Image Is Worth 16x16 Words: How Vision Transformers Work"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 12px;"></iframe>
+</div>
+
+<p>▶️ Direct link: <a href="https://youtu.be/UwxeaIX0rZ4">youtu.be/UwxeaIX0rZ4</a></p>
+<blockquote>
+<p>⚡ <strong>Short on time? Here&#39;s the ~2-minute version</strong> — <em>&quot;Vision Transformers, explained fast.&quot;</em></p>
+</blockquote>
+<div style="display: flex; justify-content: center; margin: 24px 0;">
+  <iframe
+    width="315" height="560"
+    src="https://www.youtube.com/embed/Whe0zU4WlFk"
+    title="Vision Transformers explained"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen
+    style="border-radius: 12px; max-width: 100%;"></iframe>
+</div>
+
+<p>▶️ Short: <a href="https://youtube.com/shorts/Whe0zU4WlFk">youtube.com/shorts/Whe0zU4WlFk</a></p>
+<hr>
+<h2>Two Worlds of Deep Learning</h2>
+<p>To see why this is bold, picture two separate worlds. In <strong>language</strong>, the Transformer reigns: pure attention, very few assumptions baked in, and it scales beautifully — pour in more data and compute and it just keeps getting better. In <strong>vision</strong>, convolutional networks reign, carrying strong hand-designed assumptions about how images work.</p>
+<p>These worlds had grown up apart. ViT&#39;s wager is that the clean, scalable language recipe could be applied — almost unchanged — directly to pixels.</p>
+<hr>
+<h2>Step 1: Turn Patches Into Tokens</h2>
+<p>The whole trick is a translation step that lets an image pretend to be a sentence.</p>
+<p>Take a typical $224 \times 224$ image and cut it into a grid of fixed <strong>$16 \times 16$ patches</strong>. That gives $14 \times 14 = 196$ patches. Flatten each one — $16 \times 16$ pixels across 3 color channels is just a list of $16 \cdot 16 \cdot 3 = 768$ numbers — and pass it through a single linear layer. Each patch becomes one neat <strong>token vector</strong>.</p>
+<p>An image is now, quite literally, a sentence of 196 tokens.</p>
+<hr>
+<h2>Step 2: Position Embeddings + a [class] Token</h2>
+<p>There&#39;s a subtlety: self-attention is <strong>order-blind</strong>. Shuffle the tokens and it can&#39;t tell — which is a disaster for image patches, where <em>where</em> a patch sits clearly matters.</p>
+<p>So we add a learned <strong>position embedding</strong> to every patch (a little vector that says &quot;where I came from&quot;). Then we borrow one more trick from language models: prepend a single extra learnable <strong><code>[class]</code> token</strong>. After the network runs, that token&#39;s final state serves as the summary of the whole image, and it&#39;s what we classify.</p>
+<hr>
+<h2>Step 3: Just a Transformer</h2>
+<p>Now the easy part — because there&#39;s almost nothing left to invent. The sequence of patch tokens, plus positions and the <code>[class]</code> token, is fed into a <strong>completely standard Transformer encoder</strong>, the same design used for text. Inside, multi-head self-attention lets every patch directly look at every other patch, anywhere in the image, from the very first layer.</p>
+<p>Notice what&#39;s <em>missing</em>: no convolutions, no pooling. Almost nothing about images is hard-coded. The model has to learn how vision works from scratch.</p>
+<hr>
+<h2>The Catch: It&#39;s Data-Hungry</h2>
+<p><img src="vit-data-scaling.png" alt="ImageNet accuracy vs. pre-training dataset size — ViT overtakes CNNs only with enough data"></p>
+<p>This is the paper&#39;s most important result. Trained only on <strong>ImageNet</strong> (a medium dataset), ViT actually <em>loses</em> to the convolutional baseline (the gray line). Pre-train on the larger <strong>ImageNet-21k</strong> and it catches up. Pre-train on <strong>JFT-300M</strong> (300 million images) and the Transformers (the colored dots) pull clearly ahead.</p>
+<p>The lesson: this model is hungry. Give it enough data, and it overtakes the networks that ruled vision for years.</p>
+<h3>Why so hungry?</h3>
+<p>It comes down to <strong>inductive bias</strong> — the assumptions baked into a model before it sees any data. A CNN has two powerful ones built in:</p>
+<ul>
+<li><strong>Locality</strong> — nearby pixels belong together.</li>
+<li><strong>Translation equivariance</strong> — an object is the same wherever it appears.</li>
+</ul>
+<p>ViT is handed almost none of this. It must <em>learn</em> those facts about images itself, and learning them from scratch simply takes far more examples.</p>
+<hr>
+<h2>But Efficient With Compute</h2>
+<p><img src="vit-compute-efficiency.png" alt="Transfer accuracy vs. pre-training compute — ViT sits above ResNets"></p>
+<p>Here&#39;s the flip side that got people excited. Plot performance against <strong>pre-training compute</strong>, and the Vision Transformers (blue dots) sit above the ResNets (gray squares) almost everywhere. For a fixed compute budget, ViT tends to reach higher accuracy. Scalable <em>and</em> efficient — exactly the combination that made the language Transformer so dominant.</p>
+<hr>
+<h2>State of the Art</h2>
+<p><img src="vit-vtab-results.png" alt="VTAB benchmark: ViT-H/14 matches or beats the best CNNs across task groups"></p>
+<p>The payoff was real. The largest model, <strong>ViT-H/14</strong>, pre-trained on JFT and transferred, matched or beat the best convolutional systems of the day across a wide sweep of benchmarks — the 19-task VTAB suite, natural images, specialized (medical/satellite) imagery, and structured tasks — while taking substantially <em>less</em> compute to pre-train than the top CNN competitor.</p>
+<hr>
+<h2>What Did It Learn Inside?</h2>
+<p>It works — but does it learn anything sensible, or just memorize? The authors looked, and the answer is reassuring.</p>
+<p><img src="vit-learned-filters.png" alt="The learned patch-embedding filters resemble a CNN&#39;s first layer"></p>
+<p><strong>Filters.</strong> Visualizing the very first linear patch-embedding layer reveals filters that look like edge detectors, color blobs, and textures — strikingly similar to the first layer of a CNN. Given freedom and data, ViT rediscovered the same basic visual building blocks by itself.</p>
+<p><img src="vit-position-embeddings.png" alt="Position-embedding similarity — patches recover their 2D grid structure"></p>
+<p><strong>2D layout.</strong> Those position embeddings started as random vectors with no notion of geometry. This grid shows how similar each patch&#39;s learned position vector is to every other. The bright row/column structure means patches in the same row or column ended up with similar embeddings — the model figured out the <strong>two-dimensional layout</strong> of the image, purely from data.</p>
+<p><img src="vit-attention-distance.png" alt="Mean attention distance vs. depth — some heads are global from layer one"></p>
+<p><strong>Global attention from the start.</strong> A convolution sees only a tiny local window early on; its view widens slowly with depth. This plot measures how far each attention head looks on average. Even in the <em>first</em> layers, some heads already reach right across the whole image, while others stay local. ViT can be global from layer one — and learns to use both near and far information at once.</p>
+<p><img src="vit-attention-maps.png" alt="Attention from the output token lands on the relevant object"></p>
+<p><strong>Looking at the right things.</strong> Trace what the model attends to, from its output back to the input pixels, and it consistently focuses on what matters: the dog (not the grass), the airplane (not the sky), the snake (not the leaves). With no built-in notion of objects, ViT learns to attend to semantically meaningful regions.</p>
+<hr>
+<h2>Why It Mattered</h2>
+<p>The significance is hard to overstate. This paper showed that <strong>convolutions — long thought essential to vision — are not actually required.</strong> With enough scale, a plain Transformer and raw attention can match or beat them. It meant a <em>single architecture</em> could span both language and vision, a major step toward unified models. And it opened the floodgates: the Vision Transformer became a foundation for much of modern computer vision that followed.</p>
+<p>Sometimes the boldest idea is to take what already works — and simply refuse to complicate it.</p>
+<hr>
+<h3>⏱️ Chapters</h3>
+<table>
+<thead>
+<tr>
+<th>Time</th>
+<th>Section</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0:00</td>
+<td>An Image Is Worth 16x16 Words</td>
+</tr>
+<tr>
+<td>0:36</td>
+<td>Two Worlds: CNNs vs Transformers</td>
+</tr>
+<tr>
+<td>1:09</td>
+<td>The Vision Transformer Architecture</td>
+</tr>
+<tr>
+<td>1:39</td>
+<td>Step 1: Patches Become Tokens</td>
+</tr>
+<tr>
+<td>2:11</td>
+<td>Step 2: Position + [class] Token</td>
+</tr>
+<tr>
+<td>2:44</td>
+<td>Step 3: Just a Transformer Encoder</td>
+</tr>
+<tr>
+<td>3:17</td>
+<td>The Catch: It&#39;s Data-Hungry</td>
+</tr>
+<tr>
+<td>3:51</td>
+<td>Why So Hungry? (Inductive Bias)</td>
+</tr>
+<tr>
+<td>4:26</td>
+<td>Efficient With Compute</td>
+</tr>
+<tr>
+<td>4:58</td>
+<td>State of the Art (VTAB)</td>
+</tr>
+<tr>
+<td>5:30</td>
+<td>What It Learns: Filters</td>
+</tr>
+<tr>
+<td>6:00</td>
+<td>It Learns the 2D Layout</td>
+</tr>
+<tr>
+<td>6:28</td>
+<td>Global Attention From the Start</td>
+</tr>
+<tr>
+<td>6:57</td>
+<td>Looking at the Right Things</td>
+</tr>
+<tr>
+<td>7:24</td>
+<td>Why It Mattered</td>
+</tr>
+</tbody></table>
+<hr>
+<p><strong>Source:</strong> Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn, Xiaohua Zhai, Thomas Unterthiner, Mostafa Dehghani, Matthias Minderer, Georg Heigold, Sylvain Gelly, Jakob Uszkoreit &amp; Neil Houlsby, <em>&quot;An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale,&quot;</em> <a href="https://arxiv.org/abs/2010.11929">ICLR 2021 (arXiv:2010.11929)</a>. All figures are from the paper and © the authors, shown here for educational explanation.</p>
+<p><em>We&#39;re brand new to YouTube — if this helped, please <strong><a href="https://youtu.be/UwxeaIX0rZ4">subscribe</a></strong> and like; it genuinely keeps these explainers coming. Thanks for reading!</em> 🙏</p>
+
+    </div>
+
+    <details class="cite">
+  <summary>Cite this post</summary>
+  <div class="cite-body" id="citation-section">
+    <div class="citation-tabs" role="tablist">
+        <button class="citation-tab active" data-target="bibtex" role="tab" aria-selected="true">BibTeX</button>
+        <button class="citation-tab" data-target="apa" role="tab" aria-selected="false">APA</button>
+        <button class="citation-tab" data-target="mla" role="tab" aria-selected="false">MLA</button>
+        <button class="citation-tab" data-target="chicago" role="tab" aria-selected="false">Chicago</button>
+    </div>
+    <div class="citation-panels">
+        <div class="citation-panel active" id="panel-bibtex" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-bibtex"></pre><button class="copy-btn" data-cite="cite-bibtex">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-apa" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-apa"></pre><button class="copy-btn" data-cite="cite-apa">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-mla" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-mla"></pre><button class="copy-btn" data-cite="cite-mla">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-chicago" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-chicago"></pre><button class="copy-btn" data-cite="cite-chicago">Copy</button></div>
+        </div>
+    </div>
+    <p class="citation-note">Auto-generated. Verify for your institution's requirements.</p>
+  </div>
+</details>
+
+<template id="cite-meta">An Image Is Worth 16x16 Words: How Vision Transformers Work</template>
+
+<script>
+(function() {
+    var meta = document.getElementById('cite-meta');
+    if (!meta) return;
+    var t = meta.content ? meta.content.textContent : meta.innerHTML;
+    var a = 'Sumit Yadav';
+    var j = 'Sumit Yadav';
+    var u = 'https://sumityadav.com.np/posts/2026/06/09/vision-transformer-image-is-worth-16x16-words/';
+    var y = '2026';
+    var mo = 'June';
+    var ms = 'Jun';
+    var dy = '09';
+    var k = a.split(' ')[0].toLowerCase() + y + t.toLowerCase().replace(/[^a-z0-9]+/g, '');
+
+    document.getElementById('cite-bibtex').textContent =
+        '@article{' + k + ',\n  title     = {' + t + '},\n  author    = {' + a +
+        '},\n  journal   = {' + j + '},\n  year      = {' + y + '},\n  month     = {' + mo +
+        '},\n  day       = {' + dy + '},\n  url       = {' + u + '}\n}';
+    document.getElementById('cite-apa').textContent =
+        a + '. (' + y + ', ' + mo + ' ' + dy + '). ' + t + '. ' + j + '. ' + u;
+    document.getElementById('cite-mla').textContent =
+        a + '. “' + t + '.” ' + j + ', ' + dy + ' ' + ms + ' ' + y + ', ' + u + '.';
+    document.getElementById('cite-chicago').textContent =
+        a + '. “' + t + '.” ' + j + '. ' + mo + ' ' + dy + ', ' + y + '. ' + u + '.';
+
+    var sec = document.getElementById('citation-section');
+    sec.querySelectorAll('.citation-tab').forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            sec.querySelectorAll('.citation-tab').forEach(function(x) { x.classList.remove('active'); x.setAttribute('aria-selected', 'false'); });
+            sec.querySelectorAll('.citation-panel').forEach(function(p) { p.classList.remove('active'); });
+            this.classList.add('active'); this.setAttribute('aria-selected', 'true');
+            sec.querySelector('#panel-' + this.dataset.target).classList.add('active');
+        });
+    });
+    sec.querySelectorAll('.copy-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var text = document.getElementById(this.dataset.cite).textContent;
+            var b = this;
+            var done = function() { b.textContent = 'Copied!'; b.classList.add('copied'); setTimeout(function() { b.textContent = 'Copy'; b.classList.remove('copied'); }, 2000); };
+            navigator.clipboard.writeText(text).then(done).catch(function() {
+                var ta = document.createElement('textarea'); ta.value = text; ta.style.cssText = 'position:fixed;opacity:0';
+                document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); done();
+            });
+        });
+    });
+})();
+</script>
+
+
+    <footer class="post-footer">
+        <p><a href="/blog/">← All posts</a></p>
+    </footer>
+</article>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+    <div class="wrap">
+        <p>© 2026 Sumit Yadav · Kathmandu, Nepal · <a href="/">home</a> · <a href="/blog/">blog</a></p>
+    </div>
+</footer>
+
+
+    <script>
+        (function() {
+            const getThemePreference = () => {
+                const stored = localStorage.getItem('theme-preference');
+                if (stored) return stored;
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            };
+            const applyTheme = (theme) => {
+                const root = document.documentElement;
+                root.classList.remove('light-theme', 'dark-theme');
+                if (theme !== 'auto') root.classList.add(`${theme}-theme`);
+                if (window.mermaid) {
+                    const dark = theme === 'dark' || (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                    mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'default' });
+                    document.querySelectorAll('.mermaid').forEach(el => {
+                        if (el.getAttribute('data-processed')) {
+                            el.removeAttribute('data-processed');
+                            el.innerHTML = el.getAttribute('data-original') || el.innerHTML;
+                        }
+                    });
+                    if (window.mermaid.init) mermaid.init(undefined, '.mermaid');
+                }
+            };
+            document.addEventListener('DOMContentLoaded', () => {
+                applyTheme(getThemePreference());
+                const t = document.getElementById('theme-toggle');
+                if (t) t.addEventListener('click', () => {
+                    const cur = getThemePreference();
+                    const next = cur === 'dark' ? 'light' : 'dark';
+                    localStorage.setItem('theme-preference', next);
+                    applyTheme(next);
+                });
+                document.querySelectorAll('.mermaid').forEach(el => {
+                    if (!el.getAttribute('data-original')) el.setAttribute('data-original', el.innerHTML);
+                });
+            });
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme-preference')) applyTheme(e.matches ? 'dark' : 'light');
+            });
+        })();
+        (function() {
+            const bar = document.getElementById('scroll-progress-bar');
+            if (!bar) return;
+            const upd = () => {
+                const st = window.pageYOffset || document.documentElement.scrollTop;
+                const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                bar.style.height = Math.min(Math.max((st / h) * 100, 0), 100) + '%';
+            };
+            window.addEventListener('scroll', upd, { passive: true });
+            window.addEventListener('resize', upd, { passive: true });
+            upd();
+        })();
+    </script>
+</body>
+</html>

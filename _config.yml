@@ -1,0 +1,39 @@
+title: Sumit Yadav
+description: "AI Researcher — interpretability, AI safety, and low-resource NLP."
+url: "https://sumityadav.com.np"
+baseurl: ""
+
+# Build settings
+markdown: CommonMark
+highlighter: none
+permalink: /posts/:year/:month/:day/:title/
+
+# Site author (used in post pages, citation, footer)
+author:
+  name: Sumit Yadav
+  email: rockerritesh4@gmail.com
+  title: AI Researcher
+  location: Kathmandu, Nepal
+  github: rockerritesh
+  linkedin: rockerritesh
+  twitter: rocker_ritesh
+  google_scholar: https://scholar.google.com/citations?user=ag74ytsAAAAJ&hl=en
+  website: https://sumityadav.com.np
+
+# Collections
+collections:
+  posts:
+    output: true
+    permalink: /posts/:year/:month/:day/:title/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+  - scope:
+      path: ""
+    values:
+      layout: "default"

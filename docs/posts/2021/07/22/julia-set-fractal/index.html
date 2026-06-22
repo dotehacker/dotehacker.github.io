@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Julia Set Fractal · Sumit Yadav</title>
+    <meta name="description" content="">
+    <meta name="google-site-verification" content="IVG1y4MVA_6MT0wsjk13ooZDQLWXxvYcPXQlmf83MLM" />
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- Mermaid.js for diagram rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+    <div class="scroll-progress"><div class="scroll-progress-bar" id="scroll-progress-bar"></div></div>
+
+    <header class="site-header">
+    <div class="wrap">
+        <a class="site-title" href="/">Sumit Yadav</a>
+        <nav class="site-nav">
+            <a href="/#publications">Publications</a>
+            <a href="/blog/">Blog</a>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                <span class="theme-icon theme-icon-light">🌙</span>
+                <span class="theme-icon theme-icon-dark">☀️</span>
+            </button>
+        </nav>
+    </div>
+</header>
+
+
+    <main class="page-content">
+        <div class="wrap">
+            <div class="content-area">
+                
+<article class="post">
+    <header class="post-header">
+        <h1 class="post-title">Julia Set Fractal</h1>
+        <p class="post-meta">
+            <time datetime="2021-07-22T00:00:00.000Z">July 22, 2021</time>
+             · <span>Mathematics</span>
+        </p>
+    </header>
+
+    <div class="post-content">
+        <p><img src="/posts/2021/07/22/julia-set-fractal/julia-set-fractal-julia2.png" alt="Julia Set" title="Julia Set"></p>
+<p>The Julia set is named after the French mathematician Gaston Julia who investigated their properties circa 1915 and culminated in his famous paper in 1918. While the Julia set is now associated with a simpler polynomial, Julia was interested in the iterative properties of a more general expression, namely</p>
+<p>z4 + z3/(z-1) + z2/(z3 + 4 z2 + 5) + c.</p>
+<p>The Julia set is now associated with those points z = x + iy on the complex plane for which the series z(n+1) = zn² + c does not tend to infinity. c is a complex constant, one gets a different Julia set for each c. The initial value z0 for the series is each point in the image plane. In the broader sense the exact form of the iterated function may be anything, the general form being z(n+1) = f(zn), interesting sets arise with non-linear functions f(z). Commonly used functions include the following:</p>
+<ul>
+<li>z(n+1) = c sin(zn)</li>
+<li>z(n+1) = c exp(zn)</li>
+<li>z(n+1) = c i cos(zn)</li>
+<li>z(n+1) = c zn (1 - zn)</li>
+</ul>
+<p>Computing a Julia set by computer is straightforward, at least by the brute force method presented here. The image is created by mapping each pixel to a rectangular region of the complex plane. Each pixel then represents the starting point for the series, z0. The series is computed for each pixel and if it diverges to infinity it is drawn in white, if it doesn&#39;t then it is drawn black. This convergence or otherwise isn&#39;t always obvious and it may take a large number of iterations to resolve so a decision procedure is required to determine divergence. This typically involves assuming the series tends to infinity as soon as its value exceeds some value, if the series hasn&#39;t diverged after a certain number of terms it is similarly assigned to be part of the set. Both these decisions can be varied to give more precise images but ones that take longer to calculate. An added effect is achieved by colouring the point by how fast it diverges to infinity.</p>
+<p>The well known Mandelbrot set forms a kind of index into the Julia set. A Julia set is either connected or disconnected, values of c chosen from within the Mandelbrot set are connected while those from the outside of the Mandelbrot set are disconnected. The disconnected sets are often called &quot;dust&quot;, they consist of individual points no matter what resolution they are viewed at. <a href="http://paulbourke.net/fractals/juliaset/">Above mentioned lines are taken from this website.</a></p>
+<h2>Code</h2>
+<pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+
+# Image width and height; parameters for the plot
+im_width, im_height = 5000, 5000
+
+rel = float(input(&quot;enter the real part&quot;))
+img = float(input(&quot;enter the img part&quot;))
+
+c = complex(rel, img)
+zabs_max = 10
+nit_max = 1000
+xmin, xmax = -1.5, 1.5
+xwidth = xmax - xmin
+ymin, ymax = -1.5, 1.5
+yheight = ymax - ymin
+
+
+julia = np.zeros((im_width, im_height))
+for ix in range(im_width):
+    for iy in range(im_height):
+        nit = 0
+        # Map pixel position to a point in the complex plane
+        z = complex(ix / im_width * xwidth + xmin,
+                    iy / im_height * yheight + ymin)
+        # Do the iterations
+        while abs(z) &lt;= zabs_max and nit &lt; nit_max:
+            z = z**2 + c
+            nit += 1
+        shade = 1-np.sqrt(nit / nit_max)
+        ratio = nit / nit_max
+        julia[ix,iy] = ratio
+</code></pre>
+<pre><code>enter the real part-0.54
+enter the img part0.54
+</code></pre>
+<h2>Images</h2>
+<h3>Image 1</h3>
+<pre><code class="language-python">fig, ax = plt.subplots(figsize=(50,50))
+ax.imshow(julia, interpolation=&#39;nearest&#39;, cmap=cm.hot)
+
+plt.show()
+</code></pre>
+<p><img src="/posts/2021/07/22/julia-set-fractal/julia-set-fractal-760544f6eec3d75daa726edaacf4f3ac9bd8545f.png" alt="Julia Set Image 1"></p>
+<h3>Image 2</h3>
+<pre><code class="language-python">fig, ax = plt.subplots(figsize=(50,50))
+ax.imshow(julia, interpolation=&#39;nearest&#39;, cmap=cm.hot)
+
+plt.show()
+</code></pre>
+<p><img src="/posts/2021/07/22/julia-set-fractal/julia-set-fractal-6a6550760267656a6fe0998e2b5d40450df3d190.png" alt="Julia Set Image 2"></p>
+<h3>Image 3</h3>
+<pre><code class="language-python">fig, ax = plt.subplots(figsize=(50,50))
+ax.imshow(julia, interpolation=&#39;nearest&#39;, cmap=cm.hot)
+
+plt.show()
+</code></pre>
+<p><img src="/posts/2021/07/22/julia-set-fractal/julia-set-fractal-3ac4f58d3feddcf8d921f9ef1d1f8932323ed256.png" alt="Julia Set Image 3"></p>
+<h3>Image 4</h3>
+<pre><code class="language-python">fig, ax = plt.subplots(figsize=(50,50))
+ax.imshow(julia, interpolation=&#39;nearest&#39;, cmap=cm.hot)
+
+plt.show()
+</code></pre>
+<p><img src="/posts/2021/07/22/julia-set-fractal/julia-set-fractal-a98f9d5c4e6bb26c409d16409f3c3219f0aa4228.png" alt="Julia Set Image 4"></p>
+<h3>Image 5</h3>
+<pre><code class="language-python">fig, ax = plt.subplots(figsize=(50,50))
+ax.imshow(julia, interpolation=&#39;nearest&#39;, cmap=cm.hot)
+
+plt.show()
+</code></pre>
+<p><img src="/posts/2021/07/22/julia-set-fractal/julia-set-fractal-7517c96f3782b5704a44bed7d49e86ea0db96ae1.png" alt="Julia Set Image 5"></p>
+
+    </div>
+
+    <details class="cite">
+  <summary>Cite this post</summary>
+  <div class="cite-body" id="citation-section">
+    <div class="citation-tabs" role="tablist">
+        <button class="citation-tab active" data-target="bibtex" role="tab" aria-selected="true">BibTeX</button>
+        <button class="citation-tab" data-target="apa" role="tab" aria-selected="false">APA</button>
+        <button class="citation-tab" data-target="mla" role="tab" aria-selected="false">MLA</button>
+        <button class="citation-tab" data-target="chicago" role="tab" aria-selected="false">Chicago</button>
+    </div>
+    <div class="citation-panels">
+        <div class="citation-panel active" id="panel-bibtex" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-bibtex"></pre><button class="copy-btn" data-cite="cite-bibtex">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-apa" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-apa"></pre><button class="copy-btn" data-cite="cite-apa">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-mla" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-mla"></pre><button class="copy-btn" data-cite="cite-mla">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-chicago" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-chicago"></pre><button class="copy-btn" data-cite="cite-chicago">Copy</button></div>
+        </div>
+    </div>
+    <p class="citation-note">Auto-generated. Verify for your institution's requirements.</p>
+  </div>
+</details>
+
+<template id="cite-meta">Julia Set Fractal</template>
+
+<script>
+(function() {
+    var meta = document.getElementById('cite-meta');
+    if (!meta) return;
+    var t = meta.content ? meta.content.textContent : meta.innerHTML;
+    var a = 'Sumit Yadav';
+    var j = 'Sumit Yadav';
+    var u = 'https://sumityadav.com.np/posts/2021/07/22/julia-set-fractal/';
+    var y = '2021';
+    var mo = 'July';
+    var ms = 'Jul';
+    var dy = '22';
+    var k = a.split(' ')[0].toLowerCase() + y + t.toLowerCase().replace(/[^a-z0-9]+/g, '');
+
+    document.getElementById('cite-bibtex').textContent =
+        '@article{' + k + ',\n  title     = {' + t + '},\n  author    = {' + a +
+        '},\n  journal   = {' + j + '},\n  year      = {' + y + '},\n  month     = {' + mo +
+        '},\n  day       = {' + dy + '},\n  url       = {' + u + '}\n}';
+    document.getElementById('cite-apa').textContent =
+        a + '. (' + y + ', ' + mo + ' ' + dy + '). ' + t + '. ' + j + '. ' + u;
+    document.getElementById('cite-mla').textContent =
+        a + '. “' + t + '.” ' + j + ', ' + dy + ' ' + ms + ' ' + y + ', ' + u + '.';
+    document.getElementById('cite-chicago').textContent =
+        a + '. “' + t + '.” ' + j + '. ' + mo + ' ' + dy + ', ' + y + '. ' + u + '.';
+
+    var sec = document.getElementById('citation-section');
+    sec.querySelectorAll('.citation-tab').forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            sec.querySelectorAll('.citation-tab').forEach(function(x) { x.classList.remove('active'); x.setAttribute('aria-selected', 'false'); });
+            sec.querySelectorAll('.citation-panel').forEach(function(p) { p.classList.remove('active'); });
+            this.classList.add('active'); this.setAttribute('aria-selected', 'true');
+            sec.querySelector('#panel-' + this.dataset.target).classList.add('active');
+        });
+    });
+    sec.querySelectorAll('.copy-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var text = document.getElementById(this.dataset.cite).textContent;
+            var b = this;
+            var done = function() { b.textContent = 'Copied!'; b.classList.add('copied'); setTimeout(function() { b.textContent = 'Copy'; b.classList.remove('copied'); }, 2000); };
+            navigator.clipboard.writeText(text).then(done).catch(function() {
+                var ta = document.createElement('textarea'); ta.value = text; ta.style.cssText = 'position:fixed;opacity:0';
+                document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); done();
+            });
+        });
+    });
+})();
+</script>
+
+
+    <footer class="post-footer">
+        <p><a href="/blog/">← All posts</a></p>
+    </footer>
+</article>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+    <div class="wrap">
+        <p>© 2026 Sumit Yadav · Kathmandu, Nepal · <a href="/">home</a> · <a href="/blog/">blog</a></p>
+    </div>
+</footer>
+
+
+    <script>
+        (function() {
+            const getThemePreference = () => {
+                const stored = localStorage.getItem('theme-preference');
+                if (stored) return stored;
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            };
+            const applyTheme = (theme) => {
+                const root = document.documentElement;
+                root.classList.remove('light-theme', 'dark-theme');
+                if (theme !== 'auto') root.classList.add(`${theme}-theme`);
+                if (window.mermaid) {
+                    const dark = theme === 'dark' || (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                    mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'default' });
+                    document.querySelectorAll('.mermaid').forEach(el => {
+                        if (el.getAttribute('data-processed')) {
+                            el.removeAttribute('data-processed');
+                            el.innerHTML = el.getAttribute('data-original') || el.innerHTML;
+                        }
+                    });
+                    if (window.mermaid.init) mermaid.init(undefined, '.mermaid');
+                }
+            };
+            document.addEventListener('DOMContentLoaded', () => {
+                applyTheme(getThemePreference());
+                const t = document.getElementById('theme-toggle');
+                if (t) t.addEventListener('click', () => {
+                    const cur = getThemePreference();
+                    const next = cur === 'dark' ? 'light' : 'dark';
+                    localStorage.setItem('theme-preference', next);
+                    applyTheme(next);
+                });
+                document.querySelectorAll('.mermaid').forEach(el => {
+                    if (!el.getAttribute('data-original')) el.setAttribute('data-original', el.innerHTML);
+                });
+            });
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme-preference')) applyTheme(e.matches ? 'dark' : 'light');
+            });
+        })();
+        (function() {
+            const bar = document.getElementById('scroll-progress-bar');
+            if (!bar) return;
+            const upd = () => {
+                const st = window.pageYOffset || document.documentElement.scrollTop;
+                const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                bar.style.height = Math.min(Math.max((st / h) * 100, 0), 100) + '%';
+            };
+            window.addEventListener('scroll', upd, { passive: true });
+            window.addEventListener('resize', upd, { passive: true });
+            upd();
+        })();
+    </script>
+</body>
+</html>

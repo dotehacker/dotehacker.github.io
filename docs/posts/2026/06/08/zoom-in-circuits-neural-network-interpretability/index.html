@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zoom In: How to Read the Circuits Inside a Neural Network · Sumit Yadav</title>
+    <meta name="description" content="">
+    <meta name="google-site-verification" content="IVG1y4MVA_6MT0wsjk13ooZDQLWXxvYcPXQlmf83MLM" />
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- Mermaid.js for diagram rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+    <div class="scroll-progress"><div class="scroll-progress-bar" id="scroll-progress-bar"></div></div>
+
+    <header class="site-header">
+    <div class="wrap">
+        <a class="site-title" href="/">Sumit Yadav</a>
+        <nav class="site-nav">
+            <a href="/#publications">Publications</a>
+            <a href="/blog/">Blog</a>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                <span class="theme-icon theme-icon-light">🌙</span>
+                <span class="theme-icon theme-icon-dark">☀️</span>
+            </button>
+        </nav>
+    </div>
+</header>
+
+
+    <main class="page-content">
+        <div class="wrap">
+            <div class="content-area">
+                
+<article class="post">
+    <header class="post-header">
+        <h1 class="post-title">Zoom In: How to Read the Circuits Inside a Neural Network</h1>
+        <p class="post-meta">
+            <time datetime="2026-06-08T00:00:00.000Z">June 08, 2026</time>
+             · <span>Interpretability & Safety</span>
+        </p>
+    </header>
+
+    <div class="post-content">
+        <script>
+  window.MathJax = {
+    tex: { inlineMath: [['$','$'], ['\\(','\\)']], displayMath: [['$$','$$'], ['\\[','\\]']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+
+<p><img src="circuits-curve-detectors.png" alt="Curve detectors — a family of neurons that fire for curves at every orientation"></p>
+<p>For most of deep learning&#39;s history we&#39;ve treated neural networks as black boxes: we judge them by what they output, not by what they <em>do</em> inside. But what if you could put a network under a microscope and read it the way a biologist reads a cell — neuron by neuron, weight by weight?</p>
+<p>That&#39;s the premise of the <strong>circuits</strong> program in interpretability, laid out in the classic Distill article <em>&quot;Zoom In: An Introduction to Circuits.&quot;</em> This post (and the video below) walks through its core ideas: that networks are built from meaningful <strong>features</strong>, those features are wired into <strong>circuits</strong> that implement real algorithms, and the same structures recur across wildly different models.</p>
+<blockquote>
+<p>🎬 <strong>Watch the full 9-minute explainer:</strong></p>
+</blockquote>
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 24px 0; border-radius: 12px;">
+  <iframe
+    src="https://www.youtube.com/embed/EjzaESBki5g"
+    title="Zoom In: How to Read the Circuits Inside a Neural Network"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 12px;"></iframe>
+</div>
+
+<p>▶️ Direct link: <a href="https://youtu.be/EjzaESBki5g">youtu.be/EjzaESBki5g</a></p>
+<hr>
+<h2>The Microscope Moment</h2>
+<p>Biology had a turning point when better microscopes revealed that all living things are made of <strong>cells</strong>. Suddenly you could study life at the level of its building blocks. Interpretability is reaching for the same kind of leap — and the microscope is <strong>feature visualization</strong>: optimize an input image to maximally excite a single neuron, and you get a picture of what that neuron is &quot;looking for.&quot;</p>
+<p>Point that microscope at a vision model and something striking emerges: the neurons aren&#39;t random noise. Many of them correspond to clean, nameable, human-understandable concepts.</p>
+<hr>
+<h2>Three Claims</h2>
+<p><img src="circuits-three-claims.png" alt="The three claims of the circuits program: Features, Circuits, Universality"></p>
+<p>The circuits program rests on three falsifiable claims:</p>
+<ol>
+<li><strong>Features</strong> — networks are built from features, directions in activation space that correspond to understandable concepts.</li>
+<li><strong>Circuits</strong> — features are connected by weights, forming circuits that implement meaningful algorithms.</li>
+<li><strong>Universality</strong> — analogous features and circuits form across different models and tasks.</li>
+</ol>
+<p>Let&#39;s take them one at a time.</p>
+<hr>
+<h2>Claim One: Features</h2>
+<p>The cleanest example is the <strong>curve detector</strong>. Across a vision model you find a whole family of neurons, each firing for a curve at a particular orientation — and together they tile the full range of angles.</p>
+<p><img src="circuits-curve-weights.png" alt="Reading the weights of a curve detector"></p>
+<p>How do we know it&#39;s <em>really</em> a curve detector and not wishful thinking? The article assembles converging evidence: feature visualization, dataset examples, synthetic stimuli swept across angles, hand-written tuning curves, and — crucially — the <strong>weights themselves</strong>, which connect to earlier edge detectors in exactly the arrangement a curve detector would need.</p>
+<h3>Equivariance</h3>
+<p><img src="circuits-curve-orientations.png" alt="Curves at every orientation — an equivariant family"></p>
+<p>The curve detectors come as an <strong>equivariant</strong> set: rotate the input, and a <em>different</em> member of the family lights up. The network has effectively discovered rotation as a symmetry and built a detector for each slice of it — a recurring motif called equivariance.</p>
+<h3>Another clear feature</h3>
+<p><img src="circuits-high-low.png" alt="High-low frequency detectors fire at boundaries between textures"></p>
+<p>Curves aren&#39;t a one-off. <strong>High-low frequency detectors</strong> fire where a high-frequency texture meets a low-frequency one — a cue that&#39;s surprisingly useful for finding the boundary of an object against a blurry background.</p>
+<hr>
+<h2>Claim Two: Circuits</h2>
+<p>A feature on its own is just a noun. The real payoff is watching features <strong>wired together</strong> to compute something.</p>
+<p><img src="circuits-curve-circuit.png" alt="The curve circuit — early curves combine into more sophisticated curve features"></p>
+<p>Because we can read the weights, we can read the algorithm. Take the <strong>car detector</strong>:</p>
+<p><img src="circuits-car-circuit.png" alt="The car detector circuit: window (top), car body (middle), wheel (bottom)"></p>
+<p>It draws on a window detector, a car-body detector, and a wheel detector — and the weights say <em>windows on top, body in the middle, wheels at the bottom.</em> The network learned the spatial layout of a car, written directly into its connections.</p>
+<h3>Pose invariance as a logical OR</h3>
+<p><img src="circuits-dog-pose.png" alt="Oriented dog-head detectors feeding a pose-invariant unit"></p>
+<p>An even more elegant case: a neuron that detects a dog&#39;s head regardless of which way it&#39;s facing. Upstream are two features — a left-facing head detector and a right-facing one. The pose-invariant unit reads positively from <strong>both</strong>. In other words, the weights implement a literal <strong>logical OR</strong>: <em>left-facing OR right-facing → dog head.</em> And it holds up on real images, not just synthetic ones.</p>
+<hr>
+<h2>Claim Three: Universality</h2>
+<p><img src="circuits-universality.png" alt="Curve detectors found independently across AlexNet, GoogLeNet, VGG, and ResNet"></p>
+<p>Here&#39;s the part that suggests we&#39;ve found something real rather than an accident of one architecture. <strong>Curve detectors show up again and again</strong> — in AlexNet, InceptionV1/GoogLeNet, VGG, and ResNet, trained separately, on different architectures. The same feature keeps being rediscovered, hinting at universal building blocks of vision.</p>
+<hr>
+<h2>The Honest Complication</h2>
+<p>It would be too tidy if every neuron were as clean as a curve detector. Many aren&#39;t.</p>
+<p><img src="circuits-polysemantic.png" alt="Polysemantic neurons respond to several unrelated concepts"></p>
+<p>Some neurons are <strong>polysemantic</strong> — a single unit fires for several unrelated things (say, cat faces, fronts of cars, and cat legs). Why would a network do that?</p>
+<blockquote>
+<p>⚡ <strong>60-second version</strong> — <em>&quot;What is a polysemantic neuron?&quot;</em></p>
+</blockquote>
+<div style="display: flex; justify-content: center; margin: 24px 0;">
+  <iframe
+    width="315" height="560"
+    src="https://www.youtube.com/embed/MJlIOMGj3Ec"
+    title="What is a polysemantic neuron?"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen
+    style="border-radius: 12px; max-width: 100%;"></iframe>
+</div>
+
+<p>▶️ Short: <a href="https://youtube.com/shorts/MJlIOMGj3Ec">youtube.com/shorts/MJlIOMGj3Ec</a></p>
+<p><img src="circuits-superposition.png" alt="Superposition — packing more features than neurons by tolerating interference"></p>
+<p>The leading hypothesis is <strong>superposition</strong>: there are far more useful features than neurons, so the network packs multiple features into shared directions, tolerating a little interference. Polysemanticity is the visible symptom of this packing — and one of the central obstacles to fully reverse-engineering a network.</p>
+<blockquote>
+<p>⚡ <strong>60-second version</strong> — <em>&quot;What is superposition?&quot;</em></p>
+</blockquote>
+<div style="display: flex; justify-content: center; margin: 24px 0;">
+  <iframe
+    width="315" height="560"
+    src="https://www.youtube.com/embed/jht5lLU9CRk"
+    title="What is superposition?"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen
+    style="border-radius: 12px; max-width: 100%;"></iframe>
+</div>
+
+<p>▶️ Short: <a href="https://youtube.com/shorts/jht5lLU9CRk">youtube.com/shorts/jht5lLU9CRk</a></p>
+<hr>
+<h2>Interpretability as a Natural Science</h2>
+<p>The methodological stance of the article is as important as any single result: treat interpretability like a <strong>natural science</strong>. Observe carefully, build up a catalogue of features and circuits, form hypotheses, and test them against the weights and activations — observation first, grand theories later.</p>
+<p><img src="circuits-takeaway.png" alt="Why &quot;Zoom In&quot; matters — the case for studying networks like a natural science"></p>
+<h2>Why Zoom In Matters</h2>
+<p>If features, circuits, and universality hold up, then neural networks aren&#39;t inscrutable after all — they&#39;re intricate objects we can study, name, and eventually understand. That&#39;s not just intellectually satisfying; it&#39;s the foundation for <strong>AI safety</strong>, where understanding <em>why</em> a model does something matters as much as <em>what</em> it does.</p>
+<hr>
+<h3>⏱️ Chapters</h3>
+<table>
+<thead>
+<tr>
+<th>Time</th>
+<th>Section</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0:00</td>
+<td>The Microscope Moment</td>
+</tr>
+<tr>
+<td>0:34</td>
+<td>The Microscope: Feature Visualization</td>
+</tr>
+<tr>
+<td>1:11</td>
+<td>Three Claims</td>
+</tr>
+<tr>
+<td>1:56</td>
+<td>Claim One: Features</td>
+</tr>
+<tr>
+<td>2:33</td>
+<td>How We Know It&#39;s a Curve Detector</td>
+</tr>
+<tr>
+<td>3:06</td>
+<td>Curves at Every Angle (Equivariance)</td>
+</tr>
+<tr>
+<td>3:37</td>
+<td>Another Clear Feature: High-Low Frequency</td>
+</tr>
+<tr>
+<td>4:05</td>
+<td>Claim Two: Circuits</td>
+</tr>
+<tr>
+<td>4:52</td>
+<td>Reading a Circuit: The Car Detector</td>
+</tr>
+<tr>
+<td>5:22</td>
+<td>A Circuit for Pose Invariance</td>
+</tr>
+<tr>
+<td>5:44</td>
+<td>Implementing OR in Weights</td>
+</tr>
+<tr>
+<td>6:09</td>
+<td>And It Holds Up on Real Images</td>
+</tr>
+<tr>
+<td>6:33</td>
+<td>Claim Three: Universality</td>
+</tr>
+<tr>
+<td>7:13</td>
+<td>The Complication: Polysemantic Neurons</td>
+</tr>
+<tr>
+<td>7:37</td>
+<td>Superposition</td>
+</tr>
+<tr>
+<td>8:04</td>
+<td>Interpretability as a Natural Science</td>
+</tr>
+<tr>
+<td>8:33</td>
+<td>Why Zoom In Matters</td>
+</tr>
+</tbody></table>
+<hr>
+<p><strong>Source:</strong> Chris Olah, Nick Cammarata, Ludwig Schubert, Gabriel Goh, Michael Petrov &amp; Shan Carter, <em>&quot;Zoom In: An Introduction to Circuits,&quot;</em> <a href="https://distill.pub/2020/circuits/zoom-in/">Distill (2020)</a>. Published open-access under <strong>CC-BY 4.0</strong>; all figures above are from the article and © the authors, used with attribution.</p>
+<p><em>We&#39;re brand new to YouTube — if this helped, please <strong><a href="https://youtu.be/EjzaESBki5g">subscribe</a></strong> and like; it genuinely keeps these explainers coming. Thanks for reading!</em> 🙏</p>
+
+    </div>
+
+    <details class="cite">
+  <summary>Cite this post</summary>
+  <div class="cite-body" id="citation-section">
+    <div class="citation-tabs" role="tablist">
+        <button class="citation-tab active" data-target="bibtex" role="tab" aria-selected="true">BibTeX</button>
+        <button class="citation-tab" data-target="apa" role="tab" aria-selected="false">APA</button>
+        <button class="citation-tab" data-target="mla" role="tab" aria-selected="false">MLA</button>
+        <button class="citation-tab" data-target="chicago" role="tab" aria-selected="false">Chicago</button>
+    </div>
+    <div class="citation-panels">
+        <div class="citation-panel active" id="panel-bibtex" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-bibtex"></pre><button class="copy-btn" data-cite="cite-bibtex">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-apa" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-apa"></pre><button class="copy-btn" data-cite="cite-apa">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-mla" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-mla"></pre><button class="copy-btn" data-cite="cite-mla">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-chicago" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-chicago"></pre><button class="copy-btn" data-cite="cite-chicago">Copy</button></div>
+        </div>
+    </div>
+    <p class="citation-note">Auto-generated. Verify for your institution's requirements.</p>
+  </div>
+</details>
+
+<template id="cite-meta">Zoom In: How to Read the Circuits Inside a Neural Network</template>
+
+<script>
+(function() {
+    var meta = document.getElementById('cite-meta');
+    if (!meta) return;
+    var t = meta.content ? meta.content.textContent : meta.innerHTML;
+    var a = 'Sumit Yadav';
+    var j = 'Sumit Yadav';
+    var u = 'https://sumityadav.com.np/posts/2026/06/08/zoom-in-circuits-neural-network-interpretability/';
+    var y = '2026';
+    var mo = 'June';
+    var ms = 'Jun';
+    var dy = '08';
+    var k = a.split(' ')[0].toLowerCase() + y + t.toLowerCase().replace(/[^a-z0-9]+/g, '');
+
+    document.getElementById('cite-bibtex').textContent =
+        '@article{' + k + ',\n  title     = {' + t + '},\n  author    = {' + a +
+        '},\n  journal   = {' + j + '},\n  year      = {' + y + '},\n  month     = {' + mo +
+        '},\n  day       = {' + dy + '},\n  url       = {' + u + '}\n}';
+    document.getElementById('cite-apa').textContent =
+        a + '. (' + y + ', ' + mo + ' ' + dy + '). ' + t + '. ' + j + '. ' + u;
+    document.getElementById('cite-mla').textContent =
+        a + '. “' + t + '.” ' + j + ', ' + dy + ' ' + ms + ' ' + y + ', ' + u + '.';
+    document.getElementById('cite-chicago').textContent =
+        a + '. “' + t + '.” ' + j + '. ' + mo + ' ' + dy + ', ' + y + '. ' + u + '.';
+
+    var sec = document.getElementById('citation-section');
+    sec.querySelectorAll('.citation-tab').forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            sec.querySelectorAll('.citation-tab').forEach(function(x) { x.classList.remove('active'); x.setAttribute('aria-selected', 'false'); });
+            sec.querySelectorAll('.citation-panel').forEach(function(p) { p.classList.remove('active'); });
+            this.classList.add('active'); this.setAttribute('aria-selected', 'true');
+            sec.querySelector('#panel-' + this.dataset.target).classList.add('active');
+        });
+    });
+    sec.querySelectorAll('.copy-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var text = document.getElementById(this.dataset.cite).textContent;
+            var b = this;
+            var done = function() { b.textContent = 'Copied!'; b.classList.add('copied'); setTimeout(function() { b.textContent = 'Copy'; b.classList.remove('copied'); }, 2000); };
+            navigator.clipboard.writeText(text).then(done).catch(function() {
+                var ta = document.createElement('textarea'); ta.value = text; ta.style.cssText = 'position:fixed;opacity:0';
+                document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); done();
+            });
+        });
+    });
+})();
+</script>
+
+
+    <footer class="post-footer">
+        <p><a href="/blog/">← All posts</a></p>
+    </footer>
+</article>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+    <div class="wrap">
+        <p>© 2026 Sumit Yadav · Kathmandu, Nepal · <a href="/">home</a> · <a href="/blog/">blog</a></p>
+    </div>
+</footer>
+
+
+    <script>
+        (function() {
+            const getThemePreference = () => {
+                const stored = localStorage.getItem('theme-preference');
+                if (stored) return stored;
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            };
+            const applyTheme = (theme) => {
+                const root = document.documentElement;
+                root.classList.remove('light-theme', 'dark-theme');
+                if (theme !== 'auto') root.classList.add(`${theme}-theme`);
+                if (window.mermaid) {
+                    const dark = theme === 'dark' || (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                    mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'default' });
+                    document.querySelectorAll('.mermaid').forEach(el => {
+                        if (el.getAttribute('data-processed')) {
+                            el.removeAttribute('data-processed');
+                            el.innerHTML = el.getAttribute('data-original') || el.innerHTML;
+                        }
+                    });
+                    if (window.mermaid.init) mermaid.init(undefined, '.mermaid');
+                }
+            };
+            document.addEventListener('DOMContentLoaded', () => {
+                applyTheme(getThemePreference());
+                const t = document.getElementById('theme-toggle');
+                if (t) t.addEventListener('click', () => {
+                    const cur = getThemePreference();
+                    const next = cur === 'dark' ? 'light' : 'dark';
+                    localStorage.setItem('theme-preference', next);
+                    applyTheme(next);
+                });
+                document.querySelectorAll('.mermaid').forEach(el => {
+                    if (!el.getAttribute('data-original')) el.setAttribute('data-original', el.innerHTML);
+                });
+            });
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme-preference')) applyTheme(e.matches ? 'dark' : 'light');
+            });
+        })();
+        (function() {
+            const bar = document.getElementById('scroll-progress-bar');
+            if (!bar) return;
+            const upd = () => {
+                const st = window.pageYOffset || document.documentElement.scrollTop;
+                const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                bar.style.height = Math.min(Math.max((st / h) * 100, 0), 100) + '%';
+            };
+            window.addEventListener('scroll', upd, { passive: true });
+            window.addEventListener('resize', upd, { passive: true });
+            upd();
+        })();
+    </script>
+</body>
+</html>

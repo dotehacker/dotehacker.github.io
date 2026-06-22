@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Tatva Journey: Building a Custom Jekyll-like Static Site Generator · Sumit Yadav</title>
+    <meta name="description" content="">
+    <meta name="google-site-verification" content="IVG1y4MVA_6MT0wsjk13ooZDQLWXxvYcPXQlmf83MLM" />
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- Mermaid.js for diagram rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+    <div class="scroll-progress"><div class="scroll-progress-bar" id="scroll-progress-bar"></div></div>
+
+    <header class="site-header">
+    <div class="wrap">
+        <a class="site-title" href="/">Sumit Yadav</a>
+        <nav class="site-nav">
+            <a href="/#publications">Publications</a>
+            <a href="/blog/">Blog</a>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                <span class="theme-icon theme-icon-light">🌙</span>
+                <span class="theme-icon theme-icon-dark">☀️</span>
+            </button>
+        </nav>
+    </div>
+</header>
+
+
+    <main class="page-content">
+        <div class="wrap">
+            <div class="content-area">
+                
+<article class="post">
+    <header class="post-header">
+        <h1 class="post-title">The Tatva Journey: Building a Custom Jekyll-like Static Site Generator</h1>
+        <p class="post-meta">
+            <time datetime="2025-07-04T00:00:00.000Z">July 04, 2025</time>
+             · <span>Engineering</span>
+        </p>
+    </header>
+
+    <div class="post-content">
+        <h1>The Tatva Journey: Building a Custom Jekyll-like Static Site Generator</h1>
+<p><em>A technical memoir of creating a personal blog from scratch</em></p>
+<h2>The Beginning - June 2025</h2>
+<p>Five days ago, with a simple commit message &quot;initial&quot;, I embarked on what would become an intense journey of building Tatva - not just another blog, but a completely custom static site generator that mimics Jekyll&#39;s elegance while being built entirely in JavaScript.</p>
+<h2>Phase 1: The GitHub Actions Odyssey (Day 1-2)</h2>
+<p>The early commits tell a story of persistence and learning:</p>
+<ul>
+<li><code>Fix GitHub Actions deployment permissions and workflow</code></li>
+<li><code>Transform to GitHub Actions auto-deployment workflow</code></li>
+<li><code>Fix multiple GitHub Pages artifacts issue</code></li>
+<li><code>Add simpler GitHub Pages deployment workflow</code></li>
+</ul>
+<p>Like many developers, I started by wrestling with CI/CD. The GitHub Actions configuration went through multiple iterations as I learned the intricacies of automated deployment. Each commit represents a small victory over YAML indentation errors and permission issues.</p>
+<h2>Phase 2: The Great Transformation (Day 3-4)</h2>
+<p>Then came the pivotal moment - two commits that changed everything:</p>
+<h3><code>Complete rewrite: Create minimal Tatva blog</code></h3>
+<h3><code>Transform into Jekyll-like static site generator</code></h3>
+<p>This is where Tatva truly began. Instead of using Jekyll or another existing static site generator, I made the bold decision to build my own. The 865-line <code>build.js</code> file became the heart of the system, implementing:</p>
+<ul>
+<li><strong>Jekyll-compatible frontmatter parsing</strong> using <code>js-yaml</code></li>
+<li><strong>Custom Liquid-like templating engine</strong> with support for:<ul>
+<li>Variables: <code>{{ site.title }}</code></li>
+<li>Conditionals: <code>{% if page.title %}</code></li>
+<li>Loops: <code>{% for post in site.posts %}</code></li>
+<li>Includes: <code>{% include header.html %}</code></li>
+<li>Filters: <code>{{ post.date | date: &quot;%B %d, %Y&quot; }}</code></li>
+</ul>
+</li>
+</ul>
+<p>Why reinvent the wheel? Because sometimes you need a wheel that fits your exact cart.</p>
+<h2>Phase 3: The Feature Factory (Day 3-4)</h2>
+<p>With the foundation solid, I went into feature development mode:</p>
+<h3>SEO &amp; Optimization</h3>
+<ul>
+<li><code>Add sitemap.xml for SEO</code></li>
+<li><code>Add sitemap.xml generation and build process integration</code></li>
+<li><code>Add llms.txt for LLM-friendly site overview</code></li>
+</ul>
+<h3>Visual Polish</h3>
+<ul>
+<li><code>Add favicon copying to build process</code></li>
+<li><code>sass</code> - SCSS compilation support</li>
+<li><code>dark</code> - Initial dark mode implementation with CSS custom properties</li>
+</ul>
+<h3>Infrastructure</h3>
+<ul>
+<li><code>better sitemap</code> - Enhanced sitemap generation</li>
+<li><code>copy google</code> - Google Search Console verification</li>
+<li>Multiple <code>baseurl</code> fixes for proper deployment</li>
+</ul>
+<h2>Phase 4: Content Creation Era (Day 2-4)</h2>
+<p>With the technical foundation complete, I shifted focus to content:</p>
+<ul>
+<li><strong>Family Tree</strong> - Personal genealogy in Nepali</li>
+<li><strong>Bio</strong> - Professional introduction as &quot;Rocker Ritesh&quot;</li>
+<li><strong>AI Agents</strong> - Technical posts about multi-agent systems</li>
+<li><strong>Life</strong> - Philosophical reflections on existence</li>
+</ul>
+<p>Each post triggered the automated build system: <code>Auto-build: Update Jekyll-like blog [skip ci]</code></p>
+<h2>Phase 5: The Mermaid Enhancement (Day 4-5)</h2>
+<p>A significant milestone came with the integration of Mermaid.js for diagram rendering:</p>
+<h3><code>🎨 Add comprehensive Mermaid.js diagram support</code></h3>
+<p>This wasn&#39;t just about adding a library - it required sophisticated integration:</p>
+<ul>
+<li><strong>Placeholder System</strong>: Protected Mermaid syntax from markdown processing</li>
+<li><strong>Theme Integration</strong>: Diagrams automatically adapt to site theme</li>
+<li><strong>Build Pipeline</strong>: Enhanced the custom build system to handle code blocks</li>
+<li><strong>Demo Content</strong>: Created comprehensive examples showcasing various diagram types</li>
+</ul>
+<p>Technical implementation highlights:</p>
+<ul>
+<li>Custom regex processing: <code>/```mermaid\n([\s\S]*?)\n```/g</code></li>
+<li>Dual-phase rendering: Extract → Process Markdown → Restore</li>
+<li>Dynamic theme adaptation for light/dark modes</li>
+</ul>
+<h2>Phase 6: The Dark Mode Revolution (Latest - July 4, 2025)</h2>
+<p>Today marked another major milestone with the implementation of a comprehensive dark/light mode toggle system:</p>
+<h3><code>✨ Add dark/light mode toggle functionality</code></h3>
+<p>This wasn&#39;t just a simple theme switcher - it&#39;s a complete user experience enhancement:</p>
+<h4><strong>Interactive Theme Toggle</strong></h4>
+<ul>
+<li>Circular button with animated sun (☀️) and moon (🌙) icons</li>
+<li>Smooth transitions with rotation effects (0.3s ease)</li>
+<li>Hover animations with scaling and color changes</li>
+<li>Accessible design with proper ARIA labels</li>
+</ul>
+<h4><strong>Smart Theme Management</strong></h4>
+<ul>
+<li><strong>Manual Override</strong>: Users can override system preferences</li>
+<li><strong>System Respect</strong>: Automatically detects and follows system dark/light mode</li>
+<li><strong>Persistent Memory</strong>: Choice saved in localStorage across sessions</li>
+<li><strong>Real-time Updates</strong>: Responds to system theme changes dynamically</li>
+</ul>
+<h4><strong>Technical Architecture</strong></h4>
+<pre><code class="language-scss">// Three-tier CSS approach:
+:root { /* Default light theme */ }
+:root.dark-theme { /* Manual dark override */ }
+:root.light-theme { /* Manual light override */ }
+@media (prefers-color-scheme: dark) { /* System preference */ }
+</code></pre>
+<h4><strong>Enhanced Visual Design</strong></h4>
+<ul>
+<li><strong>Light Mode</strong>: Clean whites (#fdfdfd), dark text (#333), blue links (#0066cc)</li>
+<li><strong>Dark Mode</strong>: Rich darks (#1a1a1a), light text (#e0e0e0), bright links (#4da6ff)</li>
+<li><strong>Unified Theming</strong>: All components including Mermaid diagrams adapt instantly</li>
+<li><strong>Responsive Design</strong>: Mobile-optimized toggle (36x36px on small screens)</li>
+</ul>
+<h4><strong>Advanced JavaScript Features</strong></h4>
+<ul>
+<li>Theme detection and application logic</li>
+<li>Mermaid.js theme synchronization</li>
+<li>Event-driven architecture</li>
+<li>System preference monitoring</li>
+<li>Smooth transitions between themes</li>
+</ul>
+<p>This implementation elevates Tatva from a simple blog to a modern, user-centric web experience that adapts to individual preferences and usage contexts.</p>
+<h2>Phase 7: The Polish Phase (Recent)</h2>
+<p>The latest commits show attention to detail:</p>
+<ul>
+<li><code>footer note</code> - Adding copyright and attribution</li>
+<li><code>layout</code> - Template refinements</li>
+<li>Final content updates and fixes</li>
+<li>Merge conflict resolutions and deployment optimizations</li>
+</ul>
+<h2>Technical Achievements</h2>
+<h3>Custom Template Engine</h3>
+<p>Built a complete Liquid-like templating system that supports:</p>
+<ul>
+<li>Nested layouts (<code>home.html</code> extends <code>default.html</code>)</li>
+<li>Complex filters and conditionals</li>
+<li>Date formatting and URL generation</li>
+<li>Include system for reusable components</li>
+</ul>
+<h3>Advanced Diagram Integration</h3>
+<ul>
+<li><strong>Mermaid.js Support</strong>: Flowcharts, sequence diagrams, system architecture</li>
+<li><strong>Theme Synchronization</strong>: Diagrams automatically adapt to light/dark modes</li>
+<li><strong>Build Pipeline Integration</strong>: Sophisticated processing preserves diagram syntax</li>
+<li><strong>Comprehensive Examples</strong>: Demo content showcasing capabilities</li>
+</ul>
+<h3>Modern Theme System</h3>
+<ul>
+<li><strong>Dual-Mode Support</strong>: Light and dark themes with smooth transitions</li>
+<li><strong>User Choice Persistence</strong>: localStorage-based preference management</li>
+<li><strong>System Integration</strong>: Respects user&#39;s OS-level theme preferences</li>
+<li><strong>Accessibility Focus</strong>: ARIA labels, keyboard navigation, contrast optimization</li>
+</ul>
+<h3>Automated Pipeline</h3>
+<p>Created a GitHub Actions workflow that:</p>
+<ul>
+<li>Builds the site on every content change</li>
+<li>Compiles SCSS to CSS with theme support</li>
+<li>Generates SEO files (sitemap.xml, robots.txt)</li>
+<li>Deploys to GitHub Pages automatically</li>
+<li>Handles merge conflicts and updates gracefully</li>
+</ul>
+<h3>Modern Web Standards</h3>
+<ul>
+<li>Responsive design with mobile-first approach</li>
+<li>Dark mode support with CSS custom properties</li>
+<li>Semantic HTML structure</li>
+<li>Accessibility considerations (WCAG compliance)</li>
+<li>Performance optimization (smooth transitions, efficient CSS)</li>
+</ul>
+<h2>The Philosophy Behind Tatva</h2>
+<p><strong>Tatva</strong> (तत्त्व) means &quot;truth&quot; or &quot;essence&quot; in Sanskrit. This project embodies that philosophy:</p>
+<ul>
+<li><strong>Truth in Simplicity</strong>: No unnecessary dependencies or complexity</li>
+<li><strong>Essence of Control</strong>: Complete ownership of every line of code</li>
+<li><strong>Truth in Learning</strong>: Each commit represents genuine understanding</li>
+<li><strong>User-Centric Truth</strong>: Adapting to individual preferences and needs</li>
+</ul>
+<h2>Lessons Learned</h2>
+<ol>
+<li><strong>GitHub Actions can be tricky</strong> - YAML indentation matters more than you think</li>
+<li><strong>Custom solutions offer freedom</strong> - When you build it yourself, you control everything</li>
+<li><strong>Incremental development works</strong> - Small commits, big progress</li>
+<li><strong>Documentation through commits</strong> - A good git history tells the story</li>
+<li><strong>User experience is paramount</strong> - Features like dark mode significantly enhance usability</li>
+<li><strong>Theme systems are complex</strong> - Balancing system preferences with user choice requires careful design</li>
+<li><strong>Integration challenges</strong> - Making third-party libraries (like Mermaid) work seamlessly with custom themes</li>
+<li><strong>Deployment vs Development</strong> - What works locally might need adjustments for production</li>
+<li><strong>CSS Grid vs Flexbox</strong> - Sometimes older, more compatible solutions are more reliable</li>
+<li><strong>Professional presentation matters</strong> - A sidebar transforms a blog into a portfolio</li>
+</ol>
+<h2>Phase 8: The Sidebar Revolution (October 2025)</h2>
+<p>The latest major enhancement brought professional profile integration:</p>
+<h3><code>Add sidebar with profile details to all pages</code></h3>
+<h3><code>Fix sidebar layout for deployment</code></h3>
+<p>This phase introduced a comprehensive sidebar system that transforms the site into a professional portfolio:</p>
+<h4><strong>Profile Integration</strong></h4>
+<ul>
+<li><strong>Dynamic Profile Card</strong>: Fetches GitHub avatar automatically</li>
+<li><strong>Professional Information</strong>: Name, title, location, and bio</li>
+<li><strong>Social Media Row</strong>: Horizontal layout with all professional links</li>
+<li><strong>Google Scholar Integration</strong>: Academic profile linking</li>
+</ul>
+<h4><strong>Research Highlights Section</strong></h4>
+<ul>
+<li><strong>AI &amp; Machine Learning</strong>: Showcases technical expertise</li>
+<li><strong>Software Development</strong>: Highlights development skills  </li>
+<li><strong>Current Focus</strong>: Dynamic research interests</li>
+</ul>
+<h4><strong>Recent Posts Widget</strong></h4>
+<ul>
+<li><strong>Live Updates</strong>: Shows 5 most recent posts automatically</li>
+<li><strong>Quick Navigation</strong>: Direct links to latest content</li>
+<li><strong>Date Display</strong>: Formatted publication dates</li>
+</ul>
+<h4><strong>Advanced Layout System</strong></h4>
+<ul>
+<li><strong>Flexbox Architecture</strong>: Robust two-column layout</li>
+<li><strong>Sticky Positioning</strong>: Sidebar follows scroll on desktop</li>
+<li><strong>Mobile Optimization</strong>: Reorders to top on small screens</li>
+<li><strong>Deployment Compatibility</strong>: Flexbox ensures cross-platform reliability</li>
+</ul>
+<h4><strong>Technical Challenges Overcome</strong></h4>
+<ul>
+<li><strong>CSS Grid Compatibility</strong>: Initial grid layout failed in deployment, solved with flexbox</li>
+<li><strong>Responsive Breakpoints</strong>: Complex media queries for different screen sizes</li>
+<li><strong>Social Media Layout</strong>: Transformed vertical links to horizontal row design</li>
+<li><strong>Profile Image Handling</strong>: Fallback system for missing GitHub avatars</li>
+<li><strong>Cross-Browser Testing</strong>: Ensuring consistent appearance across platforms</li>
+</ul>
+<h2>The Numbers (Updated)</h2>
+<ul>
+<li><strong>130+ commits</strong> across 10 months</li>
+<li><strong>900+ lines</strong> of custom JavaScript build system</li>
+<li><strong>25 blog posts</strong> covering diverse topics from AI to philosophy</li>
+<li><strong>1 custom static site generator</strong> built from scratch</li>
+<li><strong>2 major theme modes</strong> with seamless switching</li>
+<li><strong>Multiple diagram types</strong> supported with theme integration</li>
+<li><strong>Professional sidebar</strong> with dynamic profile integration</li>
+<li><strong>6 social media platforms</strong> integrated in clean row layout</li>
+</ul>
+<h2>Current Feature Set</h2>
+<h3>Core Functionality</h3>
+<ul>
+<li>✅ Jekyll-compatible frontmatter parsing</li>
+<li>✅ Custom Liquid-like templating engine</li>
+<li>✅ SCSS compilation with live reloading</li>
+<li>✅ Automated GitHub Pages deployment</li>
+<li>✅ SEO optimization (sitemap, robots.txt, meta tags)</li>
+</ul>
+<h3>User Experience</h3>
+<ul>
+<li>✅ <strong>Dark/Light mode toggle with system preference detection</strong></li>
+<li>✅ <strong>Professional sidebar with profile integration</strong></li>
+<li>✅ <strong>Responsive design for all screen sizes</strong></li>
+<li>✅ <strong>Smooth animations and transitions</strong></li>
+<li>✅ <strong>Accessibility features (ARIA labels, keyboard navigation)</strong></li>
+<li>✅ <strong>Social media integration in horizontal row layout</strong></li>
+</ul>
+<h3>Content Features</h3>
+<ul>
+<li>✅ <strong>Mermaid.js diagram rendering with theme integration</strong></li>
+<li>✅ <strong>Markdown processing with custom enhancements</strong></li>
+<li>✅ <strong>Post excerpts and metadata</strong></li>
+<li>✅ <strong>Asset copying and management</strong></li>
+</ul>
+<h3>Technical Infrastructure</h3>
+<ul>
+<li>✅ <strong>Custom build system with error handling</strong></li>
+<li>✅ <strong>Git integration with automated workflows</strong></li>
+<li>✅ <strong>Performance optimization</strong></li>
+<li>✅ <strong>Cross-browser compatibility</strong></li>
+</ul>
+<h2>What&#39;s Next?</h2>
+<p>The foundation is solid, the content is flowing, and the automation is humming. Tatva has evolved from a simple idea to a fully functional, modern publishing platform.</p>
+<p>Future enhancement possibilities:</p>
+<ul>
+<li><strong>Enhanced markdown processing</strong> with custom syntax extensions</li>
+<li><strong>Comment system integration</strong> (possibly using GitHub Discussions)</li>
+<li><strong>Analytics and performance monitoring</strong> integration</li>
+<li><strong>Search functionality</strong> with client-side indexing</li>
+<li><strong>RSS feed generation</strong> for content syndication</li>
+<li><strong>Progressive Web App (PWA)</strong> features</li>
+<li><strong>Advanced diagram types</strong> beyond Mermaid.js</li>
+<li><strong>Theme customization</strong> allowing users to create custom color schemes</li>
+</ul>
+<h2>Reflection</h2>
+<p>This journey represents more than just building a website - it&#39;s about understanding the tools we use daily. By rebuilding Jekyll&#39;s functionality from scratch and adding modern enhancements like intelligent dark mode, I gained deep insights into:</p>
+<ul>
+<li>Static site generation principles and best practices</li>
+<li>Template processing algorithms and optimization</li>
+<li>Build system architecture and automation</li>
+<li>Modern web development practices (CSS custom properties, responsive design)</li>
+<li>User experience design (theme management, accessibility)</li>
+<li>JavaScript event handling and state management</li>
+<li>CSS architecture for maintainable theming systems</li>
+</ul>
+<p>The latest dark mode implementation showcases how modern web development has evolved - users expect intelligent, adaptive interfaces that respect their preferences and provide smooth, delightful interactions.</p>
+<p>Sometimes the best way to learn a technology is to recreate it yourself, then improve upon it.</p>
+<hr>
+<p><em>View the complete source code and commit history at <a href="https://github.com/rockerritesh/tatva">GitHub</a></em></p>
+<p><strong>&quot;The purpose of Tatva is not just to publish content, but to understand the essence of how modern web publishing works - from the build system to the user experience.&quot;</strong> </p>
+
+    </div>
+
+    <details class="cite">
+  <summary>Cite this post</summary>
+  <div class="cite-body" id="citation-section">
+    <div class="citation-tabs" role="tablist">
+        <button class="citation-tab active" data-target="bibtex" role="tab" aria-selected="true">BibTeX</button>
+        <button class="citation-tab" data-target="apa" role="tab" aria-selected="false">APA</button>
+        <button class="citation-tab" data-target="mla" role="tab" aria-selected="false">MLA</button>
+        <button class="citation-tab" data-target="chicago" role="tab" aria-selected="false">Chicago</button>
+    </div>
+    <div class="citation-panels">
+        <div class="citation-panel active" id="panel-bibtex" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-bibtex"></pre><button class="copy-btn" data-cite="cite-bibtex">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-apa" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-apa"></pre><button class="copy-btn" data-cite="cite-apa">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-mla" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-mla"></pre><button class="copy-btn" data-cite="cite-mla">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-chicago" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-chicago"></pre><button class="copy-btn" data-cite="cite-chicago">Copy</button></div>
+        </div>
+    </div>
+    <p class="citation-note">Auto-generated. Verify for your institution's requirements.</p>
+  </div>
+</details>
+
+<template id="cite-meta">The Tatva Journey: Building a Custom Jekyll-like Static Site Generator</template>
+
+<script>
+(function() {
+    var meta = document.getElementById('cite-meta');
+    if (!meta) return;
+    var t = meta.content ? meta.content.textContent : meta.innerHTML;
+    var a = 'Sumit Yadav';
+    var j = 'Sumit Yadav';
+    var u = 'https://sumityadav.com.np/posts/2025/01/07/tatva-development-journey/';
+    var y = '2025';
+    var mo = 'July';
+    var ms = 'Jul';
+    var dy = '04';
+    var k = a.split(' ')[0].toLowerCase() + y + t.toLowerCase().replace(/[^a-z0-9]+/g, '');
+
+    document.getElementById('cite-bibtex').textContent =
+        '@article{' + k + ',\n  title     = {' + t + '},\n  author    = {' + a +
+        '},\n  journal   = {' + j + '},\n  year      = {' + y + '},\n  month     = {' + mo +
+        '},\n  day       = {' + dy + '},\n  url       = {' + u + '}\n}';
+    document.getElementById('cite-apa').textContent =
+        a + '. (' + y + ', ' + mo + ' ' + dy + '). ' + t + '. ' + j + '. ' + u;
+    document.getElementById('cite-mla').textContent =
+        a + '. “' + t + '.” ' + j + ', ' + dy + ' ' + ms + ' ' + y + ', ' + u + '.';
+    document.getElementById('cite-chicago').textContent =
+        a + '. “' + t + '.” ' + j + '. ' + mo + ' ' + dy + ', ' + y + '. ' + u + '.';
+
+    var sec = document.getElementById('citation-section');
+    sec.querySelectorAll('.citation-tab').forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            sec.querySelectorAll('.citation-tab').forEach(function(x) { x.classList.remove('active'); x.setAttribute('aria-selected', 'false'); });
+            sec.querySelectorAll('.citation-panel').forEach(function(p) { p.classList.remove('active'); });
+            this.classList.add('active'); this.setAttribute('aria-selected', 'true');
+            sec.querySelector('#panel-' + this.dataset.target).classList.add('active');
+        });
+    });
+    sec.querySelectorAll('.copy-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var text = document.getElementById(this.dataset.cite).textContent;
+            var b = this;
+            var done = function() { b.textContent = 'Copied!'; b.classList.add('copied'); setTimeout(function() { b.textContent = 'Copy'; b.classList.remove('copied'); }, 2000); };
+            navigator.clipboard.writeText(text).then(done).catch(function() {
+                var ta = document.createElement('textarea'); ta.value = text; ta.style.cssText = 'position:fixed;opacity:0';
+                document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); done();
+            });
+        });
+    });
+})();
+</script>
+
+
+    <footer class="post-footer">
+        <p><a href="/blog/">← All posts</a></p>
+    </footer>
+</article>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+    <div class="wrap">
+        <p>© 2026 Sumit Yadav · Kathmandu, Nepal · <a href="/">home</a> · <a href="/blog/">blog</a></p>
+    </div>
+</footer>
+
+
+    <script>
+        (function() {
+            const getThemePreference = () => {
+                const stored = localStorage.getItem('theme-preference');
+                if (stored) return stored;
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            };
+            const applyTheme = (theme) => {
+                const root = document.documentElement;
+                root.classList.remove('light-theme', 'dark-theme');
+                if (theme !== 'auto') root.classList.add(`${theme}-theme`);
+                if (window.mermaid) {
+                    const dark = theme === 'dark' || (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                    mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'default' });
+                    document.querySelectorAll('.mermaid').forEach(el => {
+                        if (el.getAttribute('data-processed')) {
+                            el.removeAttribute('data-processed');
+                            el.innerHTML = el.getAttribute('data-original') || el.innerHTML;
+                        }
+                    });
+                    if (window.mermaid.init) mermaid.init(undefined, '.mermaid');
+                }
+            };
+            document.addEventListener('DOMContentLoaded', () => {
+                applyTheme(getThemePreference());
+                const t = document.getElementById('theme-toggle');
+                if (t) t.addEventListener('click', () => {
+                    const cur = getThemePreference();
+                    const next = cur === 'dark' ? 'light' : 'dark';
+                    localStorage.setItem('theme-preference', next);
+                    applyTheme(next);
+                });
+                document.querySelectorAll('.mermaid').forEach(el => {
+                    if (!el.getAttribute('data-original')) el.setAttribute('data-original', el.innerHTML);
+                });
+            });
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme-preference')) applyTheme(e.matches ? 'dark' : 'light');
+            });
+        })();
+        (function() {
+            const bar = document.getElementById('scroll-progress-bar');
+            if (!bar) return;
+            const upd = () => {
+                const st = window.pageYOffset || document.documentElement.scrollTop;
+                const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                bar.style.height = Math.min(Math.max((st / h) * 100, 0), 100) + '%';
+            };
+            window.addEventListener('scroll', upd, { passive: true });
+            window.addEventListener('resize', upd, { passive: true });
+            upd();
+        })();
+    </script>
+</body>
+</html>

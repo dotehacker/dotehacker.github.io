@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operating System · Sumit Yadav</title>
+    <meta name="description" content="">
+    <meta name="google-site-verification" content="IVG1y4MVA_6MT0wsjk13ooZDQLWXxvYcPXQlmf83MLM" />
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- Mermaid.js for diagram rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+    <div class="scroll-progress"><div class="scroll-progress-bar" id="scroll-progress-bar"></div></div>
+
+    <header class="site-header">
+    <div class="wrap">
+        <a class="site-title" href="/">Sumit Yadav</a>
+        <nav class="site-nav">
+            <a href="/#publications">Publications</a>
+            <a href="/blog/">Blog</a>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                <span class="theme-icon theme-icon-light">🌙</span>
+                <span class="theme-icon theme-icon-dark">☀️</span>
+            </button>
+        </nav>
+    </div>
+</header>
+
+
+    <main class="page-content">
+        <div class="wrap">
+            <div class="content-area">
+                
+<article class="post">
+    <header class="post-header">
+        <h1 class="post-title">Operating System</h1>
+        <p class="post-meta">
+            <time datetime="2023-04-09T00:00:00.000Z">April 09, 2023</time>
+             · <span>Engineering</span>
+        </p>
+    </header>
+
+    <div class="post-content">
+        <p>An operating system (OS) is a software system that manages computer hardware and software resources and provides common services for computer programs. The main functions of an operating system include:</p>
+<ol>
+<li><strong>Process management:</strong> The OS manages the execution of computer programs, called processes, by allocating system resources such as memory, CPU time, and input/output devices.</li>
+<li><strong>Memory management:</strong> The OS manages the allocation and deallocation of memory resources to processes, ensuring that each process has the necessary memory to execute.</li>
+<li><strong>File management:</strong> The OS manages files and directories on the storage devices attached to the computer, providing services such as file creation, deletion, and access control.</li>
+<li><strong>Device management:</strong> The OS manages the input/output devices attached to the computer, including keyboards, mice, displays, printers, and storage devices, ensuring that processes can communicate with these devices.</li>
+<li><strong>Security management:</strong> The OS provides mechanisms for controlling access to system resources, protecting the system from unauthorized access and malicious software.</li>
+<li><strong>Network management:</strong> The OS provides services for communicating with other computers and networks, including protocols for sending and receiving data over the internet.</li>
+</ol>
+<p>Overall, the operating system is responsible for managing the resources of the computer system and providing a platform for the execution of software applications.</p>
+<h2>Functions of an Operating System</h2>
+<h3>1. Process Management</h3>
+<p>Process management is one of the core functions of an operating system. It involves managing the execution of computer programs or processes. The OS allocates system resources such as memory, CPU time, and input/output devices to each process, ensuring that all processes can execute efficiently.</p>
+<p>The OS also schedules processes based on priority, time-sharing, or other criteria, to ensure that all processes get a fair share of system resources. It also provides mechanisms for interprocess communication and synchronization, allowing processes to communicate with each other and share resources when needed.</p>
+<h3>2. Memory Management</h3>
+<p>Memory management is another important function of an operating system. It involves managing the allocation and deallocation of memory resources to processes. The OS ensures that each process has the necessary memory to execute, and it manages the allocation and deallocation of memory to optimize system performance.</p>
+<p>The OS also provides virtual memory, which allows processes to use more memory than is physically available by using disk space as an extension of main memory. This helps to prevent system crashes due to insufficient memory.</p>
+<h3>3. File Management</h3>
+<p>File management is the function of an operating system that manages files and directories on the storage devices attached to the computer. The OS provides services such as file creation, deletion, renaming, copying, and access control.</p>
+<p>The OS also provides file system drivers, which allow the computer to read and write data to different types of storage devices, such as hard drives, flash drives, and CD/DVD drives. The file system driver translates file requests from the OS into commands that can be understood by the storage device.</p>
+<h3>4. Device Management</h3>
+<p>Device management is the function of an operating system that manages the input/output devices attached to the computer, including keyboards, mice, displays, printers, and storage devices. The OS provides device drivers, which are software components that enable the computer to communicate with the devices.</p>
+<p>The device drivers translate requests from the OS into commands that can be understood by the device, and they also manage the flow of data between the device and the computer. The OS also provides mechanisms for configuring and managing devices, such as device discovery, device installation, and device removal.</p>
+<h3>5. Security Management</h3>
+<p>Security management is the function of an operating system that provides mechanisms for controlling access to system resources, protecting the system from unauthorized access and malicious software. The OS provides user authentication mechanisms, such as passwords and biometric authentication, to ensure that only authorized users can access the system.</p>
+<p>The OS also provides access control mechanisms, such as file permissions and user groups, to control access to system resources. It provides mechanisms for detecting and removing malware, such as antivirus software and firewalls.</p>
+<h3>6. Network Management</h3>
+<p>Network management is the function of an operating system that provides services for communicating with other computers and networks, including protocols for sending and receiving data over the internet. The OS provides network drivers, which enable the computer to communicate with different types of network hardware, such as Ethernet cards and wireless adapters.</p>
+<p>The OS also provides network protocols, such as TCP/IP, which define how data is transmitted over the network. It provides network services, such as email and file sharing, which enable users to share data and communicate with each other over the network.</p>
+<p>Overall, an operating system is a complex software system that performs many different functions to manage the resources of a computer system and provide a platform for the execution of software applications. Each function is critical to the overall performance and security of the system.</p>
+<h2>Operating System as an Extended (Virtual) Machine</h2>
+<p>An operating system can be viewed as an extended or virtual machine because it provides an abstraction layer between the physical hardware of a computer and the software applications that run on it. This abstraction layer hides the details of the underlying hardware and provides a simplified and uniform interface to the software applications.</p>
+<p>Like a virtual machine, an operating system provides a set of virtual resources to software applications, such as virtual CPU, virtual memory, virtual file system, virtual devices, and virtual network interfaces. These virtual resources are implemented by the operating system and mapped to the physical hardware resources as needed.</p>
+<p>For example, when a software application requests memory from the operating system, the operating system provides virtual memory to the application, which is a portion of the physical memory that has been allocated to the application. The operating system manages the allocation and deallocation of virtual memory and maps it to the physical memory as needed, providing an illusion of unlimited memory to the application.</p>
+<p>Similarly, when a software application requests access to a file, the operating system provides a virtual file system to the application, which is a logical representation of the physical storage devices attached to the computer. The virtual file system provides a uniform interface to the application for accessing files, regardless of the type of storage device or file system format used.</p>
+<p>In this way, an operating system provides an abstraction layer that isolates software applications from the underlying hardware and provides a uniform interface to the software applications. This allows software applications to be written once and run on different hardware platforms without the need for modification, as long as they are compatible with the operating system.</p>
+<h2>Evolution of Operating Systems</h2>
+<p>The evolution of operating systems can be divided into several major stages, each driven by technological advancements and user needs:</p>
+<ol>
+<li><p><strong>Early Operating Systems:</strong> In the early days of computing, operating systems were very simple and only provided basic functionality. They were typically designed to manage a single program at a time and were mainly used for scientific or engineering applications. Examples include the GM-NAA I/O system and the Atlas Supervisor.</p>
+</li>
+<li><p><strong>Batch Processing Operating Systems:</strong> As computers became more powerful, operating systems evolved to support batch processing of jobs. These operating systems allowed multiple jobs to be submitted and processed in batches, without user intervention. Examples include IBM OS/360 and DEC PDP-8.</p>
+</li>
+<li><p><strong>Time-Sharing Operating Systems:</strong> In the 1960s and 1970s, time-sharing operating systems were developed, allowing multiple users to share a single computer at the same time. Time-sharing operating systems used a technique called time-slicing to switch between users&#39; programs rapidly. Examples include the UNIX operating system and the Multics system.</p>
+</li>
+<li><p><strong>Personal Computer Operating Systems:</strong> In the 1980s, operating systems were developed for desktop and laptop computers, designed to be user-friendly with a graphical user interface (GUI). Examples include Microsoft Windows and Apple&#39;s macOS.</p>
+</li>
+<li><p><strong>Network Operating Systems:</strong> In the 1990s, operating systems evolved to support networking. Examples include Novell NetWare and Microsoft Windows Server.</p>
+</li>
+<li><p><strong>Mobile Operating Systems:</strong> In the 2000s and 2010s, mobile operating systems were developed to support smartphones and tablets, with a focus on touch-based interaction and mobile connectivity. Examples include Android and iOS.</p>
+</li>
+<li><p><strong>Cloud Operating Systems:</strong> In recent years, operating systems have evolved to support cloud computing. Examples include Amazon Web Services, Microsoft Azure, and Google Cloud Platform.</p>
+</li>
+</ol>
+<h2>Types of Operating Systems</h2>
+<h3>Batch Operating System</h3>
+<p>A batch operating system processes jobs in batches, without requiring user interaction. Jobs are submitted to the system, and the operating system processes them in order, one after the other. Batch operating systems are often used in environments where large numbers of similar jobs need to be processed, such as in scientific or business applications.</p>
+<h3>Interactive Operating System</h3>
+<p>An interactive operating system allows users to interact with the computer system in real-time. The operating system responds to user inputs immediately and provides a graphical user interface (GUI) for users to interact with. Interactive operating systems are commonly used on personal computers and mobile devices.</p>
+<p>These systems typically provide a GUI that allows users to interact using a mouse, keyboard, or other input devices. Examples include Microsoft Windows, macOS, and Linux distributions with graphical desktop environments such as GNOME and KDE. They provide multitasking (running multiple applications simultaneously) and file management features.</p>
+<h3>Multiprocessing Operating System</h3>
+<p>A multiprocessing operating system is designed to run on computers with multiple processors. The operating system can distribute processing tasks across multiple processors, allowing multiple programs to run simultaneously. Multiprocessing operating systems are often used in high-performance computing environments, such as scientific or engineering applications.</p>
+<h3>Time-Sharing Operating System</h3>
+<p>A time-sharing operating system allows multiple users to access the same computer system at the same time. The operating system switches rapidly between users&#39; programs, giving each user the illusion of having their own computer. Time-sharing operating systems are often used in environments where multiple users need to access a shared resource, such as in a university computer lab.</p>
+<h3>Real-Time Operating System</h3>
+<p>A real-time operating system (RTOS) is designed to respond to events in real-time. The operating system must respond to events within a predetermined time frame, usually in the order of milliseconds or microseconds. RTOS is often used in embedded systems and real-time applications, such as robotics or avionics.</p>
+<p>It&#39;s important to note that these types of operating systems are not mutually exclusive and can be combined to create hybrid operating systems.</p>
+<h2>Operating System Components</h2>
+<h3>1. Kernel</h3>
+<p>The kernel is the core component of the operating system, responsible for managing system resources such as memory, CPU, and input/output (I/O) devices. The kernel provides a layer of abstraction between hardware and software, allowing applications to access system resources without having to worry about the underlying hardware details.</p>
+<h3>2. Device Drivers</h3>
+<p>Device drivers are software components that allow the operating system to communicate with hardware devices such as printers, scanners, and network adapters. Device drivers provide a standardized interface for applications to interact with hardware devices, regardless of the specific hardware implementation.</p>
+<h3>3. File System</h3>
+<p>The file system is responsible for managing the storage and retrieval of data on the computer&#39;s hard drive or other storage media. The file system provides a hierarchical structure for organizing files and directories, and provides tools for creating, modifying, and deleting files.</p>
+<h3>4. User Interface</h3>
+<p>The user interface (UI) is the part of the operating system that allows users to interact with the computer. The UI provides a visual interface for users to launch applications, manage files, and perform other tasks. UI can be command-line interface (CLI) or graphical user interface (GUI).</p>
+<h3>5. System Services</h3>
+<p>System services are software components that provide additional functionality to the operating system. Examples of system services include process management, memory management, and security services. System services provide a standardized interface for applications to access advanced functionality, and they ensure that system resources are used efficiently and securely.</p>
+<h3>6. Application Programming Interface (API)</h3>
+<p>The API is a set of programming interfaces and protocols that allow developers to interact with the operating system. The API provides a standardized way for applications to access system resources and services, regardless of the underlying operating system implementation.</p>
+<h2>Operating System Structure</h2>
+<h3>Monolithic Operating System</h3>
+<p>In a monolithic operating system, the entire operating system is designed as a single, large program that runs in kernel mode. All system services, including device drivers, file systems, and networking protocols, are integrated into the kernel. This structure provides efficient performance but makes the operating system difficult to modify and maintain.</p>
+<p>The monolithic kernel architecture is based on the idea that having all the system services integrated into the kernel provides the best performance, as the kernel can access hardware directly without the overhead of passing data between different parts of the operating system. However, it makes the operating system difficult to modify and maintain, and can result in a larger kernel size.</p>
+<p>Despite its disadvantages, the monolithic kernel architecture remains popular due to its efficient performance and ease of implementation. Examples include Linux, Unix, and earlier versions of Windows.</p>
+<h3>Layered Operating System</h3>
+<p>In a layered operating system, the operating system is divided into a series of layers, with each layer providing a specific set of services. Each layer communicates with the layer above and below it through well-defined interfaces. This structure allows for easy modification and maintenance of the operating system, but can result in reduced performance due to the overhead of passing data between layers.</p>
+<p>The layered structure kernel architecture typically consists of four main layers:</p>
+<ol>
+<li><strong>Hardware Abstraction Layer (HAL):</strong> Provides a standardized interface between the hardware and the rest of the operating system.</li>
+<li><strong>Kernel Layer:</strong> Provides core operating system services such as process management, memory management, and file system access.</li>
+<li><strong>Operating System Services Layer:</strong> Provides additional system services such as networking protocols, security services, and user interfaces.</li>
+<li><strong>Application Layer:</strong> Contains user applications and services.</li>
+</ol>
+<p>Examples include the original versions of the Unix operating system and the VAX/VMS operating system.</p>
+<h3>Micro-Kernel Operating System</h3>
+<p>In a micro-kernel operating system, the kernel provides only the most basic services, such as low-level process and memory management. All other operating system services, such as device drivers, file systems, and network protocols, are implemented as separate processes or servers that run in user space. These processes communicate with each other and the kernel through well-defined interfaces, using a message-passing mechanism.</p>
+<p><strong>Advantages:</strong></p>
+<ul>
+<li>Modular design makes the operating system easier to modify and maintain</li>
+<li>Better security, as services are implemented as separate processes with their own address spaces</li>
+<li>Reliability: a failure in one service does not affect the entire system</li>
+</ul>
+<p><strong>Disadvantages:</strong></p>
+<ul>
+<li>Reduced performance due to message-passing overhead</li>
+<li>Increased memory usage and complexity</li>
+</ul>
+<p>Examples include MINIX, QNX, and GNU Hurd.</p>
+<h3>Client-Server Operating System</h3>
+<p>In a client-server operating system, the operating system is divided into a set of server processes that provide specific services, such as file and print services. Client processes communicate with the server processes through well-defined interfaces, requesting and receiving services as needed. This structure provides high modularity and scalability, but can result in reduced performance due to the overhead of passing data between client and server processes.</p>
+<h3>Virtual Machine Operating System</h3>
+<p>In a virtual machine operating system, the operating system provides a layer of abstraction between hardware and software, allowing multiple operating systems to run on the same hardware simultaneously. Each operating system runs in its own virtual machine, with the virtual machine providing a standardized interface for accessing hardware resources.</p>
+<h2>Comparison: Monolithic vs. Microkernel</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Monolithic Kernel</th>
+<th>Microkernel</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Kernel size</td>
+<td>Large</td>
+<td>Small</td>
+</tr>
+<tr>
+<td>Services</td>
+<td>Integrated</td>
+<td>Separated</td>
+</tr>
+<tr>
+<td>Communication</td>
+<td>Shared memory</td>
+<td>Message passing</td>
+</tr>
+<tr>
+<td>Performance</td>
+<td>Good</td>
+<td>Lower than monolithic kernel</td>
+</tr>
+<tr>
+<td>Modularity</td>
+<td>Poor</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Reliability</td>
+<td>Low</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Security</td>
+<td>Low</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Examples of OS</td>
+<td>Linux, Unix</td>
+<td>MINIX, QNX, GNU Hurd</td>
+</tr>
+</tbody></table>
+<h2>Virtual Machine Structure and Types of Supervision</h2>
+<p>A virtual machine (VM) is a software implementation of a physical machine that can run its own operating system and applications as if it were a separate physical computer. The VM provides an isolated environment that is logically independent of the underlying hardware, allowing multiple VMs to run on a single physical machine simultaneously.</p>
+<p>A virtual machine is typically composed of two main components:</p>
+<ul>
+<li><strong>Virtual Machine Monitor (VMM) / Hypervisor:</strong> Responsible for managing and allocating system resources such as CPU time, memory, and I/O devices to the virtual machines.</li>
+<li><strong>Virtual Machine:</strong> Runs an operating system and applications just like a physical machine.</li>
+</ul>
+<p><strong>Types of VM supervision:</strong></p>
+<ol>
+<li><p><strong>Type 1 (bare-metal) hypervisors</strong> run directly on the host machine&#39;s hardware, without the need for an underlying operating system. They are typically more efficient and secure, as they have direct access to hardware resources.</p>
+</li>
+<li><p><strong>Type 2 (hosted) hypervisors</strong> run on top of an existing operating system, such as Windows or Linux. They are typically less efficient, as they rely on the underlying operating system for resource management.</p>
+</li>
+</ol>
+<p><strong>Types of virtual machines:</strong></p>
+<ul>
+<li><strong>System virtual machines:</strong> Provide a complete virtualized environment, including virtual hardware and operating systems; used for software development, testing, and server consolidation.</li>
+<li><strong>Process virtual machines:</strong> Only virtualize the application runtime environment, allowing applications to run in a sandboxed environment.</li>
+<li><strong>Hardware virtual machines:</strong> Provide virtualized access to hardware resources; used for cloud computing and virtual desktop infrastructure (VDI).</li>
+</ul>
+<p><strong>Benefits of VM structure over other OS structures:</strong></p>
+<ol>
+<li><strong>Isolation:</strong> Each VM is isolated from other VMs on the same physical machine, providing improved security and stability.</li>
+<li><strong>Flexibility:</strong> Multiple operating systems and applications can run on a single physical machine.</li>
+<li><strong>Portability:</strong> VMs can be easily moved between physical machines.</li>
+<li><strong>Resource allocation:</strong> The VMM can allocate system resources dynamically to each VM.</li>
+<li><strong>Testing and development:</strong> VMs can be used for testing software in a safe and isolated environment.</li>
+</ol>
+<h2>Operating System Services</h2>
+<p>Operating system services are the functions that an operating system provides to applications and users:</p>
+<ol>
+<li><strong>Process Management:</strong> Managing processes, including creating, running, and terminating processes. Also provides inter-process communication (IPC) mechanisms.</li>
+<li><strong>Memory Management:</strong> Managing memory allocation and deallocation, including virtual memory and page swapping.</li>
+<li><strong>File Management:</strong> Services for creating, opening, closing, reading, and writing files. Also manages file permissions and provides directory services.</li>
+<li><strong>Input/Output Management:</strong> Services for managing input and output devices, such as keyboards, mice, and printers.</li>
+<li><strong>Device Management:</strong> Managing hardware devices, including drivers and device controllers.</li>
+<li><strong>Network Management:</strong> Services for managing network connections, including network protocols and interfaces.</li>
+<li><strong>Security Management:</strong> Services for authentication, access control, and data encryption.</li>
+<li><strong>User Interface Management:</strong> Services for managing user interfaces, including GUIs and CLIs.</li>
+<li><strong>System Performance Monitoring:</strong> Services for monitoring system performance, including resource utilization and error detection.</li>
+<li><strong>Application Development:</strong> Development tools and services, including compilers, debuggers, and libraries.</li>
+</ol>
+<h2>System Calls</h2>
+<p>System calls are a mechanism that allows user-level processes to interact with the kernel of an operating system. They provide a way for user-level programs to request services from the kernel, such as creating or deleting files, reading from or writing to a network socket, allocating memory, and performing other privileged operations.</p>
+<p>When a user-level program needs to perform an operation that requires privileged access, it makes a system call to the operating system kernel. The system call switches the program from user mode to kernel mode, where it can access system resources that are protected from user-level access. The kernel then performs the requested operation on behalf of the user-level program and returns control to the program when the operation is complete.</p>
+<p>A <strong>supervisor call</strong> (also known as a system call) serves as an interface between user-level programs and the kernel, allowing programs to make requests for system services such as I/O, process management, memory allocation, and other operating system functions. Without the supervisor call mechanism, user-level programs would not be able to access system resources directly.</p>
+<p>System calls are typically accessed through standard libraries (such as the C standard library), which provide a wrapper around the system call interface.</p>
+<p><strong>Common system calls:</strong></p>
+<ol>
+<li><code>open()</code> — opens a file or device for reading or writing</li>
+<li><code>read()</code> — reads data from a file or device</li>
+<li><code>write()</code> — writes data to a file or device</li>
+<li><code>close()</code> — closes a file or device</li>
+<li><code>fork()</code> — creates a new process by duplicating the calling process</li>
+<li><code>exec()</code> — replaces the current process with a new process</li>
+<li><code>wait()</code> — waits for a child process to terminate</li>
+<li><code>exit()</code> — terminates the current process and returns a status code to the parent process</li>
+</ol>
+<h2>Shell Commands</h2>
+<p>Shell commands are commands entered at the command line prompt of a shell, used to interact with the operating system and perform various tasks.</p>
+<p><strong>Commonly used shell commands:</strong></p>
+<ol>
+<li><code>ls</code> — lists the files and directories in the current directory</li>
+<li><code>cd</code> — changes the current working directory</li>
+<li><code>mkdir</code> — creates a new directory</li>
+<li><code>rmdir</code> — removes a directory</li>
+<li><code>touch</code> — creates a new empty file or updates the timestamp of an existing file</li>
+<li><code>cp</code> — copies a file or directory</li>
+<li><code>mv</code> — moves or renames a file or directory</li>
+<li><code>rm</code> — removes a file or directory</li>
+<li><code>cat</code> — displays the contents of a file</li>
+<li><code>less</code> — displays the contents of a file, allowing scrolling and searching</li>
+<li><code>grep</code> — searches for a specific pattern in a file</li>
+<li><code>ps</code> — lists the currently running processes</li>
+<li><code>top</code> — displays the system resource usage, including CPU and memory usage</li>
+<li><code>ping</code> — tests network connectivity to a remote host</li>
+<li><code>ssh</code> — logs into a remote host using the secure shell protocol</li>
+<li><code>chmod</code> — changes the permissions of a file or directory</li>
+<li><code>chown</code> — changes the owner of a file or directory</li>
+<li><code>tar</code> — archives and compresses files and directories into a single file</li>
+<li><code>unzip</code> — extracts files from a compressed archive file</li>
+<li><code>man</code> — displays the manual page for a command</li>
+</ol>
+<h2>Shell Programming</h2>
+<p>Shell programming is the process of writing scripts or programs using shell commands to automate tasks and perform system administration tasks. Shell scripts are simple text files that contain a series of commands executed sequentially by the shell interpreter.</p>
+<p>The most commonly used shell for programming is the Bash shell (Bourne-Again SHell), which is the default shell on most Linux and Unix systems. Key features include:</p>
+<ol>
+<li><strong>Variables:</strong> Shell scripts can define and manipulate variables to store data and values.</li>
+<li><strong>Control flow statements:</strong> Shell scripts can use control flow statements like if-then-else and loops to control the flow of the program.</li>
+<li><strong>Functions:</strong> Shell scripts can define and use functions to encapsulate logic and perform complex tasks.</li>
+<li><strong>Input and output:</strong> Shell scripts can read input from the command line, files, or other sources, and output results to the screen or files.</li>
+<li><strong>Error handling:</strong> Shell scripts can handle errors and exit codes to ensure that the program runs smoothly.</li>
+<li><strong>Command substitution:</strong> Shell scripts can substitute the output of one command into another command or variable, allowing for more complex processing.</li>
+</ol>
+<h2>Buffering and Spooling</h2>
+<p>Buffering and spooling are two techniques used by operating systems to improve performance and manage resources when dealing with input/output operations.</p>
+<p><strong>Buffering</strong> is the process of temporarily storing data in a buffer (a reserved area of memory) before it is processed by the computer. When data is read from a file or device, it is often read in blocks or chunks, and buffering allows the operating system to read the data in larger, more efficient chunks, reducing the number of input/output operations required.</p>
+<p><strong>Spooling</strong> (Simultaneous Peripheral Operations Online) is a technique used to manage input/output operations by queuing jobs in a buffer or spool. When a user sends a print job or other output request to the system, it is placed in a spool, which allows multiple jobs to be queued and processed in a more efficient manner.</p>
+<p>Both buffering and spooling are important techniques for managing system resources and improving performance. Buffering manages data transfer rates while spooling manages overall system efficiency.</p>
+<h2>Layered vs. Monolithic Structure</h2>
+<p>Whether the layered structure of an operating system is better than a monolithic structure depends on the specific requirements and use cases of the system in question.</p>
+<ul>
+<li><strong>Layered structure:</strong> More modular and easier to maintain, since each layer can be developed and tested independently. However, the added complexity and overhead can result in decreased performance and increased resource usage.</li>
+<li><strong>Monolithic structure:</strong> Faster performance and reduced resource usage, as there is no overhead from managing multiple layers. However, more difficult to maintain and update, as changes to one part of the system can have unintended consequences for other parts.</li>
+</ul>
+<p>As an example, the Linux operating system (based on a monolithic structure) has been designed with performance and flexibility in mind. The monolithic structure allows the kernel to directly access hardware and system resources, resulting in faster and more efficient operation.</p>
+<p>Ultimately, the choice depends on factors including the specific requirements of the system, the hardware and resources available, and the preferences and expertise of the development team.</p>
+
+    </div>
+
+    <details class="cite">
+  <summary>Cite this post</summary>
+  <div class="cite-body" id="citation-section">
+    <div class="citation-tabs" role="tablist">
+        <button class="citation-tab active" data-target="bibtex" role="tab" aria-selected="true">BibTeX</button>
+        <button class="citation-tab" data-target="apa" role="tab" aria-selected="false">APA</button>
+        <button class="citation-tab" data-target="mla" role="tab" aria-selected="false">MLA</button>
+        <button class="citation-tab" data-target="chicago" role="tab" aria-selected="false">Chicago</button>
+    </div>
+    <div class="citation-panels">
+        <div class="citation-panel active" id="panel-bibtex" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-bibtex"></pre><button class="copy-btn" data-cite="cite-bibtex">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-apa" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-apa"></pre><button class="copy-btn" data-cite="cite-apa">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-mla" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-mla"></pre><button class="copy-btn" data-cite="cite-mla">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-chicago" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-chicago"></pre><button class="copy-btn" data-cite="cite-chicago">Copy</button></div>
+        </div>
+    </div>
+    <p class="citation-note">Auto-generated. Verify for your institution's requirements.</p>
+  </div>
+</details>
+
+<template id="cite-meta">Operating System</template>
+
+<script>
+(function() {
+    var meta = document.getElementById('cite-meta');
+    if (!meta) return;
+    var t = meta.content ? meta.content.textContent : meta.innerHTML;
+    var a = 'Sumit Yadav';
+    var j = 'Sumit Yadav';
+    var u = 'https://sumityadav.com.np/posts/2023/04/09/operating-system/';
+    var y = '2023';
+    var mo = 'April';
+    var ms = 'Apr';
+    var dy = '09';
+    var k = a.split(' ')[0].toLowerCase() + y + t.toLowerCase().replace(/[^a-z0-9]+/g, '');
+
+    document.getElementById('cite-bibtex').textContent =
+        '@article{' + k + ',\n  title     = {' + t + '},\n  author    = {' + a +
+        '},\n  journal   = {' + j + '},\n  year      = {' + y + '},\n  month     = {' + mo +
+        '},\n  day       = {' + dy + '},\n  url       = {' + u + '}\n}';
+    document.getElementById('cite-apa').textContent =
+        a + '. (' + y + ', ' + mo + ' ' + dy + '). ' + t + '. ' + j + '. ' + u;
+    document.getElementById('cite-mla').textContent =
+        a + '. “' + t + '.” ' + j + ', ' + dy + ' ' + ms + ' ' + y + ', ' + u + '.';
+    document.getElementById('cite-chicago').textContent =
+        a + '. “' + t + '.” ' + j + '. ' + mo + ' ' + dy + ', ' + y + '. ' + u + '.';
+
+    var sec = document.getElementById('citation-section');
+    sec.querySelectorAll('.citation-tab').forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            sec.querySelectorAll('.citation-tab').forEach(function(x) { x.classList.remove('active'); x.setAttribute('aria-selected', 'false'); });
+            sec.querySelectorAll('.citation-panel').forEach(function(p) { p.classList.remove('active'); });
+            this.classList.add('active'); this.setAttribute('aria-selected', 'true');
+            sec.querySelector('#panel-' + this.dataset.target).classList.add('active');
+        });
+    });
+    sec.querySelectorAll('.copy-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var text = document.getElementById(this.dataset.cite).textContent;
+            var b = this;
+            var done = function() { b.textContent = 'Copied!'; b.classList.add('copied'); setTimeout(function() { b.textContent = 'Copy'; b.classList.remove('copied'); }, 2000); };
+            navigator.clipboard.writeText(text).then(done).catch(function() {
+                var ta = document.createElement('textarea'); ta.value = text; ta.style.cssText = 'position:fixed;opacity:0';
+                document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); done();
+            });
+        });
+    });
+})();
+</script>
+
+
+    <footer class="post-footer">
+        <p><a href="/blog/">← All posts</a></p>
+    </footer>
+</article>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+    <div class="wrap">
+        <p>© 2026 Sumit Yadav · Kathmandu, Nepal · <a href="/">home</a> · <a href="/blog/">blog</a></p>
+    </div>
+</footer>
+
+
+    <script>
+        (function() {
+            const getThemePreference = () => {
+                const stored = localStorage.getItem('theme-preference');
+                if (stored) return stored;
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            };
+            const applyTheme = (theme) => {
+                const root = document.documentElement;
+                root.classList.remove('light-theme', 'dark-theme');
+                if (theme !== 'auto') root.classList.add(`${theme}-theme`);
+                if (window.mermaid) {
+                    const dark = theme === 'dark' || (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                    mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'default' });
+                    document.querySelectorAll('.mermaid').forEach(el => {
+                        if (el.getAttribute('data-processed')) {
+                            el.removeAttribute('data-processed');
+                            el.innerHTML = el.getAttribute('data-original') || el.innerHTML;
+                        }
+                    });
+                    if (window.mermaid.init) mermaid.init(undefined, '.mermaid');
+                }
+            };
+            document.addEventListener('DOMContentLoaded', () => {
+                applyTheme(getThemePreference());
+                const t = document.getElementById('theme-toggle');
+                if (t) t.addEventListener('click', () => {
+                    const cur = getThemePreference();
+                    const next = cur === 'dark' ? 'light' : 'dark';
+                    localStorage.setItem('theme-preference', next);
+                    applyTheme(next);
+                });
+                document.querySelectorAll('.mermaid').forEach(el => {
+                    if (!el.getAttribute('data-original')) el.setAttribute('data-original', el.innerHTML);
+                });
+            });
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme-preference')) applyTheme(e.matches ? 'dark' : 'light');
+            });
+        })();
+        (function() {
+            const bar = document.getElementById('scroll-progress-bar');
+            if (!bar) return;
+            const upd = () => {
+                const st = window.pageYOffset || document.documentElement.scrollTop;
+                const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                bar.style.height = Math.min(Math.max((st / h) * 100, 0), 100) + '%';
+            };
+            window.addEventListener('scroll', upd, { passive: true });
+            window.addEventListener('resize', upd, { passive: true });
+            upd();
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nepali OCR with Python · Sumit Yadav</title>
+    <meta name="description" content="">
+    <meta name="google-site-verification" content="IVG1y4MVA_6MT0wsjk13ooZDQLWXxvYcPXQlmf83MLM" />
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- Mermaid.js for diagram rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+    <div class="scroll-progress"><div class="scroll-progress-bar" id="scroll-progress-bar"></div></div>
+
+    <header class="site-header">
+    <div class="wrap">
+        <a class="site-title" href="/">Sumit Yadav</a>
+        <nav class="site-nav">
+            <a href="/#publications">Publications</a>
+            <a href="/blog/">Blog</a>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                <span class="theme-icon theme-icon-light">🌙</span>
+                <span class="theme-icon theme-icon-dark">☀️</span>
+            </button>
+        </nav>
+    </div>
+</header>
+
+
+    <main class="page-content">
+        <div class="wrap">
+            <div class="content-area">
+                
+<article class="post">
+    <header class="post-header">
+        <h1 class="post-title">Nepali OCR with Python</h1>
+        <p class="post-meta">
+            <time datetime="2021-08-16T00:00:00.000Z">August 16, 2021</time>
+             · <span>AI & ML</span>
+        </p>
+    </header>
+
+    <div class="post-content">
+        <h1>Nepali OCR detector</h1>
+<p>In this post I am going to present <strong>Nepali Optical Character Recognition (OCR)</strong> that extracts Nepali text from images and scanned documents so that it can be edited, formatted, indexed, searched, or translated. Below mentioned code are written in python, using easyocr as a heart of this post.</p>
+<h3>OCR</h3>
+<p>Optical character recognition or optical character reader (OCR) is the electronic or mechanical conversion of images of typed, handwritten or printed text into machine-encoded text, whether from a scanned document, a photo of a document, a scene-photo (for example the text on signs and billboards in a landscape photo) or from subtitle text superimposed on an image (for example: from a television broadcast).</p>
+<p>Widely used as a form of data entry from printed paper data records – whether passport documents, invoices, bank statements, computerized receipts, business cards, mail, printouts of static-data, or any suitable documentation – it is a common method of digitizing printed texts so that they can be electronically edited, searched, stored more compactly, displayed on-line, and used in machine processes such as cognitive computing, machine translation, (extracted) text-to-speech, key data and text mining. OCR is a field of research in pattern recognition, artificial intelligence and computer vision.</p>
+<p>Early versions needed to be trained with images of each character, and worked on one font at a time. Advanced systems capable of producing a high degree of recognition accuracy for most fonts are now common, and with support for a variety of digital image file format inputs. Some systems are capable of reproducing formatted output that closely approximates the original page including images, columns, and other non-textual components. <a href="https://pdf.abbyy.com/learning-center/what-is-ocr/">More about OCR</a></p>
+<h2>Importing Module</h2>
+<pre><code class="language-python">#!pip install easyocr #To install easyocr
+</code></pre>
+<pre><code class="language-python">import matplotlib.pyplot as plt
+import cv2
+import easyocr
+import numpy as np
+from pylab import rcParams
+from IPython.display import Image
+rcParams[&#39;figure.figsize&#39;] = 8, 16
+</code></pre>
+<h2>Loading pre-trained model</h2>
+<p><code>&#39;ne&#39;</code> for Nepali and <code>&#39;en&#39;</code> for English, and similarly for other languages.</p>
+<pre><code class="language-python">reader = easyocr.Reader([&#39;ne&#39;]) #&#39;ne&#39; for Nepali and &#39;en&#39; for english and simillary for other
+</code></pre>
+<h2>Normal image to Scanned image</h2>
+<pre><code class="language-python">def map(x, in_min, in_max, out_min, out_max):
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+
+def highPassFilter(img,kSize):
+    if not kSize%2:
+        kSize +=1
+    kernel = np.ones((kSize,kSize),np.float32)/(kSize*kSize)
+    filtered = cv2.filter2D(img,-1,kernel)
+    filtered = img.astype(&#39;float32&#39;) - filtered.astype(&#39;float32&#39;)
+    filtered = filtered + 127*np.ones(img.shape, np.uint8)
+    filtered = filtered.astype(&#39;uint8&#39;)
+    return filtered
+
+def blackPointSelect(img, blackPoint):
+    img = img.astype(&#39;int32&#39;)
+    img = map(img, blackPoint, 255, 0, 255)
+    _, img = cv2.threshold(img, 0, 255, cv2.THRESH_TOZERO)
+    img = img.astype(&#39;uint8&#39;)
+    return img
+
+def whitePointSelect(img,whitePoint):
+    _,img = cv2.threshold(img, whitePoint, 255, cv2.THRESH_TRUNC)
+    img = img.astype(&#39;int32&#39;)
+    img = map(img, 0, whitePoint, 0, 255)
+    img = img.astype(&#39;uint8&#39;)
+    return img
+
+def blackAndWhite(img):
+    lab = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
+    (l,a,b) = cv2.split(lab)
+    img = cv2.add( cv2.subtract(l,b), cv2.subtract(l,a) )
+    return img
+
+def scan_effect(img):
+    blackPoint = 66
+    whitePoint = 130
+    image = highPassFilter(img,kSize = 51)
+    image_white = whitePointSelect(image, whitePoint)
+    img_black = blackPointSelect(image_white, blackPoint)
+    image=blackPointSelect(img,blackPoint)
+    white = whitePointSelect(image,whitePoint)
+    img_black = blackAndWhite(white)
+    return img_black
+</code></pre>
+<blockquote>
+<p>Enter the location of image file</p>
+</blockquote>
+<pre><code class="language-python">loc=&quot;2.jpg&quot; #Enter the loction of image
+</code></pre>
+<pre><code class="language-python">Image(loc)
+</code></pre>
+<p><img src="/posts/2021/08/16/nepali-ocr-python/nepali-ocr-python-2.jpg" alt="Input image showing Nepali text"></p>
+<pre><code class="language-python">img = cv2.imread(loc)
+image = scan_effect(img)
+#from google.colab.patches import cv2_imshow
+#cv2_imshow(image)
+filename = &#39;scanned.jpg&#39;
+cv2.imwrite(filename, image)
+</code></pre>
+<pre><code>True
+</code></pre>
+<h2>Loading Image</h2>
+<pre><code class="language-python">path=filename
+</code></pre>
+<pre><code class="language-python">Image(path)
+</code></pre>
+<p><img src="/posts/2021/08/16/nepali-ocr-python/nepali-ocr-python-4822b98ec898b4654e4483e1b76df4b092f042d6.jpg" alt="Scanned version of the input image"></p>
+<h2>Detecting character from image</h2>
+<pre><code class="language-python">output = reader.readtext(path)
+</code></pre>
+<h2>Output</h2>
+<pre><code class="language-python">output
+</code></pre>
+<pre><code>[([[123, 1], [667, 1], [667, 67], [123, 67]],
+  &#39;त्या बांच्न के ढुकुर झैं नभमा डुलेर&#39;,
+  0.3381714640956552),
+ ([[129, 59], [409, 59], [409, 128], [129, 128]],
+  &#39;त्यो मर्नु के कुकुर&#39;,
+  0.6069389645579002),
+ ([[424, 60], [663, 60], [663, 116], [424, 116]],
+  &#39;झैं पथमा ढलेर&#39;,
+  0.678598319341647),
+ ([[141, 121], [655, 121], [655, 185], [141, 185]],
+  &#39;त्याे जित्न के मनपरि दुनिया ठगेर&#39;,
+  0.466542709532707),
+ ([[134, 180], [656, 180], [656, 236], [134, 236]],
+  &#39;बांचौं पवित्र जलको सरिता बनरे ।&#39;,
+  0.33612146115405894),
+ ([[151, 267], [647, 267], [647, 329], [151, 329]],
+  &#39;गर्दै कि बुद्घ जसरी सबको भलाइ&#39;,
+  0.5689838746811848),
+ ([[138, 329], [294, 329], [294, 380], [138, 380]],
+  &#39;वा ज्ञानले&#39;,
+  0.5712557530269956),
+ ([[428, 325], [639, 325], [639, 392], [428, 392]],
+  &#39;दुनियां जिगाई&#39;,
+  0.5282788595967648),
+ ([[135, 383], [667, 383], [667, 445], [135, 445]],
+  &#39;वा कृष्ण झैं जगत्मा रमिता चलाई&#39;,
+  0.6665105167823989),
+ ([[136, 462], [176, 462], [176, 494], [136, 494]], &#39;वा&#39;, 0.41052963629001243),
+ ([[181, 441], [673, 441], [673, 501], [181, 501]],
+  &#39;विश्वमाझ सबमा ममता फिजाई&#39;,
+  0.6406025192944045),
+ ([[151, 535], [275, 535], [275, 579], [151, 579]],
+  &#39;सग्लो र&#39;,
+  0.7202154126778443),
+ ([[278, 519], [659, 519], [659, 594], [278, 594]],
+  &#39;पूर्ण सपना मनभित्र सांचौं&#39;,
+  0.8457427886612249),
+ ([[169, 577], [644, 577], [644, 645], [169, 645]],
+  &#39;छोटो छ है समयमै भरपुर बांचौं&#39;,
+  0.4758441227091572),
+ ([[151, 637], [659, 637], [659, 701], [151, 701]],
+  &#39;हांस्ने गरोस् मन सध्रै दुनियां भुलेर&#39;,
+  0.5020757275372445),
+ ([[134, 698], [676, 698], [676, 754], [134, 754]],
+  &#39;डाहा गरोस् जनता नै रिसमा जलेर ।&#39;,
+  0.4316845329398307),
+ ([[161, 777], [653, 777], [653, 839], [161, 839]],
+  &#39;सत्कर्मले जगत्को शिरमा पुगिन्छ&#39;,
+  0.7593451815519658),
+ ([[308, 834], [659, 834], [659, 888], [308, 888]],
+  &#39;हदयका सब दाग बिल्छ&#39;,
+  0.8728011010651449),
+ ([[159, 889], [661, 889], [661, 949], [159, 949]],
+  &#39;आर्दश जीवन सधैं अति पूज्य हुन्छ&#39;,
+  0.5903392799676969),
+ ([[135, 946], [683, 946], [683, 1006], [135, 1006]],
+  &#39;सत्कर्म सन्ततिहरू सबमा फिजिन्छ ।।।&#39;,
+  0.493018168522814),
+ ([[134, 1030], [418, 1030], [418, 1082], [134, 1082]],
+  &#39;जो रम्छ व्यर्थपनमा&#39;,
+  0.8048376333582101),
+ ([[443, 1024], [702, 1024], [702, 1084], [443, 1084]],
+  &#39;त्यसमै सकिन्छन्&#39;,
+  0.5815147920443708),
+ ([[134, 1086], [700, 1086], [700, 1143], [134, 1143]],
+  &#39;जो बुझछ जीवन उनी इतिहास बन्छन्&#39;,
+  0.7268483165161402),
+ ([[163, 1138], [664, 1138], [664, 1192], [163, 1192]],
+  &#39;झक्नेछ ईश्वर पनि उसको अगाडि&#39;,
+  0.47465339469231005),
+ ([[124, 1192], [708, 1192], [708, 1246], [124, 1246]],
+  &#39;जो बांच्छ स्वच्छ दिलले सबलाई बांडी ।०&#39;,
+  0.41452520111176533),
+ ([[295.2103500411843, 334.2731201317898],
+   [429.4015153514063, 324.3877917562871],
+   [430.7896499588157, 377.7268798682102],
+   [296.5984846485937, 388.6122082437129]],
+  &#39;जनकभैं&#39;,
+  0.8082762642642637),
+ ([[160.20510460345565, 850.3332719689847],
+   [304.5957251500903, 837.0304035071042],
+   [306.79489539654435, 885.6667280310153],
+   [162.4042748499097, 897.9695964928958]],
+  &#39;मुस्कानले&#39;,
+  0.9778876236551189)]
+</code></pre>
+<h2>Total detection</h2>
+<pre><code class="language-python">print(f&#39;Total number of detection&#39;,len(output))
+</code></pre>
+<pre><code>Total number of detection 27
+</code></pre>
+<h2>Previewing Output</h2>
+<pre><code class="language-python">image = cv2.imread(path)
+for i in range(len(output)):
+  cord = output[i][0]
+  x_min, y_min = [int(min(idx)) for idx in zip(*cord)]
+  x_max, y_max = [int(max(idx)) for idx in zip(*cord)]
+  cv2.rectangle(image,(x_min,y_min),(x_max,y_max),(0,0,255),2)
+  print(output[i][1])
+
+plt.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+</code></pre>
+<pre><code>त्या बांच्न के ढुकुर झैं नभमा डुलेर
+त्यो मर्नु के कुकुर
+झैं पथमा ढलेर
+त्याे जित्न के मनपरि दुनिया ठगेर
+बांचौं पवित्र जलको सरिता बनरे ।
+गर्दै कि बुद्घ जसरी सबको भलाइ
+वा ज्ञानले
+दुनियां जिगाई
+वा कृष्ण झैं जगत्मा रमिता चलाई
+वा
+विश्वमाझ सबमा ममता फिजाई
+सग्लो र
+पूर्ण सपना मनभित्र सांचौं
+छोटो छ है समयमै भरपुर बांचौं
+हांस्ने गरोस् मन सध्रै दुनियां भुलेर
+डाहा गरोस् जनता नै रिसमा जलेर ।
+सत्कर्मले जगत्को शिरमा पुगिन्छ
+हदयका सब दाग बिल्छ
+आर्दश जीवन सधैं अति पूज्य हुन्छ
+सत्कर्म सन्ततिहरू सबमा फिजिन्छ ।।।
+जो रम्छ व्यर्थपनमा
+त्यसमै सकिन्छन्
+जो बुझछ जीवन उनी इतिहास बन्छन्
+झक्नेछ ईश्वर पनि उसको अगाडि
+जो बांच्छ स्वच्छ दिलले सबलाई बांडी ।०
+जनकभैं
+मुस्कानले
+</code></pre>
+<p><img src="/posts/2021/08/16/nepali-ocr-python/nepali-ocr-python-6e7ccac92b4e09971806af82ec0516747c6c18f0.png" alt="Annotated output image with detected Nepali text bounding boxes"></p>
+<h2>Summary</h2>
+<p>In this way we successfully completed this short project which was of detecting Nepali words.</p>
+<p>Find the <a href="https://colab.research.google.com/drive/1DGl0lEwYvWOlm2yBKXK2cJ18YRTgu-E_?usp=sharing">GOOGLE COLAB HERE</a>.
+Feel free to star this code on <a href="https://github.com/rockerritesh/BASICS-IN-PYTHON-/blob/master/Nepali_OCR.ipynb">Github</a>.</p>
+
+    </div>
+
+    <details class="cite">
+  <summary>Cite this post</summary>
+  <div class="cite-body" id="citation-section">
+    <div class="citation-tabs" role="tablist">
+        <button class="citation-tab active" data-target="bibtex" role="tab" aria-selected="true">BibTeX</button>
+        <button class="citation-tab" data-target="apa" role="tab" aria-selected="false">APA</button>
+        <button class="citation-tab" data-target="mla" role="tab" aria-selected="false">MLA</button>
+        <button class="citation-tab" data-target="chicago" role="tab" aria-selected="false">Chicago</button>
+    </div>
+    <div class="citation-panels">
+        <div class="citation-panel active" id="panel-bibtex" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-bibtex"></pre><button class="copy-btn" data-cite="cite-bibtex">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-apa" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-apa"></pre><button class="copy-btn" data-cite="cite-apa">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-mla" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-mla"></pre><button class="copy-btn" data-cite="cite-mla">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-chicago" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-chicago"></pre><button class="copy-btn" data-cite="cite-chicago">Copy</button></div>
+        </div>
+    </div>
+    <p class="citation-note">Auto-generated. Verify for your institution's requirements.</p>
+  </div>
+</details>
+
+<template id="cite-meta">Nepali OCR with Python</template>
+
+<script>
+(function() {
+    var meta = document.getElementById('cite-meta');
+    if (!meta) return;
+    var t = meta.content ? meta.content.textContent : meta.innerHTML;
+    var a = 'Sumit Yadav';
+    var j = 'Sumit Yadav';
+    var u = 'https://sumityadav.com.np/posts/2021/08/16/nepali-ocr-python/';
+    var y = '2021';
+    var mo = 'August';
+    var ms = 'Aug';
+    var dy = '16';
+    var k = a.split(' ')[0].toLowerCase() + y + t.toLowerCase().replace(/[^a-z0-9]+/g, '');
+
+    document.getElementById('cite-bibtex').textContent =
+        '@article{' + k + ',\n  title     = {' + t + '},\n  author    = {' + a +
+        '},\n  journal   = {' + j + '},\n  year      = {' + y + '},\n  month     = {' + mo +
+        '},\n  day       = {' + dy + '},\n  url       = {' + u + '}\n}';
+    document.getElementById('cite-apa').textContent =
+        a + '. (' + y + ', ' + mo + ' ' + dy + '). ' + t + '. ' + j + '. ' + u;
+    document.getElementById('cite-mla').textContent =
+        a + '. “' + t + '.” ' + j + ', ' + dy + ' ' + ms + ' ' + y + ', ' + u + '.';
+    document.getElementById('cite-chicago').textContent =
+        a + '. “' + t + '.” ' + j + '. ' + mo + ' ' + dy + ', ' + y + '. ' + u + '.';
+
+    var sec = document.getElementById('citation-section');
+    sec.querySelectorAll('.citation-tab').forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            sec.querySelectorAll('.citation-tab').forEach(function(x) { x.classList.remove('active'); x.setAttribute('aria-selected', 'false'); });
+            sec.querySelectorAll('.citation-panel').forEach(function(p) { p.classList.remove('active'); });
+            this.classList.add('active'); this.setAttribute('aria-selected', 'true');
+            sec.querySelector('#panel-' + this.dataset.target).classList.add('active');
+        });
+    });
+    sec.querySelectorAll('.copy-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var text = document.getElementById(this.dataset.cite).textContent;
+            var b = this;
+            var done = function() { b.textContent = 'Copied!'; b.classList.add('copied'); setTimeout(function() { b.textContent = 'Copy'; b.classList.remove('copied'); }, 2000); };
+            navigator.clipboard.writeText(text).then(done).catch(function() {
+                var ta = document.createElement('textarea'); ta.value = text; ta.style.cssText = 'position:fixed;opacity:0';
+                document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); done();
+            });
+        });
+    });
+})();
+</script>
+
+
+    <footer class="post-footer">
+        <p><a href="/blog/">← All posts</a></p>
+    </footer>
+</article>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+    <div class="wrap">
+        <p>© 2026 Sumit Yadav · Kathmandu, Nepal · <a href="/">home</a> · <a href="/blog/">blog</a></p>
+    </div>
+</footer>
+
+
+    <script>
+        (function() {
+            const getThemePreference = () => {
+                const stored = localStorage.getItem('theme-preference');
+                if (stored) return stored;
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            };
+            const applyTheme = (theme) => {
+                const root = document.documentElement;
+                root.classList.remove('light-theme', 'dark-theme');
+                if (theme !== 'auto') root.classList.add(`${theme}-theme`);
+                if (window.mermaid) {
+                    const dark = theme === 'dark' || (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                    mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'default' });
+                    document.querySelectorAll('.mermaid').forEach(el => {
+                        if (el.getAttribute('data-processed')) {
+                            el.removeAttribute('data-processed');
+                            el.innerHTML = el.getAttribute('data-original') || el.innerHTML;
+                        }
+                    });
+                    if (window.mermaid.init) mermaid.init(undefined, '.mermaid');
+                }
+            };
+            document.addEventListener('DOMContentLoaded', () => {
+                applyTheme(getThemePreference());
+                const t = document.getElementById('theme-toggle');
+                if (t) t.addEventListener('click', () => {
+                    const cur = getThemePreference();
+                    const next = cur === 'dark' ? 'light' : 'dark';
+                    localStorage.setItem('theme-preference', next);
+                    applyTheme(next);
+                });
+                document.querySelectorAll('.mermaid').forEach(el => {
+                    if (!el.getAttribute('data-original')) el.setAttribute('data-original', el.innerHTML);
+                });
+            });
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme-preference')) applyTheme(e.matches ? 'dark' : 'light');
+            });
+        })();
+        (function() {
+            const bar = document.getElementById('scroll-progress-bar');
+            if (!bar) return;
+            const upd = () => {
+                const st = window.pageYOffset || document.documentElement.scrollTop;
+                const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                bar.style.height = Math.min(Math.max((st / h) * 100, 0), 100) + '%';
+            };
+            window.addEventListener('scroll', upd, { passive: true });
+            window.addEventListener('resize', upd, { passive: true });
+            upd();
+        })();
+    </script>
+</body>
+</html>

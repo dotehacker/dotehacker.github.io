@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>layers-travel · Sumit Yadav</title>
+    <meta name="description" content="Interactive 3D visualization of how neural network embeddings evolve across layers">
+    <meta name="google-site-verification" content="IVG1y4MVA_6MT0wsjk13ooZDQLWXxvYcPXQlmf83MLM" />
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- Mermaid.js for diagram rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+    <div class="scroll-progress"><div class="scroll-progress-bar" id="scroll-progress-bar"></div></div>
+
+    <header class="site-header">
+    <div class="wrap">
+        <a class="site-title" href="/">Sumit Yadav</a>
+        <nav class="site-nav">
+            <a href="/#publications">Publications</a>
+            <a href="/blog/">Blog</a>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                <span class="theme-icon theme-icon-light">🌙</span>
+                <span class="theme-icon theme-icon-dark">☀️</span>
+            </button>
+        </nav>
+    </div>
+</header>
+
+
+    <main class="page-content">
+        <div class="wrap">
+            <div class="content-area">
+                
+<article class="post">
+    <header class="post-header">
+        <h1 class="post-title">layers-travel</h1>
+        <p class="post-meta">
+            <time datetime="2025-09-16T00:00:00.000Z">September 16, 2025</time>
+             · <span>AI & ML</span>
+        </p>
+    </header>
+
+    <div class="post-content">
+        <h1>Interactive 3D visualization of how neural network embeddings evolve across layers [gemma-embedding]</h1>
+<p><img src="https://tatva.sumityadav.com.np/posts/2025/09/16/layers-travel/newplot(4).png" alt="newplot(4).png"></p>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Layer-wise Embedding Evolution</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.26.0/plotly.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        select, input[type="file"] {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        #plot {
+            width: 100%;
+            height: 600px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .info {
+            margin-bottom: 10px;
+            padding: 10px;
+            background: #e8f4f8;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<h1>3D Layer-wise Embedding Evolution Visualizer</h1>
+        
+<div class="controls">
+    <select id="datasetSelect" style="display: none;">
+        <option value="">Select Dataset</option>
+    </select>
+    <label>
+        Z-separation: 
+        <input type="range" id="zSeparation" min="1" max="20" value="5" />
+        <span id="zValue">5</span>
+    </label>
+    <button id="loadData">Load Data</button>
+    <span id="loadStatus"></span>
+</div>
+
+<div id="info" class="info" style="display: none;"></div>
+<div id="plot"></div>
+</div>
+
+<script>
+    let currentData = null;
+    const JSON_FILE_PATH = 'https://tatva.sumityadav.com.np/posts/2025/09/16/layers-travel/all_layerwise_embeddings.json';
+    
+    // Color palette for categories
+    const colors = [
+        '#e41a1c', '#377eb8', '#4daf4a', '#984ea3', 
+        '#ff7f00', '#ffff33', '#a65628', '#f781bf'
+    ];
+
+    document.getElementById('loadData').addEventListener('click', loadDataFromFile);
+    document.getElementById('datasetSelect').addEventListener('change', updateVisualization);
+    document.getElementById('zSeparation').addEventListener('input', function() {
+        document.getElementById('zValue').textContent = this.value;
+        updateVisualization();
+    });
+
+    // Load data automatically on page load
+    window.addEventListener('load', loadDataFromFile);
+
+    function loadDataFromFile() {
+        const statusEl = document.getElementById('loadStatus');
+        statusEl.textContent = 'Loading...';
+        statusEl.style.color = 'orange';
+        
+        fetch(JSON_FILE_PATH)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                currentData = data;
+                populateDatasetSelect();
+                updateVisualization();
+                statusEl.textContent = 'Data loaded successfully!';
+                statusEl.style.color = 'green';
+            })
+            .catch(error => {
+                console.error('Error loading JSON:', error);
+                statusEl.textContent = `Error loading data: ${error.message}`;
+                statusEl.style.color = 'red';
+                
+                // Show fallback message
+                document.getElementById('plot').innerHTML = `
+                    <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #666; font-size: 18px;">
+                        <div style="text-align: center;">
+                            <p>❌ Could not load JSON file from: ${JSON_FILE_PATH}</p>
+                            <p style="font-size: 14px; color: #999;">
+                                Make sure the file exists at the specified path and the browser has permission to access it.
+                            </p>
+                            <p style="font-size: 12px; color: #ccc;">
+                                Note: For security reasons, browsers may block local file access. 
+                                Consider running a local web server or hosting the file.
+                            </p>
+                        </div>
+                    </div>
+                `;
+            });
+    }
+
+    function populateDatasetSelect() {
+        const select = document.getElementById('datasetSelect');
+        select.innerHTML = '<option value="">Select Dataset</option>';
+        
+        if (currentData) {
+            // Check if data has multiple datasets
+            const datasetNames = Object.keys(currentData);
+            if (datasetNames.length > 1) {
+                datasetNames.forEach(name => {
+                    const option = document.createElement('option');
+                    option.value = name;
+                    option.textContent = name;
+                    select.appendChild(option);
+                });
+                select.style.display = 'block';
+                select.value = datasetNames[0]; // Select first dataset
+            } else {
+                select.style.display = 'none';
+            }
+        }
+    }
+
+    function getCurrentDataset() {
+        if (!currentData) return null;
+        
+        const selectedDataset = document.getElementById('datasetSelect').value;
+        
+        if (selectedDataset && currentData[selectedDataset]) {
+            return currentData[selectedDataset];
+        } else if (currentData.layers) {
+            // Single dataset format
+            return currentData;
+        } else {
+            // Multiple datasets, return first one
+            const firstKey = Object.keys(currentData)[0];
+            return currentData[firstKey];
+        }
+    }
+
+    function updateVisualization() {
+        const dataset = getCurrentDataset();
+        if (!dataset) return;
+
+        const zSeparation = parseInt(document.getElementById('zSeparation').value);
+        
+        // Update info
+        const info = document.getElementById('info');
+        info.style.display = 'block';
+        info.innerHTML = `
+            <strong>Dataset:</strong> ${dataset.dataset_name || 'Unknown'} | 
+            <strong>Description:</strong> ${dataset.description || 'N/A'} | 
+            <strong>Total Items:</strong> ${dataset.total_items || 'N/A'} | 
+            <strong>Layers:</strong> ${dataset.num_layers || Object.keys(dataset.layers).length}
+        `;
+
+        // Prepare data for plotting
+        const traces = [];
+        const categories = dataset.categories || [];
+        const categoryColors = {};
+        categories.forEach((cat, i) => {
+            categoryColors[cat] = colors[i % colors.length];
+        });
+
+        // Create traces for each category
+        categories.forEach(category => {
+            const x = [], y = [], z = [], text = [], layer_info = [];
+            
+            Object.entries(dataset.layers).forEach(([layerStr, layerData]) => {
+                const layerIdx = parseInt(layerStr);
+                const zLevel = layerIdx * zSeparation;
+                
+                layerData.items.forEach(item => {
+                    if (item.category === category) {
+                        x.push(item.pca_coordinates.x);
+                        y.push(item.pca_coordinates.y);
+                        z.push(zLevel);
+                        text.push(`${item.text}<br>Category: ${item.category}<br>Layer: ${layerIdx}`);
+                        layer_info.push(layerIdx);
+                    }
+                });
+            });
+
+            if (x.length > 0) {
+                traces.push({
+                    x: x,
+                    y: y,
+                    z: z,
+                    text: text,
+                    type: 'scatter3d',
+                    mode: 'markers',
+                    name: category,
+                    marker: {
+                        size: 6,
+                        color: categoryColors[category],
+                        opacity: 0.8,
+                        line: {
+                            color: 'black',
+                            width: 0.5
+                        }
+                    },
+                    hovertemplate: '%{text}<extra></extra>'
+                });
+            }
+        });
+
+        // Add trajectory lines for same text across layers
+        const textTrajectories = {};
+        Object.entries(dataset.layers).forEach(([layerStr, layerData]) => {
+            const layerIdx = parseInt(layerStr);
+            const zLevel = layerIdx * zSeparation;
+            
+            layerData.items.forEach(item => {
+                if (!textTrajectories[item.text]) {
+                    textTrajectories[item.text] = {
+                        x: [], y: [], z: [], 
+                        category: item.category
+                    };
+                }
+                textTrajectories[item.text].x.push(item.pca_coordinates.x);
+                textTrajectories[item.text].y.push(item.pca_coordinates.y);
+                textTrajectories[item.text].z.push(zLevel);
+            });
+        });
+
+        // Add trajectory lines
+        Object.values(textTrajectories).forEach((traj, i) => {
+            if (traj.x.length > 1) {
+                traces.push({
+                    x: traj.x,
+                    y: traj.y,
+                    z: traj.z,
+                    type: 'scatter3d',
+                    mode: 'lines',
+                    name: '',
+                    showlegend: false,
+                    line: {
+                        color: categoryColors[traj.category],
+                        width: 2,
+                        opacity: 0.3
+                    },
+                    hoverinfo: 'skip'
+                });
+            }
+        });
+
+        const layout = {
+            title: `3D Layer-wise Embedding Evolution: ${dataset.dataset_name || 'Dataset'}`,
+            scene: {
+                xaxis: { title: 'PC1' },
+                yaxis: { title: 'PC2' },
+                zaxis: { title: 'Layer Index' },
+                camera: {
+                    eye: { x: 1.5, y: 1.5, z: 1.5 }
+                }
+            },
+            margin: { l: 0, r: 0, b: 0, t: 40 },
+            legend: {
+                x: 0,
+                y: 1
+            }
+        };
+
+        Plotly.newPlot('plot', traces, layout, {
+            responsive: true,
+            displayModeBar: true
+        });
+    }
+
+    // Instructions for user
+    if (!currentData) {
+        document.getElementById('plot').innerHTML = `
+            <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #666; font-size: 18px;">
+                <div style="text-align: center;">
+                    <p>Loading data from: ${JSON_FILE_PATH}</p>
+                    <p style="font-size: 14px; color: #999;">
+                        Click "Load Data" if the data doesn't load automatically
+                    </p>
+                </div>
+            </div>
+        `;
+    }
+</script>
+</body>
+
+
+<p>##🧩 <strong>Conclusion</strong></p>
+<p>This 3D visualization reveals how a transformer model <strong>energizes and organizes meaning</strong> across its layers.
+Initially, all sentence embeddings cluster tightly — representing <strong>low semantic differentiation</strong>. As the layers deepen, the embeddings <strong>spread outward and form distinct clusters</strong>, showing how the model gradually transforms raw token information into <strong>semantically charged representations</strong> (positive, negative, neutral).</p>
+<p>The expanding, conical structure reflects a <strong>flow of informational energy</strong> — from a compressed input state to a more expressive, task-specific space.
+In essence, this plot captures the <strong>evolution of understanding inside the model</strong>, where representational energy becomes more structured and sentiment meaning emerges layer by layer.</p>
+
+    </div>
+
+    <details class="cite">
+  <summary>Cite this post</summary>
+  <div class="cite-body" id="citation-section">
+    <div class="citation-tabs" role="tablist">
+        <button class="citation-tab active" data-target="bibtex" role="tab" aria-selected="true">BibTeX</button>
+        <button class="citation-tab" data-target="apa" role="tab" aria-selected="false">APA</button>
+        <button class="citation-tab" data-target="mla" role="tab" aria-selected="false">MLA</button>
+        <button class="citation-tab" data-target="chicago" role="tab" aria-selected="false">Chicago</button>
+    </div>
+    <div class="citation-panels">
+        <div class="citation-panel active" id="panel-bibtex" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-bibtex"></pre><button class="copy-btn" data-cite="cite-bibtex">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-apa" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-apa"></pre><button class="copy-btn" data-cite="cite-apa">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-mla" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-mla"></pre><button class="copy-btn" data-cite="cite-mla">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-chicago" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-chicago"></pre><button class="copy-btn" data-cite="cite-chicago">Copy</button></div>
+        </div>
+    </div>
+    <p class="citation-note">Auto-generated. Verify for your institution's requirements.</p>
+  </div>
+</details>
+
+<template id="cite-meta">layers-travel</template>
+
+<script>
+(function() {
+    var meta = document.getElementById('cite-meta');
+    if (!meta) return;
+    var t = meta.content ? meta.content.textContent : meta.innerHTML;
+    var a = 'Sumit Yadav';
+    var j = 'Sumit Yadav';
+    var u = 'https://sumityadav.com.np/posts/2025/09/16/layers-travel/';
+    var y = '2025';
+    var mo = 'September';
+    var ms = 'Sep';
+    var dy = '16';
+    var k = a.split(' ')[0].toLowerCase() + y + t.toLowerCase().replace(/[^a-z0-9]+/g, '');
+
+    document.getElementById('cite-bibtex').textContent =
+        '@article{' + k + ',\n  title     = {' + t + '},\n  author    = {' + a +
+        '},\n  journal   = {' + j + '},\n  year      = {' + y + '},\n  month     = {' + mo +
+        '},\n  day       = {' + dy + '},\n  url       = {' + u + '}\n}';
+    document.getElementById('cite-apa').textContent =
+        a + '. (' + y + ', ' + mo + ' ' + dy + '). ' + t + '. ' + j + '. ' + u;
+    document.getElementById('cite-mla').textContent =
+        a + '. “' + t + '.” ' + j + ', ' + dy + ' ' + ms + ' ' + y + ', ' + u + '.';
+    document.getElementById('cite-chicago').textContent =
+        a + '. “' + t + '.” ' + j + '. ' + mo + ' ' + dy + ', ' + y + '. ' + u + '.';
+
+    var sec = document.getElementById('citation-section');
+    sec.querySelectorAll('.citation-tab').forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            sec.querySelectorAll('.citation-tab').forEach(function(x) { x.classList.remove('active'); x.setAttribute('aria-selected', 'false'); });
+            sec.querySelectorAll('.citation-panel').forEach(function(p) { p.classList.remove('active'); });
+            this.classList.add('active'); this.setAttribute('aria-selected', 'true');
+            sec.querySelector('#panel-' + this.dataset.target).classList.add('active');
+        });
+    });
+    sec.querySelectorAll('.copy-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var text = document.getElementById(this.dataset.cite).textContent;
+            var b = this;
+            var done = function() { b.textContent = 'Copied!'; b.classList.add('copied'); setTimeout(function() { b.textContent = 'Copy'; b.classList.remove('copied'); }, 2000); };
+            navigator.clipboard.writeText(text).then(done).catch(function() {
+                var ta = document.createElement('textarea'); ta.value = text; ta.style.cssText = 'position:fixed;opacity:0';
+                document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); done();
+            });
+        });
+    });
+})();
+</script>
+
+
+    <footer class="post-footer">
+        <p><a href="/blog/">← All posts</a></p>
+    </footer>
+</article>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+    <div class="wrap">
+        <p>© 2026 Sumit Yadav · Kathmandu, Nepal · <a href="/">home</a> · <a href="/blog/">blog</a></p>
+    </div>
+</footer>
+
+
+    <script>
+        (function() {
+            const getThemePreference = () => {
+                const stored = localStorage.getItem('theme-preference');
+                if (stored) return stored;
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            };
+            const applyTheme = (theme) => {
+                const root = document.documentElement;
+                root.classList.remove('light-theme', 'dark-theme');
+                if (theme !== 'auto') root.classList.add(`${theme}-theme`);
+                if (window.mermaid) {
+                    const dark = theme === 'dark' || (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                    mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'default' });
+                    document.querySelectorAll('.mermaid').forEach(el => {
+                        if (el.getAttribute('data-processed')) {
+                            el.removeAttribute('data-processed');
+                            el.innerHTML = el.getAttribute('data-original') || el.innerHTML;
+                        }
+                    });
+                    if (window.mermaid.init) mermaid.init(undefined, '.mermaid');
+                }
+            };
+            document.addEventListener('DOMContentLoaded', () => {
+                applyTheme(getThemePreference());
+                const t = document.getElementById('theme-toggle');
+                if (t) t.addEventListener('click', () => {
+                    const cur = getThemePreference();
+                    const next = cur === 'dark' ? 'light' : 'dark';
+                    localStorage.setItem('theme-preference', next);
+                    applyTheme(next);
+                });
+                document.querySelectorAll('.mermaid').forEach(el => {
+                    if (!el.getAttribute('data-original')) el.setAttribute('data-original', el.innerHTML);
+                });
+            });
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme-preference')) applyTheme(e.matches ? 'dark' : 'light');
+            });
+        })();
+        (function() {
+            const bar = document.getElementById('scroll-progress-bar');
+            if (!bar) return;
+            const upd = () => {
+                const st = window.pageYOffset || document.documentElement.scrollTop;
+                const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                bar.style.height = Math.min(Math.max((st / h) * 100, 0), 100) + '%';
+            };
+            window.addEventListener('scroll', upd, { passive: true });
+            window.addEventListener('resize', upd, { passive: true });
+            upd();
+        })();
+    </script>
+</body>
+</html>

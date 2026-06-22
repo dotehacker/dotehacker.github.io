@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPT-OSS: OpenAI's Open-Weight Mixture-of-Experts Language Model - A Technical Deep Dive · Sumit Yadav</title>
+    <meta name="description" content="">
+    <meta name="google-site-verification" content="IVG1y4MVA_6MT0wsjk13ooZDQLWXxvYcPXQlmf83MLM" />
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- Mermaid.js for diagram rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+    <div class="scroll-progress"><div class="scroll-progress-bar" id="scroll-progress-bar"></div></div>
+
+    <header class="site-header">
+    <div class="wrap">
+        <a class="site-title" href="/">Sumit Yadav</a>
+        <nav class="site-nav">
+            <a href="/#publications">Publications</a>
+            <a href="/blog/">Blog</a>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                <span class="theme-icon theme-icon-light">🌙</span>
+                <span class="theme-icon theme-icon-dark">☀️</span>
+            </button>
+        </nav>
+    </div>
+</header>
+
+
+    <main class="page-content">
+        <div class="wrap">
+            <div class="content-area">
+                
+<article class="post">
+    <header class="post-header">
+        <h1 class="post-title">GPT-OSS: OpenAI's Open-Weight Mixture-of-Experts Language Model - A Technical Deep Dive</h1>
+        <p class="post-meta">
+            <time datetime="2025-08-06T00:00:00.000Z">August 06, 2025</time>
+             · <span>AI & ML</span>
+        </p>
+    </header>
+
+    <div class="post-content">
+        <h1>GPT-OSS: OpenAI&#39;s Revolutionary Open-Weight MoE Architecture</h1>
+<p>OpenAI has released GPT-OSS (GPT Open Source System), marking a significant milestone in open-weight language models. This technical deep dive explores the innovative architecture, implementation details, and key features that set GPT-OSS apart from traditional transformer models.</p>
+<h2>Table of Contents</h2>
+<ul>
+<li><a href="#model-overview">Model Overview</a></li>
+<li><a href="#architecture-deep-dive">Architecture Deep Dive</a></li>
+<li><a href="#key-innovations">Key Innovations</a></li>
+<li><a href="#implementation-details">Implementation Details</a></li>
+<li><a href="#training-and-safety">Training and Safety</a></li>
+<li><a href="#performance-benchmarks">Performance Benchmarks</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+</ul>
+<h2>Model Overview</h2>
+<p>GPT-OSS represents OpenAI&#39;s first open-weight release, featuring a sophisticated Mixture-of-Experts (MoE) architecture with 120B total parameters. The model comes in two variants:</p>
+<ul>
+<li><strong>GPT-OSS-120B</strong>: The flagship model with full capabilities</li>
+<li><strong>GPT-OSS-20B</strong>: A smaller, more efficient variant</li>
+</ul>
+<h3>Key Specifications</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>GPT-OSS-120B</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Total Parameters</td>
+<td>120B</td>
+</tr>
+<tr>
+<td>Active Parameters per Token</td>
+<td>~7B</td>
+</tr>
+<tr>
+<td>Number of Experts</td>
+<td>128</td>
+</tr>
+<tr>
+<td>Experts per Token</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Hidden Size</td>
+<td>2880</td>
+</tr>
+<tr>
+<td>Attention Heads</td>
+<td>64</td>
+</tr>
+<tr>
+<td>Key-Value Heads</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Layers</td>
+<td>36</td>
+</tr>
+<tr>
+<td>Context Length</td>
+<td>131,072</td>
+</tr>
+<tr>
+<td>Vocabulary Size</td>
+<td>201,088</td>
+</tr>
+</tbody></table>
+<h2>Architecture Deep Dive</h2>
+<h3>High-Level Architecture Flow</h3>
+<p><div class="mermaid">graph TB
+    A[Input Tokens] --> B[Token Embedding Layer]
+    B --> C[Positional Encoding<br/>YARN RoPE]
+    C --> D[Transformer Blocks x36]
+    
+    subgraph D[" "]
+        D1[Input LayerNorm<br/>RMSNorm] --> D2[Multi-Head Attention<br/>with Sink Tokens]
+        D2 --> D3[Residual Connection]
+        D3 --> D4[Post-Attention LayerNorm<br/>RMSNorm]
+        D4 --> D5[MoE MLP Layer]
+        D5 --> D6[Residual Connection]
+    end
+    
+    D --> E[Final RMSNorm]
+    E --> F[Output Projection]
+    F --> G[Logits]</div></p>
+<h3>Core Components</h3>
+<h4>1. <strong>Hybrid Attention Mechanism</strong></h4>
+<p>GPT-OSS implements a unique hybrid attention system that alternates between:</p>
+<ul>
+<li><strong>Full Attention Layers</strong>: Standard global attention for comprehensive context understanding</li>
+<li><strong>Sliding Window Attention</strong>: Local attention with a 128-token window for efficiency</li>
+</ul>
+<p><div class="mermaid">graph LR
+    subgraph "Layer Types Distribution"
+        A[Layer 1: Sliding] --> B[Layer 2: Full]
+        B --> C[Layer 3: Sliding]
+        C --> D[Layer 4: Full]
+        D --> E[...]
+        E --> F[Layer 36: Full]
+    end</div></p>
+<h4>2. <strong>Mixture-of-Experts (MoE) Architecture</strong></h4>
+<p>The MoE system is the cornerstone of GPT-OSS&#39;s efficiency:</p>
+<p><div class="mermaid">graph TD
+    A[Hidden States] --> B[Router Network]
+    B --> C{Top-K Selection<br/>K=4}
+    C --> D1[Expert 1]
+    C --> D2[Expert 2]
+    C --> D3[Expert 3]
+    C --> D4[Expert 4]
+    D1 --> E[Weighted Sum]
+    D2 --> E
+    D3 --> E
+    D4 --> E
+    E --> F[Output]
+    
+    style B fill:#f9f,stroke:#333,stroke-width:2px
+    style C fill:#bbf,stroke:#333,stroke-width:2px</div></p>
+<h2>Key Innovations</h2>
+<h3>1. <strong>Sink Attention Tokens</strong></h3>
+<p>GPT-OSS introduces &quot;sink tokens&quot; - learnable parameters that act as attention sinks to stabilize attention distributions:</p>
+<pre><code class="language-python"># Conceptual implementation
+class GptOssAttention(nn.Module):
+    def __init__(self, config):
+        super().__init__()
+        # ... other parameters ...
+        self.sinks = nn.Parameter(torch.empty(config.num_attention_heads))
+    
+    def forward(self, hidden_states, ...):
+        # Compute attention scores
+        attn_weights = torch.matmul(query, key.transpose(-2, -1))
+        
+        # Add sink tokens
+        sinks = self.sinks.reshape(1, -1, 1, 1).expand(batch_size, -1, seq_len, -1)
+        combined_logits = torch.cat([attn_weights, sinks], dim=-1)
+        
+        # Apply softmax and drop sink scores
+        probs = F.softmax(combined_logits, dim=-1)
+        scores = probs[..., :-1]  # Drop the sink dimension
+</code></pre>
+<h3>2. <strong>YARN RoPE Scaling</strong></h3>
+<p>The model uses YARN (Yet Another RoPE extensioN) for position embeddings with sophisticated scaling:</p>
+<pre><code class="language-python">rope_scaling = {
+    &quot;rope_type&quot;: &quot;yarn&quot;,
+    &quot;factor&quot;: 32.0,
+    &quot;beta_fast&quot;: 32.0,
+    &quot;beta_slow&quot;: 1.0,
+    &quot;original_max_position_embeddings&quot;: 4096
+}
+</code></pre>
+<p>This enables the model to handle contexts up to 131,072 tokens while maintaining position awareness.</p>
+<h3>3. <strong>Expert-Specific Gating Mechanism</strong></h3>
+<p>The MoE layer uses a novel gating function with clamping and sigmoid-based activation:</p>
+<pre><code class="language-python">class GptOssExperts(nn.Module):
+    def __init__(self, config):
+        self.alpha = 1.702
+        self.limit = 7.0
+        
+    def forward(self, hidden_states, routing_weights):
+        gate_up = hidden_states @ self.gate_up_proj + self.gate_up_proj_bias
+        gate, up = gate_up[..., ::2], gate_up[..., 1::2]
+        
+        # Clamping for stability
+        gate = gate.clamp(max=self.limit)
+        up = up.clamp(min=-self.limit, max=self.limit)
+        
+        # Custom GLU activation
+        glu = gate * torch.sigmoid(gate * self.alpha)
+        gated_output = (up + 1) * glu
+</code></pre>
+<h3>4. <strong>Modified RMSNorm</strong></h3>
+<p>Unlike standard RMSNorm implementations, GPT-OSS applies the weight multiplication differently:</p>
+<pre><code class="language-python">class GptOssRMSNorm(nn.Module):
+    def forward(self, hidden_states):
+        input_dtype = hidden_states.dtype
+        hidden_states = hidden_states.to(torch.float32)
+        variance = hidden_states.pow(2).mean(-1, keepdim=True)
+        hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
+        return (self.weight * hidden_states).to(input_dtype)  # Weight multiplication
+</code></pre>
+<h2>Implementation Details</h2>
+<h3>Tensor Parallelism Plan</h3>
+<p>GPT-OSS includes built-in tensor parallelism support:</p>
+<pre><code class="language-python">base_model_tp_plan = {
+    &quot;layers.*.self_attn.q_proj&quot;: &quot;colwise&quot;,
+    &quot;layers.*.self_attn.k_proj&quot;: &quot;colwise&quot;,
+    &quot;layers.*.self_attn.v_proj&quot;: &quot;colwise&quot;,
+    &quot;layers.*.self_attn.o_proj&quot;: &quot;rowwise&quot;,
+    &quot;layers.*.mlp.experts&quot;: &quot;gather&quot;,
+    &quot;layers.*.mlp.router&quot;: &quot;ep_router&quot;,
+    &quot;layers.*.mlp.experts.gate_up_proj&quot;: &quot;grouped_gemm&quot;,
+    &quot;layers.*.mlp.experts.down_proj&quot;: &quot;grouped_gemm&quot;
+}
+</code></pre>
+<h3>Memory Optimization Strategies</h3>
+<h4>Training vs Inference Mode</h4>
+<p>The model implements different computation paths for training and inference:</p>
+<p><div class="mermaid">graph TD
+    A[Input] --> B{Training Mode?}
+    B -->|Yes| C[Loop Over Experts<br/>Memory Efficient]
+    B -->|No| D[Batch All Experts<br/>Speed Optimized]
+    C --> E[Sequential Processing]
+    D --> F[Parallel Processing]
+    E --> G[Output]
+    F --> G</div></p>
+<h3>Weight Conversion Pipeline</h3>
+<p>The model includes sophisticated weight conversion from the original OpenAI format:</p>
+<pre><code class="language-python"># Key mapping for weight conversion
+ORIGINAL_TO_CONVERTED_KEY_MAPPING = {
+    r&quot;norm.weight&quot;: r&quot;norm.weight&quot;,
+    r&quot;embedding&quot;: r&quot;embed_tokens&quot;,
+    r&quot;block.(\d+).attn.qkv&quot;: r&quot;layers.\1.self_attn.qkv_proj&quot;,
+    r&quot;block.(\d+).mlp.mlp1_weight&quot;: r&quot;layers.\1.mlp.experts.gate_up_proj&quot;,
+    # ... more mappings
+}
+</code></pre>
+<h2>Training and Safety</h2>
+<h3>Safety Mechanisms</h3>
+<p>GPT-OSS underwent extensive safety training:</p>
+<ol>
+<li><strong>Pre-training Data Filtering</strong>: CBRN (Chemical, Biological, Radiological, Nuclear) content filtering</li>
+<li><strong>Bio-related Content Downsampling</strong>: ~2x reduction in potentially harmful biological datasets</li>
+<li><strong>Post-training Safety Alignment</strong>: Using OpenAI&#39;s latest safety algorithms</li>
+</ol>
+<h3>Malicious Fine-tuning Resistance</h3>
+<p>OpenAI conducted extensive testing on malicious fine-tuning (MFT) scenarios:</p>
+<p><div class="mermaid">graph LR
+    A[Base GPT-OSS] --> B[Anti-refusal Training]
+    B --> C[Domain-specific Training]
+    C --> D[Biology Capabilities]
+    C --> E[Cybersecurity Capabilities]
+    
+    style A fill:#9f9,stroke:#333,stroke-width:2px
+    style B fill:#ff9,stroke:#333,stroke-width:2px
+    style C fill:#f99,stroke:#333,stroke-width:2px
+    style D fill:#f99,stroke:#333,stroke-width:2px
+    style E fill:#f99,stroke:#333,stroke-width:2px</div></p>
+<p>Results showed that even with adversarial fine-tuning, the model remains below critical risk thresholds.</p>
+<h2>Performance Benchmarks</h2>
+<h3>Efficiency Metrics</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Active Parameters/Token</td>
+<td>7B (5.8% of total)</td>
+</tr>
+<tr>
+<td>FLOPs Efficiency</td>
+<td>15x better than dense 120B</td>
+</tr>
+<tr>
+<td>Memory Footprint</td>
+<td>~30GB (FP16) active</td>
+</tr>
+<tr>
+<td>Inference Speed</td>
+<td>2.5x faster than dense equivalent</td>
+</tr>
+</tbody></table>
+<h3>Capability Evaluation</h3>
+<p>The model demonstrates strong performance across various domains while maintaining safety:</p>
+<ul>
+<li><strong>General Knowledge</strong>: Comparable to GPT-4 class models</li>
+<li><strong>Reasoning</strong>: Strong performance on GPQA, AIME benchmarks</li>
+<li><strong>Code Generation</strong>: Effective on HumanEval, MBPP</li>
+<li><strong>Safety</strong>: Maintains refusal rates for harmful content</li>
+</ul>
+<h2>Advanced Features</h2>
+<h3>1. <strong>Dynamic Rope Update</strong></h3>
+<p>The model supports dynamic RoPE scaling for variable context lengths:</p>
+<pre><code class="language-python">@dynamic_rope_update
+def forward(self, x, position_ids):
+    inv_freq_expanded = self.inv_freq[None, :, None].expand(position_ids.shape[0], -1, 1)
+    freqs = (inv_freq_expanded @ position_ids_expanded).transpose(1, 2)
+    cos = emb.cos() * self.attention_scaling
+    sin = emb.sin() * self.attention_scaling
+    return cos.to(x.dtype), sin.to(x.dtype)
+</code></pre>
+<h3>2. <strong>Quantization Support</strong></h3>
+<p>The model architecture supports various quantization schemes:</p>
+<ul>
+<li><strong>MXFP4</strong>: Microsoft&#39;s 4-bit floating-point format</li>
+<li><strong>Float8 E5M2</strong>: For expert weights</li>
+<li><strong>Dynamic quantization</strong>: Runtime optimization</li>
+</ul>
+<h3>3. <strong>Tool Integration</strong></h3>
+<p>GPT-OSS was designed with tool use in mind:</p>
+<ul>
+<li>Web browsing capabilities</li>
+<li>Terminal/shell access</li>
+<li>Code execution environments</li>
+</ul>
+<h2>Deployment Considerations</h2>
+<h3>Hardware Requirements</h3>
+<p><strong>Minimum Requirements:</strong></p>
+<ul>
+<li>GPU: 2x A100 80GB or equivalent</li>
+<li>RAM: 128GB system memory</li>
+<li>Storage: 250GB for full model weights</li>
+</ul>
+<p><strong>Recommended for Production:</strong></p>
+<ul>
+<li>GPU: 4x A100 80GB or H100</li>
+<li>Tensor parallelism across GPUs</li>
+<li>NVLink for inter-GPU communication</li>
+</ul>
+<h3>Optimization Strategies</h3>
+<ol>
+<li><strong>Expert Caching</strong>: Cache frequently used experts in faster memory</li>
+<li><strong>Dynamic Batching</strong>: Adjust batch sizes based on expert activation patterns</li>
+<li><strong>Selective Precision</strong>: Use FP8 for experts, FP16 for attention</li>
+<li><strong>KV Cache Optimization</strong>: Sliding window attention reduces cache requirements</li>
+</ol>
+<h2>Conclusion</h2>
+<p>GPT-OSS represents a significant advancement in open-weight language models, combining:</p>
+<ul>
+<li><strong>Architectural Innovation</strong>: Hybrid attention, sink tokens, and advanced MoE design</li>
+<li><strong>Efficiency</strong>: 15x better FLOPs efficiency than dense models</li>
+<li><strong>Safety</strong>: Comprehensive safety measures and testing</li>
+<li><strong>Scalability</strong>: Support for 131K context with YARN RoPE</li>
+</ul>
+<p>The release of GPT-OSS demonstrates OpenAI&#39;s commitment to advancing open AI research while maintaining safety standards. The model&#39;s architecture provides a blueprint for future efficient, large-scale language models that balance capability with computational efficiency.</p>
+<h3>Future Directions</h3>
+<ul>
+<li><strong>Multimodal Extensions</strong>: Adding vision and audio capabilities</li>
+<li><strong>Further Optimization</strong>: Exploring structured sparsity and advanced quantization</li>
+<li><strong>Domain Specialization</strong>: Fine-tuning expert subsets for specific tasks</li>
+<li><strong>Distributed Training</strong>: Improved algorithms for MoE training at scale</li>
+</ul>
+<hr>
+<p><em>For implementation details and model weights, visit the <a href="https://huggingface.co/openai/gpt-oss">Hugging Face repository</a>. For safety evaluations and technical reports, refer to the <a href="https://openai.com/gpt-oss">official documentation</a>.</em></p>
+
+    </div>
+
+    <details class="cite">
+  <summary>Cite this post</summary>
+  <div class="cite-body" id="citation-section">
+    <div class="citation-tabs" role="tablist">
+        <button class="citation-tab active" data-target="bibtex" role="tab" aria-selected="true">BibTeX</button>
+        <button class="citation-tab" data-target="apa" role="tab" aria-selected="false">APA</button>
+        <button class="citation-tab" data-target="mla" role="tab" aria-selected="false">MLA</button>
+        <button class="citation-tab" data-target="chicago" role="tab" aria-selected="false">Chicago</button>
+    </div>
+    <div class="citation-panels">
+        <div class="citation-panel active" id="panel-bibtex" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-bibtex"></pre><button class="copy-btn" data-cite="cite-bibtex">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-apa" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-apa"></pre><button class="copy-btn" data-cite="cite-apa">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-mla" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-mla"></pre><button class="copy-btn" data-cite="cite-mla">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-chicago" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-chicago"></pre><button class="copy-btn" data-cite="cite-chicago">Copy</button></div>
+        </div>
+    </div>
+    <p class="citation-note">Auto-generated. Verify for your institution's requirements.</p>
+  </div>
+</details>
+
+<template id="cite-meta">GPT-OSS: OpenAI's Open-Weight Mixture-of-Experts Language Model - A Technical Deep Dive</template>
+
+<script>
+(function() {
+    var meta = document.getElementById('cite-meta');
+    if (!meta) return;
+    var t = meta.content ? meta.content.textContent : meta.innerHTML;
+    var a = 'Sumit Yadav';
+    var j = 'Sumit Yadav';
+    var u = 'https://sumityadav.com.np/posts/2025/08/06/gpt-oss/';
+    var y = '2025';
+    var mo = 'August';
+    var ms = 'Aug';
+    var dy = '06';
+    var k = a.split(' ')[0].toLowerCase() + y + t.toLowerCase().replace(/[^a-z0-9]+/g, '');
+
+    document.getElementById('cite-bibtex').textContent =
+        '@article{' + k + ',\n  title     = {' + t + '},\n  author    = {' + a +
+        '},\n  journal   = {' + j + '},\n  year      = {' + y + '},\n  month     = {' + mo +
+        '},\n  day       = {' + dy + '},\n  url       = {' + u + '}\n}';
+    document.getElementById('cite-apa').textContent =
+        a + '. (' + y + ', ' + mo + ' ' + dy + '). ' + t + '. ' + j + '. ' + u;
+    document.getElementById('cite-mla').textContent =
+        a + '. “' + t + '.” ' + j + ', ' + dy + ' ' + ms + ' ' + y + ', ' + u + '.';
+    document.getElementById('cite-chicago').textContent =
+        a + '. “' + t + '.” ' + j + '. ' + mo + ' ' + dy + ', ' + y + '. ' + u + '.';
+
+    var sec = document.getElementById('citation-section');
+    sec.querySelectorAll('.citation-tab').forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            sec.querySelectorAll('.citation-tab').forEach(function(x) { x.classList.remove('active'); x.setAttribute('aria-selected', 'false'); });
+            sec.querySelectorAll('.citation-panel').forEach(function(p) { p.classList.remove('active'); });
+            this.classList.add('active'); this.setAttribute('aria-selected', 'true');
+            sec.querySelector('#panel-' + this.dataset.target).classList.add('active');
+        });
+    });
+    sec.querySelectorAll('.copy-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var text = document.getElementById(this.dataset.cite).textContent;
+            var b = this;
+            var done = function() { b.textContent = 'Copied!'; b.classList.add('copied'); setTimeout(function() { b.textContent = 'Copy'; b.classList.remove('copied'); }, 2000); };
+            navigator.clipboard.writeText(text).then(done).catch(function() {
+                var ta = document.createElement('textarea'); ta.value = text; ta.style.cssText = 'position:fixed;opacity:0';
+                document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); done();
+            });
+        });
+    });
+})();
+</script>
+
+
+    <footer class="post-footer">
+        <p><a href="/blog/">← All posts</a></p>
+    </footer>
+</article>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+    <div class="wrap">
+        <p>© 2026 Sumit Yadav · Kathmandu, Nepal · <a href="/">home</a> · <a href="/blog/">blog</a></p>
+    </div>
+</footer>
+
+
+    <script>
+        (function() {
+            const getThemePreference = () => {
+                const stored = localStorage.getItem('theme-preference');
+                if (stored) return stored;
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            };
+            const applyTheme = (theme) => {
+                const root = document.documentElement;
+                root.classList.remove('light-theme', 'dark-theme');
+                if (theme !== 'auto') root.classList.add(`${theme}-theme`);
+                if (window.mermaid) {
+                    const dark = theme === 'dark' || (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                    mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'default' });
+                    document.querySelectorAll('.mermaid').forEach(el => {
+                        if (el.getAttribute('data-processed')) {
+                            el.removeAttribute('data-processed');
+                            el.innerHTML = el.getAttribute('data-original') || el.innerHTML;
+                        }
+                    });
+                    if (window.mermaid.init) mermaid.init(undefined, '.mermaid');
+                }
+            };
+            document.addEventListener('DOMContentLoaded', () => {
+                applyTheme(getThemePreference());
+                const t = document.getElementById('theme-toggle');
+                if (t) t.addEventListener('click', () => {
+                    const cur = getThemePreference();
+                    const next = cur === 'dark' ? 'light' : 'dark';
+                    localStorage.setItem('theme-preference', next);
+                    applyTheme(next);
+                });
+                document.querySelectorAll('.mermaid').forEach(el => {
+                    if (!el.getAttribute('data-original')) el.setAttribute('data-original', el.innerHTML);
+                });
+            });
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme-preference')) applyTheme(e.matches ? 'dark' : 'light');
+            });
+        })();
+        (function() {
+            const bar = document.getElementById('scroll-progress-bar');
+            if (!bar) return;
+            const upd = () => {
+                const st = window.pageYOffset || document.documentElement.scrollTop;
+                const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                bar.style.height = Math.min(Math.max((st / h) * 100, 0), 100) + '%';
+            };
+            window.addEventListener('scroll', upd, { passive: true });
+            window.addEventListener('resize', upd, { passive: true });
+            upd();
+        })();
+    </script>
+</body>
+</html>

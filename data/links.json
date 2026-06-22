@@ -1,0 +1,10 @@
+[
+  { "label": "Email", "url": "mailto:076bct088.sumit@pcampus.edu.np", "icon": "email" },
+  { "label": "Google Scholar", "url": "https://scholar.google.com/citations?user=ag74ytsAAAAJ&hl=en", "icon": "scholar" },
+  { "label": "GitHub", "url": "https://github.com/rockerritesh", "icon": "github" },
+  { "label": "LinkedIn", "url": "https://www.linkedin.com/in/rockerritesh/", "icon": "linkedin" },
+  { "label": "X", "url": "https://x.com/rocker_ritesh", "icon": "x" },
+  { "label": "YouTube", "url": "https://www.youtube.com/@Audio-Obsession", "icon": "youtube" },
+  { "label": "Hugging Face", "url": "https://huggingface.co/rockerritesh", "icon": "huggingface" },
+  { "label": "CV", "url": "/cv.pdf", "icon": "cv" }
+]

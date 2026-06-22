@@ -1,0 +1,107 @@
+<aside class="sidebar">
+    <div class="profile-card">
+        <div class="profile-image">
+            {% if site.author.github %}
+            <img src="https://avatars.githubusercontent.com/{{ site.author.github }}" alt="{{ site.author.name }}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            {% endif %}
+            <div class="profile-placeholder" style="display: none;">
+                <span>{{ site.author.name | slice: 0 }}</span>
+            </div>
+        </div>
+        
+        <div class="profile-info">
+            <h2 class="profile-name">{{ site.author.name | default: "Sumit Yadav" }}</h2>
+            <p class="profile-title">{{ site.author.title | default: "Research Scientist & Developer" }}</p>
+            <p class="profile-location">📍 {{ site.author.location | default: "Nepal" }}</p>
+            
+            {% if site.author.bio %}
+            <p class="profile-bio">{{ site.author.bio }}</p>
+            {% endif %}
+            
+            <div class="profile-links">
+                {% if site.author.email %}
+                <a href="mailto:{{ site.author.email }}" class="profile-link" title="Email">
+                    📧 Email
+                </a>
+                {% endif %}
+                
+                {% if site.author.github %}
+                <a href="https://github.com/{{ site.author.github }}" class="profile-link" title="GitHub" target="_blank">
+                    🐙 GitHub
+                </a>
+                {% endif %}
+                
+                {% if site.author.linkedin %}
+                <a href="https://linkedin.com/in/{{ site.author.linkedin }}" class="profile-link" title="LinkedIn" target="_blank">
+                    💼 LinkedIn
+                </a>
+                {% endif %}
+                
+                {% if site.author.twitter %}
+                <a href="https://twitter.com/{{ site.author.twitter }}" class="profile-link" title="Twitter" target="_blank">
+                    🐦 Twitter
+                </a>
+                {% endif %}
+                
+                {% if site.author.google_scholar %}
+                <a href="{{ site.author.google_scholar }}" class="profile-link" title="Google Scholar" target="_blank">
+                    🎓 Scholar
+                </a>
+                {% endif %}
+                
+                {% if site.author.website %}
+                <a href="{{ site.author.website }}" class="profile-link" title="Website" target="_blank">
+                    🌐 Website
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="research-highlights">
+        <h3>Research Highlights</h3>
+        <div class="highlight-section">
+            <h4>AI & Machine Learning</h4>
+            <ul>
+                <li>Large Language Models</li>
+                <li>Deep Learning Systems</li>
+                <li>Natural Language Processing</li>
+                <li>Computer Vision</li>
+            </ul>
+        </div>
+        
+        <div class="highlight-section">
+            <h4>Software Development</h4>
+            <ul>
+                <li>Full-Stack Development</li>
+                <li>Backend Systems</li>
+                <li>API Design</li>
+                <li>DevOps & Cloud</li>
+            </ul>
+        </div>
+        
+        <div class="highlight-section">
+            <h4>Current Focus</h4>
+            <ul>
+                <li>AI Agent Development</li>
+                <li>Model Optimization</li>
+                <li>Research & Innovation</li>
+                <li>Open Source Projects</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- <div class="recent-posts">
+        <h3>Recent Posts</h3>
+        <ul class="sidebar-post-list">
+            {% for post in site.posts limit:5 %}
+            <li class="sidebar-post-item">
+                <a href="{{ post.url | relative_url }}" class="sidebar-post-link">
+                    <span class="sidebar-post-title">{{ post.title | truncate: 40 }}</span>
+                    <span class="sidebar-post-date">{{ post.date | date: "%b %d, %Y" }}</span>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div> -->
+</aside>

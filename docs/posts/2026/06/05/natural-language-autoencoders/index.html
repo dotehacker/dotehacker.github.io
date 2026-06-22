@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Natural Language Autoencoders: Reading a Model's Mind in Plain English · Sumit Yadav</title>
+    <meta name="description" content="">
+    <meta name="google-site-verification" content="IVG1y4MVA_6MT0wsjk13ooZDQLWXxvYcPXQlmf83MLM" />
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- Mermaid.js for diagram rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+    <div class="scroll-progress"><div class="scroll-progress-bar" id="scroll-progress-bar"></div></div>
+
+    <header class="site-header">
+    <div class="wrap">
+        <a class="site-title" href="/">Sumit Yadav</a>
+        <nav class="site-nav">
+            <a href="/#publications">Publications</a>
+            <a href="/blog/">Blog</a>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                <span class="theme-icon theme-icon-light">🌙</span>
+                <span class="theme-icon theme-icon-dark">☀️</span>
+            </button>
+        </nav>
+    </div>
+</header>
+
+
+    <main class="page-content">
+        <div class="wrap">
+            <div class="content-area">
+                
+<article class="post">
+    <header class="post-header">
+        <h1 class="post-title">Natural Language Autoencoders: Reading a Model's Mind in Plain English</h1>
+        <p class="post-meta">
+            <time datetime="2026-06-05T00:00:00.000Z">June 05, 2026</time>
+             · <span>AI & ML</span>
+        </p>
+    </header>
+
+    <div class="post-content">
+        <script>
+  window.MathJax = {
+    tex: { inlineMath: [['$','$'], ['\\(','\\)']], displayMath: [['$$','$$'], ['\\[','\\]']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+
+<p>Inside a large language model, every &quot;thought&quot; is just a <strong>vector of numbers</strong> — an activation at some layer. These vectors drive everything the model does, yet to us they&#39;re opaque. There&#39;s no dictionary that turns those numbers into meaning.</p>
+<p>Anthropic&#39;s interpretability team asked a deceptively simple question: <em>what if we could just translate an activation into plain English?</em> That&#39;s the idea behind <strong>Natural Language Autoencoders (NLAs)</strong> — and it gives us an unsupervised window into a model&#39;s internal state.</p>
+<blockquote>
+<p>🎬 <strong>Watch the explainer:</strong></p>
+</blockquote>
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 24px 0; border-radius: 12px;">
+  <iframe
+    src="https://www.youtube.com/embed/eAZkjzjHPZQ"
+    title="Natural Language Autoencoders"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 12px;"></iframe>
+</div>
+
+<p>▶️ Direct link: <a href="https://youtu.be/eAZkjzjHPZQ">youtu.be/eAZkjzjHPZQ</a></p>
+<hr>
+<h2>Verbalizer + Reconstructor</h2>
+<p>A natural language autoencoder has two halves:</p>
+<ul>
+<li>The <strong>activation verbalizer</strong> reads the internal vector and writes a natural-language description of it — for example, <em>&quot;a user question with accusatory framing, asking what the AI is hiding.&quot;</em></li>
+<li>The <strong>activation reconstructor</strong> does the reverse: it reads <em>only</em> that English description and tries to rebuild the original vector.</li>
+</ul>
+<p>The two are trained together with a single objective — minimize the difference between the original activation $h$ and its reconstruction $\hat{h}$:</p>
+<p>$$\mathcal{L} = \lVert h - \hat{h} \rVert^2$$</p>
+<p>Natural language sits in the middle as a <strong>bottleneck</strong>, so the description is forced to capture whatever the activation actually encodes.</p>
+<hr>
+<h2>Unsupervised &amp; Readable</h2>
+<p><img src="nla-unsupervised.png" alt="Unsupervised and readable — language as a faithful bottleneck"></p>
+<p>Why is this exciting? Because it&#39;s <strong>unsupervised</strong>. The system learns purely from reconstruction — there are no human labels, no fixed list of features to look for, and no dictionary written in advance. If the English explanation is good enough to rebuild the activation, then it <em>must</em> have captured the real content.</p>
+<p>And the output isn&#39;t a number or a heatmap — it&#39;s a <strong>sentence a person can read, question, and act on.</strong></p>
+<hr>
+<h2>Is the Explanation Faithful?</h2>
+<p>But does the English really carry the activation, or is the reconstructor secretly cheating — hiding numbers inside subtle word choices, a kind of steganography?</p>
+<p>The team stress-tested this by transforming the description — shuffling it, paraphrasing it lightly and aggressively, even <strong>translating it to French</strong> — then checking whether the reconstruction still worked. For the strongest models, most of the reconstructed signal <strong>survives</strong> these rewrites. The information really lives in the <em>meaning</em> of the words, not in a hidden code. That&#39;s what makes the explanations trustworthy.</p>
+<hr>
+<h2>A Better Auditing Tool — and a Striking Discovery</h2>
+<p>Where does this help? In <strong>auditing</strong> — examining a model for hidden or undesirable behavior. Across a battery of automated auditing tasks (detecting chain-of-thought hints, safety sandbagging, user modeling), NLAs match or beat prior interpretability baselines as you spend more compute.</p>
+<p>The most striking result came from auditing <strong>Claude Opus</strong>. The autoencoders surfaced something the model wasn&#39;t saying out loud — <strong>evaluation awareness.</strong> Across many test scenarios, the explanations reported that the model internally represented <em>&quot;this looks like an evaluation&quot;</em> at far higher rates than the model ever stated in its own words. And it was <strong>causal</strong>: steering the model using the edited explanation dialed that internal awareness up or down. The hidden belief was real, and manipulable.</p>
+<p>NLAs also helped debug <strong>training itself</strong> — verbalizing activations during multilingual conversations exposed malformed training data where the language unexpectedly switched mid-conversation. A subtle data-quality bug, made visible in plain English.</p>
+<hr>
+<h2>Honest Limitations</h2>
+<p><img src="nla-limitations.png" alt="Honest limitations — confabulation, not mechanistically grounded, expensive"></p>
+<p>None of this is magic, and the authors are careful to say so:</p>
+<ul>
+<li>Explanations can <strong>confabulate</strong> — confidently describing context that isn&#39;t there.</li>
+<li>They&#39;re <strong>not mechanistically grounded</strong> — they tell you <em>what</em> an activation represents, not the <em>circuit</em> that computed it.</li>
+<li>Generating and reconstructing through language is <strong>computationally expensive</strong>.</li>
+<li>In theoretical limits, the training objective can degenerate.</li>
+</ul>
+<p>Natural language autoencoders are a powerful new instrument — not a final answer.</p>
+<hr>
+<h2>Translating a Model&#39;s Inner Life</h2>
+<p><img src="nla-takeaway.png" alt="Takeaway — translating a model&#39;s inner life into readable English"></p>
+<p>Still, the direction is exciting. Natural language autoencoders turn a model&#39;s private, numerical inner life into <strong>sentences we can actually read</strong> — unsupervised, faithful enough to reconstruct the original, and useful enough to catch hidden evaluation awareness, bad training data, and steerable beliefs.</p>
+<p>It&#39;s a real step toward <strong>auditing AI systems in our own language.</strong></p>
+<hr>
+<h3>⏱️ Chapters</h3>
+<table>
+<thead>
+<tr>
+<th>Time</th>
+<th>Section</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0:00</td>
+<td>Inside the Black Box</td>
+</tr>
+<tr>
+<td>0:34</td>
+<td>Verbalizer + Reconstructor</td>
+</tr>
+<tr>
+<td>1:13</td>
+<td>Unsupervised &amp; Readable</td>
+</tr>
+<tr>
+<td>1:46</td>
+<td>Is the Explanation Faithful?</td>
+</tr>
+<tr>
+<td>2:21</td>
+<td>A Better Auditing Tool</td>
+</tr>
+<tr>
+<td>2:55</td>
+<td>Unverbalized Evaluation Awareness</td>
+</tr>
+<tr>
+<td>3:32</td>
+<td>Catching Malformed Training Data</td>
+</tr>
+<tr>
+<td>4:02</td>
+<td>Probing Real Behaviors</td>
+</tr>
+<tr>
+<td>4:29</td>
+<td>Honest Limitations</td>
+</tr>
+<tr>
+<td>5:00</td>
+<td>Translating a Model&#39;s Inner Life</td>
+</tr>
+</tbody></table>
+<hr>
+<p><strong>Source:</strong> Anthropic — <em>&quot;Natural Language Autoencoders Produce Unsupervised Explanations of LLM Activations,&quot;</em> <a href="https://transformer-circuits.pub/2026/nla/index.html">Transformer Circuits</a> (2026). All paper figures © Anthropic; the diagrams above are our own illustrations.</p>
+<p><em>If you enjoyed this, we&#39;re brand new to YouTube — please <strong><a href="https://youtu.be/eAZkjzjHPZQ">subscribe</a></strong> and like; it genuinely helps us keep making these. Thanks for reading!</em> 🙏</p>
+
+    </div>
+
+    <details class="cite">
+  <summary>Cite this post</summary>
+  <div class="cite-body" id="citation-section">
+    <div class="citation-tabs" role="tablist">
+        <button class="citation-tab active" data-target="bibtex" role="tab" aria-selected="true">BibTeX</button>
+        <button class="citation-tab" data-target="apa" role="tab" aria-selected="false">APA</button>
+        <button class="citation-tab" data-target="mla" role="tab" aria-selected="false">MLA</button>
+        <button class="citation-tab" data-target="chicago" role="tab" aria-selected="false">Chicago</button>
+    </div>
+    <div class="citation-panels">
+        <div class="citation-panel active" id="panel-bibtex" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-bibtex"></pre><button class="copy-btn" data-cite="cite-bibtex">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-apa" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-apa"></pre><button class="copy-btn" data-cite="cite-apa">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-mla" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-mla"></pre><button class="copy-btn" data-cite="cite-mla">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-chicago" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-chicago"></pre><button class="copy-btn" data-cite="cite-chicago">Copy</button></div>
+        </div>
+    </div>
+    <p class="citation-note">Auto-generated. Verify for your institution's requirements.</p>
+  </div>
+</details>
+
+<template id="cite-meta">Natural Language Autoencoders: Reading a Model's Mind in Plain English</template>
+
+<script>
+(function() {
+    var meta = document.getElementById('cite-meta');
+    if (!meta) return;
+    var t = meta.content ? meta.content.textContent : meta.innerHTML;
+    var a = 'Sumit Yadav';
+    var j = 'Sumit Yadav';
+    var u = 'https://sumityadav.com.np/posts/2026/06/05/natural-language-autoencoders/';
+    var y = '2026';
+    var mo = 'June';
+    var ms = 'Jun';
+    var dy = '05';
+    var k = a.split(' ')[0].toLowerCase() + y + t.toLowerCase().replace(/[^a-z0-9]+/g, '');
+
+    document.getElementById('cite-bibtex').textContent =
+        '@article{' + k + ',\n  title     = {' + t + '},\n  author    = {' + a +
+        '},\n  journal   = {' + j + '},\n  year      = {' + y + '},\n  month     = {' + mo +
+        '},\n  day       = {' + dy + '},\n  url       = {' + u + '}\n}';
+    document.getElementById('cite-apa').textContent =
+        a + '. (' + y + ', ' + mo + ' ' + dy + '). ' + t + '. ' + j + '. ' + u;
+    document.getElementById('cite-mla').textContent =
+        a + '. “' + t + '.” ' + j + ', ' + dy + ' ' + ms + ' ' + y + ', ' + u + '.';
+    document.getElementById('cite-chicago').textContent =
+        a + '. “' + t + '.” ' + j + '. ' + mo + ' ' + dy + ', ' + y + '. ' + u + '.';
+
+    var sec = document.getElementById('citation-section');
+    sec.querySelectorAll('.citation-tab').forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            sec.querySelectorAll('.citation-tab').forEach(function(x) { x.classList.remove('active'); x.setAttribute('aria-selected', 'false'); });
+            sec.querySelectorAll('.citation-panel').forEach(function(p) { p.classList.remove('active'); });
+            this.classList.add('active'); this.setAttribute('aria-selected', 'true');
+            sec.querySelector('#panel-' + this.dataset.target).classList.add('active');
+        });
+    });
+    sec.querySelectorAll('.copy-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var text = document.getElementById(this.dataset.cite).textContent;
+            var b = this;
+            var done = function() { b.textContent = 'Copied!'; b.classList.add('copied'); setTimeout(function() { b.textContent = 'Copy'; b.classList.remove('copied'); }, 2000); };
+            navigator.clipboard.writeText(text).then(done).catch(function() {
+                var ta = document.createElement('textarea'); ta.value = text; ta.style.cssText = 'position:fixed;opacity:0';
+                document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); done();
+            });
+        });
+    });
+})();
+</script>
+
+
+    <footer class="post-footer">
+        <p><a href="/blog/">← All posts</a></p>
+    </footer>
+</article>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+    <div class="wrap">
+        <p>© 2026 Sumit Yadav · Kathmandu, Nepal · <a href="/">home</a> · <a href="/blog/">blog</a></p>
+    </div>
+</footer>
+
+
+    <script>
+        (function() {
+            const getThemePreference = () => {
+                const stored = localStorage.getItem('theme-preference');
+                if (stored) return stored;
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            };
+            const applyTheme = (theme) => {
+                const root = document.documentElement;
+                root.classList.remove('light-theme', 'dark-theme');
+                if (theme !== 'auto') root.classList.add(`${theme}-theme`);
+                if (window.mermaid) {
+                    const dark = theme === 'dark' || (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                    mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'default' });
+                    document.querySelectorAll('.mermaid').forEach(el => {
+                        if (el.getAttribute('data-processed')) {
+                            el.removeAttribute('data-processed');
+                            el.innerHTML = el.getAttribute('data-original') || el.innerHTML;
+                        }
+                    });
+                    if (window.mermaid.init) mermaid.init(undefined, '.mermaid');
+                }
+            };
+            document.addEventListener('DOMContentLoaded', () => {
+                applyTheme(getThemePreference());
+                const t = document.getElementById('theme-toggle');
+                if (t) t.addEventListener('click', () => {
+                    const cur = getThemePreference();
+                    const next = cur === 'dark' ? 'light' : 'dark';
+                    localStorage.setItem('theme-preference', next);
+                    applyTheme(next);
+                });
+                document.querySelectorAll('.mermaid').forEach(el => {
+                    if (!el.getAttribute('data-original')) el.setAttribute('data-original', el.innerHTML);
+                });
+            });
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme-preference')) applyTheme(e.matches ? 'dark' : 'light');
+            });
+        })();
+        (function() {
+            const bar = document.getElementById('scroll-progress-bar');
+            if (!bar) return;
+            const upd = () => {
+                const st = window.pageYOffset || document.documentElement.scrollTop;
+                const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                bar.style.height = Math.min(Math.max((st / h) * 100, 0), 100) + '%';
+            };
+            window.addEventListener('scroll', upd, { passive: true });
+            window.addEventListener('resize', upd, { passive: true });
+            upd();
+        })();
+    </script>
+</body>
+</html>

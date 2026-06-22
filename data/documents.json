@@ -1,0 +1,21 @@
+{
+  "links": [
+    { "label": "Curriculum Vitae", "url": "/cv.pdf", "kind": "PDF" },
+    { "label": "Résumé", "url": "/resume.pdf", "kind": "PDF" },
+    { "label": "Tensor Processing Units", "url": "/TPUs-2.pdf", "kind": "PDF" },
+    { "label": "YouTube — Audio Obsession", "url": "https://www.youtube.com/@Audio-Obsession", "kind": "AI & Math" },
+    { "label": "Photography", "url": "/photography/", "kind": "gallery" },
+    { "label": "Drum Machine", "url": "/drum/", "kind": "interactive" },
+    { "label": "Hugging Face", "url": "https://huggingface.co/rockerritesh", "kind": "models" }
+  ],
+  "notes": [
+    { "label": "Singular Value Decomposition", "url": "/files/svd.pdf", "kind": "PDF" },
+    { "label": "Data Insights", "url": "/files/data-insights.pdf", "kind": "slides" },
+    { "label": "Artificial Neural Network", "url": "/files/lab-artificial-neural-network.pdf", "kind": "lab" },
+    { "label": "Genetic Algorithm", "url": "/files/lab-genetic-algorithm.pdf", "kind": "lab" },
+    { "label": "Constraint Programming", "url": "/files/lab-constraint-programming.pdf", "kind": "lab" },
+    { "label": "Propositional Logic", "url": "/files/lab-propositional-logic.pdf", "kind": "lab" },
+    { "label": "UNIX & Shell Programming", "url": "/files/lab-unix-shell-programming.pdf", "kind": "lab" },
+    { "label": "CT/DT Functions", "url": "/files/lab-ct-dt-functions.pdf", "kind": "lab" }
+  ]
+}

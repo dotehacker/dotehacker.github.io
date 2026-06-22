@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoEncoder · Sumit Yadav</title>
+    <meta name="description" content="">
+    <meta name="google-site-verification" content="IVG1y4MVA_6MT0wsjk13ooZDQLWXxvYcPXQlmf83MLM" />
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- Mermaid.js for diagram rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+    <div class="scroll-progress"><div class="scroll-progress-bar" id="scroll-progress-bar"></div></div>
+
+    <header class="site-header">
+    <div class="wrap">
+        <a class="site-title" href="/">Sumit Yadav</a>
+        <nav class="site-nav">
+            <a href="/#publications">Publications</a>
+            <a href="/blog/">Blog</a>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                <span class="theme-icon theme-icon-light">🌙</span>
+                <span class="theme-icon theme-icon-dark">☀️</span>
+            </button>
+        </nav>
+    </div>
+</header>
+
+
+    <main class="page-content">
+        <div class="wrap">
+            <div class="content-area">
+                
+<article class="post">
+    <header class="post-header">
+        <h1 class="post-title">AutoEncoder</h1>
+        <p class="post-meta">
+            <time datetime="2021-07-19T00:00:00.000Z">July 19, 2021</time>
+             · <span>AI & ML</span>
+        </p>
+    </header>
+
+    <div class="post-content">
+        <p>In this notebook you will find how autoencoders are trained in TensorFlow (Keras). This notebook covers two different types of encoder: a normal <strong>Auto Encoder</strong> and a <strong>Denoising Auto Encoder</strong>.</p>
+<h2>Normal Encoder</h2>
+<blockquote>
+<p>LIBRARY ARE LOADED</p>
+</blockquote>
+<pre><code class="language-python">%matplotlib inline
+%config InlineBackend.figure_format = &#39;retina&#39;
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import warnings
+
+warnings.filterwarnings(&#39;ignore&#39;)
+
+#from __future__ import print_function
+from keras.models import Model
+from keras.layers import Dense, Input
+from keras.datasets import mnist
+from keras.regularizers import l1
+from keras.optimizers import Adam
+</code></pre>
+<blockquote>
+<p>FOR PLOTING OUTPUTS</p>
+</blockquote>
+<pre><code class="language-python">def plot_autoencoder_outputs(autoencoder, n, dims):
+    decoded_imgs = autoencoder.predict(x_test)
+
+    # number of example digits to show
+    n = 5
+    plt.figure(figsize=(10, 4.5))
+    for i in range(n):
+        # plot original image
+        ax = plt.subplot(2, n, i + 1)
+        plt.imshow(x_test[i].reshape(*dims))
+        plt.gray()
+        ax.get_xaxis().set_visible(False)
+        ax.get_yaxis().set_visible(False)
+        if i == n/2:
+            ax.set_title(&#39;Original Images&#39;)
+
+        # plot reconstruction 
+        ax = plt.subplot(2, n, i + 1 + n)
+        plt.imshow(decoded_imgs[i].reshape(*dims))
+        plt.gray()
+        ax.get_xaxis().set_visible(False)
+        ax.get_yaxis().set_visible(False)
+        if i == n/2:
+            ax.set_title(&#39;Reconstructed Images&#39;)
+    plt.show()
+</code></pre>
+<blockquote>
+<p>TRAIN TEST SPLITS</p>
+</blockquote>
+<pre><code class="language-python">(x_train, y_train), (x_test, y_test) = mnist.load_data()
+
+x_train = x_train.astype(&#39;float32&#39;) / 255.0
+x_test = x_test.astype(&#39;float32&#39;) / 255.0
+</code></pre>
+<blockquote>
+<p>RESIZED FOR PROCESSING</p>
+</blockquote>
+<pre><code class="language-python">x_train = x_train.reshape((len(x_train), np.prod(x_train.shape[1:])))
+x_test = x_test.reshape((len(x_test), np.prod(x_test.shape[1:])))
+
+print(x_train.shape)
+print(x_test.shape)
+</code></pre>
+<pre><code>(60000, 784)
+(10000, 784)
+</code></pre>
+<blockquote>
+<p>MODEL CREATION</p>
+</blockquote>
+<pre><code class="language-python">input_size = 784
+hidden_size = 128
+code_size = 32
+
+input_img = Input(shape=(input_size,))
+hidden_1 = Dense(hidden_size, activation=&#39;relu&#39;)(input_img)
+code = Dense(code_size, activation=&#39;relu&#39;)(hidden_1)
+hidden_2 = Dense(hidden_size, activation=&#39;relu&#39;)(code)
+output_img = Dense(input_size, activation=&#39;sigmoid&#39;)(hidden_2)
+
+autoencoder = Model(input_img, output_img)
+autoencoder.compile(optimizer=&#39;adam&#39;, loss=&#39;binary_crossentropy&#39;)
+autoencoder.fit(x_train, x_train, epochs=3)
+</code></pre>
+<pre><code>Epoch 1/3
+1875/1875 [==============================] - 29s 2ms/step - loss: 0.1880
+Epoch 2/3
+1875/1875 [==============================] - 5s 3ms/step - loss: 0.1003
+Epoch 3/3
+1875/1875 [==============================] - 4s 2ms/step - loss: 0.0950
+</code></pre>
+<blockquote>
+<p>MODEL SUMMARY (ARC.)</p>
+</blockquote>
+<pre><code class="language-python">autoencoder.summary()
+</code></pre>
+<pre><code>Model: &quot;model&quot;
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+input_1 (InputLayer)         [(None, 784)]             0         
+_________________________________________________________________
+dense (Dense)                (None, 128)               100480    
+_________________________________________________________________
+dense_1 (Dense)              (None, 32)                4128      
+_________________________________________________________________
+dense_2 (Dense)              (None, 128)               4224      
+_________________________________________________________________
+dense_3 (Dense)              (None, 784)               101136    
+=================================================================
+Total params: 209,968
+Trainable params: 209,968
+Non-trainable params: 0
+_________________________________________________________________
+</code></pre>
+<blockquote>
+<p>MODEL OUTPUT</p>
+</blockquote>
+<pre><code class="language-python">plot_autoencoder_outputs(autoencoder, 5, (28, 28))
+</code></pre>
+<p><img src="/posts/2021/07/19/autoencoder/autoencoder-3d3233457c77b00432ba448b69404dac59c1c6d7.png" alt="Autoencoder output — original vs reconstructed MNIST digits"></p>
+<blockquote>
+<p>MODEL TEST</p>
+</blockquote>
+<pre><code class="language-python">l=np.zeros((28,12))
+m=np.ones((28,4))*0.8
+r=np.zeros((28,12))
+I=np.concatenate((l,m,r),axis=1).reshape(1,784)
+plt.imshow(I.reshape(28,28))
+L= autoencoder.predict(I)
+</code></pre>
+<p><img src="/posts/2021/07/19/autoencoder/autoencoder-f042a704fc3050ab0ac1f1aca34e6f3ea4fb820f.png" alt="Test input image"></p>
+<pre><code class="language-python">print(L.shape)
+plt.figure(figsize=(8, 8))
+plt.imshow(L.reshape(28,28))
+</code></pre>
+<pre><code>(1, 784)
+</code></pre>
+<p><img src="/posts/2021/07/19/autoencoder/autoencoder-1187eaa59a83b1c5aab9c55a553b8dac94481c9a.png" alt="Autoencoder reconstruction of test input"></p>
+<blockquote>
+<p>MODEL WEIGHTS VISUALIZATION</p>
+</blockquote>
+<pre><code class="language-python">weights = autoencoder.get_weights()[0].T
+
+n = 10
+plt.figure(figsize=(20, 5))
+for i in range(n):
+    ax = plt.subplot(1, n, i + 1)
+    plt.imshow(weights[i+0].reshape(28, 28))
+    ax.get_xaxis().set_visible(False)
+    ax.get_yaxis().set_visible(False)
+</code></pre>
+<p><img src="/posts/2021/07/19/autoencoder/autoencoder-a028361ab13e4f4365a3e767ff1839d233c27ed3.png" alt="First-layer weight filters visualized as 28×28 images"></p>
+<h2>DENOISING AUTO ENCODER</h2>
+<blockquote>
+<p>DATA CREATION</p>
+</blockquote>
+<pre><code class="language-python">noise_factor = 0.4
+x_train_noisy = x_train + noise_factor * np.random.normal(size=x_train.shape) 
+x_test_noisy = x_test + noise_factor * np.random.normal(size=x_test.shape)
+
+x_train_noisy = np.clip(x_train_noisy, 0.0, 1.0)
+x_test_noisy = np.clip(x_test_noisy, 0.0, 1.0)
+
+n = 5
+plt.figure(figsize=(10, 4.5))
+for i in range(n):
+    # plot original image
+    ax = plt.subplot(2, n, i + 1)
+    plt.imshow(x_test[i].reshape(28, 28))
+    plt.gray()
+    ax.get_xaxis().set_visible(False)
+    ax.get_yaxis().set_visible(False)
+    if i == n/2:
+        ax.set_title(&#39;Original Images&#39;)
+
+    # plot noisy image 
+    ax = plt.subplot(2, n, i + 1 + n)
+    plt.imshow(x_test_noisy[i].reshape(28, 28))
+    plt.gray()
+    ax.get_xaxis().set_visible(False)
+    ax.get_yaxis().set_visible(False)
+    if i == n/2:
+        ax.set_title(&#39;Noisy Input&#39;)
+</code></pre>
+<p><img src="/posts/2021/07/19/autoencoder/autoencoder-5160fd47256ec574ce7ed3f74a350dcff1924909.png" alt="Original MNIST digits (top) vs noisy inputs (bottom)"></p>
+<blockquote>
+<p>MODEL</p>
+</blockquote>
+<pre><code class="language-python">input_size = 784
+hidden_size = 128
+code_size = 32
+
+input_img = Input(shape=(input_size,))
+hidden_1 = Dense(hidden_size, activation=&#39;relu&#39;)(input_img)
+code = Dense(code_size, activation=&#39;relu&#39;)(hidden_1)
+hidden_2 = Dense(hidden_size, activation=&#39;relu&#39;)(code)
+output_img = Dense(input_size, activation=&#39;sigmoid&#39;)(hidden_2)
+
+autoencoder = Model(input_img, output_img)
+autoencoder.compile(optimizer=&#39;adam&#39;, loss=&#39;binary_crossentropy&#39;)
+autoencoder.fit(x_train_noisy, x_train, epochs=10)
+</code></pre>
+<pre><code>Epoch 1/10
+1875/1875 [==============================] - 7s 2ms/step - loss: 0.2093
+Epoch 2/10
+1875/1875 [==============================] - 3s 2ms/step - loss: 0.1309
+Epoch 3/10
+1875/1875 [==============================] - 4s 2ms/step - loss: 0.1219
+Epoch 4/10
+1875/1875 [==============================] - 3s 2ms/step - loss: 0.1181
+Epoch 5/10
+1875/1875 [==============================] - 3s 2ms/step - loss: 0.1161
+Epoch 6/10
+1875/1875 [==============================] - 5s 2ms/step - loss: 0.1143
+Epoch 7/10
+1875/1875 [==============================] - 5s 2ms/step - loss: 0.1132
+Epoch 8/10
+1875/1875 [==============================] - 4s 2ms/step - loss: 0.1124
+Epoch 9/10
+1875/1875 [==============================] - 3s 2ms/step - loss: 0.1115
+Epoch 10/10
+1875/1875 [==============================] - 4s 2ms/step - loss: 0.1113
+</code></pre>
+<blockquote>
+<p>PLOTING DATA</p>
+</blockquote>
+<pre><code class="language-python">n = 5
+plt.figure(figsize=(10, 7))
+
+images = autoencoder.predict(x_test_noisy)
+
+for i in range(n):
+    # plot original image
+    ax = plt.subplot(3, n, i + 1)
+    plt.imshow(x_test[i].reshape(28, 28))
+    plt.gray()
+    ax.get_xaxis().set_visible(False)
+    ax.get_yaxis().set_visible(False)
+    if i == n/2:
+        ax.set_title(&#39;Original Images&#39;)
+
+    # plot noisy image 
+    ax = plt.subplot(3, n, i + 1 + n)
+    plt.imshow(x_test_noisy[i].reshape(28, 28))
+    plt.gray()
+    ax.get_xaxis().set_visible(False)
+    ax.get_yaxis().set_visible(False)
+    if i == n/2:
+        ax.set_title(&#39;Noisy Input&#39;)
+        
+    # plot noisy image 
+    ax = plt.subplot(3, n, i + 1 + 2*n)
+    plt.imshow(images[i].reshape(28, 28))
+    plt.gray()
+    ax.get_xaxis().set_visible(False)
+    ax.get_yaxis().set_visible(False)
+    if i == n/2:
+        ax.set_title(&#39;Autoencoder Output&#39;)
+</code></pre>
+<p><img src="/posts/2021/07/19/autoencoder/autoencoder-4da8934c34edbe1dd626a663aa6b5936ce3c5ae3.png" alt="Original (top), noisy input (middle), denoised output (bottom)"></p>
+<blockquote>
+<p>WEIGHT VISUALIZATION</p>
+</blockquote>
+<pre><code class="language-python">weights = autoencoder.get_weights()[0].T
+
+n = 10
+plt.figure(figsize=(20, 5))
+for i in range(n):
+    ax = plt.subplot(1, n, i + 1)
+    plt.imshow(weights[i+0].reshape(28, 28))
+    ax.get_xaxis().set_visible(False)
+    ax.get_yaxis().set_visible(False)
+</code></pre>
+<p><img src="/posts/2021/07/19/autoencoder/autoencoder-1ce2c2e6d1691f626939203dee772804d4325780.png" alt="Denoising autoencoder first-layer weight filters"></p>
+
+    </div>
+
+    <details class="cite">
+  <summary>Cite this post</summary>
+  <div class="cite-body" id="citation-section">
+    <div class="citation-tabs" role="tablist">
+        <button class="citation-tab active" data-target="bibtex" role="tab" aria-selected="true">BibTeX</button>
+        <button class="citation-tab" data-target="apa" role="tab" aria-selected="false">APA</button>
+        <button class="citation-tab" data-target="mla" role="tab" aria-selected="false">MLA</button>
+        <button class="citation-tab" data-target="chicago" role="tab" aria-selected="false">Chicago</button>
+    </div>
+    <div class="citation-panels">
+        <div class="citation-panel active" id="panel-bibtex" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-bibtex"></pre><button class="copy-btn" data-cite="cite-bibtex">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-apa" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-apa"></pre><button class="copy-btn" data-cite="cite-apa">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-mla" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-mla"></pre><button class="copy-btn" data-cite="cite-mla">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-chicago" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-chicago"></pre><button class="copy-btn" data-cite="cite-chicago">Copy</button></div>
+        </div>
+    </div>
+    <p class="citation-note">Auto-generated. Verify for your institution's requirements.</p>
+  </div>
+</details>
+
+<template id="cite-meta">AutoEncoder</template>
+
+<script>
+(function() {
+    var meta = document.getElementById('cite-meta');
+    if (!meta) return;
+    var t = meta.content ? meta.content.textContent : meta.innerHTML;
+    var a = 'Sumit Yadav';
+    var j = 'Sumit Yadav';
+    var u = 'https://sumityadav.com.np/posts/2021/07/19/autoencoder/';
+    var y = '2021';
+    var mo = 'July';
+    var ms = 'Jul';
+    var dy = '19';
+    var k = a.split(' ')[0].toLowerCase() + y + t.toLowerCase().replace(/[^a-z0-9]+/g, '');
+
+    document.getElementById('cite-bibtex').textContent =
+        '@article{' + k + ',\n  title     = {' + t + '},\n  author    = {' + a +
+        '},\n  journal   = {' + j + '},\n  year      = {' + y + '},\n  month     = {' + mo +
+        '},\n  day       = {' + dy + '},\n  url       = {' + u + '}\n}';
+    document.getElementById('cite-apa').textContent =
+        a + '. (' + y + ', ' + mo + ' ' + dy + '). ' + t + '. ' + j + '. ' + u;
+    document.getElementById('cite-mla').textContent =
+        a + '. “' + t + '.” ' + j + ', ' + dy + ' ' + ms + ' ' + y + ', ' + u + '.';
+    document.getElementById('cite-chicago').textContent =
+        a + '. “' + t + '.” ' + j + '. ' + mo + ' ' + dy + ', ' + y + '. ' + u + '.';
+
+    var sec = document.getElementById('citation-section');
+    sec.querySelectorAll('.citation-tab').forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            sec.querySelectorAll('.citation-tab').forEach(function(x) { x.classList.remove('active'); x.setAttribute('aria-selected', 'false'); });
+            sec.querySelectorAll('.citation-panel').forEach(function(p) { p.classList.remove('active'); });
+            this.classList.add('active'); this.setAttribute('aria-selected', 'true');
+            sec.querySelector('#panel-' + this.dataset.target).classList.add('active');
+        });
+    });
+    sec.querySelectorAll('.copy-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var text = document.getElementById(this.dataset.cite).textContent;
+            var b = this;
+            var done = function() { b.textContent = 'Copied!'; b.classList.add('copied'); setTimeout(function() { b.textContent = 'Copy'; b.classList.remove('copied'); }, 2000); };
+            navigator.clipboard.writeText(text).then(done).catch(function() {
+                var ta = document.createElement('textarea'); ta.value = text; ta.style.cssText = 'position:fixed;opacity:0';
+                document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); done();
+            });
+        });
+    });
+})();
+</script>
+
+
+    <footer class="post-footer">
+        <p><a href="/blog/">← All posts</a></p>
+    </footer>
+</article>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+    <div class="wrap">
+        <p>© 2026 Sumit Yadav · Kathmandu, Nepal · <a href="/">home</a> · <a href="/blog/">blog</a></p>
+    </div>
+</footer>
+
+
+    <script>
+        (function() {
+            const getThemePreference = () => {
+                const stored = localStorage.getItem('theme-preference');
+                if (stored) return stored;
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            };
+            const applyTheme = (theme) => {
+                const root = document.documentElement;
+                root.classList.remove('light-theme', 'dark-theme');
+                if (theme !== 'auto') root.classList.add(`${theme}-theme`);
+                if (window.mermaid) {
+                    const dark = theme === 'dark' || (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                    mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'default' });
+                    document.querySelectorAll('.mermaid').forEach(el => {
+                        if (el.getAttribute('data-processed')) {
+                            el.removeAttribute('data-processed');
+                            el.innerHTML = el.getAttribute('data-original') || el.innerHTML;
+                        }
+                    });
+                    if (window.mermaid.init) mermaid.init(undefined, '.mermaid');
+                }
+            };
+            document.addEventListener('DOMContentLoaded', () => {
+                applyTheme(getThemePreference());
+                const t = document.getElementById('theme-toggle');
+                if (t) t.addEventListener('click', () => {
+                    const cur = getThemePreference();
+                    const next = cur === 'dark' ? 'light' : 'dark';
+                    localStorage.setItem('theme-preference', next);
+                    applyTheme(next);
+                });
+                document.querySelectorAll('.mermaid').forEach(el => {
+                    if (!el.getAttribute('data-original')) el.setAttribute('data-original', el.innerHTML);
+                });
+            });
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme-preference')) applyTheme(e.matches ? 'dark' : 'light');
+            });
+        })();
+        (function() {
+            const bar = document.getElementById('scroll-progress-bar');
+            if (!bar) return;
+            const upd = () => {
+                const st = window.pageYOffset || document.documentElement.scrollTop;
+                const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                bar.style.height = Math.min(Math.max((st / h) * 100, 0), 100) + '%';
+            };
+            window.addEventListener('scroll', upd, { passive: true });
+            window.addEventListener('resize', upd, { passive: true });
+            upd();
+        })();
+    </script>
+</body>
+</html>

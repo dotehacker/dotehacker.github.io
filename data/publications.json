@@ -1,0 +1,65 @@
+[
+  {
+    "title": "SafeConstellations: Mitigating Over-Refusals in LLMs Through Task-Aware Representation Steering",
+    "authors": "Sumit Yadav et al.",
+    "venue": "ACL 2026 (Main Conference)",
+    "year": 2026,
+    "topics": ["Interpretability & Safety"],
+    "note": "An inference-time, task-aware trajectory-shifting method that cuts over-refusals by up to 73% with minimal utility loss — no retraining required.",
+    "links": { "paper": "https://arxiv.org/abs/2508.11290" }
+  },
+  {
+    "title": "On the Relationship Between Representation Geometry and Generalization in Deep Neural Networks",
+    "authors": "Sumit Yadav (sole author)",
+    "venue": "Preprint, 2026",
+    "year": 2026,
+    "topics": ["Interpretability & Safety"],
+    "note": "Shows that effective dimension — an unsupervised geometric metric — predicts generalization across vision and language models (partial r = 0.75 over 52 classifiers).",
+    "links": { "paper": "https://arxiv.org/abs/2602.00130" }
+  },
+  {
+    "title": "Geometric Phases of Mechanism Formation in Neural Networks",
+    "authors": "Sumit Yadav",
+    "venue": "GLOW 2026 — Workshop on Generalizing from Limited Resources in the Open World @ IJCAI 2026 (Poster)",
+    "year": 2026,
+    "topics": ["Interpretability & Safety"],
+    "note": "Using linear probes and centered kernel alignment (CKA) across dense training checkpoints, finds that classification mechanisms form output-layer-first and within the first ~5% of training: output layers reach >70% probe accuracy by epoch 5 while input layers stay below 50% (Cohen's d = 3.68). The same deep-first pattern holds in the first ~200M tokens of from-scratch LLM pretraining (GPT-2 Small, SmolLM2-135M) and reproduces on public Pythia / OLMo-2 checkpoints — and isn't explained by gradient magnitude. arXiv & code coming soon.",
+    "links": {}
+  },
+  {
+    "title": "Can maiBERT Speak for Maithili?",
+    "authors": "Sumit Yadav et al.",
+    "venue": "LoResLM @ ACL 2026",
+    "year": 2026,
+    "topics": ["Low-resource NLP"],
+    "note": "The first monolingual BERT for Maithili (~50M speakers); 87% accuracy on news classification, outperforming MuRIL and NepBERTa.",
+    "links": { "paper": "https://arxiv.org/abs/2509.15048", "model": "https://huggingface.co/rockerritesh/maiBERT_TF" }
+  },
+  {
+    "title": "Revolutionizing Currency Security: A YOLOv8-Based Approach for Detecting Counterfeit Nepali Banknotes",
+    "authors": "Sumit Yadav et al.",
+    "venue": "J. Bus. Econ. Stud., 2024",
+    "year": 2024,
+    "topics": ["Vision & Other"],
+    "note": "",
+    "links": { "paper": "https://doi.org/10.61440/JBES.2024.v1.47" }
+  },
+  {
+    "title": "Machine Learning Analysis of Tirhuta Lipi",
+    "authors": "Sumit Yadav et al.",
+    "venue": "2023",
+    "year": 2023,
+    "topics": ["Low-resource NLP"],
+    "note": "0.97 accuracy in Tirhuta script recognition for OCR and translation of low-resource scripts.",
+    "links": { "paper": "https://www.researchgate.net/publication/373370042_Machine_Learning_Analysis_of_Tirhuta_Lipi" }
+  },
+  {
+    "title": "Support Vectors Are a Better Way of Text Classification for Imbalanced Data",
+    "authors": "Sumit Yadav et al.",
+    "venue": "2023",
+    "year": 2023,
+    "topics": ["Vision & Other"],
+    "note": "A robust SVC method for 100+ class text classification under severe imbalance.",
+    "links": { "paper": "https://www.researchgate.net/publication/371514138_SUPPORT_VECTORS_ARE_A_BETTER_WAY_OF_TEXT_CLASSIFICATION_FOR_IMBALANCED_DATA" }
+  }
+]

@@ -1,0 +1,9 @@
+{
+  "name": "Sumit Yadav",
+  "role": "AI Researcher",
+  "affiliation": "Computer Engineering graduate · Pulchowk Campus, Tribhuvan University, Nepal",
+  "photo": "/rockerritesh.png",
+  "email": "076bct088.sumit@pcampus.edu.np",
+  "location": "Kathmandu, Nepal",
+  "bioSummary": "Hello! I'm an AI researcher trying to understand how language models work on the inside — why a safety-aligned model sometimes refuses perfectly harmless questions, and how the <b>geometry of a model's internal representations</b> relates to what it has actually learned. A lot of it is simply curiosity, following a question until it starts to make sense. I care about making these tools useful for languages that are often left out: my family speaks <b>Maithili</b>, so building a small language model for it felt as personal as it was technical. Alongside research I work on AI safety and agentic systems at <a href=\"https://astha.ai\">Astha.ai</a>, and I hope to pursue a PhD in interpretability and alignment. I try to learn in the open — I write here, and share short explainers on <a href=\"https://www.youtube.com/@Audio-Obsession\">YouTube</a>."
+}

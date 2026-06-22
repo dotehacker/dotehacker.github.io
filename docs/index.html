@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Researcher · Sumit Yadav</title>
+    <meta name="description" content="AI Researcher — interpretability, AI safety, and low-resource NLP.">
+    <meta name="google-site-verification" content="IVG1y4MVA_6MT0wsjk13ooZDQLWXxvYcPXQlmf83MLM" />
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- Mermaid.js for diagram rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+    <div class="scroll-progress"><div class="scroll-progress-bar" id="scroll-progress-bar"></div></div>
+
+    <header class="site-header">
+    <div class="wrap">
+        <a class="site-title" href="/">Sumit Yadav</a>
+        <nav class="site-nav">
+            <a href="/#publications">Publications</a>
+            <a href="/blog/">Blog</a>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                <span class="theme-icon theme-icon-light">🌙</span>
+                <span class="theme-icon theme-icon-dark">☀️</span>
+            </button>
+        </nav>
+    </div>
+</header>
+
+
+    <main class="page-content">
+        <div class="wrap">
+            <div class="content-area">
+                <header class="intro">
+      <img class="intro-photo" src="/rockerritesh.png" alt="Sumit Yadav">
+      <div class="intro-body">
+        <h1>Sumit Yadav</h1>
+        <p class="role">AI Researcher</p>
+        <p class="affil">Computer Engineering graduate · Pulchowk Campus, Tribhuvan University, Nepal</p>
+        <p class="bio">Hello! I'm an AI researcher trying to understand how language models work on the inside — why a safety-aligned model sometimes refuses perfectly harmless questions, and how the <b>geometry of a model's internal representations</b> relates to what it has actually learned. A lot of it is simply curiosity, following a question until it starts to make sense. I care about making these tools useful for languages that are often left out: my family speaks <b>Maithili</b>, so building a small language model for it felt as personal as it was technical. Alongside research I work on AI safety and agentic systems at <a href="https://astha.ai">Astha.ai</a>, and I hope to pursue a PhD in interpretability and alignment. I try to learn in the open — I write here, and share short explainers on <a href="https://www.youtube.com/@Audio-Obsession">YouTube</a>.</p>
+        <div class="social"><a href="mailto:076bct088.sumit@pcampus.edu.np" title="Email" aria-label="Email"><svg viewBox="0 0 24 24"><path d="M1.5 4.5h21A1.5 1.5 0 0124 6v12a1.5 1.5 0 01-1.5 1.5h-21A1.5 1.5 0 010 18V6a1.5 1.5 0 011.5-1.5zm.9 1.8L12 12.6l9.6-6.3H2.4zM22.2 8.04l-9.66 6.34a1.2 1.2 0 01-1.08 0L1.8 8.04V18h20.4z"/></svg></a>
+<a href="https://scholar.google.com/citations?user=ag74ytsAAAAJ&amp;hl=en" title="Google Scholar" aria-label="Google Scholar"><svg viewBox="0 0 512 512"><path d="M256 411.12L0 202.67 256 0l256 202.67zM256 512c-70.69 0-128-57.31-128-128 0-23.39 6.28-45.32 17.24-64.2L256 384l110.76-64.2C377.72 338.68 384 360.61 384 384c0 70.69-57.31 128-128 128z"/></svg></a>
+<a href="https://github.com/rockerritesh" title="GitHub" aria-label="GitHub"><svg viewBox="0 0 24 24"><path d="M12 .5C5.37.5 0 5.78 0 12.29c0 5.21 3.44 9.63 8.2 11.19.6.11.82-.26.82-.58 0-.28-.01-1.02-.02-2-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.23 1.84 1.23 1.07 1.83 2.81 1.3 3.5 1 .11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 016 0c2.3-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.81 1.1.81 2.22 0 1.6-.01 2.9-.01 3.29 0 .32.22.7.83.58A12 12 0 0024 12.29C24 5.78 18.63.5 12 .5z"/></svg></a>
+<a href="https://www.linkedin.com/in/rockerritesh/" title="LinkedIn" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.44-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 110-4.13 2.06 2.06 0 010 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a>
+<a href="https://x.com/rocker_ritesh" title="X" aria-label="X"><svg viewBox="0 0 24 24"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.66l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23 5.45-6.23zm-1.16 17.52h1.83L7.08 4.13H5.12l11.96 15.64z"/></svg></a>
+<a href="https://www.youtube.com/@Audio-Obsession" title="YouTube" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23.5 6.19a3.02 3.02 0 00-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 00.5 6.19C0 8.07 0 12 0 12s0 3.93.5 5.81a3.02 3.02 0 002.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 002.12-2.14C24 15.93 24 12 24 12s0-3.93-.5-5.81zM9.55 15.57V8.43L15.82 12l-6.27 3.57z"/></svg></a>
+<a href="https://huggingface.co/rockerritesh" title="Hugging Face" aria-label="Hugging Face"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zM8.5 9a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4zm7 0a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4zM12 18c-2.3 0-4.3-1.4-5-3.5h10c-.7 2.1-2.7 3.5-5 3.5z"/></svg></a>
+<a class="cv-pill" href="/cv.pdf">CV</a></div>
+      </div>
+    </header><div class="timeline"><div class="timeline-rail"><div class="tl-item"><div class="tl-year">2021</div><div class="tl-label">DeepLearning.AI GAN mentor; LogPoint CTF win</div></div><div class="tl-item"><div class="tl-year">2022</div><div class="tl-label">DELTA 3.0 &amp; IT-Meet vision wins</div></div><div class="tl-item"><div class="tl-year">2023</div><div class="tl-label">ML for Tirhuta Lipi; GritFeat AI Hackathon</div></div><div class="tl-item"><div class="tl-year">2024</div><div class="tl-label">AI Engineer at AMNIL; banknote-security paper</div></div><div class="tl-item"><div class="tl-year">2025</div><div class="tl-label">AI research at Astha.ai (safety &amp; agents)</div></div><div class="tl-item"><div class="tl-year">2026</div><div class="tl-label">ACL Main, GLOW @ IJCAI, maiBERT; CE graduate</div></div></div></div><section class="section" id="publications">
+      <h2>Publications</h2>
+      <p class="section-sub">See my <a href="https://scholar.google.com/citations?user=ag74ytsAAAAJ&amp;hl=en">Google Scholar</a> for the full list.</p>
+      <div class="chips" data-target="#pub-list"><span class="chips-label">Topic</span><button class="chip active" data-filter="*">All</button><button class="chip" data-filter="Interpretability &amp; Safety">Interpretability &amp; Safety</button><button class="chip" data-filter="Low-resource NLP">Low-resource NLP</button><button class="chip" data-filter="Vision &amp; Other">Vision &amp; Other</button></div>
+      <div class="pub-list" id="pub-list"><div class="pub-card" data-topics="Interpretability &amp; Safety">
+        <p class="pub-title">SafeConstellations: Mitigating Over-Refusals in LLMs Through Task-Aware Representation Steering</p>
+        <p class="pub-authors">Sumit Yadav et al.</p>
+        <p class="pub-venue">ACL 2026 (Main Conference)</p>
+        <p class="pub-note">An inference-time, task-aware trajectory-shifting method that cuts over-refusals by up to 73% with minimal utility loss — no retraining required.</p>
+        <p class="pub-links"><a href="https://arxiv.org/abs/2508.11290">paper</a></p>
+      </div>
+<div class="pub-card" data-topics="Interpretability &amp; Safety">
+        <p class="pub-title">On the Relationship Between Representation Geometry and Generalization in Deep Neural Networks</p>
+        <p class="pub-authors">Sumit Yadav (sole author)</p>
+        <p class="pub-venue">Preprint, 2026</p>
+        <p class="pub-note">Shows that effective dimension — an unsupervised geometric metric — predicts generalization across vision and language models (partial r = 0.75 over 52 classifiers).</p>
+        <p class="pub-links"><a href="https://arxiv.org/abs/2602.00130">paper</a></p>
+      </div>
+<div class="pub-card" data-topics="Interpretability &amp; Safety">
+        <p class="pub-title">Geometric Phases of Mechanism Formation in Neural Networks</p>
+        <p class="pub-authors">Sumit Yadav</p>
+        <p class="pub-venue">GLOW 2026 — Workshop on Generalizing from Limited Resources in the Open World @ IJCAI 2026 (Poster)</p>
+        <p class="pub-note">Using linear probes and centered kernel alignment (CKA) across dense training checkpoints, finds that classification mechanisms form output-layer-first and within the first ~5% of training: output layers reach &gt;70% probe accuracy by epoch 5 while input layers stay below 50% (Cohen's d = 3.68). The same deep-first pattern holds in the first ~200M tokens of from-scratch LLM pretraining (GPT-2 Small, SmolLM2-135M) and reproduces on public Pythia / OLMo-2 checkpoints — and isn't explained by gradient magnitude. arXiv &amp; code coming soon.</p>
+        
+      </div>
+<div class="pub-card" data-topics="Low-resource NLP">
+        <p class="pub-title">Can maiBERT Speak for Maithili?</p>
+        <p class="pub-authors">Sumit Yadav et al.</p>
+        <p class="pub-venue">LoResLM @ ACL 2026</p>
+        <p class="pub-note">The first monolingual BERT for Maithili (~50M speakers); 87% accuracy on news classification, outperforming MuRIL and NepBERTa.</p>
+        <p class="pub-links"><a href="https://arxiv.org/abs/2509.15048">paper</a><a href="https://huggingface.co/rockerritesh/maiBERT_TF">model</a></p>
+      </div>
+<div class="pub-card" data-topics="Vision &amp; Other">
+        <p class="pub-title">Revolutionizing Currency Security: A YOLOv8-Based Approach for Detecting Counterfeit Nepali Banknotes</p>
+        <p class="pub-authors">Sumit Yadav et al.</p>
+        <p class="pub-venue">J. Bus. Econ. Stud., 2024</p>
+        
+        <p class="pub-links"><a href="https://doi.org/10.61440/JBES.2024.v1.47">paper</a></p>
+      </div>
+<div class="pub-card" data-topics="Low-resource NLP">
+        <p class="pub-title">Machine Learning Analysis of Tirhuta Lipi</p>
+        <p class="pub-authors">Sumit Yadav et al.</p>
+        <p class="pub-venue">2023</p>
+        <p class="pub-note">0.97 accuracy in Tirhuta script recognition for OCR and translation of low-resource scripts.</p>
+        <p class="pub-links"><a href="https://www.researchgate.net/publication/373370042_Machine_Learning_Analysis_of_Tirhuta_Lipi">paper</a></p>
+      </div>
+<div class="pub-card" data-topics="Vision &amp; Other">
+        <p class="pub-title">Support Vectors Are a Better Way of Text Classification for Imbalanced Data</p>
+        <p class="pub-authors">Sumit Yadav et al.</p>
+        <p class="pub-venue">2023</p>
+        <p class="pub-note">A robust SVC method for 100+ class text classification under severe imbalance.</p>
+        <p class="pub-links"><a href="https://www.researchgate.net/publication/371514138_SUPPORT_VECTORS_ARE_A_BETTER_WAY_OF_TEXT_CLASSIFICATION_FOR_IMBALANCED_DATA">paper</a></p>
+      </div></div>
+    </section><section class="section" id="writing">
+      <h2>Writing</h2>
+      <p class="section-sub">Notes and essays on AI, math, and a few things in between.</p>
+      <div class="blog-list"><div class="blog-row" data-cat="AI &amp; ML">
+      <span class="blog-date">2026-06-09</span>
+      <a class="blog-title" href="/posts/2026/06/09/vision-transformer-image-is-worth-16x16-words/">An Image Is Worth 16x16 Words: How Vision Transformers Work</a>
+      <span class="blog-cat">AI &amp; ML</span>
+    </div><div class="blog-row" data-cat="Interpretability &amp; Safety">
+      <span class="blog-date">2026-06-08</span>
+      <a class="blog-title" href="/posts/2026/06/08/zoom-in-circuits-neural-network-interpretability/">Zoom In: How to Read the Circuits Inside a Neural Network</a>
+      <span class="blog-cat">Interpretability &amp; Safety</span>
+    </div><div class="blog-row" data-cat="AI &amp; ML">
+      <span class="blog-date">2026-06-07</span>
+      <a class="blog-title" href="/posts/2026/06/07/birdclef-2026-bronze-medal-perch-knn-probe/">BirdCLEF+ 2026: A Per-Block kNN Probe, a Tiny Sequence Head, and a Bronze Medal</a>
+      <span class="blog-cat">AI &amp; ML</span>
+    </div><div class="blog-row" data-cat="AI &amp; ML">
+      <span class="blog-date">2026-06-05</span>
+      <a class="blog-title" href="/posts/2026/06/05/boltzmann-machine-energy-based-models/">Boltzmann Machines &amp; Energy-Based Models: The Nobel-Prize-Winning Physics Behind Neural Networks</a>
+      <span class="blog-cat">AI &amp; ML</span>
+    </div><div class="blog-row" data-cat="Interpretability &amp; Safety">
+      <span class="blog-date">2026-06-05</span>
+      <a class="blog-title" href="/posts/2026/06/05/mathematical-framework-transformer-circuits/">A Mathematical Framework for Transformer Circuits: How LLMs Actually Work</a>
+      <span class="blog-cat">Interpretability &amp; Safety</span>
+    </div><div class="blog-row" data-cat="Interpretability &amp; Safety">
+      <span class="blog-date">2026-06-05</span>
+      <a class="blog-title" href="/posts/2026/06/05/mechanistic-interpretability-sparse-autoencoders/">Mechanistic Interpretability &amp; Sparse Autoencoders: Giving AI an X-Ray</a>
+      <span class="blog-cat">Interpretability &amp; Safety</span>
+    </div><div class="blog-row" data-cat="AI &amp; ML">
+      <span class="blog-date">2026-06-05</span>
+      <a class="blog-title" href="/posts/2026/06/05/natural-language-autoencoders/">Natural Language Autoencoders: Reading a Model's Mind in Plain English</a>
+      <span class="blog-cat">AI &amp; ML</span>
+    </div><div class="blog-row" data-cat="Engineering">
+      <span class="blog-date">2026-05-23</span>
+      <a class="blog-title" href="/posts/2026/05/23/git-govind/">Git Govind — Jayadeva's Gita Govinda</a>
+      <span class="blog-cat">Engineering</span>
+    </div></div>
+      <p class="blog-more"><a href="/blog/">All 60 posts →</a></p>
+    </section><section class="section"><h2>Experience</h2><ul class="itemlist"><li>
+      <span class="it-head">AI Researcher — Safety &amp; Agentic Systems</span>, <a href="https://astha.ai">Astha.ai</a>
+      <span class="it-meta">· 2025–present</span>
+      <div class="it-note">Zero-Trust agent oversight, MCP-Scanner vulnerability platform, SAFE-MCP framework.</div>
+    </li><li>
+      <span class="it-head">AI Engineer — RAG &amp; Infrastructure</span>, AMNIL Technologies
+      <span class="it-meta">· 2024–2025</span>
+      <div class="it-note">Guardrails, LLM-as-a-Judge evaluation, self-hosted LLM serving with vLLM.</div>
+    </li><li>
+      <span class="it-head">Data Team Lead</span>, GradeUp Educations
+      <span class="it-meta">· 2022–2024</span>
+      <div class="it-note">Learning agents/chatbots, an automated grade-evaluation system, and semantic-similarity matching.</div>
+    </li><li>
+      <span class="it-head">GAN Specialization Mentor</span>, <a href="https://www.deeplearning.ai/">DeepLearning.AI</a>
+      <span class="it-meta">· 2021–present</span>
+      
+    </li></ul></section><section class="section"><h2>Projects</h2><ul class="itemlist"><li>
+      <span class="it-head"><a href="https://huggingface.co/rockerritesh/maiBERT_TF">maiBERT</a></span> — First BERT for Maithili (<a href="https://maithili.streamlit.app/">demo</a>)
+    </li><li>
+      <span class="it-head"><a href="https://github.com/secure-agentic-framework/saf-mcp">SAFE-MCP / SAF-MCP</a></span> — Contributed detection techniques and mitigations to a community security framework for the Model Context Protocol (MCP) — an ATT&amp;CK-style catalogue of agentic-system threats and defenses
+    </li><li>
+      <span class="it-head"><a href="https://github.com/rockerritesh/agentguard">AgentGuard</a></span> — Zero-Trust protocol for AI agents: identity, policy, mTLS, audit (Python SDK + Go server)
+    </li><li>
+      <span class="it-head"><a href="https://github.com/rockerritesh/spiffe-core">spiffe-core · TraT</a></span> — SPIFFE-based agent identity/attestation and Transaction Tokens for multi-agent workflows (<a href="https://github.com/rockerritesh/trat-multi-agent">TraT</a>)
+    </li><li>
+      <span class="it-head"><a href="https://github.com/rockerritesh/sumit-mcp-server">sumit-mcp-server</a></span> — Federated memory MCP server (<a href="https://huggingface.co/spaces/rockerritesh/sumit-server">live on HF Spaces</a>)
+    </li><li>
+      <span class="it-head"><a href="https://github.com/rockerritesh/vibe_coder">Vibe-Coder</a></span> — An agent that builds Streamlit/FastAPI apps
+    </li><li>
+      <span class="it-head"><a href="https://github.com/jarp0l/IRB-Robo-Arm">IRB Robotics Arm</a></span> — Open-source image-recognition robotic arm (UN SDG3)
+    </li></ul></section><section class="section"><h2>Honors &amp; Awards</h2><ul class="itemlist"><li>
+      <span class="it-head">Winner, GritFeat AI Hackathon</span> <span class="it-meta">(2023)</span>
+      <div class="it-note">SWIFT — wearable LSTM fall-detection for the elderly (79.86%).</div>
+    </li><li>
+      <span class="it-head">1st Runner-Up, Locus Dataverse</span> <span class="it-meta">(2023)</span>
+      <div class="it-note">NLP classification of imbalanced research-paper abstracts.</div>
+    </li><li>
+      <span class="it-head">1st Runner-Up, Docsumo DataRush</span> <span class="it-meta">(2021)</span>
+      <div class="it-note">Abstract classification into 158 classes (SVC + TF-IDF).</div>
+    </li><li>
+      <span class="it-head">Best AI Project, DELTA 3.0</span> <span class="it-meta">(2022)</span>
+      <div class="it-note">Nepali Harvest — crop-disease prediction &amp; harvest timing.</div>
+    </li><li>
+      <span class="it-head">Winner, IT-Meet Image Challenge</span> <span class="it-meta">(2022)</span>
+      <div class="it-note">Computer-vision classification of Nepali ballot-paper images.</div>
+    </li><li>
+      <span class="it-head">Winner, LogPoint Capture The Flag</span> <span class="it-meta">(2021)</span>
+      <div class="it-note">Binary exploitation &amp; forensics.</div>
+    </li></ul></section><section class="section"><h2>Documents &amp; Links</h2>
+      <div class="files"><a href="/cv.pdf">Curriculum Vitae <span>· PDF</span></a><a href="/resume.pdf">Résumé <span>· PDF</span></a><a href="/TPUs-2.pdf">Tensor Processing Units <span>· PDF</span></a><a href="https://www.youtube.com/@Audio-Obsession">YouTube — Audio Obsession <span>· AI &amp; Math</span></a><a href="/photography/">Photography <span>· gallery</span></a><a href="/drum/">Drum Machine <span>· interactive</span></a><a href="https://huggingface.co/rockerritesh">Hugging Face <span>· models</span></a></div>
+      <h3>Notes &amp; Lab Reports</h3><div class="files"><a href="/files/svd.pdf">Singular Value Decomposition <span>· PDF</span></a><a href="/files/data-insights.pdf">Data Insights <span>· slides</span></a><a href="/files/lab-artificial-neural-network.pdf">Artificial Neural Network <span>· lab</span></a><a href="/files/lab-genetic-algorithm.pdf">Genetic Algorithm <span>· lab</span></a><a href="/files/lab-constraint-programming.pdf">Constraint Programming <span>· lab</span></a><a href="/files/lab-propositional-logic.pdf">Propositional Logic <span>· lab</span></a><a href="/files/lab-unix-shell-programming.pdf">UNIX &amp; Shell Programming <span>· lab</span></a><a href="/files/lab-ct-dt-functions.pdf">CT/DT Functions <span>· lab</span></a></div>
+    </section><script>
+    document.querySelectorAll('.chips').forEach(function(group){
+      var sel = group.getAttribute('data-target');
+      var list = sel ? document.querySelector(sel) : group.nextElementSibling;
+      if(!list) return;
+      group.querySelectorAll('.chip').forEach(function(chip){
+        chip.addEventListener('click', function(){
+          group.querySelectorAll('.chip').forEach(function(c){c.classList.remove('active');});
+          chip.classList.add('active');
+          var f = chip.getAttribute('data-filter');
+          Array.prototype.forEach.call(list.children, function(item){
+            var key = item.getAttribute('data-topics') || item.getAttribute('data-cat') || '';
+            var show = (f==='*') || key.split('|').indexOf(f) !== -1 || key === f;
+            item.style.display = show ? '' : 'none';
+          });
+        });
+      });
+    });
+    </script>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+    <div class="wrap">
+        <p>© 2026 Sumit Yadav · Kathmandu, Nepal · <a href="/">home</a> · <a href="/blog/">blog</a></p>
+    </div>
+</footer>
+
+
+    <script>
+        (function() {
+            const getThemePreference = () => {
+                const stored = localStorage.getItem('theme-preference');
+                if (stored) return stored;
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            };
+            const applyTheme = (theme) => {
+                const root = document.documentElement;
+                root.classList.remove('light-theme', 'dark-theme');
+                if (theme !== 'auto') root.classList.add(`${theme}-theme`);
+                if (window.mermaid) {
+                    const dark = theme === 'dark' || (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                    mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'default' });
+                    document.querySelectorAll('.mermaid').forEach(el => {
+                        if (el.getAttribute('data-processed')) {
+                            el.removeAttribute('data-processed');
+                            el.innerHTML = el.getAttribute('data-original') || el.innerHTML;
+                        }
+                    });
+                    if (window.mermaid.init) mermaid.init(undefined, '.mermaid');
+                }
+            };
+            document.addEventListener('DOMContentLoaded', () => {
+                applyTheme(getThemePreference());
+                const t = document.getElementById('theme-toggle');
+                if (t) t.addEventListener('click', () => {
+                    const cur = getThemePreference();
+                    const next = cur === 'dark' ? 'light' : 'dark';
+                    localStorage.setItem('theme-preference', next);
+                    applyTheme(next);
+                });
+                document.querySelectorAll('.mermaid').forEach(el => {
+                    if (!el.getAttribute('data-original')) el.setAttribute('data-original', el.innerHTML);
+                });
+            });
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme-preference')) applyTheme(e.matches ? 'dark' : 'light');
+            });
+        })();
+        (function() {
+            const bar = document.getElementById('scroll-progress-bar');
+            if (!bar) return;
+            const upd = () => {
+                const st = window.pageYOffset || document.documentElement.scrollTop;
+                const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                bar.style.height = Math.min(Math.max((st / h) * 100, 0), 100) + '%';
+            };
+            window.addEventListener('scroll', upd, { passive: true });
+            window.addEventListener('resize', upd, { passive: true });
+            upd();
+        })();
+    </script>
+</body>
+</html>

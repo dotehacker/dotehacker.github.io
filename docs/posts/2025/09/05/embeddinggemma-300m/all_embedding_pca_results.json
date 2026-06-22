@@ -1,0 +1,1274 @@
+{
+  "animals_by_habitat": {
+    "dataset_name": "animals_by_habitat",
+    "description": "Animals categorized by their primary habitat",
+    "total_items": 24,
+    "original_embedding_dim": 768,
+    "pca_explained_variance": [
+      0.10420789569616318,
+      0.0850965604186058,
+      0.07988141477108002
+    ],
+    "total_variance_captured": 0.269185870885849,
+    "items": [
+      {
+        "text": "lion",
+        "category": "land_animals",
+        "pca_coordinates": {
+          "x": -0.25482067465782166,
+          "y": 0.30176955461502075,
+          "z": -0.019340936094522476
+        }
+      },
+      {
+        "text": "tiger",
+        "category": "land_animals",
+        "pca_coordinates": {
+          "x": -0.11623964458703995,
+          "y": 0.2763063311576843,
+          "z": -0.00816362164914608
+        }
+      },
+      {
+        "text": "elephant",
+        "category": "land_animals",
+        "pca_coordinates": {
+          "x": -0.34184718132019043,
+          "y": 0.018424352630972862,
+          "z": 0.024840518832206726
+        }
+      },
+      {
+        "text": "bear",
+        "category": "land_animals",
+        "pca_coordinates": {
+          "x": -0.14082765579223633,
+          "y": 0.2798454463481903,
+          "z": -0.08780602365732193
+        }
+      },
+      {
+        "text": "wolf",
+        "category": "land_animals",
+        "pca_coordinates": {
+          "x": -0.18979734182357788,
+          "y": 0.18001608550548553,
+          "z": 0.23172956705093384
+        }
+      },
+      {
+        "text": "deer",
+        "category": "land_animals",
+        "pca_coordinates": {
+          "x": -0.19209082424640656,
+          "y": 0.16367045044898987,
+          "z": -0.1368160843849182
+        }
+      },
+      {
+        "text": "rabbit",
+        "category": "land_animals",
+        "pca_coordinates": {
+          "x": -0.07488629966974258,
+          "y": 0.16312673687934875,
+          "z": -0.27043381333351135
+        }
+      },
+      {
+        "text": "horse",
+        "category": "land_animals",
+        "pca_coordinates": {
+          "x": -0.0704500749707222,
+          "y": 0.06689974665641785,
+          "z": -0.0839783251285553
+        }
+      },
+      {
+        "text": "whale",
+        "category": "water_animals",
+        "pca_coordinates": {
+          "x": -0.2508685886859894,
+          "y": -0.3045194745063782,
+          "z": 0.1624639630317688
+        }
+      },
+      {
+        "text": "dolphin",
+        "category": "water_animals",
+        "pca_coordinates": {
+          "x": -0.2343333512544632,
+          "y": -0.4237774908542633,
+          "z": 0.11067893356084824
+        }
+      },
+      {
+        "text": "shark",
+        "category": "water_animals",
+        "pca_coordinates": {
+          "x": -0.12717892229557037,
+          "y": -0.1811775267124176,
+          "z": 0.2076963484287262
+        }
+      },
+      {
+        "text": "fish",
+        "category": "water_animals",
+        "pca_coordinates": {
+          "x": -0.08475622534751892,
+          "y": -0.2132604420185089,
+          "z": -0.09936043620109558
+        }
+      },
+      {
+        "text": "octopus",
+        "category": "water_animals",
+        "pca_coordinates": {
+          "x": -0.09007398784160614,
+          "y": -0.28200414776802063,
+          "z": 0.010372927412390709
+        }
+      },
+      {
+        "text": "seal",
+        "category": "water_animals",
+        "pca_coordinates": {
+          "x": -0.09967125952243805,
+          "y": 0.08714811503887177,
+          "z": -0.02848193794488907
+        }
+      },
+      {
+        "text": "turtle",
+        "category": "water_animals",
+        "pca_coordinates": {
+          "x": 0.01127659622579813,
+          "y": -0.10572268068790436,
+          "z": -0.1514357626438141
+        }
+      },
+      {
+        "text": "penguin",
+        "category": "water_animals",
+        "pca_coordinates": {
+          "x": 0.04797891899943352,
+          "y": -0.20271840691566467,
+          "z": -0.026532359421253204
+        }
+      },
+      {
+        "text": "eagle",
+        "category": "flying_animals",
+        "pca_coordinates": {
+          "x": 0.2557535767555237,
+          "y": 0.17744207382202148,
+          "z": 0.3523949980735779
+        }
+      },
+      {
+        "text": "hawk",
+        "category": "flying_animals",
+        "pca_coordinates": {
+          "x": 0.32588377594947815,
+          "y": 0.07683416455984116,
+          "z": 0.45345553755760193
+        }
+      },
+      {
+        "text": "sparrow",
+        "category": "flying_animals",
+        "pca_coordinates": {
+          "x": 0.4405166208744049,
+          "y": -0.01819469965994358,
+          "z": -0.020631251856684685
+        }
+      },
+      {
+        "text": "bat",
+        "category": "flying_animals",
+        "pca_coordinates": {
+          "x": 0.19182440638542175,
+          "y": 0.011568600311875343,
+          "z": -0.0799926221370697
+        }
+      },
+      {
+        "text": "butterfly",
+        "category": "flying_animals",
+        "pca_coordinates": {
+          "x": 0.26514357328414917,
+          "y": -0.10012595355510712,
+          "z": -0.326820969581604
+        }
+      },
+      {
+        "text": "bee",
+        "category": "flying_animals",
+        "pca_coordinates": {
+          "x": 0.15672330558300018,
+          "y": 0.10657654702663422,
+          "z": -0.2357073277235031
+        }
+      },
+      {
+        "text": "dragonfly",
+        "category": "flying_animals",
+        "pca_coordinates": {
+          "x": 0.35377562046051025,
+          "y": -0.1708143949508667,
+          "z": -0.20114898681640625
+        }
+      },
+      {
+        "text": "owl",
+        "category": "flying_animals",
+        "pca_coordinates": {
+          "x": 0.21896542608737946,
+          "y": 0.0926867425441742,
+          "z": 0.22301767766475677
+        }
+      }
+    ]
+  },
+  "emotions_by_valence": {
+    "dataset_name": "emotions_by_valence",
+    "description": "Emotions categorized by positive/negative valence",
+    "total_items": 24,
+    "original_embedding_dim": 768,
+    "pca_explained_variance": [
+      0.1931823492050171,
+      0.16852805018424988,
+      0.13962261378765106
+    ],
+    "total_variance_captured": 0.5013329982757568,
+    "items": [
+      {
+        "text": "happy",
+        "category": "positive",
+        "pca_coordinates": {
+          "x": 0.3491033613681793,
+          "y": 0.09279144555330276,
+          "z": 0.14390818774700165
+        }
+      },
+      {
+        "text": "joyful",
+        "category": "positive",
+        "pca_coordinates": {
+          "x": 0.4276939332485199,
+          "y": 0.19547432661056519,
+          "z": 0.1340111494064331
+        }
+      },
+      {
+        "text": "excited",
+        "category": "positive",
+        "pca_coordinates": {
+          "x": 0.3853846490383148,
+          "y": 0.3292536735534668,
+          "z": 0.15222817659378052
+        }
+      },
+      {
+        "text": "euphoric",
+        "category": "positive",
+        "pca_coordinates": {
+          "x": 0.2758784294128418,
+          "y": 0.14332441985607147,
+          "z": 0.09001513570547104
+        }
+      },
+      {
+        "text": "cheerful",
+        "category": "positive",
+        "pca_coordinates": {
+          "x": 0.39678213000297546,
+          "y": 0.1410885602235794,
+          "z": 0.12573063373565674
+        }
+      },
+      {
+        "text": "delighted",
+        "category": "positive",
+        "pca_coordinates": {
+          "x": 0.42824286222457886,
+          "y": 0.19666723906993866,
+          "z": 0.1790725290775299
+        }
+      },
+      {
+        "text": "ecstatic",
+        "category": "positive",
+        "pca_coordinates": {
+          "x": 0.3241240680217743,
+          "y": 0.2498772144317627,
+          "z": 0.15354563295841217
+        }
+      },
+      {
+        "text": "blissful",
+        "category": "positive",
+        "pca_coordinates": {
+          "x": 0.3088945746421814,
+          "y": 0.009213069453835487,
+          "z": 0.0021598634775727987
+        }
+      },
+      {
+        "text": "sad",
+        "category": "negative",
+        "pca_coordinates": {
+          "x": -0.259878545999527,
+          "y": -0.36920616030693054,
+          "z": 0.3994602859020233
+        }
+      },
+      {
+        "text": "angry",
+        "category": "negative",
+        "pca_coordinates": {
+          "x": -0.47340625524520874,
+          "y": 0.5039306879043579,
+          "z": -0.2115703523159027
+        }
+      },
+      {
+        "text": "furious",
+        "category": "negative",
+        "pca_coordinates": {
+          "x": -0.46915915608406067,
+          "y": 0.5519987344741821,
+          "z": -0.18143139779567719
+        }
+      },
+      {
+        "text": "depressed",
+        "category": "negative",
+        "pca_coordinates": {
+          "x": -0.2484045922756195,
+          "y": -0.33144915103912354,
+          "z": 0.3616165518760681
+        }
+      },
+      {
+        "text": "miserable",
+        "category": "negative",
+        "pca_coordinates": {
+          "x": -0.33971497416496277,
+          "y": -0.026633689180016518,
+          "z": 0.2876127362251282
+        }
+      },
+      {
+        "text": "devastated",
+        "category": "negative",
+        "pca_coordinates": {
+          "x": -0.4150334596633911,
+          "y": -0.1886565387248993,
+          "z": 0.3707127869129181
+        }
+      },
+      {
+        "text": "enraged",
+        "category": "negative",
+        "pca_coordinates": {
+          "x": -0.5118591785430908,
+          "y": 0.5713608860969543,
+          "z": -0.21669422090053558
+        }
+      },
+      {
+        "text": "heartbroken",
+        "category": "negative",
+        "pca_coordinates": {
+          "x": -0.3337456285953522,
+          "y": -0.2755783498287201,
+          "z": 0.4168911874294281
+        }
+      },
+      {
+        "text": "calm",
+        "category": "neutral",
+        "pca_coordinates": {
+          "x": 0.01911410130560398,
+          "y": -0.27045169472694397,
+          "z": -0.4408278167247772
+        }
+      },
+      {
+        "text": "peaceful",
+        "category": "neutral",
+        "pca_coordinates": {
+          "x": 0.044421177357435226,
+          "y": -0.30398401618003845,
+          "z": -0.3690241873264313
+        }
+      },
+      {
+        "text": "relaxed",
+        "category": "neutral",
+        "pca_coordinates": {
+          "x": 0.1432967185974121,
+          "y": -0.25165030360221863,
+          "z": -0.2628517150878906
+        }
+      },
+      {
+        "text": "content",
+        "category": "neutral",
+        "pca_coordinates": {
+          "x": -0.061010364443063736,
+          "y": -0.05647742375731468,
+          "z": -0.023202888667583466
+        }
+      },
+      {
+        "text": "serene",
+        "category": "neutral",
+        "pca_coordinates": {
+          "x": 0.028280183672904968,
+          "y": -0.3053591549396515,
+          "z": -0.3207501769065857
+        }
+      },
+      {
+        "text": "balanced",
+        "category": "neutral",
+        "pca_coordinates": {
+          "x": 0.014926071278750896,
+          "y": -0.14635373651981354,
+          "z": -0.2467973679304123
+        }
+      },
+      {
+        "text": "composed",
+        "category": "neutral",
+        "pca_coordinates": {
+          "x": -0.07949511706829071,
+          "y": -0.07162567973136902,
+          "z": -0.14937861263751984
+        }
+      },
+      {
+        "text": "tranquil",
+        "category": "neutral",
+        "pca_coordinates": {
+          "x": 0.04556499794125557,
+          "y": -0.3875546455383301,
+          "z": -0.3944360315799713
+        }
+      }
+    ]
+  },
+  "size_progression": {
+    "dataset_name": "size_progression",
+    "description": "Words representing size from small to large",
+    "total_items": 24,
+    "original_embedding_dim": 768,
+    "pca_explained_variance": [
+      0.2297295182943344,
+      0.17459848523139954,
+      0.07712548971176147
+    ],
+    "total_variance_captured": 0.48145347833633423,
+    "items": [
+      {
+        "text": "microscopic",
+        "category": "tiny",
+        "pca_coordinates": {
+          "x": 0.15622004866600037,
+          "y": 0.25601109862327576,
+          "z": 0.16623970866203308
+        }
+      },
+      {
+        "text": "minuscule",
+        "category": "tiny",
+        "pca_coordinates": {
+          "x": 0.27877458930015564,
+          "y": 0.4264931082725525,
+          "z": 0.0324038565158844
+        }
+      },
+      {
+        "text": "tiny",
+        "category": "tiny",
+        "pca_coordinates": {
+          "x": 0.2678315341472626,
+          "y": 0.3909570574760437,
+          "z": -0.04928574711084366
+        }
+      },
+      {
+        "text": "small",
+        "category": "tiny",
+        "pca_coordinates": {
+          "x": 0.3044963479042053,
+          "y": 0.32817813754081726,
+          "z": -0.04471400007605553
+        }
+      },
+      {
+        "text": "little",
+        "category": "tiny",
+        "pca_coordinates": {
+          "x": 0.3470846712589264,
+          "y": 0.35947349667549133,
+          "z": -0.0653521716594696
+        }
+      },
+      {
+        "text": "miniature",
+        "category": "tiny",
+        "pca_coordinates": {
+          "x": 0.23718352615833282,
+          "y": 0.3732382655143738,
+          "z": 0.0455770269036293
+        }
+      },
+      {
+        "text": "petite",
+        "category": "tiny",
+        "pca_coordinates": {
+          "x": 0.32467085123062134,
+          "y": 0.3912878930568695,
+          "z": -0.06563165783882141
+        }
+      },
+      {
+        "text": "compact",
+        "category": "tiny",
+        "pca_coordinates": {
+          "x": 0.18003082275390625,
+          "y": 0.11561080068349838,
+          "z": -0.06899536401033401
+        }
+      },
+      {
+        "text": "average",
+        "category": "medium",
+        "pca_coordinates": {
+          "x": 0.15212124586105347,
+          "y": -0.35419464111328125,
+          "z": 0.29508885741233826
+        }
+      },
+      {
+        "text": "normal",
+        "category": "medium",
+        "pca_coordinates": {
+          "x": 0.19864903390407562,
+          "y": -0.4343058466911316,
+          "z": -0.2254520058631897
+        }
+      },
+      {
+        "text": "moderate",
+        "category": "medium",
+        "pca_coordinates": {
+          "x": 0.15632030367851257,
+          "y": -0.37017354369163513,
+          "z": 0.48324236273765564
+        }
+      },
+      {
+        "text": "medium",
+        "category": "medium",
+        "pca_coordinates": {
+          "x": 0.10663219541311264,
+          "y": -0.1671355664730072,
+          "z": 0.5291785001754761
+        }
+      },
+      {
+        "text": "standard",
+        "category": "medium",
+        "pca_coordinates": {
+          "x": 0.2564982771873474,
+          "y": -0.3240965008735657,
+          "z": -0.15451078116893768
+        }
+      },
+      {
+        "text": "typical",
+        "category": "medium",
+        "pca_coordinates": {
+          "x": 0.25033038854599,
+          "y": -0.4001767039299011,
+          "z": -0.17992888391017914
+        }
+      },
+      {
+        "text": "regular",
+        "category": "medium",
+        "pca_coordinates": {
+          "x": 0.23549187183380127,
+          "y": -0.41300615668296814,
+          "z": -0.2589524984359741
+        }
+      },
+      {
+        "text": "ordinary",
+        "category": "medium",
+        "pca_coordinates": {
+          "x": 0.24483433365821838,
+          "y": -0.4397045969963074,
+          "z": -0.18507890403270721
+        }
+      },
+      {
+        "text": "big",
+        "category": "large",
+        "pca_coordinates": {
+          "x": -0.23258991539478302,
+          "y": 0.049920544028282166,
+          "z": -0.1104845404624939
+        }
+      },
+      {
+        "text": "huge",
+        "category": "large",
+        "pca_coordinates": {
+          "x": -0.5033003091812134,
+          "y": 0.03615517169237137,
+          "z": -0.051253609359264374
+        }
+      },
+      {
+        "text": "enormous",
+        "category": "large",
+        "pca_coordinates": {
+          "x": -0.6124303936958313,
+          "y": 0.02536791004240513,
+          "z": -0.013784359209239483
+        }
+      },
+      {
+        "text": "gigantic",
+        "category": "large",
+        "pca_coordinates": {
+          "x": -0.5168401002883911,
+          "y": 0.05718347057700157,
+          "z": -0.11429169774055481
+        }
+      },
+      {
+        "text": "massive",
+        "category": "large",
+        "pca_coordinates": {
+          "x": -0.4354645013809204,
+          "y": 0.014887760393321514,
+          "z": 0.09006451070308685
+        }
+      },
+      {
+        "text": "colossal",
+        "category": "large",
+        "pca_coordinates": {
+          "x": -0.44345948100090027,
+          "y": 0.07782652229070663,
+          "z": -0.11783190071582794
+        }
+      },
+      {
+        "text": "immense",
+        "category": "large",
+        "pca_coordinates": {
+          "x": -0.5377108454704285,
+          "y": 0.037878815084695816,
+          "z": 0.07558433711528778
+        }
+      },
+      {
+        "text": "tremendous",
+        "category": "large",
+        "pca_coordinates": {
+          "x": -0.4153742790222168,
+          "y": -0.0376766100525856,
+          "z": -0.011830992996692657
+        }
+      }
+    ]
+  },
+  "professional_hierarchy": {
+    "dataset_name": "professional_hierarchy",
+    "description": "Professional roles by hierarchy level",
+    "total_items": 24,
+    "original_embedding_dim": 768,
+    "pca_explained_variance": [
+      0.1385384052991867,
+      0.09192843735218048,
+      0.08863645046949387
+    ],
+    "total_variance_captured": 0.31910330057144165,
+    "items": [
+      {
+        "text": "intern",
+        "category": "entry_level",
+        "pca_coordinates": {
+          "x": 0.3054520785808563,
+          "y": 0.2347973883152008,
+          "z": -0.02023780718445778
+        }
+      },
+      {
+        "text": "assistant",
+        "category": "entry_level",
+        "pca_coordinates": {
+          "x": 0.28289052844047546,
+          "y": -0.032971758395433426,
+          "z": 0.24888955056667328
+        }
+      },
+      {
+        "text": "junior",
+        "category": "entry_level",
+        "pca_coordinates": {
+          "x": 0.056699614971876144,
+          "y": 0.345040500164032,
+          "z": -0.08174528181552887
+        }
+      },
+      {
+        "text": "trainee",
+        "category": "entry_level",
+        "pca_coordinates": {
+          "x": 0.37295642495155334,
+          "y": 0.28744789958000183,
+          "z": 0.07491491734981537
+        }
+      },
+      {
+        "text": "apprentice",
+        "category": "entry_level",
+        "pca_coordinates": {
+          "x": 0.34692513942718506,
+          "y": 0.32726743817329407,
+          "z": 0.08685597777366638
+        }
+      },
+      {
+        "text": "clerk",
+        "category": "entry_level",
+        "pca_coordinates": {
+          "x": 0.07862554490566254,
+          "y": -0.05335189029574394,
+          "z": 0.22684858739376068
+        }
+      },
+      {
+        "text": "associate",
+        "category": "entry_level",
+        "pca_coordinates": {
+          "x": 0.28587284684181213,
+          "y": -0.08802175521850586,
+          "z": 0.11078102886676788
+        }
+      },
+      {
+        "text": "helper",
+        "category": "entry_level",
+        "pca_coordinates": {
+          "x": 0.252338171005249,
+          "y": -0.00305696832947433,
+          "z": 0.2298218458890915
+        }
+      },
+      {
+        "text": "manager",
+        "category": "mid_level",
+        "pca_coordinates": {
+          "x": -0.12327725440263748,
+          "y": -0.22182612121105194,
+          "z": 0.17108717560768127
+        }
+      },
+      {
+        "text": "supervisor",
+        "category": "mid_level",
+        "pca_coordinates": {
+          "x": 0.006429695058614016,
+          "y": -0.2814140021800995,
+          "z": 0.2336818277835846
+        }
+      },
+      {
+        "text": "coordinator",
+        "category": "mid_level",
+        "pca_coordinates": {
+          "x": 0.08647811412811279,
+          "y": -0.373055100440979,
+          "z": 0.25404566526412964
+        }
+      },
+      {
+        "text": "specialist",
+        "category": "mid_level",
+        "pca_coordinates": {
+          "x": 0.17339354753494263,
+          "y": -0.15192678570747375,
+          "z": -0.4939454197883606
+        }
+      },
+      {
+        "text": "analyst",
+        "category": "mid_level",
+        "pca_coordinates": {
+          "x": 0.21794120967388153,
+          "y": -0.24813632667064667,
+          "z": -0.20931071043014526
+        }
+      },
+      {
+        "text": "consultant",
+        "category": "mid_level",
+        "pca_coordinates": {
+          "x": 0.13530494272708893,
+          "y": -0.2209208756685257,
+          "z": -0.2599317729473114
+        }
+      },
+      {
+        "text": "expert",
+        "category": "mid_level",
+        "pca_coordinates": {
+          "x": 0.09960956871509552,
+          "y": -0.1219712644815445,
+          "z": -0.5235770344734192
+        }
+      },
+      {
+        "text": "lead",
+        "category": "mid_level",
+        "pca_coordinates": {
+          "x": -0.24729031324386597,
+          "y": 0.2362634688615799,
+          "z": 0.011580969206988811
+        }
+      },
+      {
+        "text": "director",
+        "category": "senior_level",
+        "pca_coordinates": {
+          "x": -0.14656174182891846,
+          "y": -0.1598857343196869,
+          "z": 0.0788465067744255
+        }
+      },
+      {
+        "text": "executive",
+        "category": "senior_level",
+        "pca_coordinates": {
+          "x": -0.28452107310295105,
+          "y": -0.1297478973865509,
+          "z": -0.07268541306257248
+        }
+      },
+      {
+        "text": "president",
+        "category": "senior_level",
+        "pca_coordinates": {
+          "x": -0.376621276140213,
+          "y": 0.09231521189212799,
+          "z": -0.05363999679684639
+        }
+      },
+      {
+        "text": "CEO",
+        "category": "senior_level",
+        "pca_coordinates": {
+          "x": -0.42249035835266113,
+          "y": -0.13510888814926147,
+          "z": 0.04627378284931183
+        }
+      },
+      {
+        "text": "chief",
+        "category": "senior_level",
+        "pca_coordinates": {
+          "x": -0.403143972158432,
+          "y": 0.080244280397892,
+          "z": 0.07895627617835999
+        }
+      },
+      {
+        "text": "principal",
+        "category": "senior_level",
+        "pca_coordinates": {
+          "x": -0.32446518540382385,
+          "y": 0.19121170043945312,
+          "z": 0.022605134174227715
+        }
+      },
+      {
+        "text": "senior",
+        "category": "senior_level",
+        "pca_coordinates": {
+          "x": -0.032475121319293976,
+          "y": 0.23380392789840698,
+          "z": -0.1012815535068512
+        }
+      },
+      {
+        "text": "head",
+        "category": "senior_level",
+        "pca_coordinates": {
+          "x": -0.34007108211517334,
+          "y": 0.193003848195076,
+          "z": -0.05883420258760452
+        }
+      }
+    ]
+  },
+  "transportation_sentences": {
+    "dataset_name": "transportation_sentences",
+    "description": "Sentences about different modes of transportation",
+    "total_items": 12,
+    "original_embedding_dim": 768,
+    "pca_explained_variance": [
+      0.1713840514421463,
+      0.1572873890399933,
+      0.11558309197425842
+    ],
+    "total_variance_captured": 0.4442545473575592,
+    "items": [
+      {
+        "text": "The red car drove down the highway at high speed",
+        "category": "car_related",
+        "pca_coordinates": {
+          "x": -0.3062153458595276,
+          "y": 0.18184956908226013,
+          "z": -0.12736085057258606
+        }
+      },
+      {
+        "text": "She parked her vehicle in the garage after work",
+        "category": "car_related",
+        "pca_coordinates": {
+          "x": -0.5619499683380127,
+          "y": 0.04118150845170021,
+          "z": 0.009289218112826347
+        }
+      },
+      {
+        "text": "The automobile needs gas and an oil change",
+        "category": "car_related",
+        "pca_coordinates": {
+          "x": -0.39600297808647156,
+          "y": 0.032420143485069275,
+          "z": 0.27679046988487244
+        }
+      },
+      {
+        "text": "Traffic was heavy during the morning commute",
+        "category": "car_related",
+        "pca_coordinates": {
+          "x": -0.28828004002571106,
+          "y": 0.10689809173345566,
+          "z": 0.13072161376476288
+        }
+      },
+      {
+        "text": "The airplane soared through the clouds above",
+        "category": "airplane_related",
+        "pca_coordinates": {
+          "x": 0.19088493287563324,
+          "y": 0.31245192885398865,
+          "z": -0.1124265193939209
+        }
+      },
+      {
+        "text": "Passengers boarded the flight to London yesterday",
+        "category": "airplane_related",
+        "pca_coordinates": {
+          "x": 0.37044551968574524,
+          "y": 0.2772256135940552,
+          "z": 0.11462455987930298
+        }
+      },
+      {
+        "text": "The pilot announced we would land soon",
+        "category": "airplane_related",
+        "pca_coordinates": {
+          "x": 0.30559879541397095,
+          "y": 0.397443026304245,
+          "z": -0.2567543685436249
+        }
+      },
+      {
+        "text": "Air travel has become more expensive lately",
+        "category": "airplane_related",
+        "pca_coordinates": {
+          "x": 0.25095227360725403,
+          "y": 0.09512382000684738,
+          "z": 0.462939590215683
+        }
+      },
+      {
+        "text": "The cruise ship sailed across the ocean",
+        "category": "ship_related",
+        "pca_coordinates": {
+          "x": 0.21227584779262543,
+          "y": -0.1906505525112152,
+          "z": -0.14500316977500916
+        }
+      },
+      {
+        "text": "Cargo vessels transport goods between continents",
+        "category": "ship_related",
+        "pca_coordinates": {
+          "x": 0.17320173978805542,
+          "y": -0.5189706683158875,
+          "z": 0.17595715820789337
+        }
+      },
+      {
+        "text": "The boat rocked gently in the harbor",
+        "category": "ship_related",
+        "pca_coordinates": {
+          "x": -0.10973791778087616,
+          "y": -0.23049704730510712,
+          "z": -0.5179000496864319
+        }
+      },
+      {
+        "text": "Maritime navigation requires skilled captains",
+        "category": "ship_related",
+        "pca_coordinates": {
+          "x": 0.15882666409015656,
+          "y": -0.5044751167297363,
+          "z": -0.010877720080316067
+        }
+      }
+    ]
+  },
+  "analogical_relationships": {
+    "dataset_name": "analogical_relationships",
+    "description": "Word pairs for testing analogical relationships",
+    "total_items": 24,
+    "original_embedding_dim": 768,
+    "pca_explained_variance": [
+      0.18196889758110046,
+      0.09484686702489853,
+      0.07547897100448608
+    ],
+    "total_variance_captured": 0.3522947430610657,
+    "items": [
+      {
+        "text": "king",
+        "category": "gender_pairs",
+        "pca_coordinates": {
+          "x": 0.09279468655586243,
+          "y": -0.3222716748714447,
+          "z": 0.020134104415774345
+        }
+      },
+      {
+        "text": "queen",
+        "category": "gender_pairs",
+        "pca_coordinates": {
+          "x": 0.033018022775650024,
+          "y": -0.2837432622909546,
+          "z": 0.08349477499723434
+        }
+      },
+      {
+        "text": "man",
+        "category": "gender_pairs",
+        "pca_coordinates": {
+          "x": 0.02993169240653515,
+          "y": -0.29255521297454834,
+          "z": -0.05189336836338043
+        }
+      },
+      {
+        "text": "woman",
+        "category": "gender_pairs",
+        "pca_coordinates": {
+          "x": 0.0043226503767073154,
+          "y": -0.33362770080566406,
+          "z": 0.023224087432026863
+        }
+      },
+      {
+        "text": "boy",
+        "category": "gender_pairs",
+        "pca_coordinates": {
+          "x": 0.13068623840808868,
+          "y": -0.19089826941490173,
+          "z": 0.016427133232355118
+        }
+      },
+      {
+        "text": "girl",
+        "category": "gender_pairs",
+        "pca_coordinates": {
+          "x": 0.059032537043094635,
+          "y": -0.1927933543920517,
+          "z": 0.08298519998788834
+        }
+      },
+      {
+        "text": "father",
+        "category": "gender_pairs",
+        "pca_coordinates": {
+          "x": 0.13147379457950592,
+          "y": -0.25495070219039917,
+          "z": -0.25482821464538574
+        }
+      },
+      {
+        "text": "mother",
+        "category": "gender_pairs",
+        "pca_coordinates": {
+          "x": 0.13281938433647156,
+          "y": -0.3301333487033844,
+          "z": -0.1394890993833542
+        }
+      },
+      {
+        "text": "cat",
+        "category": "animal_families",
+        "pca_coordinates": {
+          "x": 0.1989666223526001,
+          "y": 0.09302134811878204,
+          "z": 0.40591228008270264
+        }
+      },
+      {
+        "text": "kitten",
+        "category": "animal_families",
+        "pca_coordinates": {
+          "x": 0.2725999057292938,
+          "y": 0.12871970236301422,
+          "z": 0.479649156332016
+        }
+      },
+      {
+        "text": "dog",
+        "category": "animal_families",
+        "pca_coordinates": {
+          "x": 0.13175463676452637,
+          "y": 0.09060241281986237,
+          "z": 0.16032306849956512
+        }
+      },
+      {
+        "text": "puppy",
+        "category": "animal_families",
+        "pca_coordinates": {
+          "x": 0.2637609839439392,
+          "y": 0.19006593525409698,
+          "z": 0.22281073033809662
+        }
+      },
+      {
+        "text": "cow",
+        "category": "animal_families",
+        "pca_coordinates": {
+          "x": 0.32880857586860657,
+          "y": 0.17744413018226624,
+          "z": -0.214100643992424
+        }
+      },
+      {
+        "text": "calf",
+        "category": "animal_families",
+        "pca_coordinates": {
+          "x": 0.4687642455101013,
+          "y": 0.3027229607105255,
+          "z": -0.31877899169921875
+        }
+      },
+      {
+        "text": "horse",
+        "category": "animal_families",
+        "pca_coordinates": {
+          "x": 0.22623495757579803,
+          "y": 0.14352566003799438,
+          "z": -0.10471858084201813
+        }
+      },
+      {
+        "text": "foal",
+        "category": "animal_families",
+        "pca_coordinates": {
+          "x": 0.4342869818210602,
+          "y": 0.2619573473930359,
+          "z": -0.18691405653953552
+        }
+      },
+      {
+        "text": "France",
+        "category": "country_capitals",
+        "pca_coordinates": {
+          "x": -0.3293221592903137,
+          "y": 0.08793472498655319,
+          "z": -0.09548898786306381
+        }
+      },
+      {
+        "text": "Paris",
+        "category": "country_capitals",
+        "pca_coordinates": {
+          "x": -0.38934171199798584,
+          "y": 0.06309033185243607,
+          "z": -0.011439980939030647
+        }
+      },
+      {
+        "text": "Germany",
+        "category": "country_capitals",
+        "pca_coordinates": {
+          "x": -0.36338838934898376,
+          "y": 0.10030405223369598,
+          "z": -0.05426052212715149
+        }
+      },
+      {
+        "text": "Berlin",
+        "category": "country_capitals",
+        "pca_coordinates": {
+          "x": -0.3779679834842682,
+          "y": 0.07357992976903915,
+          "z": 0.060098689049482346
+        }
+      },
+      {
+        "text": "Japan",
+        "category": "country_capitals",
+        "pca_coordinates": {
+          "x": -0.3611903786659241,
+          "y": 0.08214478194713593,
+          "z": 0.0037386571057140827
+        }
+      },
+      {
+        "text": "Tokyo",
+        "category": "country_capitals",
+        "pca_coordinates": {
+          "x": -0.4074249863624573,
+          "y": 0.14012587070465088,
+          "z": 0.03023020178079605
+        }
+      },
+      {
+        "text": "Italy",
+        "category": "country_capitals",
+        "pca_coordinates": {
+          "x": -0.35620108246803284,
+          "y": 0.14530253410339355,
+          "z": -0.10080679506063461
+        }
+      },
+      {
+        "text": "Rome",
+        "category": "country_capitals",
+        "pca_coordinates": {
+          "x": -0.35441896319389343,
+          "y": 0.12043184787034988,
+          "z": -0.05630883574485779
+        }
+      }
+    ]
+  }
+}

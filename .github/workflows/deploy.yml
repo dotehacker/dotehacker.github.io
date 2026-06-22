@@ -1,0 +1,49 @@
+name: Build and Deploy sumityadav.com.np
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '_posts/**'
+      - 'data/**'
+      - '*.md'
+      - '_layouts/**'
+      - '_includes/**'
+      - '_sass/**'
+      - '_config.yml'
+      - 'build.js'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build site
+      run: npm run build
+
+    - name: Commit and push built files
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add docs/
+        if git diff --staged --quiet; then
+          echo "No changes to commit"
+        else
+          git commit -m "Auto-build: rebuild site [skip ci]"
+          git push
+        fi

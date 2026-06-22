@@ -1,0 +1,6 @@
+[
+  { "role": "AI Researcher — Safety & Agentic Systems", "org": "Astha.ai", "url": "https://astha.ai", "period": "2025–present", "note": "Zero-Trust agent oversight, MCP-Scanner vulnerability platform, SAFE-MCP framework." },
+  { "role": "AI Engineer — RAG & Infrastructure", "org": "AMNIL Technologies", "url": "", "period": "2024–2025", "note": "Guardrails, LLM-as-a-Judge evaluation, self-hosted LLM serving with vLLM." },
+  { "role": "Data Team Lead", "org": "GradeUp Educations", "url": "", "period": "2022–2024", "note": "Learning agents/chatbots, an automated grade-evaluation system, and semantic-similarity matching." },
+  { "role": "GAN Specialization Mentor", "org": "DeepLearning.AI", "url": "https://www.deeplearning.ai/", "period": "2021–present", "note": "" }
+]

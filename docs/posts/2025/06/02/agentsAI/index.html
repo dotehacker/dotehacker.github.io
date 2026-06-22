@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgentsAI · Sumit Yadav</title>
+    <meta name="description" content="">
+    <meta name="google-site-verification" content="IVG1y4MVA_6MT0wsjk13ooZDQLWXxvYcPXQlmf83MLM" />
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- Mermaid.js for diagram rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+    <div class="scroll-progress"><div class="scroll-progress-bar" id="scroll-progress-bar"></div></div>
+
+    <header class="site-header">
+    <div class="wrap">
+        <a class="site-title" href="/">Sumit Yadav</a>
+        <nav class="site-nav">
+            <a href="/#publications">Publications</a>
+            <a href="/blog/">Blog</a>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                <span class="theme-icon theme-icon-light">🌙</span>
+                <span class="theme-icon theme-icon-dark">☀️</span>
+            </button>
+        </nav>
+    </div>
+</header>
+
+
+    <main class="page-content">
+        <div class="wrap">
+            <div class="content-area">
+                
+<article class="post">
+    <header class="post-header">
+        <h1 class="post-title">AgentsAI</h1>
+        <p class="post-meta">
+            <time datetime="2025-07-01T00:00:00.000Z">July 01, 2025</time>
+             · <span>AI & ML</span>
+        </p>
+    </header>
+
+    <div class="post-content">
+        <h1>🤖 Building an Intelligent Multi-Agent System: How AI Agents Collaborate to Solve Complex Tasks</h1>
+<p><em>Ever wondered how to create a system where AI agents automatically choose the right tools for any task? Welcome to the future of intelligent automation! 🚀</em></p>
+<hr>
+<h2>🌟 Introduction: The Dawn of Intelligent Agent Orchestration</h2>
+<p>In the rapidly evolving landscape of AI, we&#39;re witnessing a paradigm shift from single-purpose tools to intelligent, collaborative agent systems. Today, I&#39;m excited to share the technical deep-dive into <strong>agents.ai</strong> - a sophisticated multi-agent system that automatically selects the best agent and tool sequence to handle user queries using semantic similarity and advanced orchestration techniques.</p>
+<p>🔗 <strong><a href="https://github.com/rockerritesh/agents.ai">Explore the full implementation on GitHub</a></strong></p>
+<h2>🎯 What Makes This System Revolutionary?</h2>
+<p>Traditional AI applications follow a rigid, predetermined flow. But what if your system could think, analyze, and automatically determine the best approach for each unique request? That&#39;s exactly what this multi-agent system accomplishes:</p>
+<ul>
+<li><strong>🧠 Intelligent Agent Selection</strong>: Uses cosine similarity with embeddings to find the most relevant agent</li>
+<li><strong>🔄 Dynamic Tool Orchestration</strong>: Automatically determines optimal tool sequences</li>
+<li><strong>💭 Context-Aware Processing</strong>: Maintains conversation history for coherent multi-turn interactions</li>
+<li><strong>🎨 Specialized Expertise</strong>: Five distinct agents, each mastered in specific domains</li>
+</ul>
+<h2>🏗️ System Architecture: The Technical Foundation</h2>
+<h3>Core Workflow Visualization</h3>
+<p>The system follows an elegant flow that mimics human problem-solving approaches:</p>
+<p><div class="mermaid">flowchart TD
+    A["🧑‍💻 User Query"] --> B["📊 Query Embedding<br/>OpenAI text-embedding-3-large"]
+    B --> C["🎯 Agent Selection<br/>Cosine Similarity > 0.5"]
+    C --> D{"🤔 Agent Found?"}
+    D -->|No| E["💬 General Chat Response"]
+    D -->|Yes| F["🛠️ Tool Sequence Planning"]
+    F --> G["⚙️ Tool Execution Loop"]
+    G --> H["📝 Context Gathering"]
+    H --> I["🔄 Tool Function Call"]
+    I --> J["💾 Store Results"]
+    J --> K{"🔄 More Tools?"}
+    K -->|Yes| H
+    K -->|No| L["📋 Results Summary"]
+    L --> M["✅ Response to User"]
+    
+    style A fill:#e1f5fe
+    style C fill:#f3e5f5
+    style F fill:#e8f5e8
+    style I fill:#fff3e0
+    style M fill:#e8f5e8</div></p>
+<h3>Agent Ecosystem Overview</h3>
+<p><div class="mermaid">graph TB
+    subgraph "🤖 Agent Ecosystem"
+        A1["📊 CSVDataAgent<br/>DataframeLoader<br/>AdvanceCSVQuery"]
+        A2["😀 EmojiWriter<br/>EmojiTranslator<br/>EmojiMixer"]
+        A3["📝 TextSummarizer<br/>KeypointExtractor<br/>ContentExpander"]
+        A4["📄 PDFContentWriter<br/>TextExtractor<br/>ContentReformatter"]
+        A5["🌐 TranslatorAgent<br/>MultilingualTranslator<br/>StylePreserver"]
+    end
+    
+    subgraph "🔧 Core System"
+        B1["🎯 Agent Selection Engine"]
+        B2["🛠️ Tool Orchestrator"]
+        B3["💬 Conversation Manager"]
+        B4["📊 Embedding Generator"]
+    end
+    
+    subgraph "🔌 Integration Layer"
+        C1["🧠 OpenAI GPT-4o"]
+        C2["🔤 OpenAI Embeddings"]
+        C3["📂 File System"]
+        C4["💾 Conversation History"]
+    end
+    
+    B1 --> A1
+    B1 --> A2
+    B1 --> A3
+    B1 --> A4
+    B1 --> A5
+    
+    B2 --> B1
+    B3 --> B2
+    B4 --> B1
+    
+    B4 --> C2
+    B2 --> C1
+    B3 --> C4
+    A1 --> C3
+    A4 --> C3
+    
+    style A1 fill:#e3f2fd
+    style A2 fill:#fff3e0
+    style A3 fill:#e8f5e8
+    style A4 fill:#fce4ec
+    style A5 fill:#f3e5f5</div></p>
+<h2>🔬 Technical Deep Dive: How It All Works</h2>
+<h3>1. 🎯 Semantic Agent Selection</h3>
+<p>The heart of the system lies in its intelligent agent selection mechanism. Here&#39;s how it works:</p>
+<pre><code class="language-python">def find_relevant_agents(query, agents_list, top_n=3):
+    &quot;&quot;&quot;Find the most relevant agents based on semantic similarity&quot;&quot;&quot;
+    query_embedding = get_embedding(query)
+    sim_scores = []
+    
+    for agent in agents_list:
+        similarity = CosineSimilarityCalculator.calculate_similarity(
+            embedding1=query_embedding, 
+            embedding2=agent.embedding
+        )
+        sim_scores.append({&#39;agent&#39;: agent, &#39;similarity&#39;: similarity})
+    
+    # Sort by similarity score
+    sim_scores.sort(key=lambda x: x[&#39;similarity&#39;], reverse=True)
+    
+    # Threshold filtering: only agents with similarity &gt; 0.5
+    if sim_scores[0][&#39;similarity&#39;] &lt; 0.5:
+        return []  # Fall back to general chat
+    
+    return sim_scores[:top_n]
+</code></pre>
+<p><strong>Key Innovation</strong>: The system uses OpenAI&#39;s <code>text-embedding-3-large</code> model to create vector representations of both user queries and agent descriptions, then applies cosine similarity to find the best match.</p>
+<h3>2. 🛠️ Dynamic Tool Sequence Planning</h3>
+<p>Once an agent is selected, the system dynamically determines the optimal tool sequence:</p>
+<pre><code class="language-python">def determine_tool_sequence(agent, query):
+    &quot;&quot;&quot;Determine the best sequence of tools for the task&quot;&quot;&quot;
+    context_summary = &quot;\n\nHistory&quot; + str(history)
+    
+    message = [
+        {
+            &quot;role&quot;: &quot;system&quot;,
+            &quot;content&quot;: DETERMINE_TOOLS.format(agent, context_summary)
+        },
+        {
+            &quot;role&quot;: &quot;user&quot;, 
+            &quot;content&quot;: query
+        }
+    ]
+    
+    tools_order = get_reply(message, ToolsSeqFinder)
+    return tools_order.tools_name_in_seq
+</code></pre>
+<h3>3. 🔄 Execution Flow Sequence</h3>
+<p><div class="mermaid">sequenceDiagram
+    participant U as 🧑‍💻 User
+    participant S as 🎯 System
+    participant E as 🔤 Embedding API
+    participant A as 🤖 Selected Agent
+    participant T as 🛠️ Tools
+    participant L as 🧠 LLM API
+    participant H as 💾 History
+    
+    U->>S: Submit Query
+    S->>E: Generate Query Embedding
+    E-->>S: Return Embedding Vector
+    S->>S: Calculate Cosine Similarity
+    S->>A: Select Best Agent (>0.5 threshold)
+    A->>L: Determine Tool Sequence
+    L-->>A: Return Tool Order
+    
+    loop For Each Tool
+        A->>T: Gather Tool Inputs
+        A->>L: Get Missing Information
+        L-->>A: Provide Inputs
+        A->>T: Execute Tool Function
+        T-->>A: Return Results
+        A->>H: Store Context
+    end
+    
+    A->>L: Generate Final Summary
+    L-->>A: Formatted Response
+    A-->>U: Deliver Results
+    
+    Note over S,H: Maintains conversation<br/>context throughout</div></p>
+<h2>🤖 Meet the Agent Squad: Specialized AI Workers</h2>
+<h3>1. 📊 <strong>CSVDataAgent</strong> - The Data Scientist</h3>
+<p><strong>Specialty</strong>: CSV data processing and analysis</p>
+<pre><code class="language-yaml">tools:
+  - DataframeLoader: Loads CSV/Excel files into pandas DataFrames
+  - AdvanceCSVQuery: Performs complex queries and filtering
+</code></pre>
+<p><strong>Example Query</strong>: <em>&quot;Load earthquake.csv and show me the top 10 earthquakes by magnitude&quot;</em></p>
+<h3>2. 😀 <strong>EmojiWriter</strong> - The Creative Communicator</h3>
+<p><strong>Specialty</strong>: Emoji content creation and translation</p>
+<pre><code class="language-yaml">tools:
+  - EmojiTranslator: Converts text to relevant emojis
+  - EmojiMixer: Creates custom emoji combinations
+</code></pre>
+<p><strong>Example Query</strong>: <em>&quot;Convert &#39;I love sunny days at the beach&#39; to emojis&quot;</em></p>
+<h3>3. 📝 <strong>TextSummarizer</strong> - The Content Analyst</h3>
+<p><strong>Specialty</strong>: Text analysis and content expansion</p>
+<pre><code class="language-yaml">tools:
+  - KeypointExtractor: Identifies main ideas from text
+  - ContentExpander: Expands bullet points to full paragraphs
+</code></pre>
+<p><strong>Example Query</strong>: <em>&quot;Extract key points from this article and expand them&quot;</em></p>
+<h3>4. 📄 <strong>PDFContentWriter</strong> - The Document Processor</h3>
+<p><strong>Specialty</strong>: PDF processing and content reformatting</p>
+<pre><code class="language-yaml">tools:
+  - TextExtractor: Extracts text from PDF files
+  - ContentReformatter: Reformats content into various types
+</code></pre>
+<p><strong>Example Query</strong>: <em>&quot;Extract text from resume.pdf and reformat as LinkedIn summary&quot;</em></p>
+<h3>5. 🌐 <strong>TranslatorAgent</strong> - The Linguistic Expert</h3>
+<p><strong>Specialty</strong>: Multilingual translation with style preservation</p>
+<pre><code class="language-yaml">tools:
+  - MultilingualTranslator: Translates between languages
+  - StylePreserver: Maintains writing style during translation
+</code></pre>
+<p><strong>Example Query</strong>: <em>&quot;Translate this to Spanish while keeping the formal tone&quot;</em></p>
+<h2>⚡ Technical Implementation Highlights</h2>
+<h3>Embedding-Based Intelligence</h3>
+<p>The system leverages OpenAI&#39;s advanced embedding model for semantic understanding:</p>
+<pre><code class="language-python">def get_embedding(text: str) -&gt; np.ndarray:
+    &quot;&quot;&quot;Generate embeddings using OpenAI&#39;s text-embedding-3-large&quot;&quot;&quot;
+    response = client.embeddings.create(
+        model=&quot;text-embedding-3-large&quot;,
+        input=text
+    )
+    return np.array(response.data[0].embedding)
+</code></pre>
+<h3>Pydantic-Powered Type Safety</h3>
+<p>Every tool input/output is strictly typed using Pydantic models:</p>
+<pre><code class="language-python">class ToolsSeqFinder(BaseModel):
+    &quot;&quot;&quot;Model for finding the best sequence of tools&quot;&quot;&quot;
+    tools_name_in_seq: List[str]
+
+class AgentInfo(BaseModel):
+    &quot;&quot;&quot;Model for storing agent information&quot;&quot;&quot;
+    name: str
+    description: str
+    id: str
+    tools: List[Dict[str, Any]]
+    parameters: Optional[Dict[str, Any]] = None
+    embedding: Optional[Any] = None
+</code></pre>
+<h3>Context-Aware Execution</h3>
+<p>The system maintains conversation history throughout tool execution:</p>
+<pre><code class="language-python">def gather_tool_inputs(tool_name, tool_function, history, previous_outputs):
+    &quot;&quot;&quot;Gather required inputs for tool execution with context&quot;&quot;&quot;
+    context_summary = &quot;\n\nPrevious tool outputs: &quot; + str(previous_outputs)
+    # Use conversation history and previous outputs to determine inputs
+    # ...
+</code></pre>
+<h2>🔧 Technology Stack &amp; Dependencies</h2>
+<p>The system is built on a modern Python stack:</p>
+<pre><code class="language-toml">[project]
+dependencies = [
+    &quot;openai&gt;=1.78.1&quot;,      # LLM integration
+    &quot;pandas&gt;=2.2.3&quot;,       # Data manipulation
+    &quot;pydantic&gt;=2.11.4&quot;,    # Type safety
+    &quot;pymupdf&gt;=1.25.5&quot;,     # PDF processing
+    &quot;numpy&gt;=2.2.5&quot;,        # Numerical computations
+    &quot;pyyaml&gt;=6.0.2&quot;,       # Configuration
+]
+</code></pre>
+<h2>🚀 Performance &amp; Scalability Considerations</h2>
+<h3>Similarity Threshold Optimization</h3>
+<p>The system uses a <strong>0.5 similarity threshold</strong> to balance precision and recall:</p>
+<ul>
+<li><strong>Above 0.5</strong>: Agent is selected for specialized handling</li>
+<li><strong>Below 0.5</strong>: Falls back to general conversation mode</li>
+</ul>
+<h3>Conversation Context Management</h3>
+<p>Smart context preservation without memory overflow:</p>
+<pre><code class="language-python"># Store only relevant context for each tool execution
+context_summary = &quot;\n\nHistory&quot; + str(history)
+</code></pre>
+<h3>Parallel Processing Potential</h3>
+<p>The architecture supports future enhancements like:</p>
+<ul>
+<li>🔄 Concurrent tool execution</li>
+<li>📊 Batch query processing  </li>
+<li>🌐 Distributed agent deployment</li>
+</ul>
+<h2>🎨 Configuration-Driven Architecture</h2>
+<p>The entire agent ecosystem is defined in <code>agents_behaviour.yaml</code>:</p>
+<pre><code class="language-yaml">- name: CSVDataAgent
+  description: &quot;Specialized agent for loading, processing, and extracting insights from CSV data&quot;
+  tools:
+    - name: &quot;DataframeLoader&quot;
+      version: &quot;1.2.0&quot;
+      input_schema: {&quot;file_path&quot;: &quot;str&quot;}
+      output_schema: &quot;pd.DataFrame&quot;
+</code></pre>
+<p>This allows for:</p>
+<ul>
+<li>✅ Easy agent addition/modification</li>
+<li>✅ Version control for tools</li>
+<li>✅ Clear separation of concerns</li>
+<li>✅ Rapid prototyping</li>
+</ul>
+<h2>🔮 Future Enhancements &amp; Roadmap</h2>
+<h3>1. <strong>Advanced Agent Capabilities</strong></h3>
+<ul>
+<li>🧮 Mathematical computation agents</li>
+<li>🎨 Image processing specialists  </li>
+<li>🌐 Web scraping agents</li>
+<li>📈 Real-time data analysis</li>
+</ul>
+<h3>2. <strong>Enhanced Intelligence</strong></h3>
+<ul>
+<li>🤖 Multi-agent collaboration</li>
+<li>🔍 Self-improving algorithms</li>
+<li>📊 Performance analytics</li>
+<li>🎯 Adaptive threshold learning</li>
+</ul>
+<h3>3. <strong>Enterprise Features</strong></h3>
+<ul>
+<li>🔐 Authentication &amp; authorization</li>
+<li>📊 Usage analytics dashboard</li>
+<li>🌍 Multi-tenant support</li>
+<li>📱 API Gateway integration</li>
+</ul>
+<h2>🚀 Getting Started: Run It Yourself!</h2>
+<h3>Quick Setup</h3>
+<pre><code class="language-bash"># Clone the repository
+git clone https://github.com/rockerritesh/agents.ai.git
+cd agents.ai
+
+# Install dependencies
+uv sync
+
+# Configure environment
+echo &quot;OPENAI_API_KEY=your_key_here&quot; &gt; .env
+echo &quot;BASE_URL_OPENAI=https://api.openai.com/v1&quot; &gt;&gt; .env
+echo &quot;MODEL_NAME=gpt-4o&quot; &gt;&gt; .env
+echo &quot;EMBEDDING_MODEL_NAME=text-embedding-3-large&quot; &gt;&gt; .env
+
+# Run the system
+uv run final_version.py
+</code></pre>
+<h3>Example Interactions</h3>
+<pre><code class="language-bash"># CSV Analysis
+&quot;Load the small-eq.csv file and show me earthquake patterns&quot;
+
+# Emoji Translation  
+&quot;Convert &#39;Happy birthday! 🎉&#39; to pure emojis&quot;
+
+# Content Processing
+&quot;Summarize this research paper and expand key findings&quot;
+</code></pre>
+<h2>🎯 Key Takeaways for Developers</h2>
+<h3>1. <strong>Semantic Understanding is Key</strong></h3>
+<p>Using embeddings for agent selection provides much more nuanced understanding than keyword matching.</p>
+<h3>2. <strong>Context Preservation Matters</strong></h3>
+<p>Maintaining conversation history enables sophisticated multi-turn interactions.</p>
+<h3>3. <strong>Type Safety Accelerates Development</strong></h3>
+<p>Pydantic models catch errors early and improve code reliability.</p>
+<h3>4. <strong>Configuration-Driven Design Scales</strong></h3>
+<p>YAML-based agent definitions make the system incredibly extensible.</p>
+<h2>🌟 Conclusion: The Future is Multi-Agent</h2>
+<p>This multi-agent system represents a significant step toward truly intelligent automation. By combining semantic understanding, dynamic tool orchestration, and context-aware processing, we&#39;ve created a system that doesn&#39;t just execute commands—it thinks about the best way to solve problems.</p>
+<p>The implications extend far beyond this implementation:</p>
+<ul>
+<li>🏢 <strong>Enterprise Applications</strong>: Automated business process handling</li>
+<li>🎓 <strong>Education</strong>: Personalized learning assistants  </li>
+<li>🔬 <strong>Research</strong>: Intelligent data analysis pipelines</li>
+<li>🏠 <strong>Consumer Apps</strong>: Smart home automation</li>
+</ul>
+<hr>
+<h3>🔗 Explore Further</h3>
+<ul>
+<li><strong>🐙 <a href="https://github.com/rockerritesh/agents.ai">GitHub Repository</a></strong> - Dive into the code</li>
+<li><strong>📖 <a href="https://rockerritesh.github.io/agents.ai/">Documentation</a></strong> - Detailed implementation guide</li>
+<li><strong>🌟 <a href="https://platform.openai.com/docs">OpenAI API Documentation</a></strong> - Understanding the AI foundation</li>
+<li><strong>📊 <a href="https://pandas.pydata.org/docs/">Pandas Documentation</a></strong> - Data manipulation toolkit</li>
+</ul>
+<h3>💬 Join the Conversation</h3>
+<p>Have questions or ideas for enhancements? Let&#39;s connect and build the future of intelligent automation together!</p>
+<p><em>What fascinating applications can you imagine for this multi-agent architecture? The possibilities are endless! 🚀</em></p>
+<hr>
+<p><em>Built with ❤️ using Python, OpenAI GPT-4o, and a vision for intelligent automation</em> </p>
+
+    </div>
+
+    <details class="cite">
+  <summary>Cite this post</summary>
+  <div class="cite-body" id="citation-section">
+    <div class="citation-tabs" role="tablist">
+        <button class="citation-tab active" data-target="bibtex" role="tab" aria-selected="true">BibTeX</button>
+        <button class="citation-tab" data-target="apa" role="tab" aria-selected="false">APA</button>
+        <button class="citation-tab" data-target="mla" role="tab" aria-selected="false">MLA</button>
+        <button class="citation-tab" data-target="chicago" role="tab" aria-selected="false">Chicago</button>
+    </div>
+    <div class="citation-panels">
+        <div class="citation-panel active" id="panel-bibtex" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-bibtex"></pre><button class="copy-btn" data-cite="cite-bibtex">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-apa" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-apa"></pre><button class="copy-btn" data-cite="cite-apa">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-mla" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-mla"></pre><button class="copy-btn" data-cite="cite-mla">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-chicago" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-chicago"></pre><button class="copy-btn" data-cite="cite-chicago">Copy</button></div>
+        </div>
+    </div>
+    <p class="citation-note">Auto-generated. Verify for your institution's requirements.</p>
+  </div>
+</details>
+
+<template id="cite-meta">AgentsAI</template>
+
+<script>
+(function() {
+    var meta = document.getElementById('cite-meta');
+    if (!meta) return;
+    var t = meta.content ? meta.content.textContent : meta.innerHTML;
+    var a = 'Sumit Yadav';
+    var j = 'Sumit Yadav';
+    var u = 'https://sumityadav.com.np/posts/2025/06/02/agentsAI/';
+    var y = '2025';
+    var mo = 'July';
+    var ms = 'Jul';
+    var dy = '01';
+    var k = a.split(' ')[0].toLowerCase() + y + t.toLowerCase().replace(/[^a-z0-9]+/g, '');
+
+    document.getElementById('cite-bibtex').textContent =
+        '@article{' + k + ',\n  title     = {' + t + '},\n  author    = {' + a +
+        '},\n  journal   = {' + j + '},\n  year      = {' + y + '},\n  month     = {' + mo +
+        '},\n  day       = {' + dy + '},\n  url       = {' + u + '}\n}';
+    document.getElementById('cite-apa').textContent =
+        a + '. (' + y + ', ' + mo + ' ' + dy + '). ' + t + '. ' + j + '. ' + u;
+    document.getElementById('cite-mla').textContent =
+        a + '. “' + t + '.” ' + j + ', ' + dy + ' ' + ms + ' ' + y + ', ' + u + '.';
+    document.getElementById('cite-chicago').textContent =
+        a + '. “' + t + '.” ' + j + '. ' + mo + ' ' + dy + ', ' + y + '. ' + u + '.';
+
+    var sec = document.getElementById('citation-section');
+    sec.querySelectorAll('.citation-tab').forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            sec.querySelectorAll('.citation-tab').forEach(function(x) { x.classList.remove('active'); x.setAttribute('aria-selected', 'false'); });
+            sec.querySelectorAll('.citation-panel').forEach(function(p) { p.classList.remove('active'); });
+            this.classList.add('active'); this.setAttribute('aria-selected', 'true');
+            sec.querySelector('#panel-' + this.dataset.target).classList.add('active');
+        });
+    });
+    sec.querySelectorAll('.copy-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var text = document.getElementById(this.dataset.cite).textContent;
+            var b = this;
+            var done = function() { b.textContent = 'Copied!'; b.classList.add('copied'); setTimeout(function() { b.textContent = 'Copy'; b.classList.remove('copied'); }, 2000); };
+            navigator.clipboard.writeText(text).then(done).catch(function() {
+                var ta = document.createElement('textarea'); ta.value = text; ta.style.cssText = 'position:fixed;opacity:0';
+                document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); done();
+            });
+        });
+    });
+})();
+</script>
+
+
+    <footer class="post-footer">
+        <p><a href="/blog/">← All posts</a></p>
+    </footer>
+</article>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+    <div class="wrap">
+        <p>© 2026 Sumit Yadav · Kathmandu, Nepal · <a href="/">home</a> · <a href="/blog/">blog</a></p>
+    </div>
+</footer>
+
+
+    <script>
+        (function() {
+            const getThemePreference = () => {
+                const stored = localStorage.getItem('theme-preference');
+                if (stored) return stored;
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            };
+            const applyTheme = (theme) => {
+                const root = document.documentElement;
+                root.classList.remove('light-theme', 'dark-theme');
+                if (theme !== 'auto') root.classList.add(`${theme}-theme`);
+                if (window.mermaid) {
+                    const dark = theme === 'dark' || (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                    mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'default' });
+                    document.querySelectorAll('.mermaid').forEach(el => {
+                        if (el.getAttribute('data-processed')) {
+                            el.removeAttribute('data-processed');
+                            el.innerHTML = el.getAttribute('data-original') || el.innerHTML;
+                        }
+                    });
+                    if (window.mermaid.init) mermaid.init(undefined, '.mermaid');
+                }
+            };
+            document.addEventListener('DOMContentLoaded', () => {
+                applyTheme(getThemePreference());
+                const t = document.getElementById('theme-toggle');
+                if (t) t.addEventListener('click', () => {
+                    const cur = getThemePreference();
+                    const next = cur === 'dark' ? 'light' : 'dark';
+                    localStorage.setItem('theme-preference', next);
+                    applyTheme(next);
+                });
+                document.querySelectorAll('.mermaid').forEach(el => {
+                    if (!el.getAttribute('data-original')) el.setAttribute('data-original', el.innerHTML);
+                });
+            });
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme-preference')) applyTheme(e.matches ? 'dark' : 'light');
+            });
+        })();
+        (function() {
+            const bar = document.getElementById('scroll-progress-bar');
+            if (!bar) return;
+            const upd = () => {
+                const st = window.pageYOffset || document.documentElement.scrollTop;
+                const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                bar.style.height = Math.min(Math.max((st / h) * 100, 0), 100) + '%';
+            };
+            window.addEventListener('scroll', upd, { passive: true });
+            window.addEventListener('resize', upd, { passive: true });
+            upd();
+        })();
+    </script>
+</body>
+</html>

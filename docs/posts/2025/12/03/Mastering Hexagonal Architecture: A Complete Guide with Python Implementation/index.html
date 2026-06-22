@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mastering Hexagonal Architecture: A Complete Guide with Python Implementation · Sumit Yadav</title>
+    <meta name="description" content="">
+    <meta name="google-site-verification" content="IVG1y4MVA_6MT0wsjk13ooZDQLWXxvYcPXQlmf83MLM" />
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- Mermaid.js for diagram rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+    <div class="scroll-progress"><div class="scroll-progress-bar" id="scroll-progress-bar"></div></div>
+
+    <header class="site-header">
+    <div class="wrap">
+        <a class="site-title" href="/">Sumit Yadav</a>
+        <nav class="site-nav">
+            <a href="/#publications">Publications</a>
+            <a href="/blog/">Blog</a>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                <span class="theme-icon theme-icon-light">🌙</span>
+                <span class="theme-icon theme-icon-dark">☀️</span>
+            </button>
+        </nav>
+    </div>
+</header>
+
+
+    <main class="page-content">
+        <div class="wrap">
+            <div class="content-area">
+                
+<article class="post">
+    <header class="post-header">
+        <h1 class="post-title">Mastering Hexagonal Architecture: A Complete Guide with Python Implementation</h1>
+        <p class="post-meta">
+            <time datetime="2025-12-03T00:00:00.000Z">December 03, 2025</time>
+             · <span>Engineering</span>
+        </p>
+    </header>
+
+    <div class="post-content">
+        <h1>Mastering Hexagonal Architecture: A Complete Guide with Python Implementation</h1>
+<blockquote>
+<p><strong>&quot;The business logic should not depend on the frameworks; instead, the frameworks should depend on the business logic.&quot;</strong> - Alistair Cockburn</p>
+</blockquote>
+<h2>Table of Contents</h2>
+<ol>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#what-is-hexagonal-architecture">What is Hexagonal Architecture?</a></li>
+<li><a href="#core-concepts">Core Concepts</a></li>
+<li><a href="#architecture-layers">Architecture Layers</a></li>
+<li><a href="#benefits-and-trade-offs">Benefits and Trade-offs</a></li>
+<li><a href="#implementation-patterns">Implementation Patterns</a></li>
+<li><a href="#python-implementation">Python Implementation</a></li>
+<li><a href="#testing-strategy">Testing Strategy</a></li>
+<li><a href="#best-practices">Best Practices</a></li>
+<li><a href="#common-pitfalls">Common Pitfalls</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+</ol>
+<hr>
+<p>Here is example implmentation:- <a href="https://github.com/rockerritesh/example-hexagonal-service.git">https://github.com/rockerritesh/example-hexagonal-service.git</a></p>
+<h2>Introduction</h2>
+<p>In modern software development, maintaining clean, testable, and maintainable code is paramount. As applications grow in complexity, the traditional layered architecture often leads to tight coupling, making systems difficult to test, modify, and scale. <strong>Hexagonal Architecture</strong>, also known as <strong>Ports and Adapters</strong>, provides a solution to these challenges by inverting the dependency flow and isolating business logic from external concerns.</p>
+<p>This article provides a comprehensive exploration of Hexagonal Architecture, from theoretical foundations to practical Python implementation, complete with working examples and test strategies.</p>
+<hr>
+<h2>What is Hexagonal Architecture?</h2>
+<p>Hexagonal Architecture, coined by Alistair Cockburn in 2005, is an architectural pattern that aims to create loosely coupled application components that can be easily connected to their software environment through ports and adapters. The &quot;hexagon&quot; is a visual metaphor—the shape doesn&#39;t matter, but the idea of having multiple entry and exit points does.</p>
+<h3>The Core Philosophy</h3>
+<p><div class="mermaid">graph TB
+    subgraph "Hexagonal Architecture"
+        Core[Business Logic Core]
+        Port1[Port 1]
+        Port2[Port 2]
+        Port3[Port 3]
+        Adapter1[Adapter 1]
+        Adapter2[Adapter 2]
+        Adapter3[Adapter 3]
+        
+        Core --> Port1
+        Core --> Port2
+        Core --> Port3
+        Port1 --> Adapter1
+        Port2 --> Adapter2
+        Port3 --> Adapter3
+    end
+    
+    External1[External System 1]
+    External2[External System 2]
+    External3[External System 3]
+    
+    Adapter1 --> External1
+    Adapter2 --> External2
+    Adapter3 --> External3</div></p>
+<p>The architecture is built on three fundamental principles:</p>
+<ol>
+<li><strong>Isolation</strong>: Business logic is isolated from external frameworks, databases, and UI</li>
+<li><strong>Independence</strong>: The application can be developed and tested independently</li>
+<li><strong>Flexibility</strong>: External dependencies can be swapped without changing core logic</li>
+</ol>
+<hr>
+<h2>Core Concepts</h2>
+<h3>1. Ports (Interfaces)</h3>
+<p><strong>Ports</strong> are interfaces that define how the application communicates with the outside world. They represent contracts that the application expects to be fulfilled.</p>
+<h4>Types of Ports:</h4>
+<ul>
+<li><p><strong>Inbound Ports (Driving Ports)</strong>: Define how external actors interact with the application</p>
+<ul>
+<li>Example: <code>UserService</code> interface that defines user operations</li>
+<li>Example: REST API endpoints, CLI commands, message queue handlers</li>
+</ul>
+</li>
+<li><p><strong>Outbound Ports (Driven Ports)</strong>: Define how the application interacts with external systems</p>
+<ul>
+<li>Example: <code>UserRepository</code> interface for data persistence</li>
+<li>Example: <code>EmailService</code> interface for sending notifications</li>
+<li>Example: <code>PaymentGateway</code> interface for processing payments</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-python"># Example: Outbound Port (Driven Port)
+from abc import ABC, abstractmethod
+
+class UserRepositoryPort(ABC):
+    &quot;&quot;&quot;Port defining how to persist user data&quot;&quot;&quot;
+    
+    @abstractmethod
+    async def save(self, user: User) -&gt; User:
+        &quot;&quot;&quot;Save a user to persistent storage&quot;&quot;&quot;
+        pass
+    
+    @abstractmethod
+    async def find_by_id(self, user_id: str) -&gt; User | None:
+        &quot;&quot;&quot;Find a user by ID&quot;&quot;&quot;
+        pass
+    
+    @abstractmethod
+    async def find_by_email(self, email: str) -&gt; User | None:
+        &quot;&quot;&quot;Find a user by email&quot;&quot;&quot;
+        pass
+</code></pre>
+<h3>2. Adapters (Implementations)</h3>
+<p><strong>Adapters</strong> are concrete implementations of ports. They translate between the application&#39;s internal model and external systems.</p>
+<h4>Types of Adapters:</h4>
+<ul>
+<li><p><strong>Inbound Adapters (Driving Adapters)</strong>: Implement how external actors interact with the application</p>
+<ul>
+<li>Example: FastAPI REST controllers</li>
+<li>Example: CLI command handlers</li>
+<li>Example: GraphQL resolvers</li>
+</ul>
+</li>
+<li><p><strong>Outbound Adapters (Driven Adapters)</strong>: Implement how the application interacts with external systems</p>
+<ul>
+<li>Example: PostgreSQL repository implementation</li>
+<li>Example: SendGrid email service implementation</li>
+<li>Example: Stripe payment gateway implementation</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-python"># Example: Outbound Adapter (Driven Adapter)
+from sqlalchemy.ext.asyncio import AsyncSession
+from .user_repository_port import UserRepositoryPort
+from ..entities.user import User
+
+class PostgreSQLUserRepository(UserRepositoryPort):
+    &quot;&quot;&quot;PostgreSQL implementation of UserRepositoryPort&quot;&quot;&quot;
+    
+    def __init__(self, session: AsyncSession):
+        self._session = session
+    
+    async def save(self, user: User) -&gt; User:
+        # Convert domain entity to database model
+        db_user = UserModel(
+            id=user.id,
+            email=user.email,
+            name=user.name,
+            created_at=user.created_at
+        )
+        self._session.add(db_user)
+        await self._session.commit()
+        return user
+    
+    async def find_by_id(self, user_id: str) -&gt; User | None:
+        db_user = await self._session.get(UserModel, user_id)
+        if not db_user:
+            return None
+        # Convert database model to domain entity
+        return User(
+            id=db_user.id,
+            email=db_user.email,
+            name=db_user.name,
+            created_at=db_user.created_at
+        )
+</code></pre>
+<h3>3. Application Core</h3>
+<p>The <strong>Application Core</strong> contains:</p>
+<ul>
+<li><strong>Domain Entities</strong>: Business objects with behavior</li>
+<li><strong>Value Objects</strong>: Immutable objects representing domain concepts</li>
+<li><strong>Domain Services</strong>: Business logic that doesn&#39;t belong to a single entity</li>
+<li><strong>Use Cases</strong>: Application-specific business workflows</li>
+<li><strong>Port Interfaces</strong>: Contracts for external interactions</li>
+</ul>
+<hr>
+<h2>Architecture Layers</h2>
+<p>Hexagonal Architecture organizes code into distinct layers, each with specific responsibilities:</p>
+<p><div class="mermaid">graph TB
+    subgraph "External Layer"
+        UI[UI Adapters]
+        API[REST API]
+        CLI[CLI]
+        DB[(Database)]
+        ExtAPI[External APIs]
+        Queue[Message Queue]
+    end
+    
+    subgraph "Adapters Layer"
+        InboundAdapter[Inbound Adapters]
+        OutboundAdapter[Outbound Adapters]
+    end
+    
+    subgraph "Application Layer"
+        UseCases[Use Cases]
+        AppServices[Application Services]
+    end
+    
+    subgraph "Domain Layer"
+        Entities[Entities]
+        ValueObjects[Value Objects]
+        DomainServices[Domain Services]
+        Ports[Ports/Interfaces]
+    end
+    
+    UI --> InboundAdapter
+    API --> InboundAdapter
+    CLI --> InboundAdapter
+    
+    InboundAdapter --> UseCases
+    UseCases --> AppServices
+    AppServices --> DomainServices
+    DomainServices --> Entities
+    DomainServices --> ValueObjects
+    UseCases --> Ports
+    
+    Ports --> OutboundAdapter
+    OutboundAdapter --> DB
+    OutboundAdapter --> ExtAPI
+    OutboundAdapter --> Queue</div></p>
+<h3>Layer 1: Domain Layer (Core)</h3>
+<p>The innermost layer containing pure business logic with <strong>zero dependencies</strong> on external frameworks.</p>
+<p><strong>Components:</strong></p>
+<ul>
+<li><strong>Entities</strong>: Rich domain models with behavior</li>
+<li><strong>Value Objects</strong>: Immutable domain concepts</li>
+<li><strong>Domain Services</strong>: Business logic spanning multiple entities</li>
+<li><strong>Ports</strong>: Interfaces defining contracts</li>
+</ul>
+<p><strong>Rules:</strong></p>
+<ul>
+<li>✅ No dependencies on frameworks (FastAPI, SQLAlchemy, etc.)</li>
+<li>✅ No dependencies on infrastructure</li>
+<li>✅ Pure Python code</li>
+<li>✅ Business logic only</li>
+</ul>
+<pre><code class="language-python"># Example: Domain Entity
+from dataclasses import dataclass
+from datetime import datetime
+from typing import Optional
+
+@dataclass
+class User:
+    &quot;&quot;&quot;Domain entity representing a user&quot;&quot;&quot;
+    id: str
+    email: str
+    name: str
+    created_at: datetime
+    updated_at: Optional[datetime] = None
+    
+    def update_name(self, new_name: str) -&gt; None:
+        &quot;&quot;&quot;Business logic: Update user name&quot;&quot;&quot;
+        if not new_name or len(new_name.strip()) == 0:
+            raise ValueError(&quot;Name cannot be empty&quot;)
+        self.name = new_name.strip()
+        self.updated_at = datetime.utcnow()
+    
+    def is_active(self) -&gt; bool:
+        &quot;&quot;&quot;Business logic: Check if user is active&quot;&quot;&quot;
+        return self.updated_at is not None
+</code></pre>
+<h3>Layer 2: Application Layer</h3>
+<p>Orchestrates use cases and coordinates domain objects. Contains application-specific logic.</p>
+<p><strong>Components:</strong></p>
+<ul>
+<li><strong>Use Cases</strong>: Application workflows (one per business operation)</li>
+<li><strong>Application Services</strong>: Complex orchestration logic</li>
+<li><strong>DTOs</strong>: Data Transfer Objects for layer communication</li>
+</ul>
+<p><strong>Rules:</strong></p>
+<ul>
+<li>✅ Depends only on Domain Layer</li>
+<li>✅ No framework dependencies</li>
+<li>✅ Orchestrates domain objects</li>
+<li>✅ Implements use cases</li>
+</ul>
+<pre><code class="language-python"># Example: Use Case
+from ..base import BaseUseCase
+from ..dtos import CreateUserRequest, CreateUserResponse
+from ...domain.entities.user import User
+from ...domain.ports.user_repository_port import UserRepositoryPort
+
+class CreateUserUseCase(BaseUseCase):
+    &quot;&quot;&quot;Use case: Create a new user&quot;&quot;&quot;
+    
+    def __init__(self, user_repository: UserRepositoryPort):
+        super().__init__()
+        self._user_repository = user_repository
+    
+    async def execute(self, request: CreateUserRequest) -&gt; CreateUserResponse:
+        # Validate email uniqueness
+        existing_user = await self._user_repository.find_by_email(request.email)
+        if existing_user:
+            raise ValueError(f&quot;User with email {request.email} already exists&quot;)
+        
+        # Create domain entity
+        user = User(
+            id=str(uuid.uuid4()),
+            email=request.email,
+            name=request.name,
+            created_at=datetime.utcnow()
+        )
+        
+        # Persist via port
+        saved_user = await self._user_repository.save(user)
+        
+        return CreateUserResponse(
+            id=saved_user.id,
+            email=saved_user.email,
+            name=saved_user.name
+        )
+</code></pre>
+<h3>Layer 3: Adapters Layer</h3>
+<p>Implements ports and connects the application to external systems.</p>
+<p><strong>Components:</strong></p>
+<ul>
+<li><strong>Inbound Adapters</strong>: HTTP controllers, CLI handlers, message consumers</li>
+<li><strong>Outbound Adapters</strong>: Database repositories, external API clients, file systems</li>
+</ul>
+<p><strong>Rules:</strong></p>
+<ul>
+<li>✅ Implements port interfaces</li>
+<li>✅ Depends on Domain and Application layers</li>
+<li>✅ Can use frameworks (FastAPI, SQLAlchemy, etc.)</li>
+<li>✅ Handles external concerns (serialization, network, etc.)</li>
+</ul>
+<pre><code class="language-python"># Example: Inbound Adapter (HTTP Controller)
+from fastapi import APIRouter, Depends, HTTPException
+from dependency_injector.wiring import inject, Provide
+from ..schemas import CreateUserRequest, UserResponse
+from ...application.use_cases.create_user import CreateUserUseCase
+from ...application.dtos import CreateUserRequestDTO
+
+router = APIRouter(prefix=&quot;/api/v1/users&quot;, tags=[&quot;Users&quot;])
+
+@router.post(&quot;/&quot;, response_model=UserResponse)
+@inject
+async def create_user(
+    request: CreateUserRequest,
+    use_case: CreateUserUseCase = Depends(Provide[Container.create_user_use_case])
+):
+    &quot;&quot;&quot;Create a new user&quot;&quot;&quot;
+    try:
+        dto = CreateUserRequestDTO(
+            email=request.email,
+            name=request.name
+        )
+        result = await use_case.execute(dto)
+        return UserResponse(
+            id=result.id,
+            email=result.email,
+            name=result.name
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+</code></pre>
+<hr>
+<h2>Benefits and Trade-offs</h2>
+<h3>Benefits</h3>
+<h4>1. <strong>Testability</strong> ⭐⭐⭐⭐⭐</h4>
+<p>Business logic can be tested in isolation without databases, HTTP servers, or external services.</p>
+<pre><code class="language-python"># Test use case with mock repository
+async def test_create_user():
+    mock_repository = MockUserRepository()
+    use_case = CreateUserUseCase(mock_repository)
+    
+    request = CreateUserRequestDTO(email=&quot;test@example.com&quot;, name=&quot;Test User&quot;)
+    result = await use_case.execute(request)
+    
+    assert result.email == &quot;test@example.com&quot;
+    assert mock_repository.save_called
+</code></pre>
+<h4>2. <strong>Independence from Frameworks</strong> ⭐⭐⭐⭐⭐</h4>
+<p>Core business logic doesn&#39;t depend on FastAPI, SQLAlchemy, or any external library.</p>
+<pre><code class="language-python"># Domain layer - pure Python, no imports from FastAPI or SQLAlchemy
+class User:
+    # ... pure business logic
+</code></pre>
+<h4>3. <strong>Flexibility</strong> ⭐⭐⭐⭐</h4>
+<p>Easy to swap implementations (PostgreSQL → MongoDB, REST → GraphQL).</p>
+<pre><code class="language-python"># Switch from PostgreSQL to MongoDB by changing adapter
+container.user_repository.override(MongoDBUserRepository(session))
+</code></pre>
+<h4>4. <strong>Maintainability</strong> ⭐⭐⭐⭐⭐</h4>
+<p>Clear separation of concerns makes code easier to understand and modify.</p>
+<h4>5. <strong>Scalability</strong> ⭐⭐⭐⭐</h4>
+<p>Each layer can be scaled independently (microservices, separate databases).</p>
+<h3>Trade-offs</h3>
+<h4>1. <strong>Initial Complexity</strong> ⚠️</h4>
+<p>More files and abstractions compared to simple MVC.</p>
+<p><strong>Mitigation</strong>: Use code generators, templates, and clear documentation.</p>
+<h4>2. <strong>Learning Curve</strong> ⚠️</h4>
+<p>Team needs to understand the pattern and conventions.</p>
+<p><strong>Mitigation</strong>: Provide examples, pair programming, code reviews.</p>
+<h4>3. <strong>Over-engineering Risk</strong> ⚠️</h4>
+<p>May be overkill for simple CRUD applications.</p>
+<p><strong>Mitigation</strong>: Evaluate project complexity; use for medium-to-large applications.</p>
+<h4>4. <strong>Boilerplate Code</strong> ⚠️</h4>
+<p>More interfaces, DTOs, and mapping code.</p>
+<p><strong>Mitigation</strong>: Use code generation, shared base classes, and utilities.</p>
+<hr>
+<h2>Implementation Patterns</h2>
+<h3>Pattern 1: Dependency Injection</h3>
+<p>Use dependency injection to wire ports to adapters.</p>
+<pre><code class="language-python"># container.py
+from dependency_injector import containers, providers
+from .adapters.outbound.postgresql_user_repository import PostgreSQLUserRepository
+from .application.use_cases.create_user import CreateUserUseCase
+
+class Container(containers.DeclarativeContainer):
+    # Configuration
+    config = providers.Configuration()
+    
+    # Database session
+    db_session = providers.Singleton(
+        create_db_session,
+        connection_string=config.database.url
+    )
+    
+    # Outbound Adapters (Port Implementations)
+    user_repository = providers.Singleton(
+        PostgreSQLUserRepository,
+        session=db_session
+    )
+    
+    # Use Cases
+    create_user_use_case = providers.Factory(
+        CreateUserUseCase,
+        user_repository=user_repository
+    )
+</code></pre>
+<h3>Pattern 2: Base Classes</h3>
+<p>Create base classes to reduce boilerplate.</p>
+<pre><code class="language-python"># base.py
+from abc import ABC, abstractmethod
+import logging
+
+class BaseUseCase(ABC):
+    &quot;&quot;&quot;Base class for all use cases&quot;&quot;&quot;
+    
+    def __init__(self):
+        self._logger = logging.getLogger(self.__class__.__name__)
+    
+    @abstractmethod
+    async def execute(self, request):
+        &quot;&quot;&quot;Execute the use case&quot;&quot;&quot;
+        pass
+
+class BasePort(ABC):
+    &quot;&quot;&quot;Base class for all ports&quot;&quot;&quot;
+    pass
+</code></pre>
+<h3>Pattern 3: DTOs for Layer Communication</h3>
+<p>Use DTOs to transfer data between layers.</p>
+<pre><code class="language-python"># application/dtos/create_user.py
+from dataclasses import dataclass
+
+@dataclass
+class CreateUserRequestDTO:
+    email: str
+    name: str
+
+@dataclass
+class CreateUserResponseDTO:
+    id: str
+    email: str
+    name: str
+</code></pre>
+<h3>Pattern 4: Error Handling</h3>
+<p>Centralize error handling in use cases.</p>
+<pre><code class="language-python">from functools import wraps
+
+def handle_use_case_errors(response_class):
+    &quot;&quot;&quot;Decorator to handle use case errors&quot;&quot;&quot;
+    def decorator(func):
+        @wraps(func)
+        async def wrapper(self, request):
+            try:
+                return await func(self, request)
+            except ValueError as e:
+                self._logger.error(f&quot;Validation error: {e}&quot;)
+                return response_class(success=False, error=str(e))
+            except Exception as e:
+                self._logger.exception(f&quot;Unexpected error: {e}&quot;)
+                return response_class(success=False, error=&quot;Internal server error&quot;)
+        return wrapper
+    return decorator
+</code></pre>
+<hr>
+<h2>Python Implementation</h2>
+<p>Let&#39;s build a complete example: <strong>User Management Service</strong> using Hexagonal Architecture.</p>
+<h3>Project Structure</h3>
+<pre><code>example-hexagonal-service/
+├── src/
+│   ├── domain/                    # Domain Layer
+│   │   ├── entities/
+│   │   │   ├── __init__.py
+│   │   │   └── user.py
+│   │   ├── vo/                    # Value Objects
+│   │   │   ├── __init__.py
+│   │   │   └── user_status.py
+│   │   ├── ports/                 # Port Interfaces
+│   │   │   ├── __init__.py
+│   │   │   └── user_repository_port.py
+│   │   ├── services/              # Domain Service Interfaces
+│   │   │   ├── __init__.py
+│   │   │   └── email_validator.py
+│   │   └── dtos/                  # Domain DTOs
+│   │       ├── __init__.py
+│   │       └── user_dto.py
+│   │
+│   ├── application/               # Application Layer
+│   │   ├── use_cases/
+│   │   │   ├── __init__.py
+│   │   │   ├── create_user.py
+│   │   │   ├── get_user.py
+│   │   │   └── update_user.py
+│   │   ├── services/              # Application Services
+│   │   │   ├── __init__.py
+│   │   │   └── user_service.py
+│   │   └── dtos/                  # Application DTOs
+│   │       ├── __init__.py
+│   │       ├── create_user_dto.py
+│   │       └── user_response_dto.py
+│   │
+│   ├── adapters/                  # Adapters Layer
+│   │   ├── inbound/
+│   │   │   └── api/
+│   │   │       └── v1/
+│   │   │           ├── routers/
+│   │   │           │   ├── __init__.py
+│   │   │           │   └── users.py
+│   │   │           └── schemas/
+│   │   │               ├── __init__.py
+│   │   │               └── user_schema.py
+│   │   └── outbound/
+│   │       ├── repositories/
+│   │       │   ├── __init__.py
+│   │       │   └── in_memory_user_repository.py
+│   │       └── external/
+│   │           └── email_service.py
+│   │
+│   └── app/                       # Application Configuration
+│       ├── container.py           # Dependency Injection
+│       ├── config/
+│       │   └── settings.py
+│       └── protocols/
+│           └── http/
+│               └── main.py        # FastAPI app
+│
+└── tests/                         # Tests
+    ├── unit/
+    │   ├── domain/
+    │   ├── application/
+    │   └── adapters/
+    └── integration/
+</code></pre>
+<h3>Step-by-Step Implementation</h3>
+<h4>1. Domain Layer: Entities</h4>
+<pre><code class="language-python"># src/domain/entities/user.py
+from dataclasses import dataclass
+from datetime import datetime
+from typing import Optional
+from ..vo.user_status import UserStatus
+
+@dataclass
+class User:
+    &quot;&quot;&quot;Domain entity representing a user&quot;&quot;&quot;
+    id: str
+    email: str
+    name: str
+    status: UserStatus
+    created_at: datetime
+    updated_at: Optional[datetime] = None
+    
+    def activate(self) -&gt; None:
+        &quot;&quot;&quot;Business logic: Activate user&quot;&quot;&quot;
+        if self.status == UserStatus.ACTIVE:
+            raise ValueError(&quot;User is already active&quot;)
+        self.status = UserStatus.ACTIVE
+        self.updated_at = datetime.utcnow()
+    
+    def deactivate(self) -&gt; None:
+        &quot;&quot;&quot;Business logic: Deactivate user&quot;&quot;&quot;
+        if self.status == UserStatus.INACTIVE:
+            raise ValueError(&quot;User is already inactive&quot;)
+        self.status = UserStatus.INACTIVE
+        self.updated_at = datetime.utcnow()
+    
+    def update_name(self, new_name: str) -&gt; None:
+        &quot;&quot;&quot;Business logic: Update user name&quot;&quot;&quot;
+        if not new_name or len(new_name.strip()) == 0:
+            raise ValueError(&quot;Name cannot be empty&quot;)
+        self.name = new_name.strip()
+        self.updated_at = datetime.utcnow()
+    
+    def is_active(self) -&gt; bool:
+        &quot;&quot;&quot;Business logic: Check if user is active&quot;&quot;&quot;
+        return self.status == UserStatus.ACTIVE
+</code></pre>
+<h4>2. Domain Layer: Value Objects</h4>
+<pre><code class="language-python"># src/domain/vo/user_status.py
+from enum import Enum
+
+class UserStatus(str, Enum):
+    &quot;&quot;&quot;Value object: User status&quot;&quot;&quot;
+    ACTIVE = &quot;active&quot;
+    INACTIVE = &quot;inactive&quot;
+    PENDING = &quot;pending&quot;
+</code></pre>
+<h4>3. Domain Layer: Ports</h4>
+<pre><code class="language-python"># src/domain/ports/user_repository_port.py
+from abc import ABC, abstractmethod
+from typing import Optional
+from ..entities.user import User
+
+class UserRepositoryPort(ABC):
+    &quot;&quot;&quot;Port: Interface for user persistence&quot;&quot;&quot;
+    
+    @abstractmethod
+    async def save(self, user: User) -&gt; User:
+        &quot;&quot;&quot;Save a user&quot;&quot;&quot;
+        pass
+    
+    @abstractmethod
+    async def find_by_id(self, user_id: str) -&gt; Optional[User]:
+        &quot;&quot;&quot;Find user by ID&quot;&quot;&quot;
+        pass
+    
+    @abstractmethod
+    async def find_by_email(self, email: str) -&gt; Optional[User]:
+        &quot;&quot;&quot;Find user by email&quot;&quot;&quot;
+        pass
+    
+    @abstractmethod
+    async def delete(self, user_id: str) -&gt; bool:
+        &quot;&quot;&quot;Delete a user&quot;&quot;&quot;
+        pass
+</code></pre>
+<h4>4. Application Layer: Use Cases</h4>
+<pre><code class="language-python"># src/application/use_cases/create_user.py
+import uuid
+from datetime import datetime
+from ..base import BaseUseCase
+from ..dtos.create_user_dto import CreateUserRequestDTO, CreateUserResponseDTO
+from ...domain.entities.user import User
+from ...domain.vo.user_status import UserStatus
+from ...domain.ports.user_repository_port import UserRepositoryPort
+
+class CreateUserUseCase(BaseUseCase):
+    &quot;&quot;&quot;Use case: Create a new user&quot;&quot;&quot;
+    
+    def __init__(self, user_repository: UserRepositoryPort):
+        super().__init__()
+        self._user_repository = user_repository
+    
+    async def execute(self, request: CreateUserRequestDTO) -&gt; CreateUserResponseDTO:
+        self._logger.info(f&quot;Creating user with email: {request.email}&quot;)
+        
+        # Check if user already exists
+        existing_user = await self._user_repository.find_by_email(request.email)
+        if existing_user:
+            raise ValueError(f&quot;User with email {request.email} already exists&quot;)
+        
+        # Create domain entity
+        user = User(
+            id=str(uuid.uuid4()),
+            email=request.email,
+            name=request.name,
+            status=UserStatus.PENDING,
+            created_at=datetime.utcnow()
+        )
+        
+        # Persist via port
+        saved_user = await self._user_repository.save(user)
+        
+        self._logger.info(f&quot;User created successfully: {saved_user.id}&quot;)
+        
+        return CreateUserResponseDTO(
+            id=saved_user.id,
+            email=saved_user.email,
+            name=saved_user.name,
+            status=saved_user.status.value
+        )
+</code></pre>
+<h4>5. Adapters Layer: Outbound Adapter</h4>
+<pre><code class="language-python"># src/adapters/outbound/repositories/in_memory_user_repository.py
+from typing import Dict, Optional
+from ...domain.ports.user_repository_port import UserRepositoryPort
+from ...domain.entities.user import User
+
+class InMemoryUserRepository(UserRepositoryPort):
+    &quot;&quot;&quot;In-memory implementation of UserRepositoryPort (for testing/demo)&quot;&quot;&quot;
+    
+    def __init__(self):
+        self._storage: Dict[str, User] = {}
+    
+    async def save(self, user: User) -&gt; User:
+        self._storage[user.id] = user
+        return user
+    
+    async def find_by_id(self, user_id: str) -&gt; Optional[User]:
+        return self._storage.get(user_id)
+    
+    async def find_by_email(self, email: str) -&gt; Optional[User]:
+        for user in self._storage.values():
+            if user.email == email:
+                return user
+        return None
+    
+    async def delete(self, user_id: str) -&gt; bool:
+        if user_id in self._storage:
+            del self._storage[user_id]
+            return True
+        return False
+</code></pre>
+<h4>6. Adapters Layer: Inbound Adapter</h4>
+<pre><code class="language-python"># src/adapters/inbound/api/v1/routers/users.py
+from fastapi import APIRouter, Depends, HTTPException
+from dependency_injector.wiring import inject, Provide
+from ...schemas.user_schema import CreateUserRequest, UserResponse
+from ...application.use_cases.create_user import CreateUserUseCase
+from ...application.dtos.create_user_dto import CreateUserRequestDTO
+
+router = APIRouter(prefix=&quot;/api/v1/users&quot;, tags=[&quot;Users&quot;])
+
+@router.post(&quot;/&quot;, response_model=UserResponse, status_code=201)
+@inject
+async def create_user(
+    request: CreateUserRequest,
+    use_case: CreateUserUseCase = Depends(Provide[Container.create_user_use_case])
+):
+    &quot;&quot;&quot;Create a new user&quot;&quot;&quot;
+    try:
+        dto = CreateUserRequestDTO(
+            email=request.email,
+            name=request.name
+        )
+        result = await use_case.execute(dto)
+        return UserResponse(
+            id=result.id,
+            email=result.email,
+            name=result.name,
+            status=result.status
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=&quot;Internal server error&quot;)
+</code></pre>
+<h4>7. Dependency Injection Container</h4>
+<pre><code class="language-python"># src/app/container.py
+from dependency_injector import containers, providers
+from ...adapters.outbound.repositories.in_memory_user_repository import InMemoryUserRepository
+from ...application.use_cases.create_user import CreateUserUseCase
+from ...application.use_cases.get_user import GetUserUseCase
+
+class Container(containers.DeclarativeContainer):
+    &quot;&quot;&quot;Dependency injection container&quot;&quot;&quot;
+    
+    # Configuration
+    config = providers.Configuration()
+    
+    # Outbound Adapters (Port Implementations)
+    user_repository = providers.Singleton(InMemoryUserRepository)
+    
+    # Use Cases
+    create_user_use_case = providers.Factory(
+        CreateUserUseCase,
+        user_repository=user_repository
+    )
+    
+    get_user_use_case = providers.Factory(
+        GetUserUseCase,
+        user_repository=user_repository
+    )
+
+# Global container instance
+container = Container()
+</code></pre>
+<hr>
+<h2>Testing Strategy</h2>
+<h3>Testing Pyramid</h3>
+<p><div class="mermaid">graph TB
+    subgraph "Testing Pyramid"
+        E2E[E2E Tests<br/>Few]
+        Integration[Integration Tests<br/>Some]
+        Unit[Unit Tests<br/>Many]
+    end
+    
+    E2E --> Integration
+    Integration --> Unit</div></p>
+<h3>1. Domain Layer Tests</h3>
+<p>Test business logic in isolation.</p>
+<pre><code class="language-python"># tests/unit/domain/test_user.py
+import pytest
+from datetime import datetime
+from src.domain.entities.user import User
+from src.domain.vo.user_status import UserStatus
+
+def test_user_activate():
+    &quot;&quot;&quot;Test user activation&quot;&quot;&quot;
+    user = User(
+        id=&quot;1&quot;,
+        email=&quot;test@example.com&quot;,
+        name=&quot;Test User&quot;,
+        status=UserStatus.PENDING,
+        created_at=datetime.utcnow()
+    )
+    
+    user.activate()
+    
+    assert user.status == UserStatus.ACTIVE
+    assert user.updated_at is not None
+
+def test_user_activate_already_active():
+    &quot;&quot;&quot;Test activating an already active user&quot;&quot;&quot;
+    user = User(
+        id=&quot;1&quot;,
+        email=&quot;test@example.com&quot;,
+        name=&quot;Test User&quot;,
+        status=UserStatus.ACTIVE,
+        created_at=datetime.utcnow()
+    )
+    
+    with pytest.raises(ValueError, match=&quot;already active&quot;):
+        user.activate()
+</code></pre>
+<h3>2. Application Layer Tests</h3>
+<p>Test use cases with mocked ports.</p>
+<pre><code class="language-python"># tests/unit/application/test_create_user_use_case.py
+import pytest
+from unittest.mock import AsyncMock
+from src.application.use_cases.create_user import CreateUserUseCase
+from src.application.dtos.create_user_dto import CreateUserRequestDTO
+from src.domain.entities.user import User
+from src.domain.vo.user_status import UserStatus
+
+@pytest.mark.asyncio
+async def test_create_user_success():
+    &quot;&quot;&quot;Test successful user creation&quot;&quot;&quot;
+    # Mock repository
+    mock_repository = AsyncMock()
+    mock_repository.find_by_email.return_value = None
+    mock_repository.save.return_value = User(
+        id=&quot;123&quot;,
+        email=&quot;test@example.com&quot;,
+        name=&quot;Test User&quot;,
+        status=UserStatus.PENDING,
+        created_at=datetime.utcnow()
+    )
+    
+    # Execute use case
+    use_case = CreateUserUseCase(mock_repository)
+    request = CreateUserRequestDTO(email=&quot;test@example.com&quot;, name=&quot;Test User&quot;)
+    result = await use_case.execute(request)
+    
+    # Assertions
+    assert result.id == &quot;123&quot;
+    assert result.email == &quot;test@example.com&quot;
+    assert mock_repository.find_by_email.called
+    assert mock_repository.save.called
+
+@pytest.mark.asyncio
+async def test_create_user_duplicate_email():
+    &quot;&quot;&quot;Test creating user with duplicate email&quot;&quot;&quot;
+    # Mock repository returning existing user
+    mock_repository = AsyncMock()
+    mock_repository.find_by_email.return_value = User(
+        id=&quot;existing&quot;,
+        email=&quot;test@example.com&quot;,
+        name=&quot;Existing User&quot;,
+        status=UserStatus.ACTIVE,
+        created_at=datetime.utcnow()
+    )
+    
+    # Execute use case
+    use_case = CreateUserUseCase(mock_repository)
+    request = CreateUserRequestDTO(email=&quot;test@example.com&quot;, name=&quot;Test User&quot;)
+    
+    with pytest.raises(ValueError, match=&quot;already exists&quot;):
+        await use_case.execute(request)
+</code></pre>
+<h3>3. Adapter Tests</h3>
+<p>Test adapters in isolation.</p>
+<pre><code class="language-python"># tests/unit/adapters/test_in_memory_user_repository.py
+import pytest
+from datetime import datetime
+from src.adapters.outbound.repositories.in_memory_user_repository import InMemoryUserRepository
+from src.domain.entities.user import User
+from src.domain.vo.user_status import UserStatus
+
+@pytest.mark.asyncio
+async def test_save_user():
+    &quot;&quot;&quot;Test saving a user&quot;&quot;&quot;
+    repository = InMemoryUserRepository()
+    user = User(
+        id=&quot;1&quot;,
+        email=&quot;test@example.com&quot;,
+        name=&quot;Test User&quot;,
+        status=UserStatus.ACTIVE,
+        created_at=datetime.utcnow()
+    )
+    
+    saved_user = await repository.save(user)
+    
+    assert saved_user.id == &quot;1&quot;
+    assert await repository.find_by_id(&quot;1&quot;) == user
+
+@pytest.mark.asyncio
+async def test_find_by_email():
+    &quot;&quot;&quot;Test finding user by email&quot;&quot;&quot;
+    repository = InMemoryUserRepository()
+    user = User(
+        id=&quot;1&quot;,
+        email=&quot;test@example.com&quot;,
+        name=&quot;Test User&quot;,
+        status=UserStatus.ACTIVE,
+        created_at=datetime.utcnow()
+    )
+    await repository.save(user)
+    
+    found_user = await repository.find_by_email(&quot;test@example.com&quot;)
+    
+    assert found_user is not None
+    assert found_user.email == &quot;test@example.com&quot;
+</code></pre>
+<h3>4. Integration Tests</h3>
+<p>Test the full flow with real adapters.</p>
+<pre><code class="language-python"># tests/integration/test_user_flow.py
+import pytest
+from httpx import AsyncClient
+from src.app.protocols.http.main import app
+
+@pytest.mark.asyncio
+async def test_create_user_flow():
+    &quot;&quot;&quot;Test complete user creation flow&quot;&quot;&quot;
+    async with AsyncClient(app=app, base_url=&quot;http://test&quot;) as client:
+        response = await client.post(
+            &quot;/api/v1/users/&quot;,
+            json={&quot;email&quot;: &quot;test@example.com&quot;, &quot;name&quot;: &quot;Test User&quot;}
+        )
+        
+        assert response.status_code == 201
+        data = response.json()
+        assert data[&quot;email&quot;] == &quot;test@example.com&quot;
+        assert data[&quot;name&quot;] == &quot;Test User&quot;
+</code></pre>
+<hr>
+<h2>Best Practices</h2>
+<h3>1. <strong>Keep Domain Pure</strong></h3>
+<pre><code class="language-python"># ❌ BAD: Domain depends on framework
+from fastapi import HTTPException
+
+class User:
+    def validate(self):
+        if not self.email:
+            raise HTTPException(status_code=400)  # Framework dependency!
+
+# ✅ GOOD: Domain is pure
+class User:
+    def validate(self):
+        if not self.email:
+            raise ValueError(&quot;Email is required&quot;)  # Pure Python exception
+</code></pre>
+<h3>2. <strong>Use Ports for All External Dependencies</strong></h3>
+<pre><code class="language-python"># ❌ BAD: Direct dependency on external service
+import requests
+
+class UserService:
+    def send_email(self, email: str):
+        requests.post(&quot;https://api.email.com/send&quot;, ...)  # Direct dependency!
+
+# ✅ GOOD: Use port
+class EmailServicePort(ABC):
+    @abstractmethod
+    async def send_email(self, email: str, message: str):
+        pass
+
+class UserService:
+    def __init__(self, email_service: EmailServicePort):
+        self._email_service = email_service
+</code></pre>
+<h3>3. <strong>One Use Case Per Business Operation</strong></h3>
+<pre><code class="language-python"># ❌ BAD: Multiple operations in one use case
+class UserUseCase:
+    async def create_user(self, ...): ...
+    async def update_user(self, ...): ...
+    async def delete_user(self, ...): ...
+
+# ✅ GOOD: One use case per operation
+class CreateUserUseCase: ...
+class UpdateUserUseCase: ...
+class DeleteUserUseCase: ...
+</code></pre>
+<h3>4. <strong>Use DTOs for Layer Communication</strong></h3>
+<pre><code class="language-python"># ❌ BAD: Passing domain entities directly
+async def create_user(user: User):  # Domain entity in application layer
+    ...
+
+# ✅ GOOD: Use DTOs
+async def create_user(request: CreateUserRequestDTO) -&gt; CreateUserResponseDTO:
+    ...
+</code></pre>
+<h3>5. <strong>Dependency Injection</strong></h3>
+<pre><code class="language-python"># ❌ BAD: Hard-coded dependencies
+class CreateUserUseCase:
+    def __init__(self):
+        self._repository = PostgreSQLUserRepository()  # Hard-coded!
+
+# ✅ GOOD: Dependency injection
+class CreateUserUseCase:
+    def __init__(self, user_repository: UserRepositoryPort):
+        self._user_repository = user_repository
+</code></pre>
+<hr>
+<h2>Common Pitfalls</h2>
+<h3>1. <strong>Leaking Framework Code into Domain</strong></h3>
+<p><strong>Problem</strong>: Importing FastAPI, SQLAlchemy, or other frameworks in domain layer.</p>
+<p><strong>Solution</strong>: Keep domain layer pure; use only standard library and domain-specific code.</p>
+<h3>2. <strong>Anemic Domain Models</strong></h3>
+<p><strong>Problem</strong>: Entities are just data containers without behavior.</p>
+<p><strong>Solution</strong>: Put business logic in entities and domain services.</p>
+<h3>3. <strong>Tight Coupling Between Layers</strong></h3>
+<p><strong>Problem</strong>: Application layer depends on adapter implementations.</p>
+<p><strong>Solution</strong>: Always depend on ports (interfaces), never on concrete adapters.</p>
+<h3>4. <strong>Skipping Ports for Simple Operations</strong></h3>
+<p><strong>Problem</strong>: Directly calling adapters without ports.</p>
+<p><strong>Solution</strong>: Always define ports, even for simple operations.</p>
+<h3>5. <strong>Over-abstracting</strong></h3>
+<p><strong>Problem</strong>: Creating unnecessary abstractions.</p>
+<p><strong>Solution</strong>: Start simple, add abstractions when needed (YAGNI principle).</p>
+<hr>
+<h2>Conclusion</h2>
+<p>Hexagonal Architecture provides a robust foundation for building maintainable, testable, and flexible applications. By isolating business logic from external concerns, we create systems that are:</p>
+<ul>
+<li>✅ <strong>Testable</strong>: Business logic can be tested in isolation</li>
+<li>✅ <strong>Flexible</strong>: Easy to swap implementations</li>
+<li>✅ <strong>Maintainable</strong>: Clear separation of concerns</li>
+<li>✅ <strong>Scalable</strong>: Each layer can evolve independently</li>
+</ul>
+<p>While it introduces initial complexity, the long-term benefits far outweigh the costs for medium-to-large applications. The key is to start simple, follow the dependency rule (dependencies point inward), and gradually refine the architecture as the application grows.</p>
+<h3>Key Takeaways</h3>
+<ol>
+<li><strong>Ports define contracts, Adapters implement them</strong></li>
+<li><strong>Domain layer has zero external dependencies</strong></li>
+<li><strong>Dependencies always point inward</strong></li>
+<li><strong>One use case per business operation</strong></li>
+<li><strong>Use DTOs for layer communication</strong></li>
+<li><strong>Test each layer in isolation</strong></li>
+</ol>
+<h3>Next Steps</h3>
+<ul>
+<li>Explore <strong>Clean Architecture</strong> (similar principles, different organization)</li>
+<li>Study <strong>Domain-Driven Design</strong> (DDD) for complex domains</li>
+<li>Learn about <strong>CQRS</strong> and <strong>Event Sourcing</strong> for advanced patterns</li>
+<li>Practice with real projects to internalize the concepts</li>
+</ul>
+<hr>
+<h2>References</h2>
+<ul>
+<li><a href="https://alistair.cockburn.us/hexagonal-architecture/">Hexagonal Architecture by Alistair Cockburn</a></li>
+<li><a href="https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html">Clean Architecture by Robert C. Martin</a></li>
+<li><a href="https://www.domainlanguage.com/ddd/">Domain-Driven Design by Eric Evans</a></li>
+</ul>
+<hr>
+<p><strong>Happy Coding!</strong> 🚀</p>
+<p><em>This article is part of our architecture series. Stay tuned for more deep-dives into software design patterns and best practices.</em></p>
+
+    </div>
+
+    <details class="cite">
+  <summary>Cite this post</summary>
+  <div class="cite-body" id="citation-section">
+    <div class="citation-tabs" role="tablist">
+        <button class="citation-tab active" data-target="bibtex" role="tab" aria-selected="true">BibTeX</button>
+        <button class="citation-tab" data-target="apa" role="tab" aria-selected="false">APA</button>
+        <button class="citation-tab" data-target="mla" role="tab" aria-selected="false">MLA</button>
+        <button class="citation-tab" data-target="chicago" role="tab" aria-selected="false">Chicago</button>
+    </div>
+    <div class="citation-panels">
+        <div class="citation-panel active" id="panel-bibtex" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-bibtex"></pre><button class="copy-btn" data-cite="cite-bibtex">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-apa" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-apa"></pre><button class="copy-btn" data-cite="cite-apa">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-mla" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-mla"></pre><button class="copy-btn" data-cite="cite-mla">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-chicago" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-chicago"></pre><button class="copy-btn" data-cite="cite-chicago">Copy</button></div>
+        </div>
+    </div>
+    <p class="citation-note">Auto-generated. Verify for your institution's requirements.</p>
+  </div>
+</details>
+
+<template id="cite-meta">Mastering Hexagonal Architecture: A Complete Guide with Python Implementation</template>
+
+<script>
+(function() {
+    var meta = document.getElementById('cite-meta');
+    if (!meta) return;
+    var t = meta.content ? meta.content.textContent : meta.innerHTML;
+    var a = 'Sumit Yadav';
+    var j = 'Sumit Yadav';
+    var u = 'https://sumityadav.com.np/posts/2025/12/03/Mastering Hexagonal Architecture: A Complete Guide with Python Implementation/';
+    var y = '2025';
+    var mo = 'December';
+    var ms = 'Dec';
+    var dy = '03';
+    var k = a.split(' ')[0].toLowerCase() + y + t.toLowerCase().replace(/[^a-z0-9]+/g, '');
+
+    document.getElementById('cite-bibtex').textContent =
+        '@article{' + k + ',\n  title     = {' + t + '},\n  author    = {' + a +
+        '},\n  journal   = {' + j + '},\n  year      = {' + y + '},\n  month     = {' + mo +
+        '},\n  day       = {' + dy + '},\n  url       = {' + u + '}\n}';
+    document.getElementById('cite-apa').textContent =
+        a + '. (' + y + ', ' + mo + ' ' + dy + '). ' + t + '. ' + j + '. ' + u;
+    document.getElementById('cite-mla').textContent =
+        a + '. “' + t + '.” ' + j + ', ' + dy + ' ' + ms + ' ' + y + ', ' + u + '.';
+    document.getElementById('cite-chicago').textContent =
+        a + '. “' + t + '.” ' + j + '. ' + mo + ' ' + dy + ', ' + y + '. ' + u + '.';
+
+    var sec = document.getElementById('citation-section');
+    sec.querySelectorAll('.citation-tab').forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            sec.querySelectorAll('.citation-tab').forEach(function(x) { x.classList.remove('active'); x.setAttribute('aria-selected', 'false'); });
+            sec.querySelectorAll('.citation-panel').forEach(function(p) { p.classList.remove('active'); });
+            this.classList.add('active'); this.setAttribute('aria-selected', 'true');
+            sec.querySelector('#panel-' + this.dataset.target).classList.add('active');
+        });
+    });
+    sec.querySelectorAll('.copy-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var text = document.getElementById(this.dataset.cite).textContent;
+            var b = this;
+            var done = function() { b.textContent = 'Copied!'; b.classList.add('copied'); setTimeout(function() { b.textContent = 'Copy'; b.classList.remove('copied'); }, 2000); };
+            navigator.clipboard.writeText(text).then(done).catch(function() {
+                var ta = document.createElement('textarea'); ta.value = text; ta.style.cssText = 'position:fixed;opacity:0';
+                document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); done();
+            });
+        });
+    });
+})();
+</script>
+
+
+    <footer class="post-footer">
+        <p><a href="/blog/">← All posts</a></p>
+    </footer>
+</article>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+    <div class="wrap">
+        <p>© 2026 Sumit Yadav · Kathmandu, Nepal · <a href="/">home</a> · <a href="/blog/">blog</a></p>
+    </div>
+</footer>
+
+
+    <script>
+        (function() {
+            const getThemePreference = () => {
+                const stored = localStorage.getItem('theme-preference');
+                if (stored) return stored;
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            };
+            const applyTheme = (theme) => {
+                const root = document.documentElement;
+                root.classList.remove('light-theme', 'dark-theme');
+                if (theme !== 'auto') root.classList.add(`${theme}-theme`);
+                if (window.mermaid) {
+                    const dark = theme === 'dark' || (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                    mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'default' });
+                    document.querySelectorAll('.mermaid').forEach(el => {
+                        if (el.getAttribute('data-processed')) {
+                            el.removeAttribute('data-processed');
+                            el.innerHTML = el.getAttribute('data-original') || el.innerHTML;
+                        }
+                    });
+                    if (window.mermaid.init) mermaid.init(undefined, '.mermaid');
+                }
+            };
+            document.addEventListener('DOMContentLoaded', () => {
+                applyTheme(getThemePreference());
+                const t = document.getElementById('theme-toggle');
+                if (t) t.addEventListener('click', () => {
+                    const cur = getThemePreference();
+                    const next = cur === 'dark' ? 'light' : 'dark';
+                    localStorage.setItem('theme-preference', next);
+                    applyTheme(next);
+                });
+                document.querySelectorAll('.mermaid').forEach(el => {
+                    if (!el.getAttribute('data-original')) el.setAttribute('data-original', el.innerHTML);
+                });
+            });
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme-preference')) applyTheme(e.matches ? 'dark' : 'light');
+            });
+        })();
+        (function() {
+            const bar = document.getElementById('scroll-progress-bar');
+            if (!bar) return;
+            const upd = () => {
+                const st = window.pageYOffset || document.documentElement.scrollTop;
+                const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                bar.style.height = Math.min(Math.max((st / h) * 100, 0), 100) + '%';
+            };
+            window.addEventListener('scroll', upd, { passive: true });
+            window.addEventListener('resize', upd, { passive: true });
+            upd();
+        })();
+    </script>
+</body>
+</html>

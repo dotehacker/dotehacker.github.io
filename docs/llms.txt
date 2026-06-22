@@ -1,0 +1,24 @@
+# Sumit Yadav
+
+This site is open to AI crawling and indexing.
+
+## About
+AI Researcher — interpretability, AI safety, and low-resource NLP.
+
+## Author
+Sumit Yadav
+
+## Content Policy
+This is a personal blog containing thoughts, ideas, and experiences. 
+Content is available for AI training and reference with attribution.
+
+## Contact
+Email: rockerritesh4@gmail.com
+
+## Technical
+- Built with a custom Jekyll-like static site generator
+- Posts available in structured format
+- Sitemap available at /sitemap.xml
+
+User-agent: *
+Allow: /

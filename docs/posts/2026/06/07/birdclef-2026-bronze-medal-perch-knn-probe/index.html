@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BirdCLEF+ 2026: A Per-Block kNN Probe, a Tiny Sequence Head, and a Bronze Medal · Sumit Yadav</title>
+    <meta name="description" content="">
+    <meta name="google-site-verification" content="IVG1y4MVA_6MT0wsjk13ooZDQLWXxvYcPXQlmf83MLM" />
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- Mermaid.js for diagram rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+    <div class="scroll-progress"><div class="scroll-progress-bar" id="scroll-progress-bar"></div></div>
+
+    <header class="site-header">
+    <div class="wrap">
+        <a class="site-title" href="/">Sumit Yadav</a>
+        <nav class="site-nav">
+            <a href="/#publications">Publications</a>
+            <a href="/blog/">Blog</a>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                <span class="theme-icon theme-icon-light">🌙</span>
+                <span class="theme-icon theme-icon-dark">☀️</span>
+            </button>
+        </nav>
+    </div>
+</header>
+
+
+    <main class="page-content">
+        <div class="wrap">
+            <div class="content-area">
+                
+<article class="post">
+    <header class="post-header">
+        <h1 class="post-title">BirdCLEF+ 2026: A Per-Block kNN Probe, a Tiny Sequence Head, and a Bronze Medal</h1>
+        <p class="post-meta">
+            <time datetime="2026-06-07T00:00:00.000Z">June 07, 2026</time>
+             · <span>AI & ML</span>
+        </p>
+    </header>
+
+    <div class="post-content">
+        <script>
+  window.MathJax = {
+    tex: { inlineMath: [['$','$'], ['\\(','\\)']], displayMath: [['$$','$$'], ['\\[','\\]']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+
+<p>A two-week sprint on <a href="https://www.kaggle.com/competitions/birdclef-2026">BirdCLEF+ 2026</a> — Cornell Lab&#39;s flagship bird-sound competition — wrapped up with an <strong>official Kaggle Competition Bronze Medal</strong>: <strong>rank 354 / 4084 (top 8.7%)</strong>, <strong>public LB 0.950</strong>, <strong>private LB 0.942</strong>, and a <strong>+590-place jump</strong> going from public to final standings.</p>
+<blockquote>
+<p>📄 <strong>Read the paper:</strong> <a href="https://sumityadav.com.np/files/birdclef-2026-working-note.pdf">birdclef-2026-working-note.pdf</a> (drafted for LifeCLEF 2026 working notes, CEUR-WS)</p>
+<p>💻 <strong>Code:</strong> <a href="https://github.com/rockerritesh/BirdCLEF2026">github.com/rockerritesh/BirdCLEF2026</a></p>
+<p>🥉 <strong>Certificate:</strong> <a href="https://www.kaggle.com/rockerritesh">BirdCLEF+ 2026 — Bronze Medalist</a></p>
+</blockquote>
+<p>This post is the short, opinionated version of the working note. The full PDF has the maths, the architecture diagrams, and the postmortem of nine final-week ceiling attempts.</p>
+<hr>
+<h2>The task in one paragraph</h2>
+<p>234 South-American bird species. 5-second audio chunks. Multi-label classification scored by macro-AUC. CPU-only inference with a hard <strong>90-minute</strong> runtime cap on the hidden test set. Roughly <strong>4 GB of labelled training audio</strong>, plus a small set of <strong>partially-labelled soundscape recordings</strong> that introduce the real domain shift.</p>
+<p>The held-out test data is from the Pantanal (Brazil/Bolivia/Paraguay). Most labelled training clips are <em>not</em> — that mismatch is the whole game.</p>
+<hr>
+<h2>Why I didn&#39;t train a model from scratch</h2>
+<p>The compute economics are bad. The CPU-only inference cap is forgiving; the training side isn&#39;t, since I had only a laptop and limited GPU time. <strong>Google&#39;s Perch~v2 vocalization classifier</strong> was already trained on ~14,795 bird classes across millions of clips. Using its features and training a <em>tiny</em> head on top is dramatically cheaper than fighting EfficientNet/ConvNeXt from random init.</p>
+<p>The catch: when a frozen backbone is pretrained on a much wider distribution than your downstream task, <strong>the last block is often the wrong place to tap</strong>. It&#39;s the most over-specialised to the pretraining classes.</p>
+<hr>
+<h2>The methodology contribution: a per-block kNN probe</h2>
+<p>Perch~v2 is a stack of <strong>26 MBConv blocks</strong> (EfficientNetV2-style) followed by a global pool and a 14,795-way softmax. From the outside it&#39;s a black box — no documentation on which block carries the most species-discriminative signal for <em>a different</em> set of birds.</p>
+<p><img src="birdclef-perch_v2_architecture.png" alt="Perch v2 architecture — 26 MBConv blocks, recovered from the ONNX graph"></p>
+<p>Before training any sequence head, I ran a <strong>tiny probe</strong>:</p>
+<ol>
+<li>Pick 30 species at random, grab <del>20 clips each (</del>600 audio clips total).</li>
+<li>For each MBConv block, extract its features and global-average-pool to a vector per clip.</li>
+<li>Score each block with <strong>5-nearest-neighbour top-1 accuracy</strong> on this 30-species toy task.</li>
+</ol>
+<p>The whole thing takes minutes on CPU. It&#39;s not a model — it&#39;s a <strong>layer-selection signal</strong>. Results:</p>
+<table>
+<thead>
+<tr>
+<th>Block</th>
+<th>5-NN top-1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>24</strong> (penultimate MBConv)</td>
+<td><strong>0.648</strong></td>
+</tr>
+<tr>
+<td>25 (final MBConv)</td>
+<td>0.595</td>
+</tr>
+<tr>
+<td>21</td>
+<td>0.555</td>
+</tr>
+<tr>
+<td>23</td>
+<td>0.490</td>
+</tr>
+<tr>
+<td>22</td>
+<td>0.478</td>
+</tr>
+</tbody></table>
+<p>The penultimate block beats the final one. That&#39;s not the conventional wisdom — most transfer-learning recipes default to the last representation. The probe predicted, <strong>before any training</strong>, that I should weight block 24 higher than block 25.</p>
+<p>Here&#39;s what those blocks look like in UMAP-projected feature space — species cluster much tighter at block 24:</p>
+<p><img src="birdclef-constellation_last5_trajectory.png" alt="Per-species trajectory through B21–B25 — block 24 clusters tightest"></p>
+<p>When I later trained the sequence head end-to-end, its <strong>learned softmax weights independently confirmed</strong> the same ranking: <code>block_24 → 0.47, block_25 → 0.40, block_21 → 0.13</code>. The probe, run in a few minutes on 600 clips, predicted what a multi-hour training run would arrive at.</p>
+<p>This is the bit I think is genuinely transferable: <strong>before fine-tuning, probe.</strong> It&#39;s cheap, fast, and tells you which layer of your frozen backbone is actually useful for <em>your</em> downstream task.</p>
+<hr>
+<h2>The sequence head</h2>
+<p>The head itself is intentionally small (~430k params):</p>
+<ol>
+<li>Take features from blocks 21, 24, 25 — three tokens.</li>
+<li>Add a learned <strong>[CLS]</strong> token.</li>
+<li>One transformer block of attention pooling.</li>
+<li>Linear projection to 234 classes.</li>
+</ol>
+<p>Frozen backbone everywhere; only this thin head trains. Training is BCE on labelled clips mixed with <strong>soundscape augmentation</strong> at 20%.</p>
+<p>Standalone progression:</p>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>LB</th>
+<th>What changed</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>v1 scalarmix (focal-only)</td>
+<td>0.816</td>
+<td>softmax-weighted block sum + linear head</td>
+</tr>
+<tr>
+<td>v4 attn (+ 20% soundscape)</td>
+<td>0.862</td>
+<td>attention pool overtook scalarmix once cross-domain data was added</td>
+</tr>
+<tr>
+<td>v5 + 3-shift TTA</td>
+<td>0.867</td>
+<td>±1s windows</td>
+</tr>
+<tr>
+<td><strong>v6 + 5-TTA + α=0.5 site/hour priors + σ=1.0 Gaussian</strong></td>
+<td><strong>0.879</strong></td>
+<td>the standalone ceiling for this approach</td>
+</tr>
+</tbody></table>
+<p>About <strong>+0.06 LB</strong> comes from postprocessing alone: 5-shift test-time augmentation, <strong>site × hour log-odds priors</strong> from <code>train_soundscapes_labels.csv</code> (a Pantanal-conditional prior on which species you&#39;d expect), and Gaussian smoothing across the 12 chunks of each file. None of these touch the model — they exploit the structure of <em>where</em> and <em>when</em> a recording was made.</p>
+<p>A v7 with <code>α=1.0</code> priors <em>regressed</em> to 0.861. The sweet spot for prior strength sits below ~0.5; push it harder and you over-commit to a prior that doesn&#39;t quite match the hidden Pantanal sites.</p>
+<hr>
+<h2>The blend that got the medal</h2>
+<p>A bronze-zone score doesn&#39;t come from a single model. It comes from blending. The dominant ingredient was <strong>Karnakbayev&#39;s public Power-Optimization ProtoSSM/SED chain</strong> (LB 0.949) — an exceptionally strong public baseline. My sequence head provided <strong>diversity</strong> at small weight:</p>
+<pre><code class="language-text">eos7-ours-blend (Public LB 0.950, Private LB 0.942)
+├─ Karnakbayev power-opt ProtoSSM/SED   (LB 0.949)   weight 0.93
+├─ Our v6 Perch seq-head                (LB 0.879)   weight 0.07
+└─ TAX_SMOOTHING (taxonomy.csv, genus α=0.15, class α=0.05)
+</code></pre>
+<p>The <code>TAX_SMOOTHING</code> postproc — blending each class&#39;s logit with its genus and family averages from the taxonomy file — added the final +0.001 over a 0.949 starting point. That sounds tiny. But in this competition the <strong>0.950 plateau held 757 teams</strong> by the deadline, all tied at exactly that 3-decimal-rounded score. Without <code>TAX_SMOOTHING</code> we&#39;d have been in the pack; with it, the rank-aware tie-break put us above it.</p>
+<p><img src="birdclef-pipeline_compare.png" alt="Pipeline comparison — v6 solo vs eos7 meta-ensemble"></p>
+<hr>
+<h2>The public → private rerank</h2>
+<p>This is the most interesting graph of the competition. The public LB shows a giant flat shelf at 0.950 (757 teams). The private LB does not.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Public LB</th>
+<th>Private LB</th>
+<th>Δ</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>eos7 blend (final)</td>
+<td>0.950</td>
+<td><strong>0.942</strong></td>
+<td>$-$0.008</td>
+</tr>
+<tr>
+<td>v6 standalone</td>
+<td>0.879</td>
+<td>0.898</td>
+<td><strong>$+$0.019</strong></td>
+</tr>
+<tr>
+<td>v4 pseudo-trained</td>
+<td>0.870</td>
+<td>0.893</td>
+<td><strong>$+$0.023</strong></td>
+</tr>
+<tr>
+<td>v7 stronger priors</td>
+<td>0.861</td>
+<td>0.890</td>
+<td><strong>$+$0.029</strong></td>
+</tr>
+</tbody></table>
+<p>Every <strong>standalone</strong> submission scored <em>higher</em> on private than on public. The <strong>blend</strong> lost a hair. The interpretation:</p>
+<ul>
+<li><strong>Public-LB chasers</strong> on the 0.950 plateau over-fit to whichever stack of post-processing tricks landed exactly there. On the held-out 70% (different sites, different hours), most of them lost 0.010–0.020.</li>
+<li>The dominant Karnakbayev model in our blend is robust — it lost only 0.008.</li>
+<li>Our small standalone heads, with their conservative priors, generalized cleanly. They didn&#39;t peak high on public, but the <strong>rank discipline</strong> they encode held up.</li>
+</ul>
+<p>Net result: <strong>rank 944 (public) → 354 (final certified), a +590-place jump</strong>. That&#39;s the entire ball game.</p>
+<hr>
+<h2>Negative results worth recording</h2>
+<p>A working note isn&#39;t honest without these. Nine final-week attempts to break past the 0.950 plateau, all of which failed or tied:</p>
+<ul>
+<li><strong>Pseudo-labelling.</strong> Self-trained on 333 unlabelled soundscape files (3,996 chunks) with a 5-fold teacher. <strong>OOF metric jumped +0.134</strong> (0.7654 → 0.8998); <strong>standalone LB regressed −0.009</strong> (0.879 → 0.870). Textbook OOF-inflation from teacher self-reinforcement.</li>
+<li><strong>Residual seq-head training</strong> (target <code>h_block25 − h_block24</code> instead of raw label). Same OOF gain pattern, didn&#39;t move LB.</li>
+<li><strong>DINOv2 224 px integration.</strong> The 224 px checkpoint was stronger than the 196 px one but still too weak (LB 0.811) to lift the blend above the 0.950 round-down.</li>
+<li><strong>Aggressive prior strength</strong> ($\alpha = 1.0$ with $\sigma = 1.5$ Gaussian smoothing). −0.018 LB.</li>
+<li><strong>BirdNET v2.4 sidecar</strong> in rank-space. Tied at 0.950, didn&#39;t break it.</li>
+</ul>
+<p>The pattern is consistent: when you&#39;re already on a 757-team plateau set by <strong>rounding at three decimal places</strong>, the only way to actually break above it is a <strong>second model with standalone LB ≥ 0.94</strong>, not just diversity. We didn&#39;t have one. Distilling Perch into a smaller CNN with KLD loss (the path Tucker Arrants and EliKal hinted at on the discussion forum) is the obvious next step — multi-day GPU work, outside this competition&#39;s window.</p>
+<hr>
+<h2>On AI-assisted engineering</h2>
+<p>The whole sprint was done with Claude (Opus 4.7 / Sonnet 4.6, including a 1M-context build for the long-running session) as an engineering partner. What worked:</p>
+<ul>
+<li><strong>Per-block probe code</strong> synthesised directly from a verbal description, including UMAP plots and the cluster-quality metric.</li>
+<li><strong>Kaggle CLI gotchas</strong> debugged in real-time — the <code>KGAT_</code> token uses Bearer auth, not Basic; old kernel versions are <em>not</em> accessible via <code>kaggle kernels output</code> (only the latest), so we had to manually web-download the <code>aa9dde67</code> 224 px DINOv2 checkpoint.</li>
+<li><strong>Notebook hot-patches</strong> for the blend cell — the dominant Karnakbayev notebook hardcoded <code>solutions[&#39;Models&#39;][1][&#39;xSED&#39;]</code>, expected <code>_runSED_once</code> from outer scope, and only knew <code>&#39;direct&#39;</code> / <code>&#39;rank.1&#39;</code> dispatch types. Surfacing and fixing those took ~10 minutes with Claude.</li>
+</ul>
+<p>What didn&#39;t work, and which is worth flagging:</p>
+<ul>
+<li><strong>OOF-metric chasing</strong> is dangerous. The pseudo-label experiment showed an OOF gain that didn&#39;t transfer; Claude (and I) initially treated the OOF number as ground truth. The fix is to <strong>always cross-check with a real LB submission</strong> before scaling up.</li>
+</ul>
+<p>Everything LLM-assisted is disclosed in the paper per the LifeCLEF / CEUR-WS GenAI declaration policy.</p>
+<hr>
+<h2>What I&#39;d do differently</h2>
+<p>In rough order of expected payoff for next year&#39;s BirdCLEF:</p>
+<ol>
+<li><strong>Perch → CNN distillation</strong> via KLD loss to a B0/B3 backbone. The community estimate is +0.02 to +0.04 <em>standalone</em>. That&#39;s the only realistic path to a second model strong enough to break a 0.950-rounding plateau.</li>
+<li><strong>Confidence-gated pseudo-labels</strong> (Anil Ozturk&#39;s hint on the discussion forum) — single-pass with strict thresholds, not the multi-fold teacher I used.</li>
+<li><strong>Spatial-per-block tokens</strong> ($T = 192$ instead of $T = 3$) so the head can attend to time–frequency regions, not just blocks.</li>
+<li><strong>Properly retrain DINOv2 at 224 px</strong> instead of trying to salvage a checkpoint at the last minute.</li>
+</ol>
+<hr>
+<h2>Summary</h2>
+<ul>
+<li>Final certified rank <strong>354 / 4084 (top 8.7%)</strong> — <strong>🥉 official Kaggle Competition Bronze Medal</strong> awarded 2026-06-04.</li>
+<li>The methodology contribution is the <strong>per-block kNN probe</strong>: a cheap, training-free way to choose which layer of a frozen backbone to tap for transfer.</li>
+<li>A small ($\sim$430k params) attention-pool sequence head over Perch~v2 features hit <strong>standalone LB 0.879</strong>; the medal came from blending with the dominant public baseline.</li>
+<li><strong>Standalones generalised; blends overfit to public.</strong> The +590-place public → final rerank is the punchline.</li>
+<li><strong>Code is public</strong> at <a href="https://github.com/rockerritesh/BirdCLEF2026">github.com/rockerritesh/BirdCLEF2026</a>; the full working note is on <a href="https://sumityadav.com.np/files/birdclef-2026-working-note.pdf">sumityadav.com.np/files/birdclef-2026-working-note.pdf</a>.</li>
+</ul>
+<p>If you&#39;re running BirdCLEF 2027 or any similar bioacoustics / fine-grained-audio task: <strong>probe before you fine-tune</strong>. The penultimate block of a wide-pretraining classifier is, more often than the literature implies, the right place to tap.</p>
+
+    </div>
+
+    <details class="cite">
+  <summary>Cite this post</summary>
+  <div class="cite-body" id="citation-section">
+    <div class="citation-tabs" role="tablist">
+        <button class="citation-tab active" data-target="bibtex" role="tab" aria-selected="true">BibTeX</button>
+        <button class="citation-tab" data-target="apa" role="tab" aria-selected="false">APA</button>
+        <button class="citation-tab" data-target="mla" role="tab" aria-selected="false">MLA</button>
+        <button class="citation-tab" data-target="chicago" role="tab" aria-selected="false">Chicago</button>
+    </div>
+    <div class="citation-panels">
+        <div class="citation-panel active" id="panel-bibtex" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-bibtex"></pre><button class="copy-btn" data-cite="cite-bibtex">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-apa" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-apa"></pre><button class="copy-btn" data-cite="cite-apa">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-mla" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-mla"></pre><button class="copy-btn" data-cite="cite-mla">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-chicago" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-chicago"></pre><button class="copy-btn" data-cite="cite-chicago">Copy</button></div>
+        </div>
+    </div>
+    <p class="citation-note">Auto-generated. Verify for your institution's requirements.</p>
+  </div>
+</details>
+
+<template id="cite-meta">BirdCLEF+ 2026: A Per-Block kNN Probe, a Tiny Sequence Head, and a Bronze Medal</template>
+
+<script>
+(function() {
+    var meta = document.getElementById('cite-meta');
+    if (!meta) return;
+    var t = meta.content ? meta.content.textContent : meta.innerHTML;
+    var a = 'Sumit Yadav';
+    var j = 'Sumit Yadav';
+    var u = 'https://sumityadav.com.np/posts/2026/06/07/birdclef-2026-bronze-medal-perch-knn-probe/';
+    var y = '2026';
+    var mo = 'June';
+    var ms = 'Jun';
+    var dy = '07';
+    var k = a.split(' ')[0].toLowerCase() + y + t.toLowerCase().replace(/[^a-z0-9]+/g, '');
+
+    document.getElementById('cite-bibtex').textContent =
+        '@article{' + k + ',\n  title     = {' + t + '},\n  author    = {' + a +
+        '},\n  journal   = {' + j + '},\n  year      = {' + y + '},\n  month     = {' + mo +
+        '},\n  day       = {' + dy + '},\n  url       = {' + u + '}\n}';
+    document.getElementById('cite-apa').textContent =
+        a + '. (' + y + ', ' + mo + ' ' + dy + '). ' + t + '. ' + j + '. ' + u;
+    document.getElementById('cite-mla').textContent =
+        a + '. “' + t + '.” ' + j + ', ' + dy + ' ' + ms + ' ' + y + ', ' + u + '.';
+    document.getElementById('cite-chicago').textContent =
+        a + '. “' + t + '.” ' + j + '. ' + mo + ' ' + dy + ', ' + y + '. ' + u + '.';
+
+    var sec = document.getElementById('citation-section');
+    sec.querySelectorAll('.citation-tab').forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            sec.querySelectorAll('.citation-tab').forEach(function(x) { x.classList.remove('active'); x.setAttribute('aria-selected', 'false'); });
+            sec.querySelectorAll('.citation-panel').forEach(function(p) { p.classList.remove('active'); });
+            this.classList.add('active'); this.setAttribute('aria-selected', 'true');
+            sec.querySelector('#panel-' + this.dataset.target).classList.add('active');
+        });
+    });
+    sec.querySelectorAll('.copy-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var text = document.getElementById(this.dataset.cite).textContent;
+            var b = this;
+            var done = function() { b.textContent = 'Copied!'; b.classList.add('copied'); setTimeout(function() { b.textContent = 'Copy'; b.classList.remove('copied'); }, 2000); };
+            navigator.clipboard.writeText(text).then(done).catch(function() {
+                var ta = document.createElement('textarea'); ta.value = text; ta.style.cssText = 'position:fixed;opacity:0';
+                document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); done();
+            });
+        });
+    });
+})();
+</script>
+
+
+    <footer class="post-footer">
+        <p><a href="/blog/">← All posts</a></p>
+    </footer>
+</article>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+    <div class="wrap">
+        <p>© 2026 Sumit Yadav · Kathmandu, Nepal · <a href="/">home</a> · <a href="/blog/">blog</a></p>
+    </div>
+</footer>
+
+
+    <script>
+        (function() {
+            const getThemePreference = () => {
+                const stored = localStorage.getItem('theme-preference');
+                if (stored) return stored;
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            };
+            const applyTheme = (theme) => {
+                const root = document.documentElement;
+                root.classList.remove('light-theme', 'dark-theme');
+                if (theme !== 'auto') root.classList.add(`${theme}-theme`);
+                if (window.mermaid) {
+                    const dark = theme === 'dark' || (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                    mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'default' });
+                    document.querySelectorAll('.mermaid').forEach(el => {
+                        if (el.getAttribute('data-processed')) {
+                            el.removeAttribute('data-processed');
+                            el.innerHTML = el.getAttribute('data-original') || el.innerHTML;
+                        }
+                    });
+                    if (window.mermaid.init) mermaid.init(undefined, '.mermaid');
+                }
+            };
+            document.addEventListener('DOMContentLoaded', () => {
+                applyTheme(getThemePreference());
+                const t = document.getElementById('theme-toggle');
+                if (t) t.addEventListener('click', () => {
+                    const cur = getThemePreference();
+                    const next = cur === 'dark' ? 'light' : 'dark';
+                    localStorage.setItem('theme-preference', next);
+                    applyTheme(next);
+                });
+                document.querySelectorAll('.mermaid').forEach(el => {
+                    if (!el.getAttribute('data-original')) el.setAttribute('data-original', el.innerHTML);
+                });
+            });
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme-preference')) applyTheme(e.matches ? 'dark' : 'light');
+            });
+        })();
+        (function() {
+            const bar = document.getElementById('scroll-progress-bar');
+            if (!bar) return;
+            const upd = () => {
+                const st = window.pageYOffset || document.documentElement.scrollTop;
+                const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                bar.style.height = Math.min(Math.max((st / h) * 100, 0), 100) + '%';
+            };
+            window.addEventListener('scroll', upd, { passive: true });
+            window.addEventListener('resize', upd, { passive: true });
+            upd();
+        })();
+    </script>
+</body>
+</html>

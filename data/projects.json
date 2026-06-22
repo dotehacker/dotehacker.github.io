@@ -1,0 +1,9 @@
+[
+  { "name": "maiBERT", "url": "https://huggingface.co/rockerritesh/maiBERT_TF", "note": "First BERT for Maithili", "extra": "<a href=\"https://maithili.streamlit.app/\">demo</a>" },
+  { "name": "SAFE-MCP / SAF-MCP", "url": "https://github.com/secure-agentic-framework/saf-mcp", "note": "Contributed detection techniques and mitigations to a community security framework for the Model Context Protocol (MCP) — an ATT&CK-style catalogue of agentic-system threats and defenses", "extra": "" },
+  { "name": "AgentGuard", "url": "https://github.com/rockerritesh/agentguard", "note": "Zero-Trust protocol for AI agents: identity, policy, mTLS, audit (Python SDK + Go server)", "extra": "" },
+  { "name": "spiffe-core · TraT", "url": "https://github.com/rockerritesh/spiffe-core", "note": "SPIFFE-based agent identity/attestation and Transaction Tokens for multi-agent workflows", "extra": "<a href=\"https://github.com/rockerritesh/trat-multi-agent\">TraT</a>" },
+  { "name": "sumit-mcp-server", "url": "https://github.com/rockerritesh/sumit-mcp-server", "note": "Federated memory MCP server", "extra": "<a href=\"https://huggingface.co/spaces/rockerritesh/sumit-server\">live on HF Spaces</a>" },
+  { "name": "Vibe-Coder", "url": "https://github.com/rockerritesh/vibe_coder", "note": "An agent that builds Streamlit/FastAPI apps", "extra": "" },
+  { "name": "IRB Robotics Arm", "url": "https://github.com/jarp0l/IRB-Robo-Arm", "note": "Open-source image-recognition robotic arm (UN SDG3)", "extra": "" }
+]

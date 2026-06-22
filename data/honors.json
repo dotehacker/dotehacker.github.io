@@ -1,0 +1,8 @@
+[
+  { "title": "Winner, GritFeat AI Hackathon", "year": 2023, "note": "SWIFT — wearable LSTM fall-detection for the elderly (79.86%)." },
+  { "title": "1st Runner-Up, Locus Dataverse", "year": 2023, "note": "NLP classification of imbalanced research-paper abstracts." },
+  { "title": "1st Runner-Up, Docsumo DataRush", "year": 2021, "note": "Abstract classification into 158 classes (SVC + TF-IDF)." },
+  { "title": "Best AI Project, DELTA 3.0", "year": 2022, "note": "Nepali Harvest — crop-disease prediction & harvest timing." },
+  { "title": "Winner, IT-Meet Image Challenge", "year": 2022, "note": "Computer-vision classification of Nepali ballot-paper images." },
+  { "title": "Winner, LogPoint Capture The Flag", "year": 2021, "note": "Binary exploitation & forensics." }
+]

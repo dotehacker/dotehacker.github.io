@@ -1,0 +1,22 @@
+{
+  "title": "Sumit Yadav",
+  "tagline": "AI Researcher — interpretability, AI safety, and low-resource NLP.",
+  "blogCategories": [
+    { "key": "ai-ml", "name": "AI & ML" },
+    { "key": "interp-safety", "name": "Interpretability & Safety" },
+    { "key": "engineering", "name": "Engineering" },
+    { "key": "math", "name": "Mathematics" },
+    { "key": "culture", "name": "Culture & Mithila" },
+    { "key": "reflections", "name": "Reflections" }
+  ],
+  "blogPreviewCount": 8,
+  "sections": {
+    "timeline": true,
+    "publications": true,
+    "blog": true,
+    "experience": true,
+    "projects": true,
+    "honors": true,
+    "documents": true
+  }
+}
