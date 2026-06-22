@@ -33,7 +33,7 @@
     "year": 2026,
     "topics": ["Low-resource NLP"],
     "note": "The first monolingual BERT for Maithili (~50M speakers); 87% accuracy on news classification, outperforming MuRIL and NepBERTa.",
-    "links": { "paper": "https://arxiv.org/abs/2509.15048", "model": "https://huggingface.co/rockerritesh/maiBERT_TF" }
+    "links": { "paper": "https://aclanthology.org/2026.loreslm-1.38/", "arxiv": "https://arxiv.org/abs/2509.15048", "model": "https://huggingface.co/rockerritesh/maiBERT_TF" }
   },
   {
     "title": "Revolutionizing Currency Security: A YOLOv8-Based Approach for Detecting Counterfeit Nepali Banknotes",
