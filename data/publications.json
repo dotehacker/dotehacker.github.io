@@ -1,12 +1,12 @@
 [
   {
     "title": "SafeConstellations: Mitigating Over-Refusals in LLMs Through Task-Aware Representation Steering",
-    "authors": "Sumit Yadav et al.",
+    "authors": "Utsav Maskey, Sumit Yadav, Mark Dras, Usman Naseem",
     "venue": "ACL 2026 (Main Conference)",
     "year": 2026,
     "topics": ["Interpretability & Safety"],
-    "note": "An inference-time, task-aware trajectory-shifting method that cuts over-refusals by up to 73% with minimal utility loss — no retraining required.",
-    "links": { "paper": "https://arxiv.org/abs/2508.11290" }
+    "note": "LLM representations follow distinct per-task \"constellation\" trajectories in embedding space; SafeConstellations is an inference-time method that selectively steers only over-refusal-prone tasks toward non-refusal pathways — cutting over-refusals by up to 73% with minimal utility loss and no retraining.",
+    "links": { "paper": "https://arxiv.org/abs/2508.11290", "doi": "https://doi.org/10.48550/arXiv.2508.11290" }
   },
   {
     "title": "On the Relationship Between Representation Geometry and Generalization in Deep Neural Networks",
@@ -14,8 +14,8 @@
     "venue": "Preprint, 2026",
     "year": 2026,
     "topics": ["Interpretability & Safety"],
-    "note": "Shows that effective dimension — an unsupervised geometric metric — predicts generalization across vision and language models (partial r = 0.75 over 52 classifiers).",
-    "links": { "paper": "https://arxiv.org/abs/2602.00130" }
+    "note": "Effective dimension — an unsupervised, label-free geometric metric — predicts generalization across domains: partial r = 0.75 over 52 ImageNet classifiers (13 architecture families), replicating on CIFAR-10 and generalizing to NLP (8 encoders on SST-2/MNLI, 15 decoder-only LLMs on AG News). Establishes bidirectional causality — degrading geometry with noise drops accuracy (r = −0.94), while PCA that improves geometry preserves it.",
+    "links": { "paper": "https://arxiv.org/abs/2602.00130", "doi": "https://doi.org/10.48550/arXiv.2602.00130" }
   },
   {
     "title": "Geometric Phases of Mechanism Formation in Neural Networks",
