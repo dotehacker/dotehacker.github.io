@@ -1,5 +1,7 @@
 [
   { "name": "maiBERT", "url": "https://huggingface.co/rockerritesh/maiBERT_TF", "note": "First BERT for Maithili", "extra": "<a href=\"https://maithili.streamlit.app/\">demo</a>" },
+  { "name": "Whisper-tiny Maithili (ASR)", "url": "https://huggingface.co/rockerritesh/whisper-tiny-maithili", "note": "Open Maithili speech-to-text — OpenAI Whisper-tiny fine-tuned on the IISc SYSPIN corpus (63.9% WER)", "extra": "<a href=\"https://huggingface.co/spaces/rockerritesh/maithili-asr\">live demo</a>" },
+  { "name": "MMS-TTS Maithili (TTS)", "url": "https://huggingface.co/rockerritesh/mms-tts-mai-syspin-male", "note": "Maithili text-to-speech — VITS / Meta MMS-TTS fine-tuned on a SYSPIN male voice", "extra": "<a href=\"https://huggingface.co/spaces/rockerritesh/maithili-tts\">live demo</a>" },
   { "name": "SAFE-MCP / SAF-MCP", "url": "https://github.com/secure-agentic-framework/saf-mcp", "note": "Contributed detection techniques and mitigations to a community security framework for the Model Context Protocol (MCP) — an ATT&CK-style catalogue of agentic-system threats and defenses", "extra": "" },
   { "name": "AgentGuard", "url": "https://github.com/rockerritesh/agentguard", "note": "Zero-Trust protocol for AI agents: identity, policy, mTLS, audit (Python SDK + Go server)", "extra": "" },
   { "name": "spiffe-core · TraT", "url": "https://github.com/rockerritesh/spiffe-core", "note": "SPIFFE-based agent identity/attestation and Transaction Tokens for multi-agent workflows", "extra": "<a href=\"https://github.com/rockerritesh/trat-multi-agent\">TraT</a>" },

@@ -84,25 +84,32 @@
         
       </div>
 <div class="pub-card" data-topics="Low-resource NLP">
-        <p class="pub-title">Can maiBERT Speak for Maithili?</p>
-        <p class="pub-authors">Sumit Yadav et al.</p>
-        <p class="pub-venue">LoResLM @ ACL 2026</p>
-        <p class="pub-note">The first monolingual BERT for Maithili (~50M speakers); 87% accuracy on news classification, outperforming MuRIL and NepBERTa.</p>
-        <p class="pub-links"><a href="https://aclanthology.org/2026.loreslm-1.38/">paper</a><a href="https://arxiv.org/abs/2509.15048">arXiv</a><a href="https://huggingface.co/rockerritesh/maiBERT_TF">model</a></p>
+        <p class="pub-title">MaiBERT: A Pre-training Corpus and Language Model for Low-Resourced Maithili Language</p>
+        <p class="pub-authors">Sumit Yadav, Raju Kumar Yadav, Utsav Maskey, Gautam Siddharth Kashyap, Ganesh Gautam, Usman Naseem</p>
+        <p class="pub-venue">LoResLM @ ACL 2026 (pp. 444–452), Rabat, Morocco</p>
+        <p class="pub-note">The first monolingual BERT for Maithili (~50M speakers), pre-trained with masked language modeling on a newly constructed Maithili corpus. Reaches 87.02% accuracy on news classification — outperforming regional models NepBERTa and HindiBERT with 5–7% gains across classes — and is open-sourced for downstream tasks like sentiment analysis and NER. (Earlier preprint: &quot;Can maiBERT Speak for Maithili?&quot;)</p>
+        <p class="pub-links"><a href="https://aclanthology.org/2026.loreslm-1.38/">paper</a><a href="https://arxiv.org/abs/2509.15048">arXiv</a><a href="https://doi.org/10.18653/v1/2026.loreslm-1.38">doi</a><a href="https://huggingface.co/rockerritesh/maiBERT_TF">model</a></p>
       </div>
 <div class="pub-card" data-topics="Vision &amp; Other">
         <p class="pub-title">Revolutionizing Currency Security: A YOLOv8-Based Approach for Detecting Counterfeit Nepali Banknotes</p>
         <p class="pub-authors">Sumit Yadav et al.</p>
         <p class="pub-venue">J. Bus. Econ. Stud., 2024</p>
-        
+        <p class="pub-note">Classifies Nepalese banknotes as genuine or counterfeit to help curb financial fraud. On 180 samples of the 1000-rupee note, YOLOv8 reaches a true-positive recall of 0.82 on the front face and 0.9863 on the back, with strong mAP — and the approach is adaptable across hardware platforms.</p>
         <p class="pub-links"><a href="https://doi.org/10.61440/JBES.2024.v1.47">paper</a></p>
       </div>
 <div class="pub-card" data-topics="Low-resource NLP">
+        <p class="pub-title">Evaluating Auto-Encoding Transformer Language Models for Maithili Text Classification</p>
+        <p class="pub-authors">Sumit Yadav, Raju Kumar Yadav</p>
+        <p class="pub-venue">B.E. Thesis (Electronics &amp; Computer Engineering), Tribhuvan University, 2024</p>
+        <p class="pub-note">Builds a Maithili masked language model via transfer learning and fine-tunes it on a curated Maithili news classification dataset — the precursor work to maiBERT, addressing the absence of dedicated language models and task-specific data for Maithili.</p>
+        <p class="pub-links"><a href="https://www.researchgate.net/publication/407471788_EVALUATING_AUTO-ENCODING_TRANSFORMER_LANGUAGE_MODELS_FOR_MAITHILI_TEXT_CLASSIFICATION">paper</a></p>
+      </div>
+<div class="pub-card" data-topics="Low-resource NLP">
         <p class="pub-title">Machine Learning Analysis of Tirhuta Lipi</p>
-        <p class="pub-authors">Sumit Yadav et al.</p>
-        <p class="pub-venue">2023</p>
-        <p class="pub-note">0.97 accuracy in Tirhuta script recognition for OCR and translation of low-resource scripts.</p>
-        <p class="pub-links"><a href="https://www.researchgate.net/publication/373370042_Machine_Learning_Analysis_of_Tirhuta_Lipi">paper</a></p>
+        <p class="pub-authors">Sumit Yadav, Raju Kumar Yadav</p>
+        <p class="pub-venue">Technical Report, Tribhuvan University, 2023</p>
+        <p class="pub-note">Character recognition for the Tirhuta script (Maithili) — MobileNet embeddings with logistic regression reach 0.97 accuracy, enabling OCR and translation for a low-resource script.</p>
+        <p class="pub-links"><a href="https://www.researchgate.net/publication/373370042_Machine_Learning_Analysis_of_Tirhuta_Lipi">paper</a><a href="https://doi.org/10.13140/RG.2.2.15213.97765">doi</a></p>
       </div>
 <div class="pub-card" data-topics="Vision &amp; Other">
         <p class="pub-title">Support Vectors Are a Better Way of Text Classification for Imbalanced Data</p>
@@ -166,6 +173,10 @@
       
     </li></ul></section><section class="section"><h2>Projects</h2><ul class="itemlist"><li>
       <span class="it-head"><a href="https://huggingface.co/rockerritesh/maiBERT_TF">maiBERT</a></span> — First BERT for Maithili (<a href="https://maithili.streamlit.app/">demo</a>)
+    </li><li>
+      <span class="it-head"><a href="https://huggingface.co/rockerritesh/whisper-tiny-maithili">Whisper-tiny Maithili (ASR)</a></span> — Open Maithili speech-to-text — OpenAI Whisper-tiny fine-tuned on the IISc SYSPIN corpus (63.9% WER) (<a href="https://huggingface.co/spaces/rockerritesh/maithili-asr">live demo</a>)
+    </li><li>
+      <span class="it-head"><a href="https://huggingface.co/rockerritesh/mms-tts-mai-syspin-male">MMS-TTS Maithili (TTS)</a></span> — Maithili text-to-speech — VITS / Meta MMS-TTS fine-tuned on a SYSPIN male voice (<a href="https://huggingface.co/spaces/rockerritesh/maithili-tts">live demo</a>)
     </li><li>
       <span class="it-head"><a href="https://github.com/secure-agentic-framework/saf-mcp">SAFE-MCP / SAF-MCP</a></span> — Contributed detection techniques and mitigations to a community security framework for the Model Context Protocol (MCP) — an ATT&amp;CK-style catalogue of agentic-system threats and defenses
     </li><li>

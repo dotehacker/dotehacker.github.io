@@ -27,13 +27,13 @@
     "links": {}
   },
   {
-    "title": "Can maiBERT Speak for Maithili?",
-    "authors": "Sumit Yadav et al.",
-    "venue": "LoResLM @ ACL 2026",
+    "title": "MaiBERT: A Pre-training Corpus and Language Model for Low-Resourced Maithili Language",
+    "authors": "Sumit Yadav, Raju Kumar Yadav, Utsav Maskey, Gautam Siddharth Kashyap, Ganesh Gautam, Usman Naseem",
+    "venue": "LoResLM @ ACL 2026 (pp. 444–452), Rabat, Morocco",
     "year": 2026,
     "topics": ["Low-resource NLP"],
-    "note": "The first monolingual BERT for Maithili (~50M speakers); 87% accuracy on news classification, outperforming MuRIL and NepBERTa.",
-    "links": { "paper": "https://aclanthology.org/2026.loreslm-1.38/", "arxiv": "https://arxiv.org/abs/2509.15048", "model": "https://huggingface.co/rockerritesh/maiBERT_TF" }
+    "note": "The first monolingual BERT for Maithili (~50M speakers), pre-trained with masked language modeling on a newly constructed Maithili corpus. Reaches 87.02% accuracy on news classification — outperforming regional models NepBERTa and HindiBERT with 5–7% gains across classes — and is open-sourced for downstream tasks like sentiment analysis and NER. (Earlier preprint: \"Can maiBERT Speak for Maithili?\")",
+    "links": { "paper": "https://aclanthology.org/2026.loreslm-1.38/", "arxiv": "https://arxiv.org/abs/2509.15048", "doi": "https://doi.org/10.18653/v1/2026.loreslm-1.38", "model": "https://huggingface.co/rockerritesh/maiBERT_TF" }
   },
   {
     "title": "Revolutionizing Currency Security: A YOLOv8-Based Approach for Detecting Counterfeit Nepali Banknotes",
@@ -41,17 +41,26 @@
     "venue": "J. Bus. Econ. Stud., 2024",
     "year": 2024,
     "topics": ["Vision & Other"],
-    "note": "",
+    "note": "Classifies Nepalese banknotes as genuine or counterfeit to help curb financial fraud. On 180 samples of the 1000-rupee note, YOLOv8 reaches a true-positive recall of 0.82 on the front face and 0.9863 on the back, with strong mAP — and the approach is adaptable across hardware platforms.",
     "links": { "paper": "https://doi.org/10.61440/JBES.2024.v1.47" }
   },
   {
+    "title": "Evaluating Auto-Encoding Transformer Language Models for Maithili Text Classification",
+    "authors": "Sumit Yadav, Raju Kumar Yadav",
+    "venue": "B.E. Thesis (Electronics & Computer Engineering), Tribhuvan University, 2024",
+    "year": 2024,
+    "topics": ["Low-resource NLP"],
+    "note": "Builds a Maithili masked language model via transfer learning and fine-tunes it on a curated Maithili news classification dataset — the precursor work to maiBERT, addressing the absence of dedicated language models and task-specific data for Maithili.",
+    "links": { "paper": "https://www.researchgate.net/publication/407471788_EVALUATING_AUTO-ENCODING_TRANSFORMER_LANGUAGE_MODELS_FOR_MAITHILI_TEXT_CLASSIFICATION" }
+  },
+  {
     "title": "Machine Learning Analysis of Tirhuta Lipi",
-    "authors": "Sumit Yadav et al.",
-    "venue": "2023",
+    "authors": "Sumit Yadav, Raju Kumar Yadav",
+    "venue": "Technical Report, Tribhuvan University, 2023",
     "year": 2023,
     "topics": ["Low-resource NLP"],
-    "note": "0.97 accuracy in Tirhuta script recognition for OCR and translation of low-resource scripts.",
-    "links": { "paper": "https://www.researchgate.net/publication/373370042_Machine_Learning_Analysis_of_Tirhuta_Lipi" }
+    "note": "Character recognition for the Tirhuta script (Maithili) — MobileNet embeddings with logistic regression reach 0.97 accuracy, enabling OCR and translation for a low-resource script.",
+    "links": { "paper": "https://www.researchgate.net/publication/373370042_Machine_Learning_Analysis_of_Tirhuta_Lipi", "doi": "https://doi.org/10.13140/RG.2.2.15213.97765" }
   },
   {
     "title": "Support Vectors Are a Better Way of Text Classification for Imbalanced Data",
