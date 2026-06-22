@@ -68,7 +68,7 @@
     "venue": "2023",
     "year": 2023,
     "topics": ["Vision & Other"],
-    "note": "A robust SVC method for 100+ class text classification under severe imbalance.",
+    "note": "A TF-IDF + n-gram support-vector pipeline for text classification across 100+ classes on highly imbalanced data. It outperforms neural baselines on the test set and supports incremental retraining as users supply fresh data. Winning submission at Locus Dataverse.",
     "links": { "paper": "https://www.researchgate.net/publication/371514138_SUPPORT_VECTORS_ARE_A_BETTER_WAY_OF_TEXT_CLASSIFICATION_FOR_IMBALANCED_DATA" }
   }
 ]

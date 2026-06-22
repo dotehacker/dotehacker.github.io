@@ -6,7 +6,9 @@
     { "label": "YouTube — Audio Obsession", "url": "https://www.youtube.com/@Audio-Obsession", "kind": "AI & Math" },
     { "label": "Photography", "url": "/photography/", "kind": "gallery" },
     { "label": "Drum Machine", "url": "/drum/", "kind": "interactive" },
-    { "label": "Hugging Face", "url": "https://huggingface.co/rockerritesh", "kind": "models" }
+    { "label": "Hugging Face", "url": "https://huggingface.co/rockerritesh", "kind": "models" },
+    { "label": "Deep Learning Specialization — DeepLearning.AI", "url": "https://www.coursera.org/account/accomplishments/specialization/BREAETYAGNP3", "kind": "certificate" },
+    { "label": "GANs Specialization — DeepLearning.AI", "url": "https://www.coursera.org/account/accomplishments/specialization/VAG74ZCZZB7Q", "kind": "certificate" }
   ],
   "notes": [
     { "label": "Singular Value Decomposition", "url": "/files/svd.pdf", "kind": "PDF" },
