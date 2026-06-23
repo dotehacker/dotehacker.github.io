@@ -79,6 +79,18 @@
   footer{border-top:1px solid var(--line);padding:30px 0 70px;font-family:var(--sans);font-size:.86rem;color:var(--muted)}
   footer a{color:var(--cool)}
   @media (max-width:600px){ body{font-size:18px} h1{font-size:2rem} }
+  /* ---- SAE explorer (lazy-loaded) ---- */
+  .ex-btn{font-family:var(--sans);font-size:.92rem;font-weight:600;background:var(--cool);color:#fff;border:0;border-radius:9px;padding:.6rem 1.1rem;cursor:pointer}
+  .ex-btn:hover{filter:brightness(1.08)}
+  #ex-sel{font-family:var(--mono);font-size:.82rem;padding:.3rem .5rem;border-radius:7px;border:1px solid var(--line);background:var(--panel);color:var(--text);max-width:100%}
+  .ex-fires{font-family:var(--mono);font-size:.8rem;color:var(--muted);margin-top:.5rem;line-height:1.6}
+  .ex-fires b{color:var(--text)}
+  .ex-thumbs{display:flex;flex-wrap:wrap;gap:7px;margin-top:.7rem}
+  .ex-thumbs img{width:54px;height:54px;object-fit:cover;border-radius:7px;border:2px solid transparent;cursor:pointer;opacity:.85}
+  .ex-thumbs img:hover,.ex-thumbs img.on{border-color:var(--warm);opacity:1}
+  .space-embed{margin:1.2rem 0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--panel)}
+  .space-embed iframe{width:100%;height:640px;border:0;display:block}
+  .space-note{font-family:var(--sans);font-size:.82rem;color:var(--muted);background:color-mix(in srgb,var(--warm) 7%,transparent);border-radius:8px;padding:.7rem .9rem;margin:1rem 0}
 </style>
 </head>
 <body>
@@ -182,6 +194,28 @@
   </ul>
   <p>None of this needs the attribute to be hidden or hard to find. It needs the attribute to be <em>concentrated enough that one direction is a faithful summary of it</em> — and $k^*$ is just the honest measurement of when that is true.</p>
 
+  <h2><span class="num">06</span>Explore it yourself</h2>
+  <p>The k* analysis treats each attribute's subspace as a whole. We can also crack open individual <em>neurons</em> — features of a sparse autoencoder trained on PaliGemma's L10 stream — and ask what each fires on. Load the explorer (it fetches a small data file on demand), pick a neuron, and the 500-image map recolors by that neuron's activation; hover any point for its caption.</p>
+
+  <div class="kfig" id="fig-explorer">
+    <div class="kfig-eyebrow">Figure 4 — SAE feature explorer · loads on demand</div>
+    <div class="kfig-title">What does each L10 neuron fire on?</div>
+    <div id="ex-load"><button class="ex-btn">▶ Load the explorer (~115&nbsp;KB)</button> <span class="kfig-caption" style="margin-left:.4rem">runs entirely in your browser</span></div>
+    <div id="ex-body" hidden>
+      <div class="kfig-controls"><label style="font-family:var(--mono);font-size:.82rem;color:var(--muted)">neuron&nbsp; <select id="ex-sel"></select></label></div>
+      <canvas class="kfig-canvas" id="ex-canvas" height="360" aria-label="SAE latent map recolored by the selected neuron"></canvas>
+      <div class="ex-fires" id="ex-fires"></div>
+      <div class="ex-thumbs" id="ex-thumbs"></div>
+    </div>
+    <div class="kfig-caption">Each point = one of 500 reference images, placed by its full SAE code (2-D PCA). Color = the chosen neuron's activation; hover for the caption. Thumbnails are example inputs — click to drop one onto the map (★).</div>
+  </div>
+
+  <p>Some neurons are crisp and object-like — a <em>banana/pizza</em> feature, a <em>cat/surfboard</em> feature — lighting a tight cluster. Others smear across the map. That spread is what $k^*$ measures, now visible neuron by neuron: a concentrated feature is a bright island; a distributed attribute like orientation has no such island, which is why one vector can't steer it.</p>
+
+  <p><strong>Run your own image.</strong> The full dashboard — pass any image, read its SAE neurons, clamp one, and watch PaliGemma's caption — is packaged as a Hugging Face Space.</p>
+  <div class="space-note">⚠️ The live demo runs PaliGemma-3B on a free CPU Space, so it may be asleep or queued — give it a moment, or duplicate it to your own account for a private GPU run. <a href="https://huggingface.co/spaces/rockerritesh/visual-steerability" target="_blank" rel="noopener">Open the Space ↗</a></div>
+  <div class="space-embed"><iframe src="https://rockerritesh-visual-steerability.hf.space" loading="lazy" title="Visual Steerability — live SAE steering demo"></iframe></div>
+
 </div></main>
 
 <footer><div class="wrap">
@@ -280,6 +314,63 @@
     }
     bindGroups(root,st,render); attach(cv,function(j){st.cur=j;render();}); window.addEventListener("resize",render); render();
   })();
+})();
+</script>
+<script>
+/* SAE feature explorer — lazy-loads data/explorer.json on demand and recolors a scatter */
+(function(){
+  var root=document.getElementById("fig-explorer"); if(!root) return;
+  var loadBtn=root.querySelector(".ex-btn"), body=document.getElementById("ex-body"),
+      sel=document.getElementById("ex-sel"), fires=document.getElementById("ex-fires"),
+      thumbs=document.getElementById("ex-thumbs"), cv=document.getElementById("ex-canvas");
+  var DATA=null, cur=0, star=null, hover=-1, geo=null;
+  function dark(){return window.matchMedia&&window.matchMedia("(prefers-color-scheme:dark)").matches;}
+  var VIR=[[68,1,84],[59,82,139],[33,145,140],[94,201,98],[253,231,37]];
+  function ramp(t){ t=Math.max(0,Math.min(1,t)); var x=t*4, i=Math.floor(x), f=x-i; if(i>=4){i=3;f=1;}
+    var a=VIR[i],b=VIR[i+1]; return "rgb("+Math.round(a[0]+(b[0]-a[0])*f)+","+Math.round(a[1]+(b[1]-a[1])*f)+","+Math.round(a[2]+(b[2]-a[2])*f)+")"; }
+
+  loadBtn.addEventListener("click", function(){
+    loadBtn.textContent="loading…"; loadBtn.disabled=true;
+    fetch("data/explorer.json").then(function(r){return r.json();}).then(function(d){
+      DATA=d; document.getElementById("ex-load").style.display="none"; body.hidden=false;
+      d.neurons.forEach(function(n,i){ var o=document.createElement("option"); o.value=i; o.textContent="#"+n.id+" · "+n.label; sel.appendChild(o); });
+      sel.addEventListener("change", function(){ cur=+sel.value; star=null; hover=-1; render(); });
+      d.examples.forEach(function(e){ var im=document.createElement("img"); im.src=e.thumb; im.title=e.name; im.alt=e.name;
+        im.addEventListener("click", function(){ thumbs.querySelectorAll("img").forEach(function(x){x.classList.remove("on");}); im.classList.add("on"); star=e.coord; render(); }); thumbs.appendChild(im); });
+      cv.addEventListener("mousemove", onMove); cv.addEventListener("mouseleave", function(){hover=-1;render();});
+      window.addEventListener("resize", render);
+      cur=0; render();
+    }).catch(function(){ loadBtn.textContent="load failed — retry"; loadBtn.disabled=false; });
+  });
+
+  function onMove(ev){ if(!geo)return; var r=cv.getBoundingClientRect(), px=ev.clientX-r.left, py=ev.clientY-r.top;
+    var best=-1,bd=140; for(var j=0;j<geo.X.length;j++){ var dx=geo.X[j]-px, dy=geo.Y[j]-py, d=dx*dx+dy*dy; if(d<bd){bd=d;best=j;} }
+    if(best!==hover){ hover=best; render(); } }
+
+  function render(){
+    var n=DATA.neurons[cur], acts=n.acts, C=DATA.coords;
+    var dpr=window.devicePixelRatio||1, W=cv.clientWidth, H=360;
+    cv.width=W*dpr; cv.height=H*dpr; var g=cv.getContext("2d"); g.setTransform(dpr,0,0,dpr,0,0);
+    var d=dark(); g.clearRect(0,0,W,H);
+    var xs=C.map(function(p){return p[0];}), ys=C.map(function(p){return p[1];});
+    var xmin=Math.min.apply(0,xs),xmax=Math.max.apply(0,xs),ymin=Math.min.apply(0,ys),ymax=Math.max.apply(0,ys);
+    var m=16, x0=m,x1=W-m,y0=H-m,y1=m;
+    function X(v){return x0+(v-xmin)/(xmax-xmin+1e-9)*(x1-x0);}
+    function Y(v){return y0-(v-ymin)/(ymax-ymin+1e-9)*(y0-y1);}
+    var amax=Math.max.apply(0,acts)||1;
+    var px=[],py=[];
+    for(var j=0;j<C.length;j++){ var sx=X(C[j][0]), sy=Y(C[j][1]); px.push(sx); py.push(sy);
+      g.fillStyle=ramp(acts[j]/amax); g.globalAlpha=.85; g.beginPath(); g.arc(sx,sy,3.4,0,7); g.fill(); }
+    g.globalAlpha=1; geo={X:px,Y:py};
+    if(star){ g.fillStyle="#e8342f"; g.strokeStyle=d?"#111":"#fff"; g.lineWidth=2;
+      g.beginPath(); g.arc(X(star[0]),Y(star[1]),8,0,7); g.fill(); g.stroke(); }
+    if(hover>=0){ var c=DATA.captions[hover]; g.fillStyle=d?"#ececf2":"#16161a";
+      g.font="12px "+(getComputedStyle(document.documentElement).getPropertyValue('--mono')||'monospace');
+      g.textAlign=px[hover]>W/2?"right":"left";
+      g.fillText("“"+c+"”  ("+acts[hover].toFixed(2)+")", px[hover]+(px[hover]>W/2?-8:8), Math.max(12,py[hover]-8));
+      g.strokeStyle="#e8342f"; g.lineWidth=1.5; g.beginPath(); g.arc(px[hover],py[hover],5,0,7); g.stroke(); }
+    fires.innerHTML="<b>#"+n.id+" · "+n.label+"</b> — fires on "+n.fires+"/"+C.length+" images · top: "+n.top_caps.slice(0,5).map(function(c){return "“"+c+"”";}).join(", ");
+  }
 })();
 </script>
 </body>
