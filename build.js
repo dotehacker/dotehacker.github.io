@@ -245,7 +245,7 @@ class JekyllLikeBuilder {
 
   copyStaticAssets() {
     const items = ['files', 'photo', 'photography', 'drum', 'posts',
-      'cv.pdf', 'resume.pdf', 'TPUs-2.pdf', 'rockerritesh.png',
+      'cv.pdf', 'resume.pdf', 'TPUs-2.pdf', 'rockerritesh.png', 'profile.jpg',
       'favicon.ico', 'favicon-16x16.png', 'favicon-32x32.png', 'apple-touch-icon.png',
       'android-chrome-192x192.png', 'mstile-150x150.png', 'safari-pinned-tab.svg',
       'site.webmanifest', 'browserconfig.xml'];
