@@ -812,15 +812,27 @@ a:hover {
 @media (max-width: 620px) {
   .intro {
     flex-direction: column;
-    gap: 18px;
+    gap: 16px;
     padding-top: 36px;
+    align-items: center;
   }
   .intro-photo {
-    width: 160px;
-    height: 192px;
+    width: 168px;
+    height: 200px;
+  }
+  .intro-body {
+    text-align: center;
   }
   .intro-body h1 {
     font-size: 1.9rem;
+  }
+  .intro .bio {
+    text-align: left;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .social {
+    justify-content: center;
   }
   .blog-date {
     flex-basis: 74px;
