@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The Steerability Spectrum of Visual Attributes — when reading a feature isn't enough to steer it</title>
+<meta name="description" content="An interactive explainer: why you can read an attribute off a vision model perfectly yet fail to steer it with a single vector — and how a number, k*, predicts how hard each attribute is to steer and prescribes the fix. Across DINOv2, CLIP, SigLIP, and PaliGemma." />
+<meta property="og:title" content="The Steerability Spectrum of Visual Attributes" />
+<meta property="og:description" content="Decodable ≠ steerable. A controlled, interactive study of k* — the steerability dimension — across vision encoders and a VLM." />
+<meta property="og:type" content="article" />
+<script>
+  window.MathJax = { tex:{inlineMath:[['$','$'],['\\(','\\)']], displayMath:[['$$','$$'],['\\[','\\]']]}, svg:{fontCache:'global'} };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+<style>
+  :root{
+    --ground:#FBFBF9; --panel:#FFFFFF; --text:#1C1B22; --muted:#6f6f64; --line:#E7E6DE;
+    --warm:#C2410C;        /* low-k* / size  — the warm end of the spectrum */
+    --cool:#3730A3;        /* high-k* / orientation — the cool end */
+    --rep:#B21F2D; --col:1px;
+    --serif: "Iowan Old Style","Charter","Georgia",Cambria,serif;
+    --sans: "Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    --mono: ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--ground:#121319;--panel:#181922;--text:#ECECF2;--muted:#9a9aa6;--line:#2a2b34;
+      --warm:#F0843C;--cool:#8a82f5;--rep:#ef5b6b;}
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--ground);color:var(--text);font-family:var(--serif);
+    font-size:19px;line-height:1.7;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  .wrap{max-width:720px;margin:0 auto;padding:0 22px}
+  a{color:var(--cool);text-underline-offset:2px}
+  /* ---- masthead ---- */
+  header.top{border-bottom:1px solid var(--line);background:var(--panel)}
+  header.top .wrap{display:flex;justify-content:space-between;align-items:center;height:52px;font-family:var(--sans)}
+  header.top a{font-size:.86rem;color:var(--muted);text-decoration:none;letter-spacing:.01em}
+  header.top a:hover{color:var(--text)}
+  /* ---- hero ---- */
+  .hero{padding:66px 0 26px}
+  .eyebrow{font-family:var(--mono);font-size:.74rem;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin:0 0 18px}
+  h1{font-family:var(--sans);font-weight:700;font-size:2.55rem;line-height:1.12;letter-spacing:-.02em;margin:0 0 .5rem}
+  .dek{font-size:1.18rem;color:var(--muted);margin:.4rem 0 0;line-height:1.5}
+  .byline{font-family:var(--sans);font-size:.84rem;color:var(--muted);margin-top:22px;display:flex;gap:14px;flex-wrap:wrap}
+  .byline b{color:var(--text);font-weight:600}
+  /* spectrum bar — the signature device (content-true: warm=low k*, cool=high k*) */
+  .spectrum{margin:30px 0 6px}
+  .spectrum .bar{height:12px;border-radius:7px;background:linear-gradient(90deg,var(--warm),#9a5db0 52%,var(--cool))}
+  .spectrum .ends{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.74rem;color:var(--muted);margin-top:8px}
+  .spectrum .ends b{color:var(--text)}
+  /* ---- prose ---- */
+  main{padding:14px 0 70px}
+  h2{font-family:var(--sans);font-weight:680;font-size:1.5rem;letter-spacing:-.01em;margin:2.7rem 0 .2rem}
+  h2 .num{font-family:var(--mono);font-size:.8rem;color:var(--warm);margin-right:.5rem;font-weight:500}
+  p{margin:1rem 0}
+  .lede{font-size:1.06rem}
+  blockquote{margin:1.8rem 0;padding:1rem 1.2rem;border-left:3px solid var(--warm);
+    background:color-mix(in srgb,var(--warm) 6%,transparent);border-radius:0 8px 8px 0;font-size:1rem}
+  blockquote p{margin:.3rem 0}
+  code{font-family:var(--mono);font-size:.86em;background:color-mix(in srgb,var(--text) 7%,transparent);padding:.1em .35em;border-radius:4px}
+  ul{margin:1rem 0;padding-left:1.2rem} li{margin:.5rem 0}
+  mjx-container{overflow-x:auto;overflow-y:hidden}
+  .key{color:var(--warm);font-weight:600}
+  .key.cool{color:var(--cool)}
+  /* ---- interactive figure widget ---- */
+  .kfig{margin:2.4rem 0;border:1px solid var(--line);border-radius:14px;padding:1.15rem 1.15rem 1rem;background:var(--panel)}
+  .kfig-eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .kfig-title{font-family:var(--sans);font-weight:640;font-size:1.06rem;margin:.1rem 0 .8rem}
+  .kfig-controls{display:flex;flex-wrap:wrap;gap:.8rem;margin-bottom:.45rem}
+  .kfig-group{display:inline-flex;gap:.22rem;background:color-mix(in srgb,var(--text) 6%,transparent);border-radius:9px;padding:.22rem}
+  .kfig-group button{font-family:var(--sans);font-size:.82rem;border:0;background:transparent;color:var(--muted);padding:.3rem .62rem;border-radius:7px;cursor:pointer;transition:.12s}
+  .kfig-group button.on{background:var(--panel);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.12);font-weight:600}
+  .kfig-canvas{width:100%;height:360px;display:block;touch-action:none;cursor:ew-resize}
+  .kfig-readout{font-family:var(--mono);font-size:.82rem;color:var(--text);margin-top:.6rem;min-height:1.3em;line-height:1.5}
+  .kfig-readout b{font-weight:700}
+  .kfig-caption{font-family:var(--sans);font-size:.8rem;color:var(--muted);margin-top:.55rem;line-height:1.5}
+  /* ---- footer ---- */
+  footer{border-top:1px solid var(--line);padding:30px 0 70px;font-family:var(--sans);font-size:.86rem;color:var(--muted)}
+  footer a{color:var(--cool)}
+  @media (max-width:600px){ body{font-size:18px} h1{font-size:2rem} }
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap"><a href="/study/">← Study</a><a href="/">Sumit Yadav</a></div></header>
+
+<div class="wrap">
+  <section class="hero">
+    <p class="eyebrow">Interpretability · Interactive</p>
+    <h1>The Steerability Spectrum of Visual Attributes</h1>
+    <p class="dek">You can read an attribute off a vision model perfectly — and still fail to steer it with a single vector. A number called <em>k*</em> says why, and prescribes the fix.</p>
+    <div class="byline"><span><b>Sumit Yadav</b></span><span>June 2026</span><span>DINOv2 · CLIP · SigLIP · PaliGemma</span></div>
+    <div class="spectrum">
+      <div class="bar"></div>
+      <div class="ends"><span><b>size</b> · concentrated · low k* · steers with few dims</span><span>high k* · distributed · resists a single vector · <b>orientation</b></span></div>
+    </div>
+  </section>
+</div>
+
+<main><div class="wrap">
+
+  <p class="lede">Here is a small puzzle that turns out to say something general about vision models. Take a frozen vision encoder — DINOv2, CLIP, SigLIP — and a set of rendered objects where you vary exactly one thing: an object's <span class="key">size</span>, or its <span class="key cool">orientation</span>. Train a linear probe to read that attribute from the encoder's activations. For <em>both</em> attributes the probe is nearly perfect — the information is plainly there, linearly, in almost every layer.</p>
+
+  <p>Now try to <em>change</em> the model's mind. Build the classic steering vector — the difference of class means, $v = \mu_{\text{back}} - \mu_{\text{front}}$ — and add it to the activations to push "front" toward "back." For size, this nudges the readout. For orientation, it barely moves: the same direction that <em>reads</em> orientation perfectly fails to <em>steer</em> it.</p>
+
+  <p>So decodability and steerability come apart. A feature you can read off cleanly can still resist a single-vector push. This is about <em>why</em> — and about a number, <span class="key">k*</span>, that predicts how hard each attribute is to steer, and prescribes how to steer it.</p>
+
+  <blockquote>
+    <p><b>The one-line claim.</b> Each visual attribute occupies a subspace of some width $k^*$. To control the attribute you must steer that whole $k^*$-dimensional subspace — no more, no less. Push along one direction and a wide attribute slips around your edit; push along its full $k^*$ dimensions and it moves cleanly, identity intact. The width $k^*$ is set by the encoder's training objective, and the law holds across objectives — until it meets one wall, a frozen language model, which is itself the interesting part.</p>
+  </blockquote>
+
+  <h2><span class="num">01</span>k*: the steerability dimension</h2>
+  <p>The intuition is geometric. Take the encoder activations for all your images at one layer and ask: <em>how many orthogonal directions span the variation that correlates with the attribute?</em> Rank the principal components by how strongly they correlate with the label, and count how many you need to capture 95% of the attribute-correlated signal. That count is $k^*$.</p>
+
+  $$k^* \;=\; \min\Big\lbrace\, K : \frac{\sum_{j=1}^{K}\rho_j^2}{\sum_j \rho_j^2}\ \ge\ 0.95 \,\Big\rbrace,\qquad \rho_j=\operatorname{corr}(\mathrm{PC}_j,\ \text{attribute})$$
+
+  <p>A <em>concentrated</em> attribute (small $k^*$) lives along a few directions — a single vector is a faithful summary of it. A <em>distributed</em> attribute (large $k^*$) is smeared across many directions, so no single vector represents it well, and no single vector steers it. Crucially, $k^*$ is about <em>geometry, not availability</em>: an attribute can be perfectly decodable and still have large $k^*$. That gap is the whole story. In our renders the ends are clean — <span class="key">size</span> is concentrated ($k^*\!\approx\!12\text{–}16$); <span class="key cool">orientation</span> is distributed ($k^*\!\approx\!49\text{–}65$), as you'd expect for a circular quantity that needs at least a $(\sin\theta,\cos\theta)$ pair before any model-specific spreading.</p>
+
+  <h2><span class="num">02</span>Steering, generalized: from a vector to a subspace</h2>
+  <p>If a wide attribute resists a single direction, the fix writes itself: steer <em>more</em> directions. Generalize the rank-1 concept vector to a <b>rank-$K$ subspace swap</b>. Let $U_K$ hold the top-$K$ attribute directions (the same components that define $k^*$), let $P_K=U_KU_K^\top$ project onto them, and let $t^*$ be the target prototype. Then edit every token:</p>
+
+  $$h' \;=\; h + P_K\,(t^* - h).$$
+
+  <p>This replaces only the activation's <em>attribute-subspace</em> content with the target's and leaves the orthogonal complement — object identity, everything else — untouched by construction. At $K=1$ it is essentially the old concept vector; as $K$ grows it covers more of the attribute's true width.</p>
+
+  <p>The figure is the result, and it is yours to drive. <b>Drag the plot</b> to set the steering rank $K$. The solid line is steering success — the fraction of the front→target readout gap you close. The dashed line is identity preserved — whether the object is still recognizable. The vertical mark is $k^*$. Switch the attribute and the encoder.</p>
+
+  <div class="kfig" id="fig-enc">
+    <div class="kfig-eyebrow">Figure 1 — encoder steering</div>
+    <div class="kfig-title">How much control does rank K buy?</div>
+    <div class="kfig-controls">
+      <div class="kfig-group" data-role="attr">
+        <button data-val="size" class="on">size · low k*</button>
+        <button data-val="orientation">orientation · high k*</button>
+      </div>
+      <div class="kfig-group" data-role="model">
+        <button data-val="dinov2-base" class="on">DINOv2</button>
+        <button data-val="clip-base">CLIP</button>
+        <button data-val="siglip-base">SigLIP</button>
+      </div>
+    </div>
+    <canvas class="kfig-canvas" height="360" aria-label="Steering success and identity versus rank K"></canvas>
+    <div class="kfig-readout"></div>
+    <div class="kfig-caption">Solid = steering success (1.0 = full control). Dashed = identity preserved (1.0 = object still recognized). Vertical line = k*. Drag anywhere on the plot.</div>
+  </div>
+
+  <p>Read it for <span class="key cool">orientation on DINOv2</span>. At $K=1$ — the classic concept vector — you close about <b>11%</b> of the gap. Useless. Slide right and almost nothing happens through $K\approx30$… then it snaps to <b>96%</b> right as $K$ reaches $k^*\approx49$, with the object's shape perfectly intact the whole way. The dissociation doesn't gently improve; it <em>breaks</em> when the rank finally matches the attribute's width.</p>
+
+  <p>Now switch to <span class="key">size</span>. It closes the gap early — by $K\approx13$, near its small $k^*$ — and then watch the dashed line: push <em>past</em> $k^*$ and identity falls apart. Over-steering a concentrated attribute spends rank on directions that aren't about size, and those directions carry the object. So the prescription is two-sided: <b>you need $k^*$ dimensions, and you want no more than $k^*$.</b></p>
+
+  <h2><span class="num">03</span>The same law across training objectives</h2>
+  <p>Is this a quirk of one model? Flip the encoder toggle above. The three encoders use genuinely different objectives — DINOv2 (self-distillation), CLIP (contrastive), SigLIP (sigmoid) — yet the law holds in all three: orientation's single-vector push fails everywhere (rank-1 closes $0.11$, $-0.03$, $0.01$), and only climbs to full control as $K\to k^*$; size stays concentrated and saturates at small $K$.</p>
+
+  <p>One wrinkle is visible in the identity line. DINOv2 and CLIP read from a <code>CLS</code> token and hold identity at ~1.0 up to $k^*$; SigLIP has no <code>CLS</code> — it mean-pools every patch — so an all-token edit hits the readout more directly and identity frays sooner. So <b>control follows $k^*$</b> (set by the objective) while <b>identity headroom follows the readout pooling</b> (set by the architecture). Two different knobs, two different causes.</p>
+
+  <h2><span class="num">04</span>The wall: a frozen language model doesn't follow</h2>
+  <p>Everything above reads the attribute with a <em>linear probe</em>. What if the readout is a full <b>language model</b>? PaliGemma is the clean test: its vision tower <em>is</em> a SigLIP, bolted to a Gemma language model. We recompute the attribute subspace inside PaliGemma's own tower, apply the same rank-$K$ swap, and read it out two ways at once — the tower's linear probe (does the <em>representation</em> move?) and Gemma's caption (does the <em>language</em> move?).</p>
+
+  <div class="kfig" id="fig-pg">
+    <div class="kfig-eyebrow">Figure 2 — PaliGemma: representation vs language</div>
+    <div class="kfig-title">The same edit, read two ways</div>
+    <div class="kfig-controls">
+      <div class="kfig-group" data-role="attr">
+        <button data-val="orientation" class="on">orientation</button>
+        <button data-val="size">size</button>
+      </div>
+    </div>
+    <canvas class="kfig-canvas" height="360" aria-label="Representation versus language steering versus rank K"></canvas>
+    <div class="kfig-readout"></div>
+    <div class="kfig-caption">Solid red = representation steering (tower probe). Dashed = language steering (caption preference, change from baseline). Dotted = object identity. Vertical line = k*.</div>
+  </div>
+
+  <p>The <span style="color:var(--rep);font-weight:600">representation</span> line behaves exactly like the encoders — it follows the $K\approx k^*$ law (orientation climbs to full control near $k^*\approx54$; size saturates early). The edit unquestionably works at the representation level. <b>But the <span class="key cool">language</span> line is flat on the floor.</b> The caption's preference for the target word does not move — at any rank — while object identity quietly degrades. The tower edit reaches Gemma only as <em>noise</em>, not as <em>attribute control</em>.</p>
+
+  <p>So the $k^*$-subspace law is a property of <b>linear readouts</b> — it holds across encoders and inside PaliGemma's own tower — but it does <b>not</b> automatically propagate to a frozen generative language model. The tower's probe-defined attribute subspace is simply not the channel the projector and language model read for that attribute. Steerability is gated by <em>two</em> things, not one: by $k^*$ (the encoding geometry — how wide the attribute is) <b>and</b> by readout↔subspace alignment (whether whatever reads the model actually listens to the subspace you edited).</p>
+
+  <h2><span class="num">05</span>What to take away</h2>
+  <ul>
+    <li><b>Decodable ≠ steerable.</b> A feature you can read off perfectly can still resist a single-vector push if it is geometrically wide.</li>
+    <li><b>$k^*$ measures that width and prescribes the intervention.</b> Steer the attribute's own $k^*$-dimensional subspace: fewer dimensions under-steer; more dimensions break identity. The rank you need <em>is</em> $k^*$.</li>
+    <li><b>The law is objective-universal</b> across self-distillation, contrastive, and sigmoid encoders — but <b>bounded by the readout</b>: it controls representations and linear probes, not (out of the box) a frozen language model's words.</li>
+  </ul>
+  <p>None of this needs the attribute to be hidden or hard to find. It needs the attribute to be <em>concentrated enough that one direction is a faithful summary of it</em> — and $k^*$ is just the honest measurement of when that is true.</p>
+
+</div></main>
+
+<footer><div class="wrap">
+  Controlled renders (size &amp; orientation sweeps), per-layer embeddings, the $k^*$ analysis, and the rank-$K$ steering code are open. Built and run on a single consumer GPU; the encoder experiments run on a laptop. — <a href="/">sumityadav.com.np</a>
+</div></footer>
+
+<script>
+(function(){
+  var ENC_R=[1,2,3,5,8,13,21,34,55,89];
+  var ENC={
+    "dinov2-base":{size:{k:16,c:[.233,.246,.252,.38,.385,.398,.383,.361,.27,.33],i:[.975,.975,.975,1,.975,1,.975,.8,.825,.825]},
+      orientation:{k:49,c:[.111,.193,.184,.312,.21,.22,.356,.405,.957,.847],i:[1,1,1,1,1,1,1,1,1,1]}},
+    "clip-base":{size:{k:15,c:[.334,.426,.56,.567,.597,.644,.63,.613,.598,.56],i:[1,1,1,1,1,1,1,1,1,.95]},
+      orientation:{k:65,c:[-.028,-.059,-.05,.02,.264,.292,.353,.648,.823,1.716],i:[1,1,1,1,1,1,1,1,1,.975]}},
+    "siglip-base":{size:{k:12,c:[.173,.268,.401,.675,.479,.487,.604,.754,.931,1.07],i:[.975,.975,.975,.85,.625,.625,.5,.45,.35,.075]},
+      orientation:{k:50,c:[.009,-.03,.123,-.056,.057,.183,.03,.436,1.3,1.101],i:[.925,.925,.925,.925,.925,.925,.925,.575,.65,.4]}}
+  };
+  var PG_R=[1,2,4,8,16,32,64,128];
+  var PG={size:{k:13,pb:.429,rep:[.211,.341,.742,.812,.812,.814,.793,.78],lang:[.435,.436,.425,.401,.4,.385,.385,.384],i:[.688,.688,.5,.375,.375,.438,.312,.25]},
+    orientation:{k:54,pb:.719,rep:[.448,.509,.593,.719,.781,.836,1.067,1.482],lang:[.719,.72,.719,.719,.72,.721,.723,.728],i:[.562,.5,.5,.5,.5,.5,.375,.25]}};
+
+  function css(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim();}
+  function dark(){return window.matchMedia&&window.matchMedia("(prefers-color-scheme:dark)").matches;}
+
+  function chart(cv,spec){
+    var dpr=window.devicePixelRatio||1, W=cv.clientWidth, H=cv.clientHeight||360;
+    cv.width=W*dpr; cv.height=H*dpr; var g=cv.getContext("2d"); g.setTransform(dpr,0,0,dpr,0,0);
+    g.clearRect(0,0,W,H);
+    var d=dark(), grid=d?"#2a2b34":"#e7e6de", axc=d?"#7a7a86":"#9a9a8e", kc=d?"#7fae6a":"#5f8f48";
+    var m={l:46,r:16,t:14,b:42}, x0=m.l,x1=W-m.r,y0=H-m.b,y1=m.t;
+    var R=spec.ranks, lg=R.map(function(r){return Math.log(r);}), lmin=lg[0], lmax=lg[lg.length-1];
+    var X=function(t){return x0+(t-lmin)/(lmax-lmin)*(x1-x0);};
+    var ya=spec.ylim[0], yb=spec.ylim[1], Y=function(v){return y0+(v-ya)/(yb-ya)*(y1-y0);};
+    g.font="11px "+(css("--mono")||"monospace"); g.textBaseline="middle";
+    [0,.5,1,1.5].forEach(function(v){ if(v<ya||v>yb)return; var y=Y(v);
+      g.strokeStyle=grid; g.lineWidth=1; g.beginPath(); g.moveTo(x0,y); g.lineTo(x1,y); g.stroke();
+      g.fillStyle=axc; g.textAlign="right"; g.fillText(v.toFixed(1),x0-8,y); });
+    if(ya<0){ g.strokeStyle=axc; g.globalAlpha=.6; g.beginPath(); g.moveTo(x0,Y(0)); g.lineTo(x1,Y(0)); g.stroke(); g.globalAlpha=1; }
+    g.textAlign="center"; g.textBaseline="top";
+    R.forEach(function(r,j){ g.fillStyle=axc; g.fillText(String(r),X(lg[j]),y0+8); });
+    g.fillStyle=axc; g.fillText("steering rank K  (log scale)",(x0+x1)/2,y0+24);
+    var kx=X(Math.log(spec.kstar));
+    g.strokeStyle=kc; g.lineWidth=1.5; g.setLineDash([4,3]); g.beginPath(); g.moveTo(kx,y1); g.lineTo(kx,y0); g.stroke(); g.setLineDash([]);
+    g.fillStyle=kc; g.textBaseline="bottom"; g.fillText("k*="+spec.kstar,kx,y1+11);
+    spec.series.forEach(function(s){
+      g.strokeStyle=s.color; g.lineWidth=s.w||2.6; g.setLineDash(s.dash||[]);
+      g.beginPath(); s.vals.forEach(function(v,j){ var x=X(lg[j]),y=Y(v); j?g.lineTo(x,y):g.moveTo(x,y); }); g.stroke(); g.setLineDash([]);
+      if(!s.noDots) s.vals.forEach(function(v,j){ g.fillStyle=s.color; g.beginPath(); g.arc(X(lg[j]),Y(v),2.6,0,7); g.fill(); });
+    });
+    var cx=X(lg[spec.cur]); g.strokeStyle=d?"#ececf2":"#1c1b22"; g.globalAlpha=.45; g.lineWidth=1.25;
+    g.beginPath(); g.moveTo(cx,y1); g.lineTo(cx,y0); g.stroke(); g.globalAlpha=1;
+    spec.series.forEach(function(s){ g.fillStyle=s.color; g.strokeStyle=css("--panel")||"#fff"; g.lineWidth=2;
+      g.beginPath(); g.arc(cx,Y(s.vals[spec.cur]),5,0,7); g.fill(); g.stroke(); });
+    cv._geo={X:X,lg:lg};
+  }
+  function attach(cv,onIdx){
+    function pick(ev){ var r=cv.getBoundingClientRect(), px=(ev.touches?ev.touches[0].clientX:ev.clientX)-r.left,
+      lg=cv._geo.lg,best=0,bd=1e9; for(var j=0;j<lg.length;j++){var dd=Math.abs(cv._geo.X(lg[j])-px); if(dd<bd){bd=dd;best=j;}} onIdx(best); }
+    var down=false;
+    cv.addEventListener("mousedown",function(e){down=true;pick(e);});
+    window.addEventListener("mousemove",function(e){if(down)pick(e);});
+    window.addEventListener("mouseup",function(){down=false;});
+    cv.addEventListener("touchstart",function(e){down=true;pick(e);e.preventDefault();},{passive:false});
+    cv.addEventListener("touchmove",function(e){if(down){pick(e);e.preventDefault();}},{passive:false});
+    cv.addEventListener("touchend",function(){down=false;});
+  }
+  function bindGroups(root,st,render){
+    root.querySelectorAll(".kfig-group").forEach(function(grp){
+      var role=grp.getAttribute("data-role");
+      grp.querySelectorAll("button").forEach(function(b){ b.addEventListener("click",function(){
+        grp.querySelectorAll("button").forEach(function(x){x.classList.remove("on");});
+        b.classList.add("on"); st[role]=b.getAttribute("data-val"); render(); }); });
+    });
+  }
+
+  (function(){
+    var root=document.getElementById("fig-enc"), cv=root.querySelector(".kfig-canvas"), ro=root.querySelector(".kfig-readout");
+    var st={attr:"size",model:"dinov2-base",cur:0};
+    function render(){ var x=ENC[st.model][st.attr];
+      if(st.cur>=ENC_R.length)st.cur=ENC_R.length-1;
+      chart(cv,{ranks:ENC_R,kstar:x.k,cur:st.cur,ylim:[-.15,1.6],
+        series:[{vals:x.c,color:st.attr==="size"?css("--warm"):css("--cool")},{vals:x.i,color:"#9a9a8e",dash:[5,4],w:2,noDots:true}]});
+      var K=ENC_R[st.cur];
+      ro.innerHTML="rank <b>K="+K+"</b> &nbsp;·&nbsp; success <b>"+Math.round(x.c[st.cur]*100)+"%</b> &nbsp;·&nbsp; identity <b>"+Math.round(x.i[st.cur]*100)+"%</b>"+(K>=x.k?" &nbsp;·&nbsp; <span style='color:"+(st.attr==="size"?css("--warm"):css("--cool"))+"'>K ≥ k*</span>":"");
+    }
+    bindGroups(root,st,render); attach(cv,function(j){st.cur=j;render();}); window.addEventListener("resize",render); render();
+  })();
+  (function(){
+    var root=document.getElementById("fig-pg"), cv=root.querySelector(".kfig-canvas"), ro=root.querySelector(".kfig-readout");
+    var st={attr:"orientation",cur:0};
+    function render(){ var x=PG[st.attr], lang=x.lang.map(function(v){return v-x.pb;});
+      chart(cv,{ranks:PG_R,kstar:x.k,cur:st.cur,ylim:[-.2,1.6],
+        series:[{vals:x.rep,color:css("--rep")},{vals:lang,color:css("--cool"),dash:[5,4]},{vals:x.i,color:"#9a9a8e",dash:[2,3],w:1.8,noDots:true}]});
+      var K=PG_R[st.cur], dP=x.lang[st.cur]-x.pb;
+      ro.innerHTML="rank <b>K="+K+"</b> &nbsp;·&nbsp; <span style='color:"+css("--rep")+"'>representation</span> <b>"+Math.round(x.rep[st.cur]*100)+"%</b> &nbsp;·&nbsp; <span style='color:"+css("--cool")+"'>language</span> ΔP <b>"+(dP>=0?"+":"")+Math.round(dP*100)+"%</b> &nbsp;·&nbsp; identity <b>"+Math.round(x.i[st.cur]*100)+"%</b>";
+    }
+    bindGroups(root,st,render); attach(cv,function(j){st.cur=j;render();}); window.addEventListener("resize",render); render();
+  })();
+})();
+</script>
+</body>
+</html>
