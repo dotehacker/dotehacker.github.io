@@ -2,13 +2,67 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://sumityadav.com.np/</loc>
-    <lastmod>2026-06-25T05:15:15.089Z</lastmod>
+    <lastmod>2026-06-25T05:23:22.157Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://sumityadav.com.np/posts/2026/06/23/steerability-spectrum-of-visual-attributes/</loc>
     <lastmod>2026-06-23T00:00:00.000Z</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sumityadav.com.np/posts/2026/06/18/double-descent-why-more-data-can-hurt/</loc>
+    <lastmod>2026-06-18T00:00:00.000Z</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sumityadav.com.np/posts/2026/06/17/why-does-attention-attend-there-qk/</loc>
+    <lastmod>2026-06-17T00:00:00.000Z</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sumityadav.com.np/posts/2026/06/16/how-an-llm-knows-when-to-start-a-new-line/</loc>
+    <lastmod>2026-06-16T00:00:00.000Z</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sumityadav.com.np/posts/2026/06/15/towards-monosemanticity-dictionary-learning/</loc>
+    <lastmod>2026-06-15T00:00:00.000Z</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sumityadav.com.np/posts/2026/06/14/scaling-monosemanticity-golden-gate-claude/</loc>
+    <lastmod>2026-06-14T00:00:00.000Z</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sumityadav.com.np/posts/2026/06/13/circuit-tracing-attribution-graphs/</loc>
+    <lastmod>2026-06-13T00:00:00.000Z</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sumityadav.com.np/posts/2026/06/12/biology-of-a-large-language-model/</loc>
+    <lastmod>2026-06-12T00:00:00.000Z</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sumityadav.com.np/posts/2026/06/11/can-an-ai-look-inward-introspection/</loc>
+    <lastmod>2026-06-11T00:00:00.000Z</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sumityadav.com.np/posts/2026/06/10/emotion-concepts-in-large-language-models/</loc>
+    <lastmod>2026-06-10T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -374,43 +428,43 @@
   </url>
   <url>
     <loc>https://sumityadav.com.np/study/ect/</loc>
-    <lastmod>2026-06-25T05:15:15.089Z</lastmod>
+    <lastmod>2026-06-25T05:23:22.157Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://sumityadav.com.np/study/nec-bct-licensure/</loc>
-    <lastmod>2026-06-25T05:15:15.089Z</lastmod>
+    <lastmod>2026-06-25T05:23:22.157Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://sumityadav.com.np/study/nepal-budget-2083-84/</loc>
-    <lastmod>2026-06-25T05:15:15.089Z</lastmod>
+    <lastmod>2026-06-25T05:23:22.157Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://sumityadav.com.np/study/python-codesignal-prep/</loc>
-    <lastmod>2026-06-25T05:15:15.089Z</lastmod>
+    <lastmod>2026-06-25T05:23:22.157Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://sumityadav.com.np/study/steerability-spectrum/</loc>
-    <lastmod>2026-06-25T05:15:15.089Z</lastmod>
+    <lastmod>2026-06-25T05:23:22.157Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://sumityadav.com.np/study/stellar-steering/</loc>
-    <lastmod>2026-06-25T05:15:15.089Z</lastmod>
+    <lastmod>2026-06-25T05:23:22.157Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://sumityadav.com.np/study/tithi-wheel/</loc>
-    <lastmod>2026-06-25T05:15:15.089Z</lastmod>
+    <lastmod>2026-06-25T05:23:22.157Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

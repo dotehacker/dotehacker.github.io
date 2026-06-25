@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Does an LLM Know When to Start a New Line? The Geometry of Counting · Sumit Yadav</title>
+    <meta name="description" content="">
+    <meta name="google-site-verification" content="IVG1y4MVA_6MT0wsjk13ooZDQLWXxvYcPXQlmf83MLM" />
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- Mermaid.js for diagram rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+    <div class="scroll-progress"><div class="scroll-progress-bar" id="scroll-progress-bar"></div></div>
+
+    <header class="site-header">
+    <div class="wrap">
+        <a class="site-title" href="/">Sumit Yadav</a>
+        <nav class="site-nav">
+            <a href="/#publications">Publications</a>
+            <a href="/blog/">Blog</a>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                <span class="theme-icon theme-icon-light">🌙</span>
+                <span class="theme-icon theme-icon-dark">☀️</span>
+            </button>
+        </nav>
+    </div>
+</header>
+
+
+    <main class="page-content">
+        <div class="wrap">
+            <div class="content-area">
+                
+<article class="post">
+    <header class="post-header">
+        <h1 class="post-title">How Does an LLM Know When to Start a New Line? The Geometry of Counting</h1>
+        <p class="post-meta">
+            <time datetime="2026-06-16T00:00:00.000Z">June 16, 2026</time>
+             · <span>AI & ML</span>
+        </p>
+    </header>
+
+    <div class="post-content">
+        <p><img src="lb-helix.png" alt="The running character count lives on a helix in activation space"></p>
+<p>Here&#39;s a deceptively simple puzzle. When a language model wraps text to a fixed width, it has to know how many characters still fit on the current line. But it has no eyes and no ruler — only a stream of tokens. So how does it <em>count</em>? Anthropic&#39;s interpretability team pulled this thread, and what they found is one of the most elegant little mechanisms in any model.</p>
+<h2>The task</h2>
+<p><img src="lb-task.png" alt="Deciding, at each word, whether the next one fits the line"></p>
+<p>The model is generating inside a fixed line width and, at each step, must decide whether the next word fits or whether to insert a line break. To do that, it must track a running character count and compare it against the limit — pure arithmetic, with no obvious place to store a number.</p>
+<h2>Counting on a helix</h2>
+<p>The surprise is <em>where</em> the count lives. It isn&#39;t a plain scalar tucked in a neuron. The running character count is represented on a <strong>helix</strong> — a curved spiral in activation space — where position along the curve encodes how far across the line the model is (the cover figure). Counts that are close numerically sit close on the curve.</p>
+<p><img src="lb-circuit.png" alt="The circuit that reads the count and decides whether to break"></p>
+<p>You can read the whole mechanism as a circuit: features that detect the current count feed a comparison that triggers the line break. And because the representation is a smooth manifold rather than discrete slots, it has a tell-tale signature.</p>
+<p><img src="lb-ringing.png" alt="The &quot;ringing&quot; pattern that betrays the curved representation"></p>
+<h2>Doing math by rotating geometry</h2>
+<p>To check whether the next word fits, attention heads effectively <strong>rotate one count-manifold onto another</strong> — comparing characters-used against the width that remains. The model performs arithmetic not with logic gates but by <em>moving geometry</em>: a rotation in a curved space implements a comparison.</p>
+<p>This has a striking consequence. Because the count lives on a curve, you can <strong>fool</strong> it — carefully crafted text throws off the model&#39;s sense of position, a kind of <em>optical illusion for a language model</em>, predicted directly from the geometry. The whole thing also rhymes with neuroscience: it looks a lot like the <strong>place cells and grid cells</strong> the brain uses to track position in space.</p>
+<h2>Why a boring habit hides real structure</h2>
+<p>Line-wrapping is about the least glamorous thing a model does — and yet under the hood it&#39;s a genuine counting machine built from spirals and rotations, discovered by reading both the <strong>features</strong> and the <strong>geometry</strong> together. It&#39;s a clean reminder that even the model&#39;s most mundane behaviors are implemented by structured, legible mechanisms, if you look closely enough.</p>
+<hr>
+<p><strong>Source:</strong> Anthropic, <em>&quot;Line Breaking&quot;</em> / the geometry of counting in language models — <a href="https://transformer-circuits.pub/2025/linebreaks/index.html">Transformer Circuits Thread</a> (2025). All figures © the authors, shown here for educational explanation.</p>
+
+    </div>
+
+    <details class="cite">
+  <summary>Cite this post</summary>
+  <div class="cite-body" id="citation-section">
+    <div class="citation-tabs" role="tablist">
+        <button class="citation-tab active" data-target="bibtex" role="tab" aria-selected="true">BibTeX</button>
+        <button class="citation-tab" data-target="apa" role="tab" aria-selected="false">APA</button>
+        <button class="citation-tab" data-target="mla" role="tab" aria-selected="false">MLA</button>
+        <button class="citation-tab" data-target="chicago" role="tab" aria-selected="false">Chicago</button>
+    </div>
+    <div class="citation-panels">
+        <div class="citation-panel active" id="panel-bibtex" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-bibtex"></pre><button class="copy-btn" data-cite="cite-bibtex">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-apa" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-apa"></pre><button class="copy-btn" data-cite="cite-apa">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-mla" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-mla"></pre><button class="copy-btn" data-cite="cite-mla">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-chicago" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-chicago"></pre><button class="copy-btn" data-cite="cite-chicago">Copy</button></div>
+        </div>
+    </div>
+    <p class="citation-note">Auto-generated. Verify for your institution's requirements.</p>
+  </div>
+</details>
+
+<template id="cite-meta">How Does an LLM Know When to Start a New Line? The Geometry of Counting</template>
+
+<script>
+(function() {
+    var meta = document.getElementById('cite-meta');
+    if (!meta) return;
+    var t = meta.content ? meta.content.textContent : meta.innerHTML;
+    var a = 'Sumit Yadav';
+    var j = 'Sumit Yadav';
+    var u = 'https://sumityadav.com.np/posts/2026/06/16/how-an-llm-knows-when-to-start-a-new-line/';
+    var y = '2026';
+    var mo = 'June';
+    var ms = 'Jun';
+    var dy = '16';
+    var k = a.split(' ')[0].toLowerCase() + y + t.toLowerCase().replace(/[^a-z0-9]+/g, '');
+
+    document.getElementById('cite-bibtex').textContent =
+        '@article{' + k + ',\n  title     = {' + t + '},\n  author    = {' + a +
+        '},\n  journal   = {' + j + '},\n  year      = {' + y + '},\n  month     = {' + mo +
+        '},\n  day       = {' + dy + '},\n  url       = {' + u + '}\n}';
+    document.getElementById('cite-apa').textContent =
+        a + '. (' + y + ', ' + mo + ' ' + dy + '). ' + t + '. ' + j + '. ' + u;
+    document.getElementById('cite-mla').textContent =
+        a + '. “' + t + '.” ' + j + ', ' + dy + ' ' + ms + ' ' + y + ', ' + u + '.';
+    document.getElementById('cite-chicago').textContent =
+        a + '. “' + t + '.” ' + j + '. ' + mo + ' ' + dy + ', ' + y + '. ' + u + '.';
+
+    var sec = document.getElementById('citation-section');
+    sec.querySelectorAll('.citation-tab').forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            sec.querySelectorAll('.citation-tab').forEach(function(x) { x.classList.remove('active'); x.setAttribute('aria-selected', 'false'); });
+            sec.querySelectorAll('.citation-panel').forEach(function(p) { p.classList.remove('active'); });
+            this.classList.add('active'); this.setAttribute('aria-selected', 'true');
+            sec.querySelector('#panel-' + this.dataset.target).classList.add('active');
+        });
+    });
+    sec.querySelectorAll('.copy-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var text = document.getElementById(this.dataset.cite).textContent;
+            var b = this;
+            var done = function() { b.textContent = 'Copied!'; b.classList.add('copied'); setTimeout(function() { b.textContent = 'Copy'; b.classList.remove('copied'); }, 2000); };
+            navigator.clipboard.writeText(text).then(done).catch(function() {
+                var ta = document.createElement('textarea'); ta.value = text; ta.style.cssText = 'position:fixed;opacity:0';
+                document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); done();
+            });
+        });
+    });
+})();
+</script>
+
+
+    <footer class="post-footer">
+        <p><a href="/blog/">← All posts</a></p>
+    </footer>
+</article>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+    <div class="wrap">
+        <p>© 2026 Sumit Yadav · Kathmandu, Nepal · <a href="/">home</a> · <a href="/blog/">blog</a></p>
+    </div>
+</footer>
+
+
+    <script>
+        (function() {
+            const getThemePreference = () => {
+                const stored = localStorage.getItem('theme-preference');
+                if (stored) return stored;
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            };
+            const applyTheme = (theme) => {
+                const root = document.documentElement;
+                root.classList.remove('light-theme', 'dark-theme');
+                if (theme !== 'auto') root.classList.add(`${theme}-theme`);
+                if (window.mermaid) {
+                    const dark = theme === 'dark' || (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                    mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'default' });
+                    document.querySelectorAll('.mermaid').forEach(el => {
+                        if (el.getAttribute('data-processed')) {
+                            el.removeAttribute('data-processed');
+                            el.innerHTML = el.getAttribute('data-original') || el.innerHTML;
+                        }
+                    });
+                    if (window.mermaid.init) mermaid.init(undefined, '.mermaid');
+                }
+            };
+            document.addEventListener('DOMContentLoaded', () => {
+                applyTheme(getThemePreference());
+                const t = document.getElementById('theme-toggle');
+                if (t) t.addEventListener('click', () => {
+                    const cur = getThemePreference();
+                    const next = cur === 'dark' ? 'light' : 'dark';
+                    localStorage.setItem('theme-preference', next);
+                    applyTheme(next);
+                });
+                document.querySelectorAll('.mermaid').forEach(el => {
+                    if (!el.getAttribute('data-original')) el.setAttribute('data-original', el.innerHTML);
+                });
+            });
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme-preference')) applyTheme(e.matches ? 'dark' : 'light');
+            });
+        })();
+        (function() {
+            const bar = document.getElementById('scroll-progress-bar');
+            if (!bar) return;
+            const upd = () => {
+                const st = window.pageYOffset || document.documentElement.scrollTop;
+                const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                bar.style.height = Math.min(Math.max((st / h) * 100, 0), 100) + '%';
+            };
+            window.addEventListener('scroll', upd, { passive: true });
+            window.addEventListener('resize', upd, { passive: true });
+            upd();
+        })();
+    </script>
+</body>
+</html>
