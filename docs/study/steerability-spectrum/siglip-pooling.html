@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SigLIP readout: CLS vs MAP, and why a uniform steering shift survives pooling</title>
+<meta name="description" content="A rough-network diagram: CLIP/DINOv2 read a CLS token, SigLIP MAP-pools every patch — and a uniform steering offset survives the attention pool as W_v·Δ, independent of the attention weights." />
+<style>
+  :root{
+    --bg:#FCFBF8; --ink:#2A2723; --muted:#8C8475; --rule:#E4DECF;
+    --tan:#E8D2A6; --tanbd:#CBB07E; --gray:#ECEAE4; --graybd:#D2CEC4;
+    --steer:#C2410C; --cool:#3730A3;
+    --sans:system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+    --serif:Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6}
+  .doc{padding:38px 22px 64px}
+  .wrap{max-width:880px;margin:0 auto}
+  .back{font-size:.84rem;color:var(--muted);text-decoration:none;display:inline-block;margin-bottom:18px}
+  .back:hover{color:var(--ink)}
+  .eyebrow{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+  h1{font-size:1.9rem;line-height:1.18;letter-spacing:-.01em;margin:0 0 .5rem;text-wrap:balance}
+  .lede{font-size:1.05rem;color:#4a463e;margin:.3rem 0 0;max-width:62ch}
+  .fig{margin:34px 0 0;border:1px solid var(--rule);border-radius:14px;background:#fff;overflow:hidden}
+  .fig-h{padding:14px 18px;border-bottom:1px solid var(--rule);background:#FBF7EF}
+  .fig-h .n{font-family:var(--serif);font-style:italic;color:var(--steer);margin-right:.5rem}
+  .fig-h b{font-weight:650}
+  .fig-body{display:grid;grid-template-columns:1.05fr 1px 1fr;gap:0}
+  .pane{padding:20px}
+  .vrule{background:var(--rule)}
+  .eqrow{padding:14px 6px;border-bottom:1px dashed var(--rule)}
+  .eqrow:last-child{border-bottom:0}
+  .eqrow p{margin:0 0 7px;font-size:.92rem;color:#55503f}
+  .eq{font-family:var(--serif);font-size:1.18rem;font-style:italic;color:var(--ink);white-space:nowrap}
+  .eq .op{font-style:normal;color:var(--muted)}
+  .eq sub,.eq sup{font-style:normal;font-size:.66em}
+  .eq .d{color:var(--steer);font-style:normal;font-weight:700}
+  .eq .keep{color:var(--cool);font-weight:700}
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:0}
+  .twocol > div{padding:20px}
+  .twocol > div:first-child{border-right:1px solid var(--rule)}
+  .ctag{display:inline-block;font-size:.7rem;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--muted);border:1px solid var(--rule);border-radius:999px;padding:2px 9px;margin-bottom:12px}
+  .cap{font-size:.86rem;color:var(--muted);margin:8px 0 0}
+  .punch{margin:18px;padding:14px 16px;border-left:3px solid var(--steer);
+    background:#FBF1EA;border-radius:0 10px 10px 0;font-size:.95rem}
+  .punch b{color:var(--steer)}
+  .foot{margin-top:34px;font-size:.84rem;color:var(--muted);max-width:64ch}
+  .foot a{color:var(--cool)}
+  @media(max-width:680px){.fig-body{grid-template-columns:1fr}.vrule{display:none}
+    .pane:first-child{border-bottom:1px solid var(--rule)}.eq{font-size:1.05rem;white-space:normal}}
+</style>
+</head>
+<body>
+<div class="doc"><div class="wrap">
+  <a class="back" href="/study/steerability-spectrum/">← The Steerability Spectrum</a>
+  <p class="eyebrow">Vision-encoder interpretability · steering</p>
+  <h1>Two readouts, one phenomenon: why a uniform steering shift survives attention pooling</h1>
+  <p class="lede">CLIP and DINOv2 read the image off a single <i>CLS</i> token. SigLIP has no CLS — it pools every patch through an attention head (MAP). That one architectural choice is what made SigLIP awkward to steer. Here's the picture, and the one-line reason the edit doesn't get averaged away.</p>
+
+  <!-- FIGURE 1 -->
+  <div class="fig">
+    <div class="fig-h"><span class="n">Fig 1</span><b>Where does the image get read?</b> — CLS token vs. MAP attention pool</div>
+    <div class="twocol">
+      <div>
+        <span class="ctag">CLIP · DINOv2</span>
+        <svg viewBox="0 0 320 250" width="100%" role="img" aria-label="CLS readout schematic">
+          <defs><marker id="a1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#9a9384"/></marker></defs>
+          <rect x="118" y="14" width="84" height="30" rx="6" fill="var(--gray)" stroke="var(--graybd)"/>
+          <text x="160" y="33" text-anchor="middle" font-size="13" font-family="system-ui" fill="#2A2723">readout z</text>
+          <line x1="160" y1="74" x2="160" y2="46" stroke="#9a9384" stroke-width="1.5" marker-end="url(#a1)"/>
+          <rect x="70" y="74" width="180" height="34" rx="6" fill="var(--tan)" stroke="var(--tanbd)"/>
+          <text x="160" y="96" text-anchor="middle" font-size="12.5" font-family="system-ui">transformer blocks</text>
+          <g stroke="#bcb5a3" stroke-width="1.2">
+            <line x1="92" y1="190" x2="92" y2="110"/><line x1="124" y1="190" x2="124" y2="110"/>
+            <line x1="156" y1="190" x2="156" y2="110"/><line x1="188" y1="190" x2="188" y2="110"/>
+          </g>
+          <line x1="226" y1="190" x2="226" y2="110" stroke="var(--cool)" stroke-width="2"/>
+          <path d="M226,74 C226,60 200,56 168,46" fill="none" stroke="var(--cool)" stroke-width="2" marker-end="url(#a1)"/>
+          <g font-size="11" font-family="system-ui" text-anchor="middle">
+            <rect x="82" y="190" width="20" height="20" rx="4" fill="var(--gray)" stroke="var(--graybd)"/>
+            <rect x="114" y="190" width="20" height="20" rx="4" fill="var(--gray)" stroke="var(--graybd)"/>
+            <rect x="146" y="190" width="20" height="20" rx="4" fill="var(--gray)" stroke="var(--graybd)"/>
+            <rect x="178" y="190" width="20" height="20" rx="4" fill="var(--gray)" stroke="var(--graybd)"/>
+            <rect x="214" y="190" width="24" height="20" rx="4" fill="#DCE0F2" stroke="var(--cool)"/>
+            <text x="226" y="204" fill="var(--cool)" font-weight="700">CLS</text>
+            <text x="140" y="230" fill="#8C8475">patch tokens</text>
+          </g>
+        </svg>
+        <div class="eq" style="margin-top:6px">z <span class="op">=</span> x<sub>CLS</sub></div>
+        <p class="cap">A dedicated token does the reading. To steer, you edit <i>that one lane</i>; the rest of the image is left intact.</p>
+      </div>
+      <div>
+        <span class="ctag">SigLIP</span>
+        <svg viewBox="0 0 320 250" width="100%" role="img" aria-label="MAP pooling schematic">
+          <defs><marker id="a2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#9a9384"/></marker></defs>
+          <rect x="118" y="14" width="84" height="30" rx="6" fill="var(--gray)" stroke="var(--graybd)"/>
+          <text x="160" y="33" text-anchor="middle" font-size="13" font-family="system-ui">readout z</text>
+          <line x1="160" y1="74" x2="160" y2="46" stroke="#9a9384" stroke-width="1.5" marker-end="url(#a2)"/>
+          <rect x="96" y="74" width="128" height="32" rx="16" fill="var(--tan)" stroke="var(--tanbd)"/>
+          <text x="160" y="95" text-anchor="middle" font-size="12.5" font-family="system-ui">MAP attention pool</text>
+          <g stroke="#c98a5e" stroke-width="1.3" opacity=".9">
+            <line x1="92" y1="190" x2="150" y2="108" marker-end="url(#a2)"/>
+            <line x1="124" y1="190" x2="156" y2="108" marker-end="url(#a2)"/>
+            <line x1="156" y1="190" x2="160" y2="108" marker-end="url(#a2)"/>
+            <line x1="188" y1="190" x2="164" y2="108" marker-end="url(#a2)"/>
+            <line x1="220" y1="190" x2="170" y2="108" marker-end="url(#a2)"/>
+          </g>
+          <g font-size="11" font-family="system-ui" text-anchor="middle">
+            <rect x="82" y="190" width="20" height="20" rx="4" fill="var(--gray)" stroke="var(--graybd)"/>
+            <rect x="114" y="190" width="20" height="20" rx="4" fill="var(--gray)" stroke="var(--graybd)"/>
+            <rect x="146" y="190" width="20" height="20" rx="4" fill="var(--gray)" stroke="var(--graybd)"/>
+            <rect x="178" y="190" width="20" height="20" rx="4" fill="var(--gray)" stroke="var(--graybd)"/>
+            <rect x="210" y="190" width="20" height="20" rx="4" fill="var(--gray)" stroke="var(--graybd)"/>
+            <text x="156" y="230" fill="#8C8475">patch tokens — no CLS</text>
+          </g>
+        </svg>
+        <div class="eq" style="margin-top:6px">z <span class="op">=</span> <span class="op">Σ</span><sub>j</sub> α<sub>j</sub> <span class="op">·</span> f(x<sub>j</sub>)</div>
+        <p class="cap">Every patch feeds an attention-weighted sum. There's no single lane to edit — and "won't pooling average my edit away?" becomes the worry.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FIGURE 2 -->
+  <div class="fig">
+    <div class="fig-h"><span class="n">Fig 2</span><b>Why a uniform shift survives the pool</b> — add Δ to <i>every</i> token, watch it reach the readout undiluted</div>
+    <div class="fig-body">
+      <div class="pane">
+        <svg viewBox="0 0 330 300" width="100%" role="img" aria-label="steering injection through MAP pool">
+          <defs><marker id="a3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#9a9384"/></marker>
+            <marker id="a3s" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="var(--steer)"/></marker></defs>
+          <rect x="116" y="12" width="98" height="30" rx="6" fill="var(--gray)" stroke="var(--graybd)"/>
+          <text x="165" y="31" text-anchor="middle" font-size="12.5" font-family="system-ui">readout  z + W<tspan font-size="9" dy="3">V</tspan><tspan dy="-3"></tspan>Δ</text>
+          <line x1="165" y1="70" x2="165" y2="44" stroke="#9a9384" stroke-width="1.5" marker-end="url(#a3)"/>
+          <rect x="101" y="70" width="128" height="32" rx="16" fill="var(--tan)" stroke="var(--tanbd)"/>
+          <text x="165" y="91" text-anchor="middle" font-size="12.5" font-family="system-ui">MAP attention pool</text>
+          <rect x="75" y="132" width="180" height="32" rx="6" fill="var(--tan)" stroke="var(--tanbd)"/>
+          <text x="165" y="153" text-anchor="middle" font-size="12.5" font-family="system-ui">transformer blocks</text>
+          <line x1="165" y1="132" x2="165" y2="106" stroke="#9a9384" stroke-width="1.5" marker-end="url(#a3)"/>
+          <g stroke="#bcb5a3" stroke-width="1.2">
+            <line x1="105" y1="238" x2="105" y2="168"/><line x1="135" y1="238" x2="135" y2="168"/>
+            <line x1="165" y1="238" x2="165" y2="168"/><line x1="195" y1="238" x2="195" y2="168"/>
+            <line x1="225" y1="238" x2="225" y2="168"/>
+          </g>
+          <g>
+            <rect x="20" y="196" width="52" height="26" rx="13" fill="#FBEAE0" stroke="var(--steer)"/>
+            <text x="46" y="213" text-anchor="middle" font-size="13" font-family="Georgia,serif" font-style="italic" fill="var(--steer)">+ Δ</text>
+            <line x1="72" y1="209" x2="100" y2="205" stroke="var(--steer)" stroke-width="1.6" marker-end="url(#a3s)"/>
+          </g>
+          <g stroke="var(--steer)" stroke-width="1.5" stroke-dasharray="3 2">
+            <line x1="100" y1="205" x2="105" y2="234" marker-end="url(#a3s)"/>
+            <line x1="105" y1="205" x2="135" y2="234" marker-end="url(#a3s)"/>
+            <line x1="120" y1="205" x2="165" y2="234" marker-end="url(#a3s)"/>
+            <line x1="135" y1="205" x2="195" y2="234" marker-end="url(#a3s)"/>
+            <line x1="150" y1="205" x2="225" y2="234" marker-end="url(#a3s)"/>
+          </g>
+          <g font-size="11" font-family="system-ui" text-anchor="middle">
+            <rect x="95" y="238" width="20" height="20" rx="4" fill="var(--gray)" stroke="var(--steer)"/>
+            <rect x="125" y="238" width="20" height="20" rx="4" fill="var(--gray)" stroke="var(--steer)"/>
+            <rect x="155" y="238" width="20" height="20" rx="4" fill="var(--gray)" stroke="var(--steer)"/>
+            <rect x="185" y="238" width="20" height="20" rx="4" fill="var(--gray)" stroke="var(--steer)"/>
+            <rect x="215" y="238" width="20" height="20" rx="4" fill="var(--gray)" stroke="var(--steer)"/>
+            <text x="165" y="278" fill="#8C8475">every patch token gets the same offset Δ</text>
+          </g>
+        </svg>
+      </div>
+      <div class="vrule"></div>
+      <div class="pane">
+        <div class="eqrow"><p>The pool is an attention-weighted sum of <i>transformed</i> values&nbsp;— f(x)=W<sub>O</sub>W<sub>V</sub>x is linear:</p>
+          <div class="eq">z <span class="op">=</span> <span class="op">Σ</span><sub>j</sub> α<sub>j</sub> f(x<sub>j</sub>)</div></div>
+        <div class="eqrow"><p>Steer: add the <span style="color:var(--steer);font-weight:600">same Δ</span> to every token, then pool again:</p>
+          <div class="eq">z′ <span class="op">=</span> <span class="op">Σ</span><sub>j</sub> α<sub>j</sub> f(x<sub>j</sub> <span class="d">+ Δ</span>)</div></div>
+        <div class="eqrow"><p>Linearity splits it; the offset factors out:</p>
+          <div class="eq"><span class="op">=</span> <span class="op">Σ</span><sub>j</sub> α<sub>j</sub> f(x<sub>j</sub>) <span class="op">+</span> (<span class="op">Σ</span><sub>j</sub> α<sub>j</sub>) <span class="d">W<sub>V</sub>Δ</span></div></div>
+        <div class="eqrow"><p>Attention weights sum to 1, so they can't shrink it:</p>
+          <div class="eq"><span class="op">=</span> z <span class="op">+</span> <span class="keep">W<sub>V</sub>Δ</span> <span class="op" style="font-size:.8em">&nbsp;&nbsp;(Σ α<sub>j</sub> = 1)</span></div></div>
+      </div>
+    </div>
+    <div class="punch">A uniform offset added to every patch reaches the pooled readout as <b>W<sub>V</sub>Δ</b> — the value-projection of Δ — <b>independent of the attention pattern</b>. Pooling can't average away a coherent, shared direction. So the fix was never "steer harder"; it was steer in the value/MAP-pooler basis, inject late, and calibrate.</div>
+  </div>
+
+  <p class="foot">This decomposition is exactly Kobayashi et al., <i>“Attention is Not Only a Weight”</i> (EMNLP 2020): an attention output is Σ α·f(x), so a token's contribution is α·‖f(x)‖, not α alone — which is also why a high-attention CLS/SEP token can contribute little. Companion to <a href="/study/steerability-spectrum/">The Steerability Spectrum of Visual Attributes</a>. The flip side: with no protected CLS, a SigLIP edit hits the readout directly, so it steers — but its object identity frays sooner than a CLS-readout model's.</p>
+</div></div>
+</body>
+</html>
