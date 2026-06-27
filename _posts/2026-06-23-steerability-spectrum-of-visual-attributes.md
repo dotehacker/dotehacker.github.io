@@ -5,7 +5,7 @@ category: "Interpretability"
 tags: [interpretability, steering, vision-models, mechanistic-interpretability, clip, siglip, dinov2, paligemma, concept-vectors, kstar]
 ---
 
-> **This is an interactive piece.** Read the full version with live charts — drag the steering rank and watch the law emerge — here:
+> **This is an interactive piece.** Read the full version with live charts — drag the steering rank and watch the law emerge, then **explore the model's SAE neurons** (which images does each one fire on?) and try the live demo — here:
 > ### → [The Steerability Spectrum of Visual Attributes](/study/steerability-spectrum/)
 
 Here is a small puzzle that turns out to say something general about vision models.
