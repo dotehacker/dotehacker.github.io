@@ -19,6 +19,15 @@
     <script>
         mermaid.initialize({ startOnLoad: true, theme: 'default' });
     </script>
+
+    <!-- MathJax for LaTeX math -->
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+            options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+        };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
     <div class="scroll-progress"><div class="scroll-progress-bar" id="scroll-progress-bar"></div></div>
@@ -43,9 +52,13 @@
             <div class="content-area">
                 <section class="section" style="border-top:0">
       <h2>Blog</h2>
-      <p class="section-sub">70 posts.</p>
+      <p class="section-sub">71 posts.</p>
       <div class="chips" data-target="#blog-all"><span class="chips-label">Category</span><button class="chip active" data-filter="*">All</button><button class="chip" data-filter="AI &amp; ML">AI &amp; ML</button><button class="chip" data-filter="Interpretability &amp; Safety">Interpretability &amp; Safety</button><button class="chip" data-filter="Engineering">Engineering</button><button class="chip" data-filter="Mathematics">Mathematics</button><button class="chip" data-filter="Culture &amp; Mithila">Culture &amp; Mithila</button><button class="chip" data-filter="Reflections">Reflections</button></div>
-      <div class="blog-list" id="blog-all"><div class="blog-row" data-cat="Interpretability">
+      <div class="blog-list" id="blog-all"><div class="blog-row" data-cat="AI &amp; ML">
+      <span class="blog-date">2026-06-29</span>
+      <a class="blog-title" href="/posts/2026/06/29/world-models-toy-experiments/">World Models from Scratch: Two Toy Experiments (with an in-browser demo)</a>
+      <span class="blog-cat">AI &amp; ML</span>
+    </div><div class="blog-row" data-cat="Interpretability">
       <span class="blog-date">2026-06-23</span>
       <a class="blog-title" href="/posts/2026/06/23/steerability-spectrum-of-visual-attributes/">The Steerability Spectrum: When Reading a Feature Isn't Enough to Steer It</a>
       <span class="blog-cat">Interpretability</span>

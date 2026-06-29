@@ -19,6 +19,15 @@
     <script>
         mermaid.initialize({ startOnLoad: true, theme: 'default' });
     </script>
+
+    <!-- MathJax for LaTeX math -->
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+            options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+        };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
     <div class="scroll-progress"><div class="scroll-progress-bar" id="scroll-progress-bar"></div></div>
@@ -121,7 +130,11 @@
     </section><section class="section" id="writing">
       <h2>Writing</h2>
       <p class="section-sub">Notes and essays on AI, math, and a few things in between.</p>
-      <div class="blog-list"><div class="blog-row" data-cat="Interpretability">
+      <div class="blog-list"><div class="blog-row" data-cat="AI &amp; ML">
+      <span class="blog-date">2026-06-29</span>
+      <a class="blog-title" href="/posts/2026/06/29/world-models-toy-experiments/">World Models from Scratch: Two Toy Experiments (with an in-browser demo)</a>
+      <span class="blog-cat">AI &amp; ML</span>
+    </div><div class="blog-row" data-cat="Interpretability">
       <span class="blog-date">2026-06-23</span>
       <a class="blog-title" href="/posts/2026/06/23/steerability-spectrum-of-visual-attributes/">The Steerability Spectrum: When Reading a Feature Isn't Enough to Steer It</a>
       <span class="blog-cat">Interpretability</span>
@@ -149,12 +162,8 @@
       <span class="blog-date">2026-06-13</span>
       <a class="blog-title" href="/posts/2026/06/13/circuit-tracing-attribution-graphs/">Circuit Tracing: How We Draw the Wiring Diagram of an AI's Thoughts</a>
       <span class="blog-cat">AI &amp; ML</span>
-    </div><div class="blog-row" data-cat="AI &amp; ML">
-      <span class="blog-date">2026-06-12</span>
-      <a class="blog-title" href="/posts/2026/06/12/biology-of-a-large-language-model/">The Biology of a Large Language Model: Tracing the Circuits Inside Claude</a>
-      <span class="blog-cat">AI &amp; ML</span>
     </div></div>
-      <p class="blog-more"><a href="/blog/">All 70 posts →</a></p>
+      <p class="blog-more"><a href="/blog/">All 71 posts →</a></p>
     </section><section class="section"><h2>Experience</h2><ul class="itemlist"><li>
       <span class="it-head">AI Researcher — Safety &amp; Agentic Systems</span>, <a href="https://astha.ai">Astha.ai</a>
       <span class="it-meta">· 2025–present</span>

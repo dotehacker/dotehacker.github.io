@@ -19,6 +19,15 @@
     <script>
         mermaid.initialize({ startOnLoad: true, theme: 'default' });
     </script>
+
+    <!-- MathJax for LaTeX math -->
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+            options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+        };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
     <div class="scroll-progress"><div class="scroll-progress-bar" id="scroll-progress-bar"></div></div>
@@ -93,8 +102,8 @@
 <h2>The Main Finding</h2>
 <p>Across 52 pretrained vision models from 13 architecture families (ResNets, VGGs, EfficientNets, Vision Transformers, Swin Transformers, and more), we find remarkably strong correlations between geometry and accuracy:</p>
 <ul>
-<li><strong>Output effective dimension</strong>: partial $$r = 0.746$$ ($$p &lt; 10^{-10}$$) — the strongest single predictor</li>
-<li><strong>Total compression</strong>: partial $$r = -0.720$$ ($$p &lt; 10^{-9}$$)</li>
+<li><strong>Output effective dimension</strong>: partial $$r = 0.746$$ ($$p < 10^{-10}$$) — the strongest single predictor</li>
+<li><strong>Total compression</strong>: partial $$r = -0.720$$ ($$p < 10^{-9}$$)</li>
 </ul>
 <p>The key word here is <strong>partial</strong> — these correlations control for model size (number of parameters). Geometry predicts accuracy <em>independently</em> of model capacity. A small model with good geometry outperforms a large model with poor geometry.</p>
 <p>Use the dashboard below to explore how different geometric metrics relate to each other and to accuracy. The dropdowns let you select any pair of metrics for the X and Y axes.</p>
@@ -121,7 +130,7 @@
 <p>Observational correlations are suggestive, but can we establish a stronger link? We run two intervention experiments that perturb the geometry of a trained network and measure the effect on accuracy.</p>
 <h3>Degradation via Noise</h3>
 <p>We inject noise directly into the final-layer activations of a trained ResNet-18. We test four noise types: Gaussian, uniform, dropout, and salt-and-pepper, at noise levels from 0.1 to 0.5.</p>
-<p>The result is consistent across all noise types: <strong>noise increases effective dimension</strong> (by adding spurious, information-destroying dimensions to the representation) while <strong>accuracy drops</strong>. The pooled correlation between effective dimension change and accuracy change is $$r = -0.94$$ ($$p &lt; 10^{-9}$$).</p>
+<p>The result is consistent across all noise types: <strong>noise increases effective dimension</strong> (by adding spurious, information-destroying dimensions to the representation) while <strong>accuracy drops</strong>. The pooled correlation between effective dimension change and accuracy change is $$r = -0.94$$ ($$p < 10^{-9}$$).</p>
 <p>This is exactly what we&#39;d predict if geometry <em>causally determines</em> classification performance: degrading the geometric structure directly harms the network&#39;s ability to classify.</p>
 <div style="width: 100%; margin: 20px 0;">
   <iframe src="/posts/2026/02/14/geometric-signatures/fig5_noise_intervention.html" frameborder="0" scrolling="no" height="520px" width="100%"></iframe>

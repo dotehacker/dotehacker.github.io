@@ -19,6 +19,15 @@
     <script>
         mermaid.initialize({ startOnLoad: true, theme: 'default' });
     </script>
+
+    <!-- MathJax for LaTeX math -->
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+            options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+        };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
     <div class="scroll-progress"><div class="scroll-progress-bar" id="scroll-progress-bar"></div></div>
@@ -104,11 +113,11 @@
 <ul>
 <li>The <strong>QK circuit</strong> decides <em>where</em> a head attends — which destination token reads from which source token:</li>
 </ul>
-<p>$$\text{QK} = W_E^{T} , W_Q^{T} , W_K , W_E$$</p>
+<p>$$\text{QK} = W_E^{T} \, W_Q^{T} \, W_K \, W_E$$</p>
 <ul>
 <li>The <strong>OV circuit</strong> decides the <em>effect</em> of attending — how the attended-to token changes the output:</li>
 </ul>
-<p>$$\text{OV} = W_U , W_O , W_V , W_E$$</p>
+<p>$$\text{OV} = W_U \, W_O \, W_V \, W_E$$</p>
 <p>There&#39;s a deep reason this grouping is natural: query and key only ever appear together as $W_Q^{T} W_K$, and output and value only as $W_O W_V$. The model never uses them apart. <strong>Where to look, and what to do once you look there</strong> — and you can analyze each circuit independently.</p>
 <hr>
 <h2>One-Layer Models: Skip-Trigrams</h2>

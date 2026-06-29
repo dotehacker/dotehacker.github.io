@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Models from Scratch: Two Toy Experiments (with an in-browser demo) · Sumit Yadav</title>
+    <meta name="description" content="">
+    <meta name="google-site-verification" content="IVG1y4MVA_6MT0wsjk13ooZDQLWXxvYcPXQlmf83MLM" />
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- Mermaid.js for diagram rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+
+    <!-- MathJax for LaTeX math -->
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+            options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+        };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <div class="scroll-progress"><div class="scroll-progress-bar" id="scroll-progress-bar"></div></div>
+
+    <header class="site-header">
+    <div class="wrap">
+        <a class="site-title" href="/">Sumit Yadav</a>
+        <nav class="site-nav">
+            <a href="/#publications">Publications</a>
+            <a href="/blog/">Blog</a>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                <span class="theme-icon theme-icon-light">🌙</span>
+                <span class="theme-icon theme-icon-dark">☀️</span>
+            </button>
+        </nav>
+    </div>
+</header>
+
+
+    <main class="page-content">
+        <div class="wrap">
+            <div class="content-area">
+                
+<article class="post">
+    <header class="post-header">
+        <h1 class="post-title">World Models from Scratch: Two Toy Experiments (with an in-browser demo)</h1>
+        <p class="post-meta">
+            <time datetime="2026-06-29T00:00:00.000Z">June 29, 2026</time>
+             · <span>AI & ML</span>
+        </p>
+    </header>
+
+    <div class="post-content">
+        <p>A world model has three pieces: an <strong>encoder</strong>, a <strong>state-space model</strong>, and a <strong>decoder</strong>. This post builds two of them from scratch — one for CartPole, one for a little visual &quot;counting + mass&quot; world — and at the end you can <strong>drive the trained model yourself, in your browser</strong>.</p>
+<p><img src="wm-toy-ar-vs-wm.png" alt="Autoregressive model (left) predicts the next observation; a world model (right) also conditions on the action."></p>
+<h2>1. World models: the idea (and the math)</h2>
+<p>An <strong>autoregressive (AR) model</strong> predicts the next observation from the past:
+$$ x_{t+1} \sim p_\theta(x_{t+1} \mid x_{\le t}). $$
+A <strong>world model (WM)</strong> also conditions on the <em>action</em> the agent takes, so it can answer &quot;what happens <strong>if I do</strong> $a_t$?&quot;:
+$$ x_{t+1} \sim p_\theta(x_{t+1} \mid x_{\le t},\, a_t). $$
+That extra $a_t$ is the whole difference (figure above): it turns a passive predictor into something an agent can <em>plan and act</em> inside. We use the <strong>Dreamer</strong> recipe: learn a compact latent world model from data, then train a controller purely on trajectories <em>imagined</em> by that model.</p>
+<h2>2. The model (RSSM)</h2>
+<p>State is split into a <strong>deterministic</strong> path $h_t$ (a GRU memory) and a <strong>stochastic</strong> latent $z_t$:
+$$
+\begin{aligned}
+h_t &= f_{\text{GRU}}\big(h_{t-1},\,[\,z_{t-1},\,a_{t-1}\,]\big) &&\text{(recurrence)}\\
+\text{prior:}\quad & p_\theta(z_t \mid h_t) = \mathcal N\!\big(\mu_\theta(h_t),\,\sigma_\theta(h_t)\big)\\
+\text{posterior:}\quad & q_\phi(z_t \mid h_t, x_t) = \mathcal N\!\big(\mu_\phi(h_t,e_t),\,\sigma_\phi(h_t,e_t)\big),\ \ e_t=\text{enc}(x_t)\\
+s_t &= [\,h_t,\,z_t\,] &&\text{(model state / ``feature'')}
+\end{aligned}
+$$
+From the state $s_t$, three heads predict the observation, the reward, and the &quot;keep going&quot; probability:
+$$
+\hat x_t = g_\theta(s_t),\qquad \hat r_t = r_\theta(s_t),\qquad \hat c_t = \sigma\big(c_\theta(s_t)\big)\approx \Pr(\text{not terminal}).
+$$
+The <strong>prior</strong> dreams the next latent <em>without</em> looking at the world; the <strong>posterior</strong> corrects it <em>using</em> the real observation $x_t$. This split is exactly the open-loop vs closed-loop behaviour we study in the results.</p>
+<h2>3. Training the world model</h2>
+<p>Fit everything by minimising reconstruction + reward + continue + a KL term:
+$$
+\mathcal L_{\text{WM}}=\mathbb E_{q_\phi}\Big[\underbrace{\lVert x_t-\hat x_t\rVert^2}_{\text{reconstruction}} + \underbrace{(r_t-\hat r_t)^2}_{\text{reward}} + \underbrace{\text{BCE}(c_t,\hat c_t)}_{\text{continue}} + \beta\,\mathrm{KL}_t\Big].
+$$
+The KL keeps the dream (prior) close to the observation-grounded posterior, with <strong>KL balancing</strong> and free nats $\kappa$:
+$$
+\mathrm{KL}_t = \alpha\,\max\!\big(\kappa,\ \mathrm{KL}[\,\text{sg}(q_\phi)\,\|\,p_\theta\,]\big) + (1-\alpha)\,\max\!\big(\kappa,\ \mathrm{KL}[\,q_\phi\,\|\,\text{sg}(p_\theta)\,]\big),
+$$
+where $\text{sg}[\cdot]$ is stop-gradient ($\alpha=0.8,\ \kappa=1$).</p>
+<h2>4. Learning to act — inside imagination</h2>
+<p>Starting from real model states, we <strong>roll the prior forward</strong> $H$ steps using the actor $\pi_\psi(a\mid s)$, never touching the environment. On this imagined trajectory we use a <strong>$\lambda$-return</strong>:
+$$
+V^\lambda_t = \hat r_t + \gamma\,\hat c_t\Big[(1-\lambda)\,v_\xi(s_{t+1}) + \lambda\,V^\lambda_{t+1}\Big],\qquad V^\lambda_H=v_\xi(s_H).
+$$
+The <strong>critic</strong> regresses to it and the <strong>actor</strong> maximises it (discrete actions use straight-through gradients, so the signal flows back through the dynamics), plus an entropy bonus $\eta$:
+$$
+\mathcal L_v=\mathbb E\Big[\sum_t\big(v_\xi(s_t)-\text{sg}(V^\lambda_t)\big)^2\Big],\qquad
+\mathcal L_\pi=-\mathbb E\Big[\sum_t V^\lambda_t\Big]-\eta\,\mathbb E[\,\mathcal H(\pi_\psi)\,].
+$$
+A slow <strong>target critic</strong> stabilises the bootstrap: $\bar\xi \leftarrow (1-\tau)\,\bar\xi + \tau\,\xi$.</p>
+<h2>5. Acting: open loop vs closed loop</h2>
+<p>When the trained agent plays, it can update its latent two ways each step:
+$$
+\text{open-loop (dream):}\ \ z_t\sim p_\theta(z_t\mid h_t),\qquad
+\text{closed-loop (peek):}\ \ z_t\sim q_\phi(z_t\mid h_t,x_t).
+$$
+Open-loop needs no observations but lets small errors compound; closed-loop re-grounds on the real $x_t$ every step. We measure exactly this trade-off below.</p>
+<hr>
+<h2>Exp 0: CartPole world model (the baseline)</h2>
+<p>A good first experiment before moving to images: it exercises every core world-model idea with minimal complexity.</p>
+<p><strong>Objective.</strong> Train a world model that learns CartPole&#39;s dynamics from interaction data, then use it to imagine futures and train a controller <em>inside the model&#39;s dreams</em>.</p>
+<p><strong>Why CartPole first?</strong> It&#39;s fully observable and low-dimensional (4-D state), fast to debug, and a classic control task — so it&#39;s easy to verify whether the model learned accurate physics. It builds intuition for dynamics, imagination, and model-based control before pixels enter the picture.</p>
+<p><strong>Setup.</strong></p>
+<ul>
+<li><strong>Environment:</strong> <code>CartPole-v1</code> (Gymnasium). State $x\in\mathbb R^4$ = (cart position, cart velocity, pole angle, pole angular velocity); two discrete actions (push left / right); reward $=+1$ each step until the pole falls or 500 steps elapse.</li>
+<li><strong>A key modelling choice.</strong> The 500-step cap is a <em>time limit</em> (truncation), <strong>not</strong> a failure. We set the continue target $c_t=1$ for truncation and $c_t=0$ only for a real fall — otherwise the model learns &quot;the world always ends at 500&quot; and gives up.</li>
+</ul>
+<p><strong>World-model components.</strong></p>
+<ul>
+<li><strong>Encoder</strong> — a small MLP (the state is already low-dimensional) → latent.</li>
+<li><strong>Dynamics (core)</strong> — a GRU taking (latent + action) → next latent, reward, and done probability.</li>
+<li><strong>Decoder + reward/continue heads</strong> — small heads on the model state.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Choice</th>
+<th></th>
+<th>Component</th>
+<th>Choice</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Deterministic state $h$</td>
+<td>128</td>
+<td></td>
+<td>Discount $\gamma$ / $\lambda$</td>
+<td>0.99 / 0.95</td>
+</tr>
+<tr>
+<td>Stochastic latent $z$</td>
+<td>32 (Gaussian)</td>
+<td></td>
+<td>Imagination horizon $H$</td>
+<td>15</td>
+</tr>
+<tr>
+<td>Hidden units</td>
+<td>128 (ELU MLPs)</td>
+<td></td>
+<td>KL balance $\alpha$ / free nats $\kappa$</td>
+<td>0.8 / 1.0</td>
+</tr>
+<tr>
+<td>World-model LR</td>
+<td>$6\times10^{-4}$</td>
+<td></td>
+<td>Target-critic rate $\tau$</td>
+<td>0.02</td>
+</tr>
+<tr>
+<td>Actor / critic LR</td>
+<td>$8\times10^{-5}$</td>
+<td></td>
+<td>Batch / sequence length</td>
+<td>32 / 20</td>
+</tr>
+<tr>
+<td>Entropy bonus $\eta$</td>
+<td>$3\times10^{-3}$</td>
+<td></td>
+<td>Updates</td>
+<td>3000 (~4 min, CPU)</td>
+</tr>
+</tbody></table>
+<p><strong>Training loop.</strong> Seed the replay buffer with random episodes, then repeat: sample sequences → update the world model ($\mathcal L_{\text{WM}}$) → imagine and update actor + critic ($\mathcal L_\pi,\ \mathcal L_v$) → collect a fresh episode with the current policy ($\varepsilon$-greedy) → evaluate.</p>
+<p><strong>Code map.</strong> RSSM + heads → <code>world_model.py</code>; actor / critic / imagination → <code>dreamer.py</code>; replay buffer → <code>buffer.py</code>; training loop → <code>train.py</code>; metrics + plots → <code>evaluate.py</code>.</p>
+<h3>Exp 0 — results (what actually happened)</h3>
+<p><strong>Short version: it worked.</strong> We trained a world model on CartPole, then trained the player <em>only inside the model&#39;s imagination</em> — and when we dropped that player into the real game, it balanced the pole perfectly.</p>
+<p>Think of the world model as three small parts:</p>
+<ul>
+<li><strong>Eyes (encoder):</strong> look at the game numbers (cart position, speed, pole angle, pole speed) and turn them into a small &quot;idea&quot;.</li>
+<li><strong>Imagination (the core):</strong> given the current idea + your action, guess the <em>next</em> idea — plus the reward and whether the pole just fell.</li>
+<li><strong>Translator (decoder):</strong> turn an &quot;idea&quot; back into real game numbers, so we can check and draw it.</li>
+</ul>
+<p>Then a small <strong>player (actor)</strong> and a <strong>judge (critic)</strong> learn to play — but they practice <strong>only in dreams</strong>. The model imagines short futures, the player improves inside them, and it never touches the real game while learning.</p>
+<p><strong>The score.</strong></p>
+<ul>
+<li>Real game: <strong>500 / 500, every single time</strong> (100 games in a row). 500 is the maximum — the pole never fell.</li>
+<li>That beats the &quot;solved&quot; target of 475.</li>
+<li>The model can <strong>see ~10+ steps into the future accurately</strong> — its pole-angle guess is off by only ~0.03 rad even 11 steps ahead.</li>
+</ul>
+<p><img src="wm-toy-training-curve.png" alt="The player learning to balance, purely from dreams. The dashed line is &quot;solved&quot;."></p>
+<p><strong>The most interesting part: dreaming alone vs dreaming with a peek.</strong></p>
+<ul>
+<li><strong>Open-loop (dream alone):</strong> after the first frame the model imagines everything itself. Tiny mistakes pile up, and after ~80 steps the dreamed pole drifts away and tips over.</li>
+<li><strong>Closed-loop (peek every step):</strong> the model glances at the real game each step and corrects itself — staying glued to reality, about <strong>11× less drift</strong> (0.03 vs 0.33).</li>
+</ul>
+<p>This is <em>why</em> the player keeps its eyes open while actually playing, and only trusts short dreams while practicing.</p>
+<p><img src="wm-toy-open-vs-closed.gif" alt="Left: the real game. Middle: dreaming alone (drifts, tips over). Right: dreaming with a peek (stays perfect)."></p>
+<p><img src="wm-toy-error-vs-horizon.png" alt="How the guessing error grows the further ahead the model tries to predict."></p>
+<p><strong>How often does the dream need to peek? (10 vs 20 vs 40).</strong> Peeking every step keeps the dream perfect — but that&#39;s a lot of peeking. So we let the dream run on its own and gave it one real peek every 10, 20, or 40 steps.</p>
+<p><img src="wm-toy-feedback-every20.gif" alt="Dreaming with a peek every 20 steps: it drifts, then snaps back to reality at each peek."></p>
+<p><img src="wm-toy-compare-feedback.gif" alt="Left to right: the real game, then the dream peeking every 10 / 20 / 40 steps."></p>
+<p><img src="wm-toy-compare-feedback-drift.png" alt="Each line is a &quot;sawtooth&quot;: the dream drifts, then a peek snaps it back down. The more often it peeks, the smaller the wobble."></p>
+<p>What we found (drift = how far the dreamed pole angle is from the real one):</p>
+<ul>
+<li><strong>Every 10 steps:</strong> stays tight — barely drifts (max ~0.09).</li>
+<li><strong>Every 20 steps:</strong> drifts up to ~0.26 between peeks — getting risky.</li>
+<li><strong>Every 40 steps:</strong> drifts almost as much as never peeking.</li>
+</ul>
+<p>Simple takeaway: <strong>a little feedback goes a long way.</strong> Even peeking 1 step in 10 keeps the dream ~5× closer to reality than dreaming blind.</p>
+<p><strong>Honest notes (what was tricky).</strong> The model&#39;s <em>predictions</em> were always good; the hard part was the <em>player&#39;s</em> training being wobbly — it would hit a perfect 500, then bounce around. Adding a <strong>target critic</strong> (a slow, steady copy of the judge) made it stable. Forcing extra attention on &quot;the pole fell&quot; moments backfired (the model became scared the pole always falls), so we kept that gentle. And the time-limit-vs-failure distinction at 500 steps mattered — get it wrong and the model gives up.</p>
+<h3>Conclusion (Exp 0)</h3>
+<ul>
+<li>A controller trained <strong>entirely inside a learned world model&#39;s imagination</strong> solved CartPole: <strong>500 / 500 over 100 real episodes</strong>, clearing the &quot;solved&quot; bar (475).</li>
+<li>Predictions were accurate (pole angle off by ~0.03 rad even 11 steps ahead). The only hard part was controller stability — fixed with a slow target critic.</li>
+<li><strong>Open-loop dreams drift</strong> (<del>0.33 rad over 500 steps); <strong>closed-loop tracking stays glued to reality</strong> (</del>0.03 rad, ~11× lower).</li>
+<li><strong>Takeaway:</strong> the world model is a good <em>short-horizon</em> simulator. Trust it for short imagined rollouts and control, but re-ground it on real observations frequently.</li>
+</ul>
+<hr>
+<h2>Experiment 1: counting + mass (now with pixels)</h2>
+<p><strong>Goal.</strong> Build a minimal <em>visual</em> world model that tracks and predicts object <strong>count</strong> and <strong>total mass</strong> over time from image sequences. It introduces pixel input while keeping the state low-dimensional and interpretable, and success is easy to measure (accuracy of predicted count/mass).</p>
+<p><strong>Task setup.</strong> Synthetic 64×64 image sequences of random colored shapes (circles / squares) that appear, disappear, or stay. Each object has a mass from its size (small = 1, medium = 2, large = 5). Three actions: <em>add a random object</em>, <em>remove one</em>, <em>no-op</em>.</p>
+<p><strong>Architecture.</strong> A <strong>CNN encoder</strong> → feature vector with an auxiliary count/mass head; a <strong>GRU dynamics core</strong> maintaining the believed (count, total-mass); and <strong>prediction heads</strong> for next count, next mass, and an optional reconstruction. Same encoder → latent-dynamics → heads → imagination recipe as CartPole — just with a CNN for eyes.</p>
+<h3>Exp 1 — results (what actually happened)</h3>
+<p><strong>Short version: the visual world model works — and we built an agent that plans inside it.</strong> Four steps: make the data, prove the model can <em>see</em>, teach it the <em>dynamics</em>, then train an agent to <em>reach goals</em>.</p>
+<p><strong>Step 1 — the data (a little shapes world).</strong> No dataset to download, so we built a tiny simulator: a 64×64 image with colored shapes, each with a size → mass. Each step an action changes the scene; we record image, action, count, and total mass per frame.</p>
+<p><img src="wm-toy-sample-sequence.png" alt="One generated sequence. The action changes count &amp; mass; we know the true values for every frame."></p>
+<p><strong>Step 2 — can it even <em>see</em>? (perception check).</strong> Before any world model, the most basic test: can a CNN read <strong>count</strong> and <strong>mass</strong> from a <em>single</em> image? First try: only <strong>67%</strong> — it miscounted when shapes overlapped (two on top of each other look like one). After making the world well-posed (no overlap) and treating count as a 7-way choice: <strong>98% count accuracy.</strong> Lesson: <em>a world model is only as good as its eyes — fix perception first.</em></p>
+<p><img src="wm-toy-perception-preds.png" alt="The CNN reading count &amp; mass from single frames (green = correct)."></p>
+<p><strong>Step 3 — learning the dynamics.</strong> Now the real thing: from the current image <strong>+ your action</strong>, predict the <strong>future</strong> count &amp; mass.</p>
+<ul>
+<li><strong>Closed-loop (peek every frame):</strong> near-perfect — count <strong>98–100%</strong> even 12 steps ahead.</li>
+<li><strong>Open-loop (dream, no peeking):</strong> count drifts from <strong>93% → 67%</strong> over 12 steps; mass drifts more. The same compounding-error story as CartPole.</li>
+</ul>
+<p><img src="wm-toy-wm-multistep.png" alt="Closed-loop stays accurate; the open-loop dream drifts as it predicts further ahead."></p>
+<p>A subtlety: pressing <strong>add</strong> spawns a shape of <strong>random size</strong>, so the action alone can&#39;t say whether mass goes +1, +2, or +5. The model is honest about it — it predicts <strong>count exactly</strong> (always +1) but only the <strong>average</strong> mass change (~2.7). That&#39;s <em>why</em> mass drifts and count doesn&#39;t, and why peeking is the only way to know the true mass.</p>
+<p><strong>Step 4 — planning inside the dream (the controller).</strong> We added a goal: <strong>reach a target object count.</strong> An actor learned — <em>purely inside the model&#39;s imagination</em> — to pick add/remove/no-op to hit and hold any target. The first attempt stalled at <strong>66%</strong>: probing its decision table showed it had learned the <em>direction</em> (add when below, remove when above) but <strong>never learned to stop (no-op)</strong>, so it overshot and oscillated. A tiny &quot;cost for moving&quot; fixed it — <strong>99% success</strong> across all targets.</p>
+<p><img src="wm-toy-controller-demo.png" alt="The controller driving the REAL world to targets 5, 2, 6 — moving toward the goal, then holding with no-op."></p>
+<p><strong>A second controller — for total mass.</strong> A separate controller targets a <strong>mass</strong> total. This is fundamentally harder: you can&#39;t choose the size of an added shape (random 1/2/5), so mass is only <strong>partially controllable</strong>. It gets <em>close</em> — within ~1–2 for moderate targets — but can&#39;t hit large targets exactly (reaches 15 when asked for 18). The clean contrast: <strong>count is exactly controllable; mass only approximately.</strong></p>
+<p><img src="wm-toy-mass-controller-demo.png" alt="The mass controller approaching target totals (6→landed at 5, 12→hit 12 exactly, 18→stalled at 15)."></p>
+<h3>What this experiment showed</h3>
+<ul>
+<li>A world model works on <strong>pixels</strong>, not just numbers.</li>
+<li>The <strong>same recipe scales</strong>: encoder (now a CNN) → latent dynamics → prediction heads → imagination.</li>
+<li>You can <strong>plan</strong> inside it: an agent trained only in dreams achieves real goals (99%).</li>
+<li>Two honest lessons: <strong>fix perception first</strong>, and <strong>debug by looking</strong> — we found the missing-no-op bug by <em>probing</em> the policy, not guessing hyperparameters.</li>
+</ul>
+<hr>
+<h2>Try it yourself — interactive demo</h2>
+<p>The <strong>real trained model runs right here in your browser</strong> — the RSSM dynamics, the count/mass heads, and the controller actor, ported to JavaScript and verified to match PyTorch. Three tabs: (1) act and watch the model&#39;s belief <em>drift</em> open-loop, then <strong>Peek</strong> to snap it back; (2) set a target <strong>count</strong> and let the controller drive the world to it; (3) set a target <strong>mass</strong> (only approximately controllable). <em>Scope: up to 4 objects. The widget loads a ~7.8 MB model, so give it a moment.</em></p>
+<iframe src="wm-toy-app.html" title="Interactive world-model demo" loading="lazy" style="width:100%;height:780px;border:1px solid var(--rule);border-radius:10px;background:#fff"></iframe>
+
+<p><a href="wm-toy-app.html">Open the demo in a new tab →</a> &nbsp;·&nbsp; <a href="https://github.com/rockerritesh/W-M-toy">Code on GitHub</a></p>
+<hr>
+<h2>Conclusion</h2>
+<p>Two full world models — one for continuous control (CartPole), one for visual prediction + planning (counting/mass) — both follow the same <strong>encoder → latent dynamics → imagination</strong> pattern, and both show the same lesson: a world model is a great <strong>short-horizon simulator</strong>. Trust it for short dreams (training, planning), and re-ground it on real observations to stay accurate. That open-loop-drift / closed-loop-stability trade-off is the heart of it — and now you can feel it yourself in the demo above.</p>
+
+    </div>
+
+    <details class="cite">
+  <summary>Cite this post</summary>
+  <div class="cite-body" id="citation-section">
+    <div class="citation-tabs" role="tablist">
+        <button class="citation-tab active" data-target="bibtex" role="tab" aria-selected="true">BibTeX</button>
+        <button class="citation-tab" data-target="apa" role="tab" aria-selected="false">APA</button>
+        <button class="citation-tab" data-target="mla" role="tab" aria-selected="false">MLA</button>
+        <button class="citation-tab" data-target="chicago" role="tab" aria-selected="false">Chicago</button>
+    </div>
+    <div class="citation-panels">
+        <div class="citation-panel active" id="panel-bibtex" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-bibtex"></pre><button class="copy-btn" data-cite="cite-bibtex">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-apa" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-apa"></pre><button class="copy-btn" data-cite="cite-apa">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-mla" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-mla"></pre><button class="copy-btn" data-cite="cite-mla">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-chicago" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-chicago"></pre><button class="copy-btn" data-cite="cite-chicago">Copy</button></div>
+        </div>
+    </div>
+    <p class="citation-note">Auto-generated. Verify for your institution's requirements.</p>
+  </div>
+</details>
+
+<template id="cite-meta">World Models from Scratch: Two Toy Experiments (with an in-browser demo)</template>
+
+<script>
+(function() {
+    var meta = document.getElementById('cite-meta');
+    if (!meta) return;
+    var t = meta.content ? meta.content.textContent : meta.innerHTML;
+    var a = 'Sumit Yadav';
+    var j = 'Sumit Yadav';
+    var u = 'https://sumityadav.com.np/posts/2026/06/29/world-models-toy-experiments/';
+    var y = '2026';
+    var mo = 'June';
+    var ms = 'Jun';
+    var dy = '29';
+    var k = a.split(' ')[0].toLowerCase() + y + t.toLowerCase().replace(/[^a-z0-9]+/g, '');
+
+    document.getElementById('cite-bibtex').textContent =
+        '@article{' + k + ',\n  title     = {' + t + '},\n  author    = {' + a +
+        '},\n  journal   = {' + j + '},\n  year      = {' + y + '},\n  month     = {' + mo +
+        '},\n  day       = {' + dy + '},\n  url       = {' + u + '}\n}';
+    document.getElementById('cite-apa').textContent =
+        a + '. (' + y + ', ' + mo + ' ' + dy + '). ' + t + '. ' + j + '. ' + u;
+    document.getElementById('cite-mla').textContent =
+        a + '. “' + t + '.” ' + j + ', ' + dy + ' ' + ms + ' ' + y + ', ' + u + '.';
+    document.getElementById('cite-chicago').textContent =
+        a + '. “' + t + '.” ' + j + '. ' + mo + ' ' + dy + ', ' + y + '. ' + u + '.';
+
+    var sec = document.getElementById('citation-section');
+    sec.querySelectorAll('.citation-tab').forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            sec.querySelectorAll('.citation-tab').forEach(function(x) { x.classList.remove('active'); x.setAttribute('aria-selected', 'false'); });
+            sec.querySelectorAll('.citation-panel').forEach(function(p) { p.classList.remove('active'); });
+            this.classList.add('active'); this.setAttribute('aria-selected', 'true');
+            sec.querySelector('#panel-' + this.dataset.target).classList.add('active');
+        });
+    });
+    sec.querySelectorAll('.copy-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var text = document.getElementById(this.dataset.cite).textContent;
+            var b = this;
+            var done = function() { b.textContent = 'Copied!'; b.classList.add('copied'); setTimeout(function() { b.textContent = 'Copy'; b.classList.remove('copied'); }, 2000); };
+            navigator.clipboard.writeText(text).then(done).catch(function() {
+                var ta = document.createElement('textarea'); ta.value = text; ta.style.cssText = 'position:fixed;opacity:0';
+                document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); done();
+            });
+        });
+    });
+})();
+</script>
+
+
+    <footer class="post-footer">
+        <p><a href="/blog/">← All posts</a></p>
+    </footer>
+</article>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+    <div class="wrap">
+        <p>© 2026 Sumit Yadav · Kathmandu, Nepal · <a href="/">home</a> · <a href="/blog/">blog</a></p>
+    </div>
+</footer>
+
+
+    <script>
+        (function() {
+            const getThemePreference = () => {
+                const stored = localStorage.getItem('theme-preference');
+                if (stored) return stored;
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            };
+            const applyTheme = (theme) => {
+                const root = document.documentElement;
+                root.classList.remove('light-theme', 'dark-theme');
+                if (theme !== 'auto') root.classList.add(`${theme}-theme`);
+                if (window.mermaid) {
+                    const dark = theme === 'dark' || (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                    mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'default' });
+                    document.querySelectorAll('.mermaid').forEach(el => {
+                        if (el.getAttribute('data-processed')) {
+                            el.removeAttribute('data-processed');
+                            el.innerHTML = el.getAttribute('data-original') || el.innerHTML;
+                        }
+                    });
+                    if (window.mermaid.init) mermaid.init(undefined, '.mermaid');
+                }
+            };
+            document.addEventListener('DOMContentLoaded', () => {
+                applyTheme(getThemePreference());
+                const t = document.getElementById('theme-toggle');
+                if (t) t.addEventListener('click', () => {
+                    const cur = getThemePreference();
+                    const next = cur === 'dark' ? 'light' : 'dark';
+                    localStorage.setItem('theme-preference', next);
+                    applyTheme(next);
+                });
+                document.querySelectorAll('.mermaid').forEach(el => {
+                    if (!el.getAttribute('data-original')) el.setAttribute('data-original', el.innerHTML);
+                });
+            });
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme-preference')) applyTheme(e.matches ? 'dark' : 'light');
+            });
+        })();
+        (function() {
+            const bar = document.getElementById('scroll-progress-bar');
+            if (!bar) return;
+            const upd = () => {
+                const st = window.pageYOffset || document.documentElement.scrollTop;
+                const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                bar.style.height = Math.min(Math.max((st / h) * 100, 0), 100) + '%';
+            };
+            window.addEventListener('scroll', upd, { passive: true });
+            window.addEventListener('resize', upd, { passive: true });
+            upd();
+        })();
+    </script>
+</body>
+</html>
