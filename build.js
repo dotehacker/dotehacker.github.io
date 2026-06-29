@@ -754,6 +754,32 @@ class JekyllLikeBuilder {
     return restoredContent;
   }
 
+  // Protect LaTeX math ($$...$$ and $...$) from the markdown parser so
+  // underscores/asterisks inside formulas aren't mangled; MathJax renders later.
+  protectMath(content) {
+    const blocks = [];
+    let s = content;
+    // display math $$...$$ (can span lines)
+    s = s.replace(/\$\$([\s\S]+?)\$\$/g, (m) => {
+      blocks.push(m); return `@@MATHJAX${blocks.length - 1}@@`;
+    });
+    // inline math $...$ — no newline, non-space just inside the delimiters
+    s = s.replace(/\$(?!\s)([^\n$]*?)(?<!\s)\$/g, (m) => {
+      blocks.push(m); return `@@MATHJAX${blocks.length - 1}@@`;
+    });
+    this.mathBlocks = blocks;
+    return s;
+  }
+
+  restoreMath(html) {
+    if (!this.mathBlocks) return html;
+    let out = html;
+    this.mathBlocks.forEach((block, i) => {
+      out = out.replace(new RegExp(`@@MATHJAX${i}@@`, 'g'), () => block);
+    });
+    return out;
+  }
+
   // Apply layout to content
   applyLayout(content, layoutName, pageData) {
     if (!layoutName || !this.layouts[layoutName]) {
@@ -892,11 +918,12 @@ class JekyllLikeBuilder {
       const [, year, month, day, slug] = dateMatch;
       const url = `/posts/${year}/${month}/${day}/${slug}/`;
 
-      // Process Mermaid blocks before converting markdown to HTML
-      const processedBody = this.processMermaidBlocks(body);
+      // Protect math, then Mermaid, before converting markdown to HTML
+      const mathProtected = this.protectMath(body);
+      const processedBody = this.processMermaidBlocks(mathProtected);
       const htmlContent = marked(processedBody);
-      // Restore Mermaid blocks after markdown processing
-      const finalContent = this.restoreMermaidBlocks(htmlContent);
+      // Restore Mermaid and math after markdown processing
+      const finalContent = this.restoreMath(this.restoreMermaidBlocks(htmlContent));
 
       // Extract first image from post content
       const firstImage = this.extractFirstImage(body);
@@ -948,11 +975,11 @@ class JekyllLikeBuilder {
       const { frontmatter, content } = this.parseFrontmatter(rawContent);
       
       const title = frontmatter.title || file.replace('.md', '');
-      // Process Mermaid blocks before converting markdown to HTML
-      const processedContent = this.processMermaidBlocks(content);
+      // Protect math, then Mermaid, before converting markdown to HTML
+      const processedContent = this.processMermaidBlocks(this.protectMath(content));
       const htmlContent = marked(processedContent);
-      // Restore Mermaid blocks after markdown processing
-      const finalContent = this.restoreMermaidBlocks(htmlContent);
+      // Restore Mermaid blocks and math after markdown processing
+      const finalContent = this.restoreMath(this.restoreMermaidBlocks(htmlContent));
       const url = frontmatter.permalink || `/${file.replace('.md', '')}/`;
       
       const page = {
