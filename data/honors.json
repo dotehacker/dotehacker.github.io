@@ -1,4 +1,5 @@
 [
+  { "title": "Outstanding Reviewer, Mechanistic Interpretability Workshop (ICML 2026)", "year": 2026, "note": "Recognized for high-quality, timely peer reviews." },
   { "title": "Winner, GritFeat AI Hackathon", "year": 2023, "note": "SWIFT — wearable LSTM fall-detection for the elderly (79.86%)." },
   { "title": "1st Runner-Up, Docsumo DataVerse — LOCUS 2023", "year": 2023, "note": "Team Deep Learners — NLP classification of imbalanced research-paper abstracts." },
   { "title": "1st Runner-Up, Docsumo DataRush — LOCUS 2021", "year": 2021, "note": "Team Deep Learners — abstract classification into 158 classes (SVC + TF-IDF)." },
