@@ -1251,6 +1251,30 @@ Sitemap: ${fullSitemapUrl}
   }
 
   // Generate a custom 404 page that invites visitors to browse the blog
+  // /about/ (and legacy tatva /about/ redirects) → home, which is the about/profile page
+  generateAboutRedirect() {
+    const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>About — Sumit Yadav</title>
+<link rel="canonical" href="https://sumityadav.com.np/">
+<meta name="robots" content="noindex">
+<meta http-equiv="refresh" content="0; url=/">
+<script>location.replace('/' + (location.hash || ''));</script>
+</head>
+<body><p>Redirecting to <a href="/">sumityadav.com.np</a>…</p></body>
+</html>
+`;
+    try {
+      fs.mkdirSync('docs/about', { recursive: true });
+      fs.writeFileSync('docs/about/index.html', html);
+      console.log('✅ Generated /about/ → home redirect');
+    } catch (error) {
+      console.error('❌ Error generating /about/ redirect:', error.message);
+    }
+  }
+
   generate404() {
     const destPath = 'docs/404.html';
     const siteTitle = (this.config && this.config.title) || 'Tatva';
@@ -1604,6 +1628,7 @@ Allow: /
 
     // Generate custom 404 page
     this.generate404();
+    this.generateAboutRedirect();
 
     // Copy study materials
     this.copyStudyMaterials();
