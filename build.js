@@ -247,7 +247,7 @@ class JekyllLikeBuilder {
     const items = ['files', 'photo', 'photography', 'drum', 'posts',
       'cv.pdf', 'resume.pdf', 'TPUs-2.pdf', 'rockerritesh.png', 'profile.jpg',
       'favicon.ico', 'favicon-16x16.png', 'favicon-32x32.png', 'apple-touch-icon.png',
-      'android-chrome-192x192.png', 'mstile-150x150.png', 'safari-pinned-tab.svg',
+      'android-chrome-192x192.png', 'android-chrome-512x512.png', 'mstile-150x150.png',
       'site.webmanifest', 'browserconfig.xml'];
     const copyR = (src, dest) => {
       const st = fs.statSync(src);

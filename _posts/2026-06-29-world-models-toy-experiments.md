@@ -206,9 +206,98 @@ A subtlety: pressing **add** spawns a shape of **random size**, so the action al
 
 ---
 
+## Experiment 1.5 — Min-Objects: build a target mass with the *fewest* shapes
+
+![Exp 1.5: add chooses a size (mass fully controllable); a planner imagines each add inside the world model and greedily keeps the largest that doesn't overshoot the target.](wm-toy-fig-exp1-5.png)
+
+**Short version:** we turned Exp 1's "get close to a target mass" into an *optimisation* — hit a target mass with the minimum number of shapes — and solved it by *planning inside the world model*, reaching within **+0.13 shapes of the provably-optimal** count at **81% exact-mass accuracy**. Getting there exposed a chain of world-model failure modes worth studying in their own right (full log in the repo's [`issue-solve.md`](https://github.com/rockerritesh/W-M-toy/blob/main/exp1_counting_mass/issue-solve.md)).
+
+### Why this task, and the setup
+
+In Exp 1 the `add` action spawned a *random* size, so total mass was only *approximately* controllable. Here we split it so the agent **chooses** the size, giving a discrete action set
+$$
+\mathcal A=\{\texttt{no-op},\ \texttt{add-S},\ \texttt{add-M},\ \texttt{add-L},\ \texttt{remove}\},\qquad
+\text{mass added} = \begin{cases}1 & \texttt{add-S}\\ 2 & \texttt{add-M}\\ 5 & \texttt{add-L}\end{cases}
+$$
+`remove` is made **LIFO** (delete the last-added shape) so every transition has a *deterministic* mass. With masses drawn from $\{1,2,5\}$, "reach mass $M$ with the fewest shapes" is exactly the **coin-change** problem, whose optimum we compute by dynamic programming:
+$$
+N^\star(M)=\min_{n\in\mathbb Z_{\ge 0}^3}\ \mathbf 1^\top n \quad\text{s.t.}\quad w^\top n = M,\qquad w=(1,2,5),
+$$
+where $n=(n_S,n_M,n_L)$ counts shapes of each size. This gives a *known optimum* to score against — the reason this task is a good warm-up before Tower-of-Hanoi (also a known-optimal planning problem).
+
+### A compositional world model (so mass is exact)
+
+A scalar mass regressor failed badly here (see the failure catalogue below). The fix is to make the model predict the **per-size counts** and *derive* mass and count from them:
+$$
+\hat n_t=\big(\hat n_{S,t},\hat n_{M,t},\hat n_{L,t}\big)\ \sim\ \text{softmax heads on }s_t,\qquad
+\widehat{\text{mass}}_t=w^\top \hat n_t,\quad \widehat{\text{count}}_t=\mathbf 1^\top \hat n_t .
+$$
+Each add-action just increments one head — a clean, learnable dynamic — and mass is *exact whenever the counts are right*. The world-model loss is per-size cross-entropy plus the usual KL:
+$$
+\mathcal L=\sum_{k\in\{S,M,L\}}\mathrm{CE}\big(\hat n_{k,t},\,n_{k,t}\big)\;+\;\beta\,\mathrm{KL}_t .
+$$
+Crucially, this only worked after (a) making the three sizes **visually distinct** (radii $3/6/9$) and (b) **warm-starting the encoder from a dedicated per-size perception model** — with those, closed-loop mass error drops from $\approx1.5$ to $\mathbf{0.3\text{–}0.85}$.
+
+![Compositional sized world model: count stays accurate and mass becomes predictable when the action specifies the size. Closed-loop (peek) tracks near-perfectly; open-loop (dream) drifts — the same story as Exp 0/1.](wm-toy-wm-sized-multistep.png)
+
+### Two ways to reach the goal — and which one worked
+
+**(a) Learn an actor in imagination (Dreamer-style).** Roll the model forward $H$ steps and reward
+$$
+r_t=\underbrace{\exp\!\Big(-\big((\widehat{\text{mass}}_t-M)/\sigma\big)^2\Big)}_{\text{sharp, peaks at the target}}\;-\;\lambda_c\,\frac{\widehat{\text{count}}_t}{c_{\max}}\;-\;\rho\,\mathbf 1[a_t\neq\texttt{no-op}] .
+$$
+The bounded Gaussian term (not a flat quadratic) gives a real gradient to hit *exactly* and makes holding optimal once there; the count and per-move penalties push toward *few, large* shapes. Despite much tuning this stayed fragile (over-/under-builds).
+
+**(b) Plan inside the model (MPC) — this is what worked.** Freeze the model and, each real step, ground the image to a latent, imagine one step per candidate action, and take the **largest add that does not overshoot** the target (then hold):
+$$
+a_t=\begin{cases}\texttt{no-op}, & |\widehat{\text{mass}}(s_t)-M|\le\tau\\[2pt]
+\arg\max\limits_{k:\ \widehat{\text{mass}}(s_t,\texttt{add-}k)\le M+\tau}\ \text{mass}(k), & \text{otherwise}\end{cases}
+$$
+Picking the largest non-overshooting shape *is* the greedy coin-change rule, so the built scene is (near-)minimal — but every quantity comes from the *learned* model. Re-grounding each step (MPC) corrects model drift, and using the **argmax** (discrete) mass read-out rather than the probability-weighted mean removed a systematic over-estimate.
+
+![The planner drives the REAL world from empty to a target mass. Left: shapes used vs the coin-change optimum (numbers above bars = % of episodes that hit the mass exactly); the imagination-trained actor (red) over-builds. Right: mass reached vs target lies on the diagonal.](wm-toy-min-obj-result.png)
+
+![Build film-strips. Target 5 → one large (optimal). Target 11 → [5,5,1] exactly (optimal 3). Target 18 → stalls one shape short (the model's mass estimate saturates at high object counts).](wm-toy-min-obj-demo.png)
+
+### What worked, what didn't, and why (the honest catalogue)
+
+Every failure below traces to one principle: **a controller is only as good as its world model, and a world model is only as good as its eyes.**
+
+| # | Symptom | Root cause | Fix |
+|---|---------|-----------|-----|
+| 1 | mass MAE ≈ 3, closed-loop *worse* than open | `remove` deleted a **random** object → mass-after-remove unpredictable | **LIFO remove** (deterministic) → MAE 3.1 → 1.0 |
+| 2 | actor stops ~1 object short | count/move penalties outweigh last-object gain | shrink penalties |
+| 3 | actor never fine-tunes to the target | **flat** quadratic reward (1.5-off costs ≈0.1) | **sharp bounded** reward $\exp(-((m-M)/\sigma)^2)$ |
+| 4 | high dream-return, bad reality; oscillates add↔remove | actor **exploited an imperfect `remove`** in the dream | **mask `remove`** (building needs none) |
+| 5 | under-builds every non-multiple-of-5 | scalar mass head **can't compose** | **per-size count heads** (derive exact mass) |
+| 6 | per-size heads only ~40% | small vs medium look alike | **distinct radii 3/6/9** + **per-size perception** warm-start |
+| 7 | actor over-builds (~6 smalls) | imagination noise makes large adds "risky" | **pivot to planning (MPC)** |
+| 8 | planner: target 5 used 2 shapes; 18 stops early | probability-weighted mass reads **high** | use **argmax** (discrete) mass read-out |
+
+**Scoreboard (mean over targets 3–18):**
+
+| Approach | mass-hit | shapes vs optimal | verdict |
+|---|---|---|---|
+| actor, strong penalties | ~0% | −1 (under) | fail |
+| actor, sharp reward, `remove` on | (dream 27) | oscillates | **model exploit** |
+| actor (compositional WM) | ~30% | **+1.5…+2** (over) | fail |
+| **planner (MPC) + discrete mass** | **81%** | **+0.13** | **works** |
+
+**The one residual limit:** target 18 (needs 5 shapes) lands exactly only 53% of the time — the world model's mass estimate **saturates at high object counts**, so it thinks it has arrived one shape early. That is *fix-perception-first* asserting itself one last time.
+
+### Takeaways (carried into Tower-of-Hanoi)
+
+- **Deterministic dynamics are learnable dynamics** (LIFO `remove`).
+- **Controllers exploit model errors** — constrain the action set to what the task needs.
+- **Reward shape matters**: sharp bounded ≫ flat quadratic for exact targets.
+- **Compositional > scalar** for exact derived quantities — *if* perception can read the parts.
+- **When RL-in-imagination is fragile, plan.** MPC with 1-step (discrete) predictions beat an actor trained in stochastic dreams for this precise, multi-objective, short-horizon task.
+
+---
+
 ## Try it yourself — interactive demo
 
-The **real trained model runs right here in your browser** — the RSSM dynamics, the count/mass heads, and the controller actor, ported to JavaScript and verified to match PyTorch. Three tabs: (1) act and watch the model's belief *drift* open-loop, then **Peek** to snap it back; (2) set a target **count** and let the controller drive the world to it; (3) set a target **mass** (only approximately controllable). *Scope: up to 4 objects. The widget loads a ~7.8 MB model, so give it a moment.*
+The **real trained models run right here in your browser** — the RSSM dynamics, count/mass heads, and controllers, ported to JavaScript and verified to match PyTorch. **Four tabs:** (1) act and watch the model's belief *drift* open-loop, then **Peek** to snap it back; (2) set a target **count** and let the controller drive to it; (3) set a target **mass** (only approximately controllable); (4) **Min-objects planner** — set a target mass and watch it *plan inside the model* to hit it with the fewest shapes (near-optimal). *The widget loads ~13 MB of trained weights, so give it a moment.*
 
 <iframe src="wm-toy-app.html" title="Interactive world-model demo" loading="lazy" style="width:100%;height:780px;border:1px solid var(--rule);border-radius:10px;background:#fff"></iframe>
 
