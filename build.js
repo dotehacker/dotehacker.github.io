@@ -1262,8 +1262,8 @@ Sitemap: ${fullSitemapUrl}
 <title>Page not found · ${siteTitle}</title>
 <link rel="shortcut icon" href="/favicon.ico">
 <style>
-  :root{--bg:#fff;--fg:#1a1a1a;--muted:#666;--accent:#0b5fa5;--rule:#e6e6e6;--card:#fafafa}
-  @media (prefers-color-scheme:dark){:root{--bg:#15171a;--fg:#e8e8e8;--muted:#9aa0a6;--accent:#6cb2ff;--rule:#2a2d31;--card:#1c1f23}}
+  :root{--bg:#fff;--fg:#1f2328;--muted:#6a6f76;--accent:#5b4b9e;--rule:#e8e6ec;--card:#faf9fb}
+  @media (prefers-color-scheme:dark){:root{--bg:#14151a;--fg:#e6e7ea;--muted:#a3a8b2;--accent:#a48fff;--rule:#2a2d36;--card:#1b1d24}}
   body{margin:0;background:var(--bg);color:var(--fg);min-height:100vh;display:flex;
     align-items:center;justify-content:center;text-align:center;padding:24px;
     font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
@@ -1282,12 +1282,11 @@ Sitemap: ${fullSitemapUrl}
   <div class="box">
     <h1>404</h1>
     <p class="lead">This page wandered off.</p>
-    <p>You're on <b>${siteTitle}</b> — essays and notes on AI, math, and a few things in between.
-       Maybe what you were looking for is somewhere in the writing.</p>
-    <a class="cta" href="/">Browse the blog →</a>
+    <p>The link may be broken or the page moved. Let's get you back to something real.</p>
+    <a class="cta" href="/">← Back home</a>
     <p class="small">
-      <a href="/about/">about</a> ·
-      <a href="https://sumityadav.com.np">portfolio</a>
+      <a href="/#publications">publications</a> ·
+      <a href="/blog/">blog</a>
     </p>
   </div>
 </body>
