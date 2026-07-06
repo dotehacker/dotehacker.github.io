@@ -2,11 +2,11 @@
   {
     "title": "SafeConstellations: Mitigating Over-Refusals in LLMs Through Task-Aware Representation Steering",
     "authors": "Utsav Maskey, Sumit Yadav, Mark Dras, Usman Naseem",
-    "venue": "ACL 2026 (Main Conference)",
+    "venue": "ACL 2026 (Main) — Proc. 64th Annual Meeting of the ACL, Vol. 1: Long Papers, pp. 44424–44440. San Diego, USA.",
     "year": 2026,
     "topics": ["Interpretability & Safety"],
     "note": "LLM representations follow distinct per-task \"constellation\" trajectories in embedding space; SafeConstellations is an inference-time method that selectively steers only over-refusal-prone tasks toward non-refusal pathways — cutting over-refusals by up to 73% with minimal utility loss and no retraining.",
-    "links": { "paper": "https://aclanthology.org/2026.acl-long.2056/", "arxiv": "https://arxiv.org/abs/2508.11290" }
+    "links": { "paper": "https://aclanthology.org/2026.acl-long.2056/", "arxiv": "https://arxiv.org/abs/2508.11290", "doi": "https://doi.org/10.18653/v1/2026.acl-long.2056" }
   },
   {
     "title": "On the Relationship Between Representation Geometry and Generalization in Deep Neural Networks",

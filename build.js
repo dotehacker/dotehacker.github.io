@@ -92,7 +92,7 @@ class JekyllLikeBuilder {
     const chips = ['All', ...topics].map((t, i) =>
       `<button class="chip${i === 0 ? ' active' : ''}" data-filter="${i === 0 ? '*' : this.esc(t)}">${this.esc(t)}</button>`
     ).join('');
-    const labels = { paper: 'paper', arxiv: 'arXiv', code: 'code', blog: 'blog', bibtex: 'BibTeX', model: 'model', demo: 'demo', data: 'data' };
+    const labels = { paper: 'paper', arxiv: 'arXiv', doi: 'DOI', code: 'code', blog: 'blog', bibtex: 'BibTeX', model: 'model', demo: 'demo', data: 'data' };
     const cards = pubs.map(p => {
       const links = Object.entries(p.links || {}).map(([k, v]) =>
         `<a href="${this.esc(v)}">${this.esc(labels[k] || k)}</a>`).join('');
