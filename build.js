@@ -216,8 +216,8 @@ class JekyllLikeBuilder {
     if (s.publications !== false) c += this.renderPublications();
     if (s.blog !== false) c += this.renderBlogPreview();
     if (s.experience !== false) c += this.renderExperience();
-    if (s.projects !== false) c += this.renderProjects();
     if (s.honors !== false) c += this.renderHonors();
+    if (s.projects !== false) c += this.renderProjects();
     if (s.documents !== false) c += this.renderDocuments();
     c += this.filterScript();
     const html = this.applyLayout(c, 'default', { title: p.role || p.name, url: '/', description: this.data.site.tagline || '' });
