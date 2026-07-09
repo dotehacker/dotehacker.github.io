@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://sumityadav.com.np/</loc>
-    <lastmod>2026-07-09T02:29:37.864Z</lastmod>
+    <lastmod>2026-07-09T02:34:15.306Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -325,6 +325,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://sumityadav.com.np/posts/2023/04/14/jur-shital/</loc>
+    <lastmod>2023-04-14T00:00:00.000Z</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://sumityadav.com.np/posts/2023/04/09/functional-dependency/</loc>
     <lastmod>2023-04-09T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
@@ -434,43 +440,43 @@
   </url>
   <url>
     <loc>https://sumityadav.com.np/study/ect/</loc>
-    <lastmod>2026-07-09T02:29:37.864Z</lastmod>
+    <lastmod>2026-07-09T02:34:15.306Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://sumityadav.com.np/study/nec-bct-licensure/</loc>
-    <lastmod>2026-07-09T02:29:37.864Z</lastmod>
+    <lastmod>2026-07-09T02:34:15.306Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://sumityadav.com.np/study/nepal-budget-2083-84/</loc>
-    <lastmod>2026-07-09T02:29:37.864Z</lastmod>
+    <lastmod>2026-07-09T02:34:15.306Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://sumityadav.com.np/study/python-codesignal-prep/</loc>
-    <lastmod>2026-07-09T02:29:37.864Z</lastmod>
+    <lastmod>2026-07-09T02:34:15.306Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://sumityadav.com.np/study/steerability-spectrum/</loc>
-    <lastmod>2026-07-09T02:29:37.864Z</lastmod>
+    <lastmod>2026-07-09T02:34:15.306Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://sumityadav.com.np/study/stellar-steering/</loc>
-    <lastmod>2026-07-09T02:29:37.864Z</lastmod>
+    <lastmod>2026-07-09T02:34:15.306Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://sumityadav.com.np/study/tithi-wheel/</loc>
-    <lastmod>2026-07-09T02:29:37.864Z</lastmod>
+    <lastmod>2026-07-09T02:34:15.306Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
