@@ -808,6 +808,65 @@ a:hover {
   margin: 8px 0 0;
 }
 
+/* ---- cookie consent banner ---- */
+.consent {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  max-width: 520px;
+  margin: 0 auto;
+  z-index: 80;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 14px 16px;
+  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.18);
+  font-size: 0.9rem;
+}
+
+.consent p {
+  margin: 0 0 10px;
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+.consent-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.consent button {
+  border-radius: 7px;
+  padding: 0.45rem 1.05rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--sans);
+  border: 1px solid var(--rule);
+}
+
+.consent-accept {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.consent-accept:hover {
+  opacity: 0.92;
+}
+
+.consent-decline {
+  background: transparent;
+  color: var(--muted);
+}
+
+.consent-decline:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
 /* ---- responsive ---- */
 @media (max-width: 620px) {
   .intro {

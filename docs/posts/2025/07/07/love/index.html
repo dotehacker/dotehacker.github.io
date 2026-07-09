@@ -4,11 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Google tag (gtag.js) -->
+    <!-- Google tag (gtag.js) with Consent Mode v2 — analytics denied until the visitor allows -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-DVZFLJD4KX"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        'analytics_storage': 'denied',
+        'ad_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied'
+      });
+      try {
+        if (localStorage.getItem('cookie-consent') === 'granted') {
+          gtag('consent', 'update', { 'analytics_storage': 'granted' });
+        }
+      } catch (e) {}
       gtag('js', new Date());
       gtag('config', 'G-DVZFLJD4KX');
     </script>
@@ -403,6 +414,31 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         </div>
     </main>
+
+    <div class="consent" id="consent-banner" hidden>
+        <p>I use minimal cookies for anonymous <b>analytics</b> (Google Analytics) — just to see which posts people find useful. No ads, no cross-site tracking.</p>
+        <div class="consent-actions">
+            <button class="consent-decline" id="consent-decline">Decline</button>
+            <button class="consent-accept" id="consent-accept">Allow</button>
+        </div>
+    </div>
+    <script>
+      (function () {
+        var b = document.getElementById('consent-banner');
+        var choice = null;
+        try { choice = localStorage.getItem('cookie-consent'); } catch (e) {}
+        if (!choice) b.hidden = false;
+        function decide(v) {
+          try { localStorage.setItem('cookie-consent', v); } catch (e) {}
+          b.hidden = true;
+          if (v === 'granted' && typeof gtag === 'function') {
+            gtag('consent', 'update', { 'analytics_storage': 'granted' });
+          }
+        }
+        document.getElementById('consent-accept').addEventListener('click', function () { decide('granted'); });
+        document.getElementById('consent-decline').addEventListener('click', function () { decide('denied'); });
+      })();
+    </script>
 
     <footer class="site-footer">
     <div class="wrap">
