@@ -1251,27 +1251,34 @@ Sitemap: ${fullSitemapUrl}
   }
 
   // Generate a custom 404 page that invites visitors to browse the blog
-  // /about/ (and legacy tatva /about/ redirects) → home, which is the about/profile page
-  generateAboutRedirect() {
-    const html = `<!DOCTYPE html>
+  // Redirect legacy / short URLs to their current location (preserves old links & SEO)
+  generateRedirects() {
+    const map = {
+      '/about/': '/',                                   // legacy tatva About → home (home is the about)
+      '/jur_shital/': '/posts/2023/04/14/jur-shital/'   // old Hugo page bundle → migrated post
+    };
+    for (const [from, to] of Object.entries(map)) {
+      const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>About — Sumit Yadav</title>
-<link rel="canonical" href="https://sumityadav.com.np/">
+<title>Redirecting… · Sumit Yadav</title>
+<link rel="canonical" href="https://sumityadav.com.np${to}">
 <meta name="robots" content="noindex">
-<meta http-equiv="refresh" content="0; url=/">
-<script>location.replace('/' + (location.hash || ''));</script>
+<meta http-equiv="refresh" content="0; url=${to}">
+<script>location.replace('${to}' + (location.hash || ''));</script>
 </head>
-<body><p>Redirecting to <a href="/">sumityadav.com.np</a>…</p></body>
+<body><p>Redirecting to <a href="${to}">${to}</a>…</p></body>
 </html>
 `;
-    try {
-      fs.mkdirSync('docs/about', { recursive: true });
-      fs.writeFileSync('docs/about/index.html', html);
-      console.log('✅ Generated /about/ → home redirect');
-    } catch (error) {
-      console.error('❌ Error generating /about/ redirect:', error.message);
+      try {
+        const dir = path.join('docs', from.replace(/^\/|\/$/g, ''));
+        fs.mkdirSync(dir, { recursive: true });
+        fs.writeFileSync(path.join(dir, 'index.html'), html);
+        console.log(`  ✅ Redirect ${from} → ${to}`);
+      } catch (error) {
+        console.error(`  ❌ Error generating redirect ${from}:`, error.message);
+      }
     }
   }
 
@@ -1628,7 +1635,7 @@ Allow: /
 
     // Generate custom 404 page
     this.generate404();
-    this.generateAboutRedirect();
+    this.generateRedirects();
 
     // Copy study materials
     this.copyStudyMaterials();
