@@ -1648,8 +1648,13 @@ Allow: /
 
       // Add related posts to page data
       const relatedPosts = this.findRelatedPosts(post);
+      // SEO description: front-matter description, else a clean plain-text summary of the content
+      const seoDesc = (post.description
+        || post.content.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 155).trim())
+        .replace(/["<>]/g, '');
       const pageData = {
         ...post,
+        description: seoDesc,
         relatedPosts
       };
 
