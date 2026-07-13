@@ -18,7 +18,7 @@
   --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-.dark-theme {
+.dark-theme, .rain-theme {
   --bg: #14151a;
   --surface: #1b1d24;
   --ink: #e6e7ea;
@@ -137,18 +137,54 @@ a:hover {
   color: inherit;
 }
 
-.theme-toggle .theme-icon-dark {
+/* 3-state theme icon: show the current mode's icon */
+.theme-toggle .theme-icon {
   display: none;
 }
 
-.dark-theme .theme-toggle .theme-icon-light {
+.theme-toggle .ti-light {
+  display: inline;
+} /* default before JS sets a class */
+.dark-theme .theme-toggle .ti-light,
+.rain-theme .theme-toggle .ti-light {
   display: none;
 }
 
-.dark-theme .theme-toggle .theme-icon-dark {
+.dark-theme .theme-toggle .ti-dark {
   display: inline;
 }
 
+.rain-theme .theme-toggle .ti-rain {
+  display: inline;
+}
+
+/* Rain background (opt-in via the rain theme) */
+#rain-bg {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.7;
+}
+
+.rain-theme body {
+  background: linear-gradient(180deg, #0f1830 0%, #0d1526 68%, #0b1220 100%);
+}
+
+.rain-theme .site-header,
+.rain-theme .page-content,
+.rain-theme .site-footer {
+  position: relative;
+  z-index: 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #rain-bg {
+    display: none;
+  }
+}
 /* ---- intro / header card ---- */
 .intro {
   display: flex;

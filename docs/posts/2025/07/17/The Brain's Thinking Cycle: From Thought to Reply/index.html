@@ -79,9 +79,10 @@
         <nav class="site-nav">
             <a href="/#publications">Publications</a>
             <a href="/blog/">Blog</a>
-            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
-                <span class="theme-icon theme-icon-light">🌙</span>
-                <span class="theme-icon theme-icon-dark">☀️</span>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Switch theme: light, dark, rain" title="Theme — click to cycle: light → dark → rain">
+                <span class="theme-icon ti-light">☀️</span>
+                <span class="theme-icon ti-dark">🌙</span>
+                <span class="theme-icon ti-rain">🌧️</span>
             </button>
         </nav>
     </div>
@@ -717,18 +718,38 @@
 
     <script>
         (function() {
+            const ORDER = ['light', 'dark', 'rain'];   // toggle cycles through these
+            let rainLoading = null;
+            const loadRain = () => {
+                if (window.RainBG) return Promise.resolve();
+                if (rainLoading) return rainLoading;
+                rainLoading = new Promise((resolve) => {
+                    const s = document.createElement('script');
+                    s.src = '/assets/js/rain.js';
+                    s.onload = resolve; s.onerror = resolve;
+                    document.body.appendChild(s);
+                });
+                return rainLoading;
+            };
             const getThemePreference = () => {
                 const stored = localStorage.getItem('theme-preference');
-                if (stored) return stored;
+                if (stored && ORDER.includes(stored)) return stored;
                 return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
             };
             const applyTheme = (theme) => {
                 const root = document.documentElement;
-                root.classList.remove('light-theme', 'dark-theme');
-                if (theme !== 'auto') root.classList.add(`${theme}-theme`);
+                root.classList.remove('light-theme', 'dark-theme', 'rain-theme');
+                root.classList.add(`${theme}-theme`);
+                const isDark = theme === 'dark' || theme === 'rain';
+                // Rain background (opt-in)
+                if (theme === 'rain') {
+                    loadRain().then(() => { if (window.RainBG) window.RainBG.start(); });
+                } else if (window.RainBG) {
+                    window.RainBG.stop();
+                }
+                // Mermaid follows dark/light
                 if (window.mermaid) {
-                    const dark = theme === 'dark' || (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-                    mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'default' });
+                    mermaid.initialize({ startOnLoad: false, theme: isDark ? 'dark' : 'default' });
                     document.querySelectorAll('.mermaid').forEach(el => {
                         if (el.getAttribute('data-processed')) {
                             el.removeAttribute('data-processed');
@@ -743,7 +764,7 @@
                 const t = document.getElementById('theme-toggle');
                 if (t) t.addEventListener('click', () => {
                     const cur = getThemePreference();
-                    const next = cur === 'dark' ? 'light' : 'dark';
+                    const next = ORDER[(ORDER.indexOf(cur) + 1) % ORDER.length];
                     localStorage.setItem('theme-preference', next);
                     applyTheme(next);
                 });
