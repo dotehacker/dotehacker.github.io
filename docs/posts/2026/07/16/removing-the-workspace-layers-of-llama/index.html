@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google tag (gtag.js) with Consent Mode v2 — analytics denied until the visitor allows -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DVZFLJD4KX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        'analytics_storage': 'denied',
+        'ad_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied'
+      });
+      try {
+        if (localStorage.getItem('cookie-consent') === 'granted') {
+          gtag('consent', 'update', { 'analytics_storage': 'granted' });
+        }
+      } catch (e) {}
+      gtag('js', new Date());
+      gtag('config', 'G-DVZFLJD4KX');
+    </script>
+
+    <title>Where Does a Language Model Think? Finding and Removing the 'Workspace' Layers of Llama-3.1-8B · Sumit Yadav</title>
+    <meta name="description" content="A hands-on interpretability walkthrough. We watch concepts form layer-by-layer inside Llama-3.1-8B-Instruct, measure precisely which layers carry meaning,">
+    <meta name="author" content="Sumit Yadav">
+    <meta name="google-site-verification" content="IVG1y4MVA_6MT0wsjk13ooZDQLWXxvYcPXQlmf83MLM" />
+    <link rel="canonical" href="https://sumityadav.com.np/posts/2026/07/16/removing-the-workspace-layers-of-llama/">
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:site_name" content="Sumit Yadav">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Where Does a Language Model Think? Finding and Removing the 'Workspace' Layers of Llama-3.1-8B · Sumit Yadav">
+    <meta property="og:description" content="A hands-on interpretability walkthrough. We watch concepts form layer-by-layer inside Llama-3.1-8B-Instruct, measure precisely which layers carry meaning,">
+    <meta property="og:url" content="https://sumityadav.com.np/posts/2026/07/16/removing-the-workspace-layers-of-llama/">
+    <meta property="og:image" content="https://sumityadav.com.np/profile.jpg">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Where Does a Language Model Think? Finding and Removing the 'Workspace' Layers of Llama-3.1-8B · Sumit Yadav">
+    <meta name="twitter:description" content="A hands-on interpretability walkthrough. We watch concepts form layer-by-layer inside Llama-3.1-8B-Instruct, measure precisely which layers carry meaning,">
+    <meta name="twitter:image" content="https://sumityadav.com.np/profile.jpg">
+
+    <!-- Structured data: Person -->
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"Person","name":"Sumit Yadav","alternateName":"rockerritesh","url":"https://sumityadav.com.np","image":"https://sumityadav.com.np/profile.jpg","jobTitle":"AI Researcher","description":"AI researcher working on interpretability, AI safety, and low-resource NLP.","sameAs":["https://github.com/rockerritesh","https://scholar.google.com/citations?user=ag74ytsAAAAJ&hl=en","https://www.linkedin.com/in/rockerritesh/","https://x.com/rocker_ritesh","https://huggingface.co/rockerritesh","https://www.youtube.com/@Audio-Obsession"]}
+    </script>
+
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- Mermaid.js for diagram rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+
+    <!-- MathJax for LaTeX math -->
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+            options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+        };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <div class="scroll-progress"><div class="scroll-progress-bar" id="scroll-progress-bar"></div></div>
+
+    <header class="site-header">
+    <div class="wrap">
+        <a class="site-title" href="/">Sumit Yadav</a>
+        <nav class="site-nav">
+            <a href="/#publications">Publications</a>
+            <a href="/blog/">Blog</a>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Switch theme: light, dark, rain" title="Theme — click to cycle: light → dark → rain">
+                <span class="theme-icon ti-light">☀️</span>
+                <span class="theme-icon ti-dark">🌙</span>
+                <span class="theme-icon ti-rain">🌧️</span>
+            </button>
+        </nav>
+    </div>
+</header>
+
+
+    <main class="page-content">
+        <div class="wrap">
+            <div class="content-area">
+                
+<article class="post">
+    <header class="post-header">
+        <h1 class="post-title">Where Does a Language Model Think? Finding and Removing the 'Workspace' Layers of Llama-3.1-8B</h1>
+        <p class="post-meta">
+            <time datetime="2026-07-16T00:00:00.000Z">July 16, 2026</time>
+             · <span>AI & ML</span>
+        </p>
+    </header>
+
+    <div class="post-content">
+        <p><em>A hands-on interpretability walkthrough. We watch concepts form layer-by-layer inside
+Llama-3.1-8B-Instruct, measure precisely which layers carry meaning, then <strong>delete
+layers</strong> — one at a time and in whole bands — and quantify exactly how generation
+degrades. Every chart below is interactive and driven by the real run data;
+everything ran on a single 16 GB T4 GPU. We close by connecting the result to
+Anthropic&#39;s 2026 &quot;global workspace&quot; finding.</em></p>
+<p><img src="jspace-architecture.png" alt="Removing a middle decoder layer of Llama-3.1-8B: the block still runs to keep the KV cache consistent, but its update is discarded so the residual stream skips it."></p>
+<blockquote>
+<p><strong>TL;DR.</strong> Topic information becomes <strong>decodable within the first few layers and
+stays decodable everywhere</strong> (kNN ≈ 0.9 from layer 2 on). Yet through the first
+half of the network the classes are <strong>visually entangled</strong> — they collapse onto
+overlapping manifolds (silhouette ≈ 0) — and only <strong>re-separate into clean
+clusters in the second half</strong>. That <em>entangled-but-decodable</em> middle is where
+meaning is <strong>worked on</strong>. Deleting <strong>one</strong> middle layer barely dents generation;
+deleting the <strong>whole band</strong> collapses reasoning while leaving shallow recall
+intact — the same asymmetry Anthropic report when they suppress the
+<strong>J-space / global workspace</strong> [10]. Across <strong>100 queries</strong>, removing the band
+breaks <strong>creative / abstract generation first and single-step recall last</strong>.</p>
+</blockquote>
+<hr>
+<h2>0. Setup</h2>
+<ul>
+<li><strong>Model.</strong> <code>meta-llama/Llama-3.1-8B-Instruct</code> — 32 residual decoder layers,
+hidden width 4096, so <code>output_hidden_states=True</code> yields <strong>33</strong> residual-stream
+tensors (<code>L0</code> = embeddings; <strong><code>Lk</code> = the output of decoder block <code>k−1</code></strong> — mind
+this off-by-one throughout).</li>
+<li><strong>Compute.</strong> One NVIDIA T4 (16 GB), model quantised to 4-bit (nf4).</li>
+<li><strong>Data.</strong> 400 texts, 4 balanced topic classes from 20-Newsgroups
+(<em>space, baseball, graphics, mideast</em>), mean-pooled per layer.</li>
+<li><strong>Two instruments.</strong> (1) a per-layer <strong>probe</strong> of the hidden states, and (2) a
+reversible <strong>layer-ablation wrapper</strong> that turns any decoder block into an
+identity so the residual stream skips it (§3).</li>
+</ul>
+<p>The full code, weights recipe, and the interactive tool are in the repo:
+<a href="https://github.com/rockerritesh/nlp-remove-jspace-layer"><code>rockerritesh/nlp-remove-jspace-layer</code></a>.</p>
+<hr>
+<h2>1. First, a clarification: KL divergence is <strong>not</strong> entropy</h2>
+<p>This question started the whole project, and it is worth getting straight because
+every ablation number below is a KL. Three related-but-distinct quantities:</p>
+<table>
+<thead>
+<tr>
+<th>Quantity</th>
+<th>Formula</th>
+<th>Measures</th>
+<th># dists</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Entropy</strong> $H(p)$</td>
+<td>$-\sum_i p_i \log p_i$</td>
+<td>uncertainty of <em>one</em> distribution</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Cross-entropy</strong> $H(p,q)$</td>
+<td>$-\sum_i p_i \log q_i$</td>
+<td>coding $p$ using $q$</td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>KL divergence</strong> $D_{\mathrm{KL}}(p\,\|\,q)$</td>
+<td>$\sum_i p_i \log \tfrac{p_i}{q_i}$</td>
+<td>how far $p$ is from reference $q$</td>
+<td>2</td>
+</tr>
+</tbody></table>
+<p>They are tied together by one identity:</p>
+<p>$$
+D_{\mathrm{KL}}(p\,\|\,q) \;=\; H(p,q) - H(p),
+\qquad D_{\mathrm{KL}} \ge 0,
+\qquad D_{\mathrm{KL}}(p\,\|\,q)=0 \iff p=q .
+$$</p>
+<ul>
+<li><strong>Entropy</strong> is about <em>one</em> distribution — how spread out / uncertain it is.</li>
+<li><strong>KL divergence</strong> (&quot;relative entropy&quot;) is about <em>two</em> — how far the ablated
+model&#39;s next-token distribution $p_{\text{abl}}$ has moved from the intact
+reference $p_{\text{base}}$. It is asymmetric.</li>
+</ul>
+<p>So &quot;measure the KL of removing a layer&quot; means computing
+$D_{\mathrm{KL}}(p_{\text{abl}}\,\|\,p_{\text{base}})$ at each position — <em>how much
+did deleting this layer change the predictions?</em> We also report <strong>entropy</strong>
+$H(p_{\text{abl}})$ separately, because a broken model can fail two ways: become
+<strong>uncertain</strong> (entropy ↑, the distribution flattens) or get <strong>stuck</strong> (entropy ↓,
+it repeats). KL catches both; entropy tells you <em>which</em>.</p>
+<hr>
+<h2>2. The two probes: decodable vs. visually separated</h2>
+<p>For every layer we take two measurements on the <em>same</em> mean-pooled hidden states:</p>
+<p><strong>(a) Class decodability</strong> — can a classifier still read the topic off the full
+4096-d state? We use a 5-fold cross-validated $k$-NN ($k=15$) on standardized
+features:</p>
+<p>$$
+\text{acc}(\ell) \;=\; \tfrac{1}{5}\sum_{f=1}^{5}
+\operatorname{Acc}\!\big(\text{kNN}_{15};\, H^{(\ell)}_{\text{test}(f)}\big),
+\qquad H^{(\ell)}\in\mathbb{R}^{400\times 4096}.
+$$</p>
+<p><strong>(b) Visual separation</strong> — how cleanly do the classes separate in the 2-D UMAP
+projection? We use the mean silhouette coefficient, where for point $i$ with
+in-class mean distance $a_i$ and nearest-other-class mean distance $b_i$,</p>
+<p>$$
+s_i \;=\; \frac{b_i - a_i}{\max(a_i,\,b_i)} \;\in[-1,1],
+\qquad \text{silhouette}(\ell) \;=\; \tfrac{1}{N}\sum_i s_i .
+$$</p>
+<p>Decodability asks <em>is the information present?</em> Silhouette asks <em>is it laid out in
+big, separated directions?</em> The <strong>gap between them is the whole story</strong>, and it is
+the first interactive figure below. But first — what does the raw geometry look
+like?</p>
+<hr>
+<h2>3. Experiment 1 — watch the representation reorganise, layer by layer</h2>
+<p>Push the 4-class set through the model, mean-pool the hidden state at each layer,
+project each layer to 2-D with UMAP [8], colour by class:</p>
+<p><img src="jspace-umap-grid.png" alt="Per-layer UMAP grid of Llama-3.1-8B hidden states, four topic classes. Early layers fold onto interleaved 1-D manifolds; the middle stays entangled; the classes re-separate cleanly only in the second half."></p>
+<ul>
+<li><strong>Embeddings / early (≈ L0–L5).</strong> <code>L0</code> is a diffuse cloud; by <code>L2–L6</code> the points
+collapse onto thin, folded <strong>1-D manifolds</strong> with the four topics <em>interleaved</em>
+along the curve.</li>
+<li><strong>Middle (≈ L6–L16).</strong> Still entangled — clusters overlap heavily; one class
+(graphics) begins to peel off around <code>L11–L14</code>.</li>
+<li><strong>Late (≈ L18–L32).</strong> Clean <strong>4-way separation</strong> emerges and sharpens all the way
+to the final layer.</li>
+</ul>
+<p>The representation goes <strong>entangle → re-specialise</strong>, echoing the logit lens [1],
+the tuned lens [2], and Tenney et al.&#39;s &quot;BERT rediscovers the classical NLP
+pipeline&quot; [4].</p>
+<blockquote>
+<p><strong>Careful.</strong> UMAP / t-SNE are <em>nonlinear 2-D projections</em> [8]. &quot;Looks entangled&quot;
+is a statement about the projection, not about whether the class is <em>present</em>.
+The next figure checks exactly that — and the answer flips the naive reading.</p>
+</blockquote>
+<h3>3b. The workspace signature (decodable ≫ visually separated)</h3>
+<p>Here is the crux. Decodability (how well a classifier reads the class off the full
+state) against visual separation (silhouette on the projection), per layer:</p>
+<iframe class="jspace-fig" src="jspace-fig-separability.html" title="Decodability vs. visual separation across layers" loading="lazy" scrolling="no" style="width:100%;height:530px;border:1px solid var(--rule);border-radius:10px;background:var(--bg)"></iframe>
+
+<ul>
+<li><strong>Decodability (blue) is high everywhere:</strong> <code>0.68</code> at the embeddings, <code>~0.90</code> by
+layer 5, and it stays <code>0.86–0.93</code> for the <em>entire rest of the network</em>. The class
+is always readable from layer 2 on.</li>
+<li><strong>Visual separation (green) tells the opposite story early:</strong> silhouette hovers
+near <strong>0 (even negative)</strong> through roughly <code>L1–L15</code>, then climbs steeply to
+<strong><code>0.49</code></strong> at the final layer.</li>
+</ul>
+<p>The <strong>gap</strong> — high decodability, near-zero visual separation — is the signature of
+a <strong>distributed, entangled</strong> code: the information did not leave, it went into
+overlapping directions (<strong>superposition</strong> [5]). This is precisely the regime
+Anthropic&#39;s workspace lives in: their J-space carries the concepts the model
+reasons over while occupying only <strong>~6–10 % of activation variance</strong> [10]. High
+information, low variance — a workspace, not a bottleneck.</p>
+<hr>
+<h2>4. Experiment 2 — turning a layer off</h2>
+<p>Every decoder block is residual:</p>
+<p>$$
+x_{\ell} \;=\; x_{\ell-1} \;+\; \operatorname{Attn}_\ell(x_{\ell-1}) \;+\;
+\operatorname{MLP}_\ell(x_{\ell-1}) \;=\; x_{\ell-1} + \Delta_\ell(x_{\ell-1}).
+$$</p>
+<p>To <strong>remove</strong> layer $\ell$ we wrap it so it still runs — keeping the KV-cache
+consistent for the layers above — but <strong>discards its update</strong> $\Delta_\ell$ and
+returns its input unchanged:</p>
+<p>$$
+\tilde x_{\ell} \;=\; x_{\ell-1}
+\qquad(\text{i.e. } \Delta_\ell \mapsto 0).
+$$</p>
+<p>Reversible, no retraining — the layer-level analogue of activation patching /
+causal tracing [3]. In code it is a ten-line module:</p>
+<pre><code class="language-python">class AblatedDecoderLayer(nn.Module):
+    &quot;&quot;&quot;Runs the layer (keeps the KV cache consistent) but returns the *input*
+    hidden states, so the residual stream skips this layer.&quot;&quot;&quot;
+    def __init__(self, orig): super().__init__(); self.orig = orig
+    def forward(self, hidden_states, *args, **kwargs):
+        out = self.orig(hidden_states, *args, **kwargs)   # still populates KV cache
+        if isinstance(out, tuple):
+            return (hidden_states,) + tuple(out[1:])       # discard the new hidden state
+        return hidden_states
+</code></pre>
+<p>Diagrammatically:</p>
+<p><div class="mermaid">flowchart LR
+    subgraph normal["Normal layer ℓ"]
+        A1["x&#8203;in"] --> B1["attn + mlp"] --> C1["x&#8203;in + Δ"]
+        A1 -. residual .-> C1
+    end
+    subgraph ablated["Ablated layer ℓ"]
+        A2["x&#8203;in"] --> B2["attn + mlp<br/>(runs, keeps KV cache)"]
+        B2 -. Δ discarded .-> X(("·"))
+        A2 ==>|returned unchanged| C2["x&#8203;out = x&#8203;in"]
+    end</div></p>
+<p><strong>The metric.</strong> For each prompt we take the intact model&#39;s greedy continuation,
+then re-run the model <strong>teacher-forced on that same continuation</strong> with layer(s)
+ablated, and compare the two next-token distributions at every position:</p>
+<p>$$
+\overline{D_{\mathrm{KL}}} \;=\; \frac{1}{T}\sum_{t=1}^{T}
+D_{\mathrm{KL}}\!\big(p^{(t)}_{\text{abl}} \,\big\|\, p^{(t)}_{\text{base}}\big),
+\qquad
+\text{top-1} \;=\; \frac{1}{T}\sum_{t=1}^{T}
+\mathbf{1}\!\left[\arg\max p^{(t)}_{\text{abl}} = \arg\max p^{(t)}_{\text{base}}\right].
+$$</p>
+<p>Teacher-forcing on the <em>same</em> tokens is what makes the comparison fair: both models
+see identical context, so any divergence is the ablation&#39;s doing, not drift.</p>
+<hr>
+<h2>5. Experiment 3 — remove each layer, one at a time</h2>
+<p>Now ablate every single decoder layer in turn and measure the effect. Toggle the
+metric (top-1 agreement, KL, entropy, perplexity) and switch between the 8-prompt
+sweep and the 100-query sweep with ±1σ bands:</p>
+<iframe class="jspace-fig" src="jspace-fig-single-ablation.html" title="Single-layer ablation sweep" loading="lazy" scrolling="no" style="width:100%;height:560px;border:1px solid var(--rule);border-radius:10px;background:var(--bg)"></iframe>
+
+<p>It is <strong>not</strong> a symmetric U — it is an <strong>early cliff</strong>:</p>
+<ul>
+<li><strong>Layers 0–1 are load-bearing.</strong> Remove <code>L0</code> → KL ≈ 17–18, top-1 <strong>6–7 %</strong>,
+perplexity in the <em>thousands</em>. Remove <code>L1</code> → KL ≈ 13–14, top-1 <strong>23–24 %</strong>. The
+model is destroyed.</li>
+<li><strong>Every other single layer is remarkably survivable.</strong> Across <code>L2–L29</code> the top-1
+agreement sits at <strong>89–96 %</strong> with KL ≈ <code>0.05–0.22</code> and perplexity barely above
+the <code>1.10</code> baseline. Middle layers are individually the <em>most redundant</em> — which
+is exactly why depth-pruning methods delete them [6, 7].</li>
+<li><strong>The final layer matters a bit more:</strong> <code>L31</code> → KL ≈ 0.98–1.18, top-1 ≈ 81–88 %.</li>
+</ul>
+<p>Across 100 queries the picture is rock-solid: <strong>exactly two layers</strong> (L0, L1) are
+individually catastrophic; everything else routes around a single missing block.
+Here is the intact model vs. removing just the middle <code>L15</code> on &quot;explain why the sky
+is blue&quot; — the outputs are near-identical (KL 0.17, top-1 81 %):</p>
+<p><img src="jspace-ui-single-en.png" alt="Interactive tool: removing a single middle decoder layer (L15). Baseline and ablated answers are near-identical — one missing middle block is survivable."></p>
+<p>One missing middle block? The residual stream just re-routes around it.</p>
+<hr>
+<h2>6. Experiment 4 — remove the <strong>whole band</strong> → the workspace collapses</h2>
+<p>Individually redundant ≠ collectively expendable. Delete a <strong>growing contiguous
+window</strong> of middle layers (centred ~`L11`) and watch the model fall over. Toggle
+metric and sample size:</p>
+<iframe class="jspace-fig" src="jspace-fig-cumulative.html" title="Cumulative middle-band ablation" loading="lazy" scrolling="no" style="width:100%;height:560px;border:1px solid var(--rule);border-radius:10px;background:var(--bg)"></iframe>
+
+<p>A graceful-then-catastrophic collapse — the numbers (100-query means):</p>
+<table>
+<thead>
+<tr>
+<th>layers removed</th>
+<th>1</th>
+<th>2</th>
+<th>4</th>
+<th>6</th>
+<th>8</th>
+<th>10</th>
+<th>12</th>
+<th>14</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>KL</td>
+<td>0.18</td>
+<td>0.39</td>
+<td>1.5</td>
+<td>3.9</td>
+<td>5.6</td>
+<td>9.9</td>
+<td>13.9</td>
+<td>16.9</td>
+</tr>
+<tr>
+<td>top-1</td>
+<td>91 %</td>
+<td>86 %</td>
+<td>79 %</td>
+<td>67 %</td>
+<td>54 %</td>
+<td>40 %</td>
+<td>22 %</td>
+<td>12 %</td>
+</tr>
+</tbody></table>
+<p>The interactive tool makes the failure mode visible. Removing four middle layers
+(L10–L13) still gives a coherent — if shallower — answer:</p>
+<p><img src="jspace-ui-band-en.png" alt="Interactive tool: removing a 4-layer band (L10–L13). Still coherent, but shallower, with the regime-coloured 0–31 toggle grid."></p>
+<p>…but push to the whole 12-layer concept band and the output degenerates into
+<em>&quot;…the sky is a beautiful blue and the sky is a beautiful blue. It&#39;s a blue collar,
+a blue collar…&quot;</em> — the <strong>word</strong> &quot;blue&quot; survives, the <strong>explanation</strong> does not
+(KL ≈ 15.6, top-1 ≈ 20 %). Individually the layers are spare tyres; together they
+are the engine.</p>
+<hr>
+<h2>7. Which capability breaks first? (and a language-adherence surprise)</h2>
+<p>Splitting the band-removal effect by query type — 20 prompts each of <strong>recall,
+math, reasoning, translation, creative</strong> — asks the question the workspace account
+really cares about: <em>when you remove the band, does abstraction break before recall?</em></p>
+<iframe class="jspace-fig" src="jspace-fig-by-category.html" title="Which capability breaks first, by query type" loading="lazy" scrolling="no" style="width:100%;height:560px;border:1px solid var(--rule);border-radius:10px;background:var(--bg)"></iframe>
+
+<p>Through the informative mid-range (4–10 layers removed) the ordering is consistent:
+<strong>single-step recall is the most robust; open-ended / creative generation collapses
+first</strong>, with reasoning and translation in between. That is the direction
+Anthropic&#39;s workspace result predicts — abstract, generative capability leans
+hardest on the middle band; shallow recall leans on it least. Two honest caveats:
+the separation is <strong>graded, not on/off</strong>, and beyond ~12 layers removed <em>everything</em>
+converges toward collapse (the ordering gets noisy once the model is already broken).</p>
+<h3>A language-adherence surprise</h3>
+<p>A striking qualitative case, straight from the interactive tool. Ask Llama to
+answer <strong>in Hindi</strong> and remove a single middle layer — the Devanagari answer is
+preserved essentially intact (KL 0.15, top-1 88 %):</p>
+<p><img src="jspace-ui-single-hi.png" alt="Prompt answered in Hindi with a single middle layer removed — the Devanagari output is preserved."></p>
+<p>But remove the <strong>middle band</strong> on the same Hindi prompt and the model <strong>switches
+back to English and starts repeating</strong> — the <em>content</em> limps on, but the
+<em>instruction to stay in the target language</em> is gone:</p>
+<p><img src="jspace-ui-band-hi.png" alt="Prompt answered in Hindi with a 4-layer band removed — the model abandons Hindi, reverts to English, and loops."></p>
+<p>That is a small, vivid instance of a general point: <strong>instruction- and
+language-adherence live in the same mid-network band as abstract reasoning</strong>, and
+they are among the first things to go. It also connects to a companion line of work
+on inference-time <em>representation steering</em> for Devanagari sister-languages —
+where the Hindi→target transfer direction lives in exactly this re-divergence-onset
+region of the network.</p>
+<h3>Try it yourself</h3>
+<p>The interactive UI (<code>ui.html</code>) drives the 8B model on a GPU box through an SSH
+tunnel: type any prompt, toggle any subset of the 0–31 decoder layers (with
+regime-coloured presets — <em>Concept L6–L17</em>, <em>Early</em>, <em>Late</em>), and get
+baseline-vs-ablated generations side by side with live KL and top-1. Because it
+needs the model weights on a GPU it can&#39;t run inline here, but the whole thing —
+<code>server.py</code>, <code>ui.html</code>, <code>client.py</code>, and the experiment scripts — is in the
+<a href="https://github.com/rockerritesh/nlp-remove-jspace-layer">repo</a>.</p>
+<hr>
+<h2>8. The connection: a blunt version of the &quot;global workspace&quot;</h2>
+<p>Anthropic&#39;s <strong>&quot;Verbalizable Representations Form a Global Workspace in Language
+Models&quot;</strong> (Gurnee, Sofroniew, … Lindsey; July 2026) [10] introduces the <strong>Jacobian
+lens (J-lens)</strong>, which surfaces a small set of token-aligned directions in the
+intermediate layers — the <strong>J-space</strong> — that behaves like a cognitive-science
+<em>global workspace</em> [9]: a shared &quot;blackboard&quot; the model reads concepts from and
+reasons over, occupying only ~6–10 % of activation variance. When they <strong>suppress
+the top J-space directions</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Impaired</th>
+<th>Preserved</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>multi-hop <strong>reasoning</strong> (→ ~0 %)</td>
+<td>text parsing, grammatical <strong>fluency</strong></td>
+</tr>
+<tr>
+<td><strong>creative / abstract</strong> generation</td>
+<td>shallow classification, fact extraction</td>
+</tr>
+<tr>
+<td>experiential self-report</td>
+<td><strong>single-step factual recall</strong></td>
+</tr>
+</tbody></table>
+<p>Our coarse experiment — deleting whole <em>layers</em> rather than surgical <em>directions</em> —
+reproduces the <strong>same asymmetry</strong>: kill the middle band and reasoning / abstraction
+dies while shallow recall survives (§7). And §3b shows <em>why</em> that band is special:
+it is where the topic is maximally <strong>entangled yet fully decodable</strong> — an
+information-rich, low-variance workspace. The layers where the classes <em>stop looking
+separated</em> are exactly the layers you <em>cannot</em> remove as a group without losing the
+ability to reason. That is where the workspace lives.</p>
+<hr>
+<h2>9. Related work</h2>
+<p><strong>Depth redundancy &amp; layer pruning.</strong> That a <em>single</em> middle layer is nearly free
+to drop is the empirical backbone of the depth-pruning literature. Gromov et al.,
+<em>The Unreasonable Ineffectiveness of the Deeper Layers</em> [6], and Men et al.,
+<em>ShortGPT</em> [7], both show you can delete a large contiguous block of upper-middle
+layers with little loss (after light healing). Our single-layer sweep (§5)
+independently reproduces their premise on Llama-3.1-8B; our band-removal collapse
+(§6) marks where &quot;little loss&quot; ends.</p>
+<p><strong>Which layers do what.</strong> A 2025 line of work makes the capability split precise.
+<em>Demystifying the Roles of LLM Layers in Retrieval, Knowledge, and Reasoning</em>
+(arXiv:2510.02091) [11] shows shallow layers dominate retrieval while <strong>middle and
+deep layers are where reasoning (e.g. GSM8K) is sensitive</strong> — the direct,
+correctness-graded version of our §7. <em>On the Limits of Layer Pruning for
+Generative Reasoning in LLMs</em> (arXiv:2602.01997) [12] studies exactly when pruning
+breaks generative reasoning, matching our graceful-then-catastrophic band curve.</p>
+<p><strong>Scalpel, not sledgehammer.</strong> Where we ablate whole layers, others ablate
+directions or neurons. <em>The Achilles&#39; Heel of LLMs</em> (arXiv:2510.10238) [13] shows a
+<em>handful</em> of neurons can cripple core language ability, and <em>Sparse Neuron Ablation
+Triggers Catastrophic Collapse of the Language Core</em> (arXiv:2512.00918) [14] finds a
+small &quot;language core&quot; whose ablation collapses fluency — the fine-grained analogue
+of our band collapse, and closer in spirit to the J-space&#39;s low-rank subspace [10].</p>
+<p><strong>Reading the residual stream.</strong> The probing view builds on the logit lens [1] and
+tuned lens [2], on Tenney et al.&#39;s layer-wise &quot;NLP pipeline&quot; [4], on
+superposition [5] as the reason a code can be decodable yet entangled, and on
+activation patching / causal tracing [3] as the intervention template that
+layer ablation coarsens.</p>
+<hr>
+<h2>10. Honest caveats</h2>
+<ul>
+<li><strong>Layer ≠ subspace.</strong> We remove <em>entire layers</em> (sledgehammer); the J-space is a
+<em>low-rank subspace within</em> layers (scalpel). Layer ablation is a coarse,
+correlational proxy for workspace ablation — a directional replication, not a
+reproduction.</li>
+<li><strong>The metric is a proxy.</strong> Top-1 agreement measures <em>&quot;output preserved vs. the
+intact model&#39;s own greedy continuation,&quot;</em> not correctness. A confident wrong
+answer and a confident right answer both score high.</li>
+<li><strong>Regime boundaries are eyeballed.</strong> The three-band story is a reading of the
+UMAP grid; §3b&#39;s decodability-vs-silhouette gap is the load-bearing evidence, and
+mean-pooling + UMAP shape the <em>early</em>-layer picture in particular.</li>
+<li><strong>Scope.</strong> One model, 4-bit, 20-Newsgroups (400 texts) + 8/100 prompts, short
+greedy continuations. Directional, not a benchmark.</li>
+</ul>
+<p>Still — a satisfying result on a single T4: <strong>the layers where classes stop looking
+separated are precisely the layers you can&#39;t remove as a group without losing the
+ability to reason.</strong></p>
+<hr>
+<h2>11. Reproduce</h2>
+<pre><code class="language-bash"># On the GPU box (VM):
+python server.py --load-4bit                  # FastAPI on :8000 (4-bit for a T4)
+python experiments/run_experiments.py         # UMAP grid, separability, ablation (8-prompt)
+python experiments/run_queries100.py          # 100-query sweep + per-category + CSV/JSON
+
+# From a laptop: tunnel + open ui.html, ablate any subset of layers interactively
+gcloud compute ssh &lt;vm&gt; -- -N -L 8000:localhost:8000
+</code></pre>
+<p>Code, data, and figures: <a href="https://github.com/rockerritesh/nlp-remove-jspace-layer"><code>rockerritesh/nlp-remove-jspace-layer</code></a>.</p>
+<hr>
+<h2>References</h2>
+<ol>
+<li>nostalgebraist (2020). <em>Interpreting GPT: the Logit Lens.</em> LessWrong.</li>
+<li>Belrose et al. (2023). <em>Eliciting Latent Predictions from Transformers with the Tuned Lens.</em> arXiv:2303.08112.</li>
+<li>Meng, Bau, Andonian, Belinkov (2022). <em>Locating and Editing Factual Associations in GPT</em> (ROME / causal tracing). NeurIPS. arXiv:2202.05262.</li>
+<li>Tenney, Das, Pavlick (2019). <em>BERT Rediscovers the Classical NLP Pipeline.</em> ACL. arXiv:1905.05950.</li>
+<li>Elhage et al. (2022). <em>Toy Models of Superposition.</em> Anthropic / Transformer Circuits.</li>
+<li>Gromov, Tirumala, Shapourian, Glorioso, Roberts (2024). <em>The Unreasonable Ineffectiveness of the Deeper Layers.</em> arXiv:2403.17887.</li>
+<li>Men et al. (2024). <em>ShortGPT: Layers in Large Language Models are More Redundant Than You Expect.</em> arXiv:2403.03853.</li>
+<li>McInnes, Healy, Melville (2018). <em>UMAP.</em> arXiv:1802.03426. · van der Maaten &amp; Hinton (2008). <em>t-SNE.</em> JMLR.</li>
+<li>Baars (1988); Dehaene et al. — <em>Global Workspace Theory</em> of consciousness (the analogy).</li>
+<li>Gurnee, Sofroniew, Pearce, … Lindsey (2026). <em>Verbalizable Representations Form a Global Workspace in Language Models.</em> Anthropic. <a href="https://transformer-circuits.pub/2026/workspace/">https://transformer-circuits.pub/2026/workspace/</a></li>
+<li><em>Demystifying the Roles of LLM Layers in Retrieval, Knowledge, and Reasoning</em> (2025). arXiv:2510.02091.</li>
+<li><em>On the Limits of Layer Pruning for Generative Reasoning in Large Language Models</em> (2026). arXiv:2602.01997.</li>
+<li><em>The Achilles&#39; Heel of LLMs: How Altering a Handful of Neurons Can Cripple Language Abilities</em> (2025). arXiv:2510.10238.</li>
+<li><em>Sparse Neuron Ablation Triggers Catastrophic Collapse of the Language Core in Large Vision-Language Models</em> (2025). arXiv:2512.00918.</li>
+</ol>
+<hr>
+<p><em>Built on a GCloud T4 VM · Llama-3.1-8B-Instruct (4-bit) · interactive charts driven
+by <code>metrics.json</code> / <code>metrics_100.json</code> from the run · figures from
+<code>experiments/run_experiments.py</code>.</em></p>
+<script>
+(function(){
+  function theme(){var c=document.documentElement.classList;return (c.contains('dark-theme')||c.contains('rain-theme'))?'dark':'light';}
+  function sync(){document.querySelectorAll('iframe.jspace-fig').forEach(function(f){try{f.contentWindow.postMessage({type:'theme',theme:theme()},'*');}catch(e){}});}
+  document.querySelectorAll('iframe.jspace-fig').forEach(function(f){f.addEventListener('load',sync);});
+  try{new MutationObserver(sync).observe(document.documentElement,{attributes:true,attributeFilter:['class']});}catch(e){}
+  setTimeout(sync,400);setTimeout(sync,1400);
+})();
+</script>
+
+    </div>
+
+    <details class="cite">
+  <summary>Cite this post</summary>
+  <div class="cite-body" id="citation-section">
+    <div class="citation-tabs" role="tablist">
+        <button class="citation-tab active" data-target="bibtex" role="tab" aria-selected="true">BibTeX</button>
+        <button class="citation-tab" data-target="apa" role="tab" aria-selected="false">APA</button>
+        <button class="citation-tab" data-target="mla" role="tab" aria-selected="false">MLA</button>
+        <button class="citation-tab" data-target="chicago" role="tab" aria-selected="false">Chicago</button>
+    </div>
+    <div class="citation-panels">
+        <div class="citation-panel active" id="panel-bibtex" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-bibtex"></pre><button class="copy-btn" data-cite="cite-bibtex">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-apa" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-apa"></pre><button class="copy-btn" data-cite="cite-apa">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-mla" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-mla"></pre><button class="copy-btn" data-cite="cite-mla">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-chicago" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-chicago"></pre><button class="copy-btn" data-cite="cite-chicago">Copy</button></div>
+        </div>
+    </div>
+    <p class="citation-note">Auto-generated. Verify for your institution's requirements.</p>
+  </div>
+</details>
+
+<template id="cite-meta">Where Does a Language Model Think? Finding and Removing the 'Workspace' Layers of Llama-3.1-8B</template>
+
+<script>
+(function() {
+    var meta = document.getElementById('cite-meta');
+    if (!meta) return;
+    var t = meta.content ? meta.content.textContent : meta.innerHTML;
+    var a = 'Sumit Yadav';
+    var j = 'Sumit Yadav';
+    var u = 'https://sumityadav.com.np/posts/2026/07/16/removing-the-workspace-layers-of-llama/';
+    var y = '2026';
+    var mo = 'July';
+    var ms = 'Jul';
+    var dy = '16';
+    var k = a.split(' ')[0].toLowerCase() + y + t.toLowerCase().replace(/[^a-z0-9]+/g, '');
+
+    document.getElementById('cite-bibtex').textContent =
+        '@article{' + k + ',\n  title     = {' + t + '},\n  author    = {' + a +
+        '},\n  journal   = {' + j + '},\n  year      = {' + y + '},\n  month     = {' + mo +
+        '},\n  day       = {' + dy + '},\n  url       = {' + u + '}\n}';
+    document.getElementById('cite-apa').textContent =
+        a + '. (' + y + ', ' + mo + ' ' + dy + '). ' + t + '. ' + j + '. ' + u;
+    document.getElementById('cite-mla').textContent =
+        a + '. “' + t + '.” ' + j + ', ' + dy + ' ' + ms + ' ' + y + ', ' + u + '.';
+    document.getElementById('cite-chicago').textContent =
+        a + '. “' + t + '.” ' + j + '. ' + mo + ' ' + dy + ', ' + y + '. ' + u + '.';
+
+    var sec = document.getElementById('citation-section');
+    sec.querySelectorAll('.citation-tab').forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            sec.querySelectorAll('.citation-tab').forEach(function(x) { x.classList.remove('active'); x.setAttribute('aria-selected', 'false'); });
+            sec.querySelectorAll('.citation-panel').forEach(function(p) { p.classList.remove('active'); });
+            this.classList.add('active'); this.setAttribute('aria-selected', 'true');
+            sec.querySelector('#panel-' + this.dataset.target).classList.add('active');
+        });
+    });
+    sec.querySelectorAll('.copy-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var text = document.getElementById(this.dataset.cite).textContent;
+            var b = this;
+            var done = function() { b.textContent = 'Copied!'; b.classList.add('copied'); setTimeout(function() { b.textContent = 'Copy'; b.classList.remove('copied'); }, 2000); };
+            navigator.clipboard.writeText(text).then(done).catch(function() {
+                var ta = document.createElement('textarea'); ta.value = text; ta.style.cssText = 'position:fixed;opacity:0';
+                document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); done();
+            });
+        });
+    });
+})();
+</script>
+
+
+    <footer class="post-footer">
+        <p><a href="/blog/">← All posts</a></p>
+    </footer>
+</article>
+
+            </div>
+        </div>
+    </main>
+
+    <div class="consent" id="consent-banner" hidden>
+        <p>I use minimal cookies for anonymous <b>analytics</b> (Google Analytics) — just to see which posts people find useful. No ads, no cross-site tracking.</p>
+        <div class="consent-actions">
+            <button class="consent-decline" id="consent-decline">Decline</button>
+            <button class="consent-accept" id="consent-accept">Allow</button>
+        </div>
+    </div>
+    <script>
+      (function () {
+        var b = document.getElementById('consent-banner');
+        var choice = null;
+        try { choice = localStorage.getItem('cookie-consent'); } catch (e) {}
+        if (!choice) b.hidden = false;
+        function decide(v) {
+          try { localStorage.setItem('cookie-consent', v); } catch (e) {}
+          b.hidden = true;
+          if (v === 'granted' && typeof gtag === 'function') {
+            gtag('consent', 'update', { 'analytics_storage': 'granted' });
+          }
+        }
+        document.getElementById('consent-accept').addEventListener('click', function () { decide('granted'); });
+        document.getElementById('consent-decline').addEventListener('click', function () { decide('denied'); });
+      })();
+    </script>
+
+    <footer class="site-footer">
+    <div class="wrap">
+        <p>© 2026 Sumit Yadav · Kathmandu, Nepal · <a href="/">home</a> · <a href="/blog/">blog</a></p>
+    </div>
+</footer>
+
+
+    <script>
+        (function() {
+            const ORDER = ['light', 'dark', 'rain'];   // toggle cycles through these
+            let rainLoading = null;
+            const loadRain = () => {
+                if (window.RainBG) return Promise.resolve();
+                if (rainLoading) return rainLoading;
+                rainLoading = new Promise((resolve) => {
+                    const s = document.createElement('script');
+                    s.src = '/assets/js/rain.js';
+                    s.onload = resolve; s.onerror = resolve;
+                    document.body.appendChild(s);
+                });
+                return rainLoading;
+            };
+            const getThemePreference = () => {
+                const stored = localStorage.getItem('theme-preference');
+                if (stored && ORDER.includes(stored)) return stored;
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            };
+            const applyTheme = (theme) => {
+                const root = document.documentElement;
+                root.classList.remove('light-theme', 'dark-theme', 'rain-theme');
+                root.classList.add(`${theme}-theme`);
+                const isDark = theme === 'dark' || theme === 'rain';
+                // Rain background (opt-in)
+                if (theme === 'rain') {
+                    loadRain().then(() => { if (window.RainBG) window.RainBG.start(); });
+                } else if (window.RainBG) {
+                    window.RainBG.stop();
+                }
+                // Mermaid follows dark/light
+                if (window.mermaid) {
+                    mermaid.initialize({ startOnLoad: false, theme: isDark ? 'dark' : 'default' });
+                    document.querySelectorAll('.mermaid').forEach(el => {
+                        if (el.getAttribute('data-processed')) {
+                            el.removeAttribute('data-processed');
+                            el.innerHTML = el.getAttribute('data-original') || el.innerHTML;
+                        }
+                    });
+                    if (window.mermaid.init) mermaid.init(undefined, '.mermaid');
+                }
+            };
+            document.addEventListener('DOMContentLoaded', () => {
+                applyTheme(getThemePreference());
+                const t = document.getElementById('theme-toggle');
+                if (t) t.addEventListener('click', () => {
+                    const cur = getThemePreference();
+                    const next = ORDER[(ORDER.indexOf(cur) + 1) % ORDER.length];
+                    localStorage.setItem('theme-preference', next);
+                    applyTheme(next);
+                });
+                document.querySelectorAll('.mermaid').forEach(el => {
+                    if (!el.getAttribute('data-original')) el.setAttribute('data-original', el.innerHTML);
+                });
+            });
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme-preference')) applyTheme(e.matches ? 'dark' : 'light');
+            });
+        })();
+        (function() {
+            const bar = document.getElementById('scroll-progress-bar');
+            if (!bar) return;
+            const upd = () => {
+                const st = window.pageYOffset || document.documentElement.scrollTop;
+                const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                bar.style.height = Math.min(Math.max((st / h) * 100, 0), 100) + '%';
+            };
+            window.addEventListener('scroll', upd, { passive: true });
+            window.addEventListener('resize', upd, { passive: true });
+            upd();
+        })();
+    </script>
+</body>
+</html>

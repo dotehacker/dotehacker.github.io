@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Decodable vs. visually separated, per layer</title>
+<style>
+  :root{
+    --bg:#ffffff; --surface:#faf9fb; --ink:#1f2328; --muted:#6a6f76; --faint:#8b9097;
+    --rule:#e8e6ec; --grid:#eeecf1; --accent:#5b4b9e;
+    --s1:#2a78d6; --s2:#008300;
+    --band-a:#eef1ef; --band-b:#fbeede; --band-c:#e9eef7;   /* surface / concept / output tints */
+    --tip-bg:rgba(255,255,255,.97); --tip-bd:#d9d7e0;
+  }
+  @media (prefers-color-scheme:dark){ :root:where(:not([data-theme="light"])){
+    --bg:#14151a; --surface:#1b1d24; --ink:#e6e7ea; --muted:#a3a8b2; --faint:#7e848f;
+    --rule:#2a2d36; --grid:#232630; --accent:#a48fff;
+    --s1:#3987e5; --s2:#3ea55f;
+    --band-a:#1a1f1c; --band-b:#241d18; --band-c:#171d29;
+    --tip-bg:rgba(27,29,36,.97); --tip-bd:#3a3d47;
+  }}
+  :root[data-theme="dark"]{
+    --bg:#14151a; --surface:#1b1d24; --ink:#e6e7ea; --muted:#a3a8b2; --faint:#7e848f;
+    --rule:#2a2d36; --grid:#232630; --accent:#a48fff;
+    --s1:#3987e5; --s2:#3ea55f;
+    --band-a:#1a1f1c; --band-b:#241d18; --band-c:#171d29;
+    --tip-bg:rgba(27,29,36,.97); --tip-bd:#3a3d47;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .wrap{padding:14px 12px 8px}
+  .head h3{margin:0 0 2px;font-size:15px;font-weight:700;letter-spacing:-.01em}
+  .head p{margin:0 0 8px;font-size:12.5px;color:var(--muted);line-height:1.45}
+  .legend{display:flex;flex-wrap:wrap;gap:14px;margin:2px 0 4px;font-size:12px;color:var(--ink)}
+  .legend span{display:inline-flex;align-items:center;gap:7px}
+  .swatch{width:20px;height:0;border-top-width:3px;border-top-style:solid;border-radius:2px}
+  .plot{position:relative}
+  svg{width:100%;height:auto;display:block;overflow:visible}
+  .grid line{stroke:var(--grid);stroke-width:1}
+  .axis line{stroke:var(--rule);stroke-width:1}
+  .axis text,.tick text{fill:var(--muted);font-size:11px}
+  .axlabel{fill:var(--faint);font-size:11px}
+  .chance{stroke:var(--faint);stroke-width:1;stroke-dasharray:2 3}
+  .chance-t{fill:var(--faint);font-size:10.5px}
+  .ln{fill:none;stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round}
+  .dot{stroke:var(--bg);stroke-width:1.4}
+  .rgl{font-size:10.5px;fill:var(--faint);font-weight:600;letter-spacing:.02em}
+  .cross{stroke:var(--faint);stroke-width:1;stroke-dasharray:3 3;opacity:0}
+  .hd{opacity:0}
+  .tip{position:absolute;pointer-events:none;opacity:0;transform:translate(-50%,-108%);
+    background:var(--tip-bg);border:1px solid var(--tip-bd);border-radius:8px;
+    padding:7px 9px;font-size:11.5px;line-height:1.5;white-space:nowrap;
+    box-shadow:0 6px 20px rgba(0,0,0,.14);backdrop-filter:blur(3px);z-index:5}
+  .tip b{font-weight:700}
+  .tip i{font-style:normal;color:var(--muted)}
+  .cap{margin:6px 2px 0;font-size:11px;color:var(--faint);line-height:1.4}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <h3>The workspace signature: decodable everywhere, visually separated only late</h3>
+    <p>Per hidden-state layer of Llama-3.1-8B on a 4-topic set. The <b>gap</b> — high decodability, near-zero visual separation through the first half — is the entangled, superposed "workspace." Hover for values.</p>
+  </div>
+  <div class="legend">
+    <span><span class="swatch" style="border-top-color:var(--s1)"></span>Class decodability — kNN acc (full 4096-d state)</span>
+    <span><span class="swatch" style="border-top-color:var(--s2);border-top-style:dashed"></span>Visual separation — silhouette (2-D UMAP)</span>
+  </div>
+  <div class="plot">
+    <svg id="svg" viewBox="0 0 820 400" role="img" aria-label="Decodability and visual separation across layers"></svg>
+    <div class="tip" id="tip"></div>
+  </div>
+  <p class="cap">Source: <code>metrics.json</code> · 20-Newsgroups (space / baseball / graphics / mideast), 400 texts · kNN 5-fold on standardized 4096-d states; silhouette on the 2-D UMAP. Plot L0 = embeddings, L<i>k</i> = output of decoder layer <i>k</i>−1.</p>
+</div>
+<script>
+const X = Array.from({length:33},(_,i)=>i);
+const KNN = [0.685,0.775,0.8425,0.87,0.8825,0.8975,0.875,0.885,0.88,0.8925,0.87,0.8825,0.8675,0.8625,0.8675,0.88,0.9075,0.9025,0.9025,0.905,0.9025,0.915,0.9275,0.9175,0.9275,0.925,0.9125,0.925,0.93,0.9325,0.9175,0.9125,0.92];
+const SIL = [0.0387,-0.0114,-0.0590,-0.0567,-0.0488,-0.0497,-0.0149,-0.0218,-0.0374,0.0195,-0.0003,-0.0284,0.0006,0.0186,0.0211,0.0252,0.0844,0.0825,0.0870,0.1068,0.1230,0.1355,0.1601,0.2424,0.2986,0.2442,0.2103,0.2478,0.2476,0.2809,0.3277,0.3230,0.4878];
+
+const svg=document.getElementById('svg'), tip=document.getElementById('tip');
+const W=820,H=400,pad={l:52,r:16,t:14,b:44};
+const xd=[0,32], yd=[-0.1,1];
+const sx=v=>pad.l+(v-xd[0])/(xd[1]-xd[0])*(W-pad.l-pad.r);
+const sy=v=>(H-pad.b)-(v-yd[0])/(yd[1]-yd[0])*(H-pad.t-pad.b);
+const NS="http://www.w3.org/2000/svg";
+const el=(n,a)=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);return e;};
+const path=pts=>pts.map((p,i)=>(i?'L':'M')+sx(p[0]).toFixed(1)+' '+sy(p[1]).toFixed(1)).join(' ');
+
+// regime bands
+const regimes=[[0,5.5,'var(--band-a)','SURFACE · L0–5'],[5.5,17.5,'var(--band-b)','CONCEPT / WORKSPACE · L6–17'],[17.5,32,'var(--band-c)','OUTPUT · L18–32']];
+for(const [a,b,f,lab] of regimes){
+  svg.appendChild(el('rect',{x:sx(a),y:pad.t,width:sx(b)-sx(a),height:(H-pad.b)-pad.t,fill:f}));
+  const t=el('text',{x:(sx(a)+sx(b))/2,y:pad.t+13,'text-anchor':'middle','class':'rgl'});t.textContent=lab;svg.appendChild(t);
+}
+// grid + y ticks
+const g=el('g',{'class':'grid'});svg.appendChild(g);
+[0,0.25,0.5,0.75,1].forEach(v=>{
+  g.appendChild(el('line',{x1:pad.l,y1:sy(v),x2:W-pad.r,y2:sy(v)}));
+  const t=el('text',{x:pad.l-8,y:sy(v)+3.5,'text-anchor':'end','class':'tick'});t.textContent=v.toFixed(2);g.appendChild(t);
+});
+// chance line
+svg.appendChild(el('line',{x1:pad.l,y1:sy(0.25),x2:W-pad.r,y2:sy(0.25),'class':'chance'}));
+const ct=el('text',{x:pad.l+6,y:sy(0.25)-4,'class':'chance-t'});ct.textContent='chance (4 classes)';svg.appendChild(ct);
+// x axis
+const ax=el('g',{'class':'axis'});svg.appendChild(ax);
+ax.appendChild(el('line',{x1:pad.l,y1:H-pad.b,x2:W-pad.r,y2:H-pad.b}));
+[0,4,8,12,16,20,24,28,32].forEach(v=>{const t=el('text',{x:sx(v),y:H-pad.b+16,'text-anchor':'middle','class':'tick'});t.textContent='L'+v;ax.appendChild(t);});
+const xl=el('text',{x:(pad.l+W-pad.r)/2,y:H-6,'text-anchor':'middle','class':'axlabel'});xl.textContent='hidden-state layer  (0 = embeddings … 32 = final)';svg.appendChild(xl);
+const yl=el('text',{x:14,y:(pad.t+H-pad.b)/2,'text-anchor':'middle','class':'axlabel',transform:`rotate(-90 14 ${(pad.t+H-pad.b)/2})`});yl.textContent='score (accuracy / silhouette)';svg.appendChild(yl);
+
+// lines
+svg.appendChild(el('path',{d:path(X.map((x,i)=>[x,KNN[i]])),'class':'ln',stroke:'var(--s1)'}));
+svg.appendChild(el('path',{d:path(X.map((x,i)=>[x,SIL[i]])),'class':'ln',stroke:'var(--s2)','stroke-dasharray':'6 4'}));
+X.forEach((x,i)=>{svg.appendChild(el('circle',{cx:sx(x),cy:sy(KNN[i]),r:2.6,fill:'var(--s1)','class':'dot'}));});
+X.forEach((x,i)=>{svg.appendChild(el('circle',{cx:sx(x),cy:sy(SIL[i]),r:2.6,fill:'var(--s2)','class':'dot'}));});
+
+// hover
+const cross=el('line',{'class':'cross',y1:pad.t,y2:H-pad.b});svg.appendChild(cross);
+const hkd=el('circle',{'class':'hd',r:4.4,fill:'var(--s1)',stroke:'var(--bg)','stroke-width':1.6});
+const hsd=el('circle',{'class':'hd',r:4.4,fill:'var(--s2)',stroke:'var(--bg)','stroke-width':1.6});
+svg.appendChild(hkd);svg.appendChild(hsd);
+const rect=el('rect',{x:pad.l,y:pad.t,width:W-pad.l-pad.r,height:(H-pad.b)-pad.t,fill:'transparent'});svg.appendChild(rect);
+function toX(evt){const p=svg.createSVGPoint();p.x=evt.clientX;p.y=evt.clientY;const c=p.matrixTransform(svg.getScreenCTM().inverse());return c.x;}
+function move(evt){
+  const cx=toX(evt); let k=Math.round((cx-pad.l)/((W-pad.l-pad.r)/(xd[1]-xd[0])));k=Math.max(0,Math.min(32,k));
+  cross.style.opacity=1;cross.setAttribute('x1',sx(k));cross.setAttribute('x2',sx(k));
+  hkd.style.opacity=1;hsd.style.opacity=1;
+  hkd.setAttribute('cx',sx(k));hkd.setAttribute('cy',sy(KNN[k]));
+  hsd.setAttribute('cx',sx(k));hsd.setAttribute('cy',sy(SIL[k]));
+  tip.style.opacity=1;
+  tip.innerHTML=`<b>L${k}</b> ${k===0?'<i>(embeddings)</i>':'<i>(decoder L'+(k-1)+')</i>'}<br>`+
+    `<span style="color:var(--s1)">■</span> decodability <b>${KNN[k].toFixed(3)}</b><br>`+
+    `<span style="color:var(--s2)">■</span> silhouette <b>${SIL[k].toFixed(3)}</b>`;
+  const bb=svg.getBoundingClientRect();const px=bb.left+sx(k)/W*bb.width, py=bb.top+Math.min(sy(KNN[k]),sy(SIL[k]))/H*bb.height;
+  tip.style.left=(px-bb.left)+'px';tip.style.top=(py-bb.top)+'px';
+}
+function leave(){cross.style.opacity=0;hkd.style.opacity=0;hsd.style.opacity=0;tip.style.opacity=0;}
+rect.addEventListener('mousemove',move);rect.addEventListener('mouseleave',leave);
+svg.addEventListener('touchmove',e=>{if(e.touches[0]){move(e.touches[0]);e.preventDefault();}},{passive:false});
+// theme sync from parent
+window.addEventListener('message',e=>{if(e.data&&e.data.type==='theme'&&e.data.theme)document.documentElement.dataset.theme=e.data.theme;});
+</script>
+</body>
+</html>

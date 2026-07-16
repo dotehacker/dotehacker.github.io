@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Removing a growing middle band</title>
+<style>
+  :root{
+    --bg:#ffffff; --surface:#faf9fb; --ink:#1f2328; --muted:#6a6f76; --faint:#8b9097;
+    --rule:#e8e6ec; --grid:#eeecf1; --accent:#5b4b9e; --accent-soft:#efeaf8;
+    --s1:#e34948; --chip:#f4f3f7; --tip-bg:rgba(255,255,255,.97); --tip-bd:#d9d7e0;
+  }
+  @media (prefers-color-scheme:dark){ :root:where(:not([data-theme="light"])){
+    --bg:#14151a; --surface:#1b1d24; --ink:#e6e7ea; --muted:#a3a8b2; --faint:#7e848f;
+    --rule:#2a2d36; --grid:#232630; --accent:#a48fff; --accent-soft:#232036;
+    --s1:#e66767; --chip:#20232c; --tip-bg:rgba(27,29,36,.97); --tip-bd:#3a3d47;
+  }}
+  :root[data-theme="dark"]{
+    --bg:#14151a; --surface:#1b1d24; --ink:#e6e7ea; --muted:#a3a8b2; --faint:#7e848f;
+    --rule:#2a2d36; --grid:#232630; --accent:#a48fff; --accent-soft:#232036;
+    --s1:#e66767; --chip:#20232c; --tip-bg:rgba(27,29,36,.97); --tip-bd:#3a3d47;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .wrap{padding:14px 12px 8px}
+  .head h3{margin:0 0 2px;font-size:15px;font-weight:700;letter-spacing:-.01em}
+  .head p{margin:0 0 8px;font-size:12.5px;color:var(--muted);line-height:1.45}
+  .controls{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin:4px 0 8px}
+  .ctl{display:flex;align-items:center;gap:6px}
+  .ctl .lab{font-size:11px;color:var(--faint);font-weight:600;text-transform:uppercase;letter-spacing:.03em}
+  .btn{border:1px solid var(--rule);background:var(--chip);color:var(--muted);
+    font:inherit;font-size:11.5px;padding:3px 10px;border-radius:999px;cursor:pointer;transition:.12s}
+  .btn:hover{color:var(--ink)}
+  .btn[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:600}
+  .btn[disabled]{opacity:.4;cursor:not-allowed}
+  .plot{position:relative}
+  svg{width:100%;height:auto;display:block;overflow:visible}
+  .grid line{stroke:var(--grid);stroke-width:1}
+  .axis line{stroke:var(--rule);stroke-width:1}
+  .tick text{fill:var(--muted);font-size:11px}
+  .axlabel{fill:var(--faint);font-size:11px}
+  .cross{stroke:var(--faint);stroke-width:1;stroke-dasharray:3 3;opacity:0}
+  .tip{position:absolute;pointer-events:none;opacity:0;transform:translate(-50%,-108%);
+    background:var(--tip-bg);border:1px solid var(--tip-bd);border-radius:8px;padding:7px 9px;
+    font-size:11.5px;line-height:1.5;white-space:nowrap;box-shadow:0 6px 20px rgba(0,0,0,.14);z-index:5}
+  .cap{margin:6px 2px 0;font-size:11px;color:var(--faint);line-height:1.4}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <h3>Remove a growing middle band — graceful, then catastrophic</h3>
+    <p>Contiguous middle layers removed, centred on ~L11. One layer is survivable; the whole "workspace" band is not. The single-layer redundancy does <b>not</b> imply the band is collectively expendable.</p>
+  </div>
+  <div class="controls">
+    <div class="ctl"><span class="lab">Metric</span>
+      <button class="btn" data-m="top1" aria-pressed="true">top-1 agreement</button>
+      <button class="btn" data-m="kl">KL divergence</button>
+      <button class="btn" data-m="ppl">perplexity</button>
+    </div>
+    <div class="ctl"><span class="lab">Prompts</span>
+      <button class="btn" data-d="8" aria-pressed="true">8</button>
+      <button class="btn" data-d="100">100 (±1σ)</button>
+    </div>
+  </div>
+  <div class="plot">
+    <svg id="svg" viewBox="0 0 820 400" role="img" aria-label="Cumulative middle-band ablation"></svg>
+    <div class="tip" id="tip"></div>
+  </div>
+  <p class="cap" id="cap"></p>
+</div>
+<script>
+const K=[0,1,2,4,6,8,10,12,14];
+const D={
+ top1_8:[1,0.9237,0.8530,0.8211,0.6915,0.5683,0.3902,0.2110,0.1274],
+ kl_8:[0,0.1386,0.4201,1.4234,3.8222,5.9188,10.7956,14.7932,18.1784],
+ ppl_8:[1.1038,1.2233,1.3813,1.7235,2.8162,7.0518,32.6307,183.3585,2657.9502],
+ top1_100:[1,0.9108,0.8639,0.7934,0.6728,0.5415,0.3964,0.2189,0.1151],
+ top1_100s:[0,0.0730,0.0811,0.1078,0.1174,0.0972,0.1019,0.0911,0.0681],
+ kl_100:[0,0.1761,0.3902,1.4662,3.8586,5.5879,9.8717,13.9312,16.9374],
+ kl_100s:[0,0.1465,0.2304,0.5914,1.3528,1.9690,2.2427,2.5742,2.6258]
+};
+const META={
+ top1:{label:'top-1 agreement with intact model',dom:[0,1],fmt:v=>(v*100).toFixed(0)+'%',tf:v=>(v*100).toFixed(1)+'%',ticks:[0,.25,.5,.75,1],scale:'lin',both:true},
+ kl:{label:'mean KL(ablated ‖ baseline)',dom:[0,19],fmt:v=>v.toFixed(0),tf:v=>v.toFixed(2),ticks:[0,4,8,12,16],scale:'lin',both:true},
+ ppl:{label:'perplexity (log scale)',dom:[1,4000],fmt:v=>v>=1000?(v/1000)+'k':v,tf:v=>v.toFixed(2),ticks:[1,10,100,1000],scale:'log',both:false}
+};
+let cur={m:'top1',d:'8'};
+const svg=document.getElementById('svg'),tip=document.getElementById('tip'),cap=document.getElementById('cap');
+const W=820,H=400,pad={l:56,r:16,t:16,b:44},xd=[0,14];
+const NS="http://www.w3.org/2000/svg";
+const el=(n,a)=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);return e;};
+const sx=v=>pad.l+(v-xd[0])/(xd[1]-xd[0])*(W-pad.l-pad.r);
+let yd,scale;
+const sy=v=>{const [a,b]=yd;if(scale==='log'){const la=Math.log10(a),lb=Math.log10(b);return (H-pad.b)-(Math.log10(Math.max(v,a))-la)/(lb-la)*(H-pad.t-pad.b);}return (H-pad.b)-(v-a)/(b-a)*(H-pad.t-pad.b);};
+
+function draw(){
+  while(svg.firstChild)svg.removeChild(svg.firstChild);
+  const M=META[cur.m];yd=M.dom;scale=M.scale;
+  const suffix=(cur.d==='100'&&M.both)?'100':'8';
+  const Y=D[cur.m+'_'+suffix];
+  const band=(cur.d==='100'&&M.both)?D[cur.m+'_100s']:null;
+  const g=el('g',{'class':'grid'});svg.appendChild(g);
+  M.ticks.forEach(v=>{g.appendChild(el('line',{x1:pad.l,y1:sy(v),x2:W-pad.r,y2:sy(v)}));
+    const t=el('text',{x:pad.l-8,y:sy(v)+3.5,'text-anchor':'end','class':'tick'});t.textContent=M.fmt(v);g.appendChild(t);});
+  const ax=el('g',{'class':'axis'});svg.appendChild(ax);
+  ax.appendChild(el('line',{x1:pad.l,y1:H-pad.b,x2:W-pad.r,y2:H-pad.b}));
+  [0,2,4,6,8,10,12,14].forEach(v=>{const t=el('text',{x:sx(v),y:H-pad.b+16,'text-anchor':'middle','class':'tick'});t.textContent=v;ax.appendChild(t);});
+  const xl=el('text',{x:(pad.l+W-pad.r)/2,y:H-6,'text-anchor':'middle','class':'axlabel'});xl.textContent='number of contiguous middle layers removed  (centred ~L11)';svg.appendChild(xl);
+  const yl=el('text',{x:15,y:(pad.t+H-pad.b)/2,'text-anchor':'middle','class':'axlabel',transform:`rotate(-90 15 ${(pad.t+H-pad.b)/2})`});yl.textContent=M.label;svg.appendChild(yl);
+  if(band){
+    const up=K.map((x,i)=>[x,Math.min(yd[1],Y[i]+band[i])]),lo=K.map((x,i)=>[x,Math.max(yd[0],Y[i]-band[i])]);
+    const d=up.map((p,i)=>(i?'L':'M')+sx(p[0]).toFixed(1)+' '+sy(p[1]).toFixed(1)).join(' ')+' '+
+      lo.reverse().map(p=>'L'+sx(p[0]).toFixed(1)+' '+sy(p[1]).toFixed(1)).join(' ')+' Z';
+    svg.appendChild(el('path',{d,fill:'var(--s1)','fill-opacity':.14}));
+  }
+  const line=K.map((x,i)=>[x,Math.max(yd[0],Math.min(yd[1],Y[i]))]);
+  svg.appendChild(el('path',{d:line.map((p,i)=>(i?'L':'M')+sx(p[0]).toFixed(1)+' '+sy(p[1]).toFixed(1)).join(' '),
+    fill:'none',stroke:'var(--s1)','stroke-width':2.6,'stroke-linejoin':'round'}));
+  K.forEach((x,i)=>svg.appendChild(el('circle',{cx:sx(x),cy:sy(line[i][1]),r:3.4,fill:'var(--s1)',stroke:'var(--bg)','stroke-width':1.5})));
+  const cross=el('line',{'class':'cross',y1:pad.t,y2:H-pad.b});svg.appendChild(cross);
+  const hd=el('circle',{r:5,fill:'var(--s1)',stroke:'var(--bg)','stroke-width':2,opacity:0});svg.appendChild(hd);
+  const rect=el('rect',{x:pad.l,y:pad.t,width:W-pad.l-pad.r,height:(H-pad.b)-pad.t,fill:'transparent'});svg.appendChild(rect);
+  const toX=evt=>{const p=svg.createSVGPoint();p.x=evt.clientX;p.y=evt.clientY;return p.matrixTransform(svg.getScreenCTM().inverse()).x;};
+  function move(evt){
+    const mx=toX(evt);let bi=0,bd=1e9;K.forEach((k,i)=>{const dd=Math.abs(sx(k)-mx);if(dd<bd){bd=dd;bi=i;}});
+    cross.style.opacity=1;cross.setAttribute('x1',sx(K[bi]));cross.setAttribute('x2',sx(K[bi]));
+    hd.style.opacity=1;hd.setAttribute('cx',sx(K[bi]));hd.setAttribute('cy',sy(line[bi][1]));
+    tip.style.opacity=1;
+    tip.innerHTML=`<b>${K[bi]} layer${K[bi]===1?'':'s'} removed</b><br>${M.label.split(',')[0].replace(' (log scale)','')}: <b>${M.tf(Y[bi])}</b>`+
+      (band?` <span style="color:var(--muted)">± ${M.tf(band[bi])}</span>`:'');
+    const bb=svg.getBoundingClientRect();
+    tip.style.left=(sx(K[bi])/W*bb.width)+'px';tip.style.top=(sy(line[bi][1])/H*bb.height)+'px';
+  }
+  rect.addEventListener('mousemove',move);
+  rect.addEventListener('mouseleave',()=>{cross.style.opacity=0;hd.style.opacity=0;tip.style.opacity=0;});
+  svg.addEventListener('touchmove',e=>{if(e.touches[0]){move(e.touches[0]);e.preventDefault();}},{passive:false});
+  const src=(cur.d==='100'&&M.both)?'metrics_100.json · 100 queries, ±1σ':'metrics.json · 8 prompts';
+  cap.innerHTML=`Source: <code>${src}</code>. Layers removed as a contiguous window growing outward from L11 (e.g. 12 removed = L5–L16).`;
+}
+document.querySelectorAll('[data-m]').forEach(b=>b.addEventListener('click',()=>{
+  cur.m=b.dataset.m;document.querySelectorAll('[data-m]').forEach(x=>x.setAttribute('aria-pressed',x===b));
+  const only8=!META[cur.m].both;const d100=document.querySelector('[data-d="100"]');
+  d100.disabled=only8;if(only8){cur.d='8';document.querySelector('[data-d="8"]').setAttribute('aria-pressed','true');d100.setAttribute('aria-pressed','false');}
+  draw();
+}));
+document.querySelectorAll('[data-d]').forEach(b=>b.addEventListener('click',()=>{
+  if(b.disabled)return;cur.d=b.dataset.d;document.querySelectorAll('[data-d]').forEach(x=>x.setAttribute('aria-pressed',x===b));draw();
+}));
+window.addEventListener('message',e=>{if(e.data&&e.data.type==='theme'&&e.data.theme)document.documentElement.dataset.theme=e.data.theme;});
+draw();
+</script>
+</body>
+</html>
