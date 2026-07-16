@@ -892,12 +892,23 @@ class JekyllLikeBuilder {
       return;
     }
 
-    const files = fs.readdirSync('_posts').filter(file => file.endsWith('.md'));
-    
-    for (const file of files) {
-      const filePath = path.join('_posts', file);
+    // Discover posts: page bundles (_posts/<date-slug>/index.md) or flat files (_posts/<date-slug>.md)
+    const rawEntries = fs.readdirSync('_posts', { withFileTypes: true });
+    const entries = [];
+    for (const e of rawEntries) {
+      if (e.isDirectory()) {
+        const idx = path.join('_posts', e.name, 'index.md');
+        if (fs.existsSync(idx)) entries.push({ name: e.name, filePath: idx, sourceDir: path.join('_posts', e.name) });
+      } else if (e.isFile() && e.name.endsWith('.md')) {
+        entries.push({ name: e.name.replace(/\.md$/, ''), filePath: path.join('_posts', e.name), sourceDir: '_posts' });
+      }
+    }
+
+    for (const entry of entries) {
+      const file = entry.name;
+      const filePath = entry.filePath;
       const content = fs.readFileSync(filePath, 'utf8');
-      
+
       // Parse frontmatter
       const frontmatterMatch = content.match(/^---\n(.*?)\n---\n(.*)/s);
       if (!frontmatterMatch) {
@@ -908,10 +919,10 @@ class JekyllLikeBuilder {
       const frontmatter = yaml.load(frontmatterMatch[1]) || {};
       const body = frontmatterMatch[2];
 
-      // Generate URL from filename: 2024-01-21-life.md -> /posts/2024/01/21/life/
-      const dateMatch = file.match(/^(\d{4})-(\d{2})-(\d{2})-(.+)\.md$/);
+      // URL from name: 2024-01-21-life -> /posts/2024/01/21/life/
+      const dateMatch = file.match(/^(\d{4})-(\d{2})-(\d{2})-(.+)$/);
       if (!dateMatch) {
-        console.log(`⚠️  Invalid post filename format: ${file}`);
+        console.log(`⚠️  Invalid post name format: ${file}`);
         continue;
       }
 
@@ -945,6 +956,7 @@ class JekyllLikeBuilder {
         date: frontmatter.date || `${year}-${month}-${day}`,
         slug,
         file: filePath,
+        sourceDir: entry.sourceDir,
         featuredImage: firstImage,
         defaultImageBg: defaultImage.background,
         defaultImageIcon: defaultImage.icon,
@@ -994,32 +1006,44 @@ class JekyllLikeBuilder {
     }
   }
 
-  // Copy post assets (images, etc.)
+  // Copy post assets (images, etc.) into each post's output directory.
+  // Bundle posts (_posts/<slug>/index.md): copy every sibling non-md file.
+  // Flat posts (legacy, in _posts root): copy any root asset the markdown references.
   copyPostAssets() {
     if (!fs.existsSync('_posts')) return;
-    
-    // Get all non-markdown files from _posts directory
-    const assetFiles = fs.readdirSync('_posts').filter(file => !file.endsWith('.md'));
-    
-    for (const assetFile of assetFiles) {
-      const sourcePath = path.join('_posts', assetFile);
-      
-      // For each post that might reference this asset, copy it to the post directory
-      for (const post of this.posts) {
-        // Read the original markdown file to check for asset references
-        const markdownContent = fs.readFileSync(post.file, 'utf-8');
-        
-        // Check if the post markdown content references this asset
-        if (markdownContent.includes(assetFile)) {
-          const postDir = path.join('docs', post.url.replace(/\/$/, ''));
-          const destPath = path.join(postDir, assetFile);
-          
+
+    for (const post of this.posts) {
+      const postDir = path.join('docs', post.url.replace(/\/$/, ''));
+
+      if (post.sourceDir && post.sourceDir !== '_posts') {
+        // page bundle — copy all sibling assets
+        const files = fs.readdirSync(post.sourceDir).filter(f => f !== 'index.md');
+        for (const f of files) {
+          const src = path.join(post.sourceDir, f);
+          if (!fs.statSync(src).isFile()) continue;
           try {
-            // Ensure directory exists
             fs.mkdirSync(postDir, { recursive: true });
-            // Copy the asset file
-            fs.copyFileSync(sourcePath, destPath);
-            console.log(`  ✅ Copied ${assetFile} to ${post.url}`);
+            fs.copyFileSync(src, path.join(postDir, f));
+          } catch (error) {
+            console.error(`❌ Error copying ${f} to ${post.url}:`, error.message);
+          }
+        }
+      }
+    }
+
+    // Legacy flat assets still sitting in _posts root: copy to any post that references them by name
+    const rootAssets = fs.readdirSync('_posts').filter(f => {
+      const p = path.join('_posts', f);
+      return !f.endsWith('.md') && fs.statSync(p).isFile();
+    });
+    for (const assetFile of rootAssets) {
+      for (const post of this.posts) {
+        const md = fs.readFileSync(post.file, 'utf-8');
+        if (md.includes(assetFile)) {
+          const postDir = path.join('docs', post.url.replace(/\/$/, ''));
+          try {
+            fs.mkdirSync(postDir, { recursive: true });
+            fs.copyFileSync(path.join('_posts', assetFile), path.join(postDir, assetFile));
           } catch (error) {
             console.error(`❌ Error copying ${assetFile} to ${post.url}:`, error.message);
           }
