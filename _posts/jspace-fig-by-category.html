@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Which capability breaks first</title>
+<style>
+  :root{
+    --bg:#ffffff; --surface:#faf9fb; --ink:#1f2328; --muted:#6a6f76; --faint:#8b9097;
+    --rule:#e8e6ec; --grid:#eeecf1; --accent:#5b4b9e;
+    --recall:#2a78d6; --math:#008300; --reasoning:#e87ba4; --translation:#eda100; --creative:#1baf7a;
+    --tip-bg:rgba(255,255,255,.97); --tip-bd:#d9d7e0;
+  }
+  @media (prefers-color-scheme:dark){ :root:where(:not([data-theme="light"])){
+    --bg:#14151a; --surface:#1b1d24; --ink:#e6e7ea; --muted:#a3a8b2; --faint:#7e848f;
+    --rule:#2a2d36; --grid:#232630; --accent:#a48fff;
+    --recall:#3987e5; --math:#3ea55f; --reasoning:#d55181; --translation:#c98500; --creative:#199e70;
+    --tip-bg:rgba(27,29,36,.97); --tip-bd:#3a3d47;
+  }}
+  :root[data-theme="dark"]{
+    --bg:#14151a; --surface:#1b1d24; --ink:#e6e7ea; --muted:#a3a8b2; --faint:#7e848f;
+    --rule:#2a2d36; --grid:#232630; --accent:#a48fff;
+    --recall:#3987e5; --math:#3ea55f; --reasoning:#d55181; --translation:#c98500; --creative:#199e70;
+    --tip-bg:rgba(27,29,36,.97); --tip-bd:#3a3d47;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .wrap{padding:14px 12px 8px}
+  .head h3{margin:0 0 2px;font-size:15px;font-weight:700;letter-spacing:-.01em}
+  .head p{margin:0 0 8px;font-size:12.5px;color:var(--muted);line-height:1.45}
+  .legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin:2px 0 6px;font-size:12px}
+  .legend span{display:inline-flex;align-items:center;gap:7px;color:var(--ink)}
+  .swatch{width:20px;height:0;border-top-width:3px;border-top-style:solid;border-radius:2px}
+  .plot{position:relative}
+  svg{width:100%;height:auto;display:block;overflow:visible}
+  .grid line{stroke:var(--grid);stroke-width:1}
+  .axis line{stroke:var(--rule);stroke-width:1}
+  .tick text{fill:var(--muted);font-size:11px}
+  .axlabel{fill:var(--faint);font-size:11px}
+  .cross{stroke:var(--faint);stroke-width:1;stroke-dasharray:3 3;opacity:0}
+  .tip{position:absolute;pointer-events:none;opacity:0;transform:translate(-50%,-108%);
+    background:var(--tip-bg);border:1px solid var(--tip-bd);border-radius:8px;padding:8px 10px;
+    font-size:11.5px;line-height:1.6;white-space:nowrap;box-shadow:0 6px 20px rgba(0,0,0,.14);z-index:5}
+  .tip .r{display:flex;justify-content:space-between;gap:14px}
+  .tip .r b{font-weight:700}
+  .cap{margin:6px 2px 0;font-size:11px;color:var(--faint);line-height:1.4}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <h3>Which capability breaks first when the band is removed</h3>
+    <p>Top-1 agreement split by query type (20 prompts each), as the middle band grows. <b>Single-step recall is most robust; open-ended / creative collapses first</b> — the direction the global-workspace account predicts.</p>
+  </div>
+  <div class="legend" id="legend"></div>
+  <div class="plot">
+    <svg id="svg" viewBox="0 0 820 400" role="img" aria-label="Top-1 agreement by capability type as layers are removed"></svg>
+    <div class="tip" id="tip"></div>
+  </div>
+  <p class="cap">Source: <code>metrics_100.json</code> (<code>by_category</code>) · 100 queries, 20 per type. Ordering is graded, not on/off; past ~12 removed the model is broken and the ordering gets noisy. Metric is top-1 agreement with the intact model's greedy continuation.</p>
+</div>
+<script>
+const K=[0,1,2,4,6,8,10,12,14];
+const SERIES=[
+ {key:'recall',name:'recall',y:[1,0.9444,0.9170,0.8674,0.7623,0.6035,0.4658,0.1927,0.1050]},
+ {key:'math',name:'math',y:[1,0.9255,0.8690,0.8448,0.7330,0.5631,0.4117,0.2588,0.1242]},
+ {key:'reasoning',name:'reasoning',y:[1,0.8879,0.8479,0.7605,0.6407,0.5518,0.4174,0.2995,0.1377]},
+ {key:'translation',name:'translation',y:[1,0.9406,0.8699,0.8059,0.6336,0.5098,0.3693,0.1720,0.1108]},
+ {key:'creative',name:'creative',y:[1,0.8557,0.8155,0.6884,0.5943,0.4794,0.3176,0.1718,0.0977]}
+];
+const svg=document.getElementById('svg'),tip=document.getElementById('tip');
+const W=820,H=400,pad={l:52,r:16,t:14,b:44},xd=[0,14],yd=[0,1];
+const NS="http://www.w3.org/2000/svg";
+const el=(n,a)=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);return e;};
+const sx=v=>pad.l+(v-xd[0])/(xd[1]-xd[0])*(W-pad.l-pad.r);
+const sy=v=>(H-pad.b)-(v-yd[0])/(yd[1]-yd[0])*(H-pad.t-pad.b);
+// legend
+document.getElementById('legend').innerHTML=SERIES.map(s=>`<span><span class="swatch" style="border-top-color:var(--${s.key})"></span>${s.name}</span>`).join('');
+// grid + y
+const g=el('g',{'class':'grid'});svg.appendChild(g);
+[0,0.25,0.5,0.75,1].forEach(v=>{g.appendChild(el('line',{x1:pad.l,y1:sy(v),x2:W-pad.r,y2:sy(v)}));
+  const t=el('text',{x:pad.l-8,y:sy(v)+3.5,'text-anchor':'end','class':'tick'});t.textContent=(v*100)+'%';g.appendChild(t);});
+// x
+const ax=el('g',{'class':'axis'});svg.appendChild(ax);
+ax.appendChild(el('line',{x1:pad.l,y1:H-pad.b,x2:W-pad.r,y2:H-pad.b}));
+[0,2,4,6,8,10,12,14].forEach(v=>{const t=el('text',{x:sx(v),y:H-pad.b+16,'text-anchor':'middle','class':'tick'});t.textContent=v;ax.appendChild(t);});
+const xl=el('text',{x:(pad.l+W-pad.r)/2,y:H-6,'text-anchor':'middle','class':'axlabel'});xl.textContent='number of contiguous middle layers removed';svg.appendChild(xl);
+const yl=el('text',{x:14,y:(pad.t+H-pad.b)/2,'text-anchor':'middle','class':'axlabel',transform:`rotate(-90 14 ${(pad.t+H-pad.b)/2})`});yl.textContent='top-1 agreement';svg.appendChild(yl);
+// lines + end dots
+SERIES.forEach(s=>{
+  const pts=K.map((x,i)=>[x,s.y[i]]);
+  svg.appendChild(el('path',{d:pts.map((p,i)=>(i?'L':'M')+sx(p[0]).toFixed(1)+' '+sy(p[1]).toFixed(1)).join(' '),
+    fill:'none',stroke:`var(--${s.key})`,'stroke-width':2.4,'stroke-linejoin':'round','stroke-linecap':'round'}));
+  s.dots=K.map((x,i)=>{const c=el('circle',{cx:sx(x),cy:sy(s.y[i]),r:2.4,fill:`var(--${s.key})`,stroke:'var(--bg)','stroke-width':1.2});svg.appendChild(c);return c;});
+});
+// hover
+const cross=el('line',{'class':'cross',y1:pad.t,y2:H-pad.b});svg.appendChild(cross);
+const hd=SERIES.map(s=>{const c=el('circle',{r:4.4,fill:`var(--${s.key})`,stroke:'var(--bg)','stroke-width':1.6,opacity:0});svg.appendChild(c);return c;});
+const rect=el('rect',{x:pad.l,y:pad.t,width:W-pad.l-pad.r,height:(H-pad.b)-pad.t,fill:'transparent'});svg.appendChild(rect);
+const toX=evt=>{const p=svg.createSVGPoint();p.x=evt.clientX;p.y=evt.clientY;return p.matrixTransform(svg.getScreenCTM().inverse()).x;};
+function move(evt){
+  const mx=toX(evt);let bi=0,bd=1e9;K.forEach((k,i)=>{const dd=Math.abs(sx(k)-mx);if(dd<bd){bd=dd;bi=i;}});
+  cross.style.opacity=1;cross.setAttribute('x1',sx(K[bi]));cross.setAttribute('x2',sx(K[bi]));
+  const rows=SERIES.map((s,j)=>{hd[j].style.opacity=1;hd[j].setAttribute('cx',sx(K[bi]));hd[j].setAttribute('cy',sy(s.y[bi]));return {name:s.name,key:s.key,v:s.y[bi]};}).sort((a,b)=>b.v-a.v);
+  tip.style.opacity=1;
+  tip.innerHTML=`<div class="r" style="color:var(--faint);margin-bottom:2px"><span><b>${K[bi]}</b> removed</span></div>`+
+    rows.map(r=>`<div class="r"><span><span style="color:var(--${r.key})">■</span> ${r.name}</span><b>${(r.v*100).toFixed(1)}%</b></div>`).join('');
+  const bb=svg.getBoundingClientRect();
+  let lx=sx(K[bi])/W*bb.width;lx=Math.max(70,Math.min(bb.width-70,lx));
+  tip.style.left=lx+'px';tip.style.top=(sy(rows[0].v)/H*bb.height-6)+'px';
+}
+rect.addEventListener('mousemove',move);
+rect.addEventListener('mouseleave',()=>{cross.style.opacity=0;hd.forEach(c=>c.style.opacity=0);tip.style.opacity=0;});
+svg.addEventListener('touchmove',e=>{if(e.touches[0]){move(e.touches[0]);e.preventDefault();}},{passive:false});
+window.addEventListener('message',e=>{if(e.data&&e.data.type==='theme'&&e.data.theme)document.documentElement.dataset.theme=e.data.theme;});
+</script>
+</body>
+</html>
