@@ -109,6 +109,22 @@ This mystery isn't a problem to be solved but a truth to be lived. Love's elusiv
   Tumne toh hamesha mujhe pathar samjha hai.
 </p>
 
+## 🌙 Imroz
+
+<p style="font-size: 18px; line-height: 1.8; font-style: italic; text-align: left; max-width: 600px; margin: 0 auto;">
+  Yeh Duniya bereham hai... Q ki hum bhi hai...,<br>
+  Par yeh kahani hamare aur aap pe nahi hai...,<br>
+  Kal raat ek ladki se kuch baate huie thi.... hume lag raha tha uhe toh imroz mili hai woh khush hogi.... jee rahi hogi apni Zindagi,<br>
+  <br>
+  par kaha tha na imroz ki kami hai yaha.<br>
+  Unki baate sunn kar laga joo unhone subha subha khat me boli thi...,<br>
+  Na toh unhe imroz mili hai nahi woh khud imroz ban sakti hai.... aur jo kuch kuch Amrita ki parchaie hai unn me.... joo bina imroz k yeh duniya unka jina muskil kar degi.<br>
+  <br>
+  Aab darr sa lagta hai kabhi kabhi Isi Pyaar mahobat aur ishq ki bhagamdori me woh galat train na pakad le...,<br>
+  <br>
+  Khuda se dua hai uhe imroz mill jaye ya khud hii bann jaye aur yeh nahi karr sakti toh puri tarha Amrita hii bann jaye.
+</p>
+
 </div>
 
 ---
