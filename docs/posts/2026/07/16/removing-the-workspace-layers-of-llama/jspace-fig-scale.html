@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Band removal vs. model size</title>
+<style>
+  :root{
+    --bg:#ffffff; --surface:#faf9fb; --ink:#1f2328; --muted:#6a6f76; --faint:#8b9097;
+    --rule:#e8e6ec; --grid:#eeecf1; --accent:#5b4b9e; --accent-soft:#efeaf8; --chip:#f4f3f7;
+    --m8:#008300; --m70:#2a78d6; --m405:#e34948; --shade:#eef3ef;
+    --tip-bg:rgba(255,255,255,.97); --tip-bd:#d9d7e0;
+  }
+  @media (prefers-color-scheme:dark){ :root:where(:not([data-theme="light"])){
+    --bg:#14151a; --surface:#1b1d24; --ink:#e6e7ea; --muted:#a3a8b2; --faint:#7e848f;
+    --rule:#2a2d36; --grid:#232630; --accent:#a48fff; --accent-soft:#232036; --chip:#20232c;
+    --m8:#3ea55f; --m70:#3987e5; --m405:#e66767; --shade:#191f1b;
+    --tip-bg:rgba(27,29,36,.97); --tip-bd:#3a3d47;
+  }}
+  :root[data-theme="dark"]{
+    --bg:#14151a; --surface:#1b1d24; --ink:#e6e7ea; --muted:#a3a8b2; --faint:#7e848f;
+    --rule:#2a2d36; --grid:#232630; --accent:#a48fff; --accent-soft:#232036; --chip:#20232c;
+    --m8:#3ea55f; --m70:#3987e5; --m405:#e66767; --shade:#191f1b;
+    --tip-bg:rgba(27,29,36,.97); --tip-bd:#3a3d47;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .wrap{padding:14px 12px 8px}
+  .head h3{margin:0 0 2px;font-size:15px;font-weight:700;letter-spacing:-.01em}
+  .head p{margin:0 0 8px;font-size:12.5px;color:var(--muted);line-height:1.45}
+  .row{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;margin:2px 0 6px}
+  .legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12px}
+  .legend span{display:inline-flex;align-items:center;gap:7px;color:var(--ink)}
+  .swatch{width:20px;height:0;border-top-width:3px;border-top-style:solid;border-radius:2px}
+  .ctl{display:flex;align-items:center;gap:6px;margin-left:auto}
+  .ctl .lab{font-size:11px;color:var(--faint);font-weight:600;text-transform:uppercase;letter-spacing:.03em}
+  .btn{border:1px solid var(--rule);background:var(--chip);color:var(--muted);
+    font:inherit;font-size:11.5px;padding:3px 10px;border-radius:999px;cursor:pointer;transition:.12s}
+  .btn:hover{color:var(--ink)}
+  .btn[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:600}
+  .plot{position:relative}
+  svg{width:100%;height:auto;display:block;overflow:visible}
+  .grid line{stroke:var(--grid);stroke-width:1}
+  .axis line{stroke:var(--rule);stroke-width:1}
+  .tick text{fill:var(--muted);font-size:11px}
+  .axlabel{fill:var(--faint);font-size:11px}
+  .chance{stroke:var(--faint);stroke-width:1;stroke-dasharray:2 3}
+  .chance-t{fill:var(--faint);font-size:10.5px}
+  .rgl{font-size:10.5px;fill:var(--faint);font-weight:600}
+  .cross{stroke:var(--faint);stroke-width:1;stroke-dasharray:3 3;opacity:0}
+  .tip{position:absolute;pointer-events:none;opacity:0;transform:translate(-50%,-108%);
+    background:var(--tip-bg);border:1px solid var(--tip-bd);border-radius:8px;padding:8px 10px;
+    font-size:11.5px;line-height:1.6;white-space:nowrap;box-shadow:0 6px 20px rgba(0,0,0,.14);z-index:5}
+  .tip .r{display:flex;justify-content:space-between;gap:14px}
+  .cap{margin:6px 2px 0;font-size:11px;color:var(--faint);line-height:1.4}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <h3>Does it scale? Middle-band removal, 8B → 70B → 405B</h3>
+    <p>Full-precision Llama-3.1 <b>base</b> models, run remotely via nnsight + NDIF (no local GPU). On this strict next-token metric larger models hold only <b>modestly</b> better at ≤20% removed, and all collapse by ~30–40% — yet free-generation <i>fluency</i> is far more forgiving (see the gallery below).</p>
+  </div>
+  <div class="row">
+    <div class="legend" id="legend"></div>
+    <div class="ctl"><span class="lab">Metric</span>
+      <button class="btn" data-m="top1" aria-pressed="true">top-1 agreement</button>
+      <button class="btn" data-m="kl">KL divergence</button>
+    </div>
+  </div>
+  <div class="plot">
+    <svg id="svg" viewBox="0 0 820 400" role="img" aria-label="Band removal tolerance by model size"></svg>
+    <div class="tip" id="tip"></div>
+  </div>
+  <p class="cap">Source: <code>metrics_scale.json</code> · next-token top-1 / KL vs the intact model, 8 prompts, base models on NDIF. A centred middle band of the given fraction is set to identity. Directional (8 prompts, greedy), not a benchmark.</p>
+</div>
+<script>
+const X=[0,10,20,30,40,50,60];
+const SERIES=[
+ {key:'m8',name:'8B (32 layers)',top1:[1,0.75,0.5,0.125,0.125,0.125,0.125],kl:[0,0.2930,1.5081,2.9067,3.3885,3.6802,5.5369]},
+ {key:'m70',name:'70B (80 layers)',top1:[1,0.75,0.75,0.375,0,0.125,0],kl:[0,0.1946,0.4532,1.3895,2.6935,3.1495,5.8573]},
+ {key:'m405',name:'405B (126 layers)',top1:[1,0.875,0.75,0.25,0,0,0],kl:[0,0.1425,0.4364,2.8563,7.1091,9.5132,6.0887]}
+];
+const META={
+ top1:{dom:[0,1],ticks:[0,.25,.5,.75,1],fmt:v=>(v*100)+'%',tf:v=>(v*100).toFixed(1)+'%',scale:'lin',label:'next-token top-1 agreement',chance:0.25},
+ kl:{dom:[0.001,12],ticks:[0.001,0.01,0.1,1,10],fmt:v=>v<1?String(v):v,tf:v=>v.toFixed(3),scale:'log',label:'next-token KL (log scale)',floor:0.001}
+};
+let cur='top1';
+const svg=document.getElementById('svg'),tip=document.getElementById('tip');
+const W=820,H=400,pad={l:56,r:16,t:14,b:44},xd=[0,60];
+const NS="http://www.w3.org/2000/svg";
+const el=(n,a)=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);return e;};
+const sx=v=>pad.l+(v-xd[0])/(xd[1]-xd[0])*(W-pad.l-pad.r);
+let yd,scale;
+const sy=v=>{const [a,b]=yd;if(scale==='log'){const la=Math.log10(a),lb=Math.log10(b);return (H-pad.b)-(Math.log10(Math.max(v,a))-la)/(lb-la)*(H-pad.t-pad.b);}return (H-pad.b)-(v-a)/(b-a)*(H-pad.t-pad.b);};
+document.getElementById('legend').innerHTML=SERIES.map(s=>`<span><span class="swatch" style="border-top-color:var(--${s.key})"></span>${s.name}</span>`).join('');
+
+function draw(){
+  while(svg.firstChild)svg.removeChild(svg.firstChild);
+  const M=META[cur];yd=M.dom;scale=M.scale;
+  const data=s=>cur==='kl'?s.kl.map(v=>Math.max(M.floor,v)):s.top1;
+  // shade the <=20% region
+  svg.appendChild(el('rect',{x:sx(0),y:pad.t,width:sx(20)-sx(0),height:(H-pad.b)-pad.t,fill:'var(--shade)'}));
+  const st=el('text',{x:(sx(0)+sx(20))/2,y:pad.t+13,'text-anchor':'middle','class':'rgl'});st.textContent='larger models hold here';svg.appendChild(st);
+  const g=el('g',{'class':'grid'});svg.appendChild(g);
+  M.ticks.forEach(v=>{g.appendChild(el('line',{x1:pad.l,y1:sy(v),x2:W-pad.r,y2:sy(v)}));
+    const t=el('text',{x:pad.l-8,y:sy(v)+3.5,'text-anchor':'end','class':'tick'});t.textContent=M.fmt(v);g.appendChild(t);});
+  if(cur==='top1'){svg.appendChild(el('line',{x1:pad.l,y1:sy(M.chance),x2:W-pad.r,y2:sy(M.chance),'class':'chance'}));
+    const ct=el('text',{x:W-pad.r,y:sy(M.chance)-4,'text-anchor':'end','class':'chance-t'});ct.textContent='~chance';svg.appendChild(ct);}
+  const ax=el('g',{'class':'axis'});svg.appendChild(ax);
+  ax.appendChild(el('line',{x1:pad.l,y1:H-pad.b,x2:W-pad.r,y2:H-pad.b}));
+  X.forEach(v=>{const t=el('text',{x:sx(v),y:H-pad.b+16,'text-anchor':'middle','class':'tick'});t.textContent=v+'%';ax.appendChild(t);});
+  const xl=el('text',{x:(pad.l+W-pad.r)/2,y:H-6,'text-anchor':'middle','class':'axlabel'});xl.textContent='% of middle layers removed';svg.appendChild(xl);
+  const yl=el('text',{x:15,y:(pad.t+H-pad.b)/2,'text-anchor':'middle','class':'axlabel',transform:`rotate(-90 15 ${(pad.t+H-pad.b)/2})`});yl.textContent=M.label;svg.appendChild(yl);
+  SERIES.forEach(s=>{const Y=data(s);const pts=X.map((x,i)=>[x,Math.max(yd[0],Math.min(yd[1],Y[i]))]);
+    svg.appendChild(el('path',{d:pts.map((p,i)=>(i?'L':'M')+sx(p[0]).toFixed(1)+' '+sy(p[1]).toFixed(1)).join(' '),
+      fill:'none',stroke:`var(--${s.key})`,'stroke-width':2.6,'stroke-linejoin':'round','stroke-linecap':'round'}));
+    X.forEach((x,i)=>svg.appendChild(el('circle',{cx:sx(x),cy:sy(pts[i][1]),r:3.2,fill:`var(--${s.key})`,stroke:'var(--bg)','stroke-width':1.4})));});
+  const cross=el('line',{'class':'cross',y1:pad.t,y2:H-pad.b});svg.appendChild(cross);
+  const hd=SERIES.map(s=>{const c=el('circle',{r:4.8,fill:`var(--${s.key})`,stroke:'var(--bg)','stroke-width':1.8,opacity:0});svg.appendChild(c);return c;});
+  const rect=el('rect',{x:pad.l,y:pad.t,width:W-pad.l-pad.r,height:(H-pad.b)-pad.t,fill:'transparent'});svg.appendChild(rect);
+  const toX=evt=>{const p=svg.createSVGPoint();p.x=evt.clientX;p.y=evt.clientY;return p.matrixTransform(svg.getScreenCTM().inverse()).x;};
+  function move(evt){
+    const mx=toX(evt);let bi=0,bd=1e9;X.forEach((k,i)=>{const dd=Math.abs(sx(k)-mx);if(dd<bd){bd=dd;bi=i;}});
+    cross.style.opacity=1;cross.setAttribute('x1',sx(X[bi]));cross.setAttribute('x2',sx(X[bi]));
+    const rows=SERIES.map((s,j)=>{const Y=data(s);hd[j].style.opacity=1;hd[j].setAttribute('cx',sx(X[bi]));hd[j].setAttribute('cy',sy(Math.max(yd[0],Math.min(yd[1],Y[bi]))));return {name:s.name,key:s.key,raw:cur==='kl'?s.kl[bi]:s.top1[bi]};});
+    tip.style.opacity=1;
+    tip.innerHTML=`<div class="r" style="color:var(--faint);margin-bottom:2px"><span><b>${X[bi]}%</b> removed</span></div>`+
+      rows.map(r=>`<div class="r"><span><span style="color:var(--${r.key})">■</span> ${r.name.split(' ')[0]}</span><b>${META[cur].tf(r.raw)}</b></div>`).join('');
+    const bb=svg.getBoundingClientRect();let lx=sx(X[bi])/W*bb.width;lx=Math.max(80,Math.min(bb.width-80,lx));
+    tip.style.left=lx+'px';tip.style.top=(sy(Math.max(...rows.map(r=>cur==='kl'?Math.max(yd[0],r.raw):r.raw)))/H*bb.height-6)+'px';
+  }
+  rect.addEventListener('mousemove',move);
+  rect.addEventListener('mouseleave',()=>{cross.style.opacity=0;hd.forEach(c=>c.style.opacity=0);tip.style.opacity=0;});
+  svg.addEventListener('touchmove',e=>{if(e.touches[0]){move(e.touches[0]);e.preventDefault();}},{passive:false});
+}
+document.querySelectorAll('[data-m]').forEach(b=>b.addEventListener('click',()=>{
+  cur=b.dataset.m;document.querySelectorAll('[data-m]').forEach(x=>x.setAttribute('aria-pressed',x===b));draw();
+}));
+window.addEventListener('message',e=>{if(e.data&&e.data.type==='theme'&&e.data.theme)document.documentElement.dataset.theme=e.data.theme;});
+draw();
+</script>
+</body>
+</html>
