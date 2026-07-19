@@ -24,6 +24,11 @@ Anthropic's 2026 "global workspace" finding.*
 > intact — the same asymmetry Anthropic report when they suppress the
 > **J-space / global workspace** [10]. Across **100 queries**, removing the band
 > breaks **creative / abstract generation first and single-step recall last**.
+>
+> **Scaling up.** Replicating on **full-precision base** models via **nnsight + NDIF**
+> [15] — up to **405B**, no local GPU — confirms it is *not* a 4-bit / Instruct
+> artifact. On the strict next-token metric scale buys only a modest lift, but under
+> heavy band removal the larger models stay markedly more **fluent** (§8).
 
 ---
 
@@ -326,7 +331,85 @@ needs the model weights on a GPU it can't run inline here, but the whole thing �
 
 ---
 
-## 8. The connection: a blunt version of the "global workspace"
+## 8. Does it scale? 8B → 70B → 405B (full precision, via nnsight + NDIF)
+
+Two doubts hang over everything above: it is all **4-bit** and **Instruct**, and it
+is one small model. So we re-ran the ablation on **full-precision base** models — and
+scaled to **70B** and **405B** — using **nnsight** with the **NDIF** remote backend
+[15], which executes the intervention on hosted GPUs while a laptop only orchestrates
+it. No local GPU, no VM.
+
+**Experiment 6 — full-precision replication.** Full-precision base `Llama-3.1-8B` via
+NDIF reproduces both the **early cliff** (L0/L1 catastrophic, the rest survivable) and
+the **band collapse**. Neither is a quantization or instruction-tuning artifact.
+
+In nnsight there is no forward-hook surgery — you *rebind* a layer's output to the
+previous layer's output inside a trace, which is the identity-skip in a different
+idiom:
+
+```python
+with model.trace(prompt, remote=True):      # runs on NDIF's GPUs
+    for L in band:                          # a contiguous middle band
+        model.model.layers[L].output = model.model.layers[L-1].output
+    logits = model.output.logits.save()
+```
+
+The full-precision run tracks the original 4-bit Instruct sweep almost exactly — same
+early cliff, same survivable middle:
+
+![Full-precision base-8B single-layer sweep via NDIF (blue) overlaid on the local 4-bit Instruct run (gray). They agree: only L0/L1 are catastrophic; the rest is survivable.](jspace-remote-sweep.png)
+
+![Full-precision base-8B cumulative middle-band removal via NDIF — the same graceful-then-catastrophic collapse as the 4-bit run.](jspace-remote-cumulative.png)
+
+**Experiments 7–8 — 70B and 405B.** Same centred middle-band removal, swept as a
+*fraction* of depth, across all three sizes. Toggle top-1 vs. KL:
+
+<iframe class="jspace-fig" src="jspace-fig-scale.html" title="Band removal tolerance by model size" loading="lazy" scrolling="no" style="width:100%;height:560px;border:1px solid var(--rule);border-radius:10px;background:var(--bg)"></iframe>
+
+The same data as a static two-panel figure (top-1 on the left, KL on the right):
+
+![Scale comparison: top-1 agreement and KL vs percent-removed, one curve per model size. Larger models hold a little better up to ~20% removed; all collapse by 30–40%; 405B diverges most at 40–50%.](jspace-scale-compare.png)
+
+**The honest result is two-sided.**
+
+On the strict **next-token metric**, scale buys only a little: at ≤20 % removed the
+larger models hold slightly better (at 20 %, top-1 is **8B 0.50 vs 70B / 405B 0.75**),
+but **all three collapse by ~30–40 % removed**, and 405B actually diverges the *most*
+at 40–50 %. Redundancy is real, but modest by this measure.
+
+Free-generation **fluency**, though, is far more forgiving. Real greedy text
+(40 tokens) on *"The theory of relativity states that…"*, same band removal, across
+all three sizes:
+
+| removed | 8B (32 L) | 70B (80 L) | 405B (126 L) |
+|---|---|---|---|
+| **0 %** | "…the laws of physics are the same for all observers moving at constant speed." | "…the speed of light in a vacuum is constant… 299,792 km/s." | "…all uniform motion is relative… no privileged reference frames." |
+| **25 %** | "…we live in a four-dimensional universe… time is the fourth dimension." | "…the same in all inertial reference frames…" | "…the space-time continuum is curved… caused by gravity." |
+| **50 %** | "…a body at rest and one in motion have the same experience… time slows for the one in motion." | "…light travels at the same speed no matter how [fast]…" | a stray multiple-choice artifact — still on-topic |
+
+Even at 50 % removed, none produce gibberish — they drift or slip into a format
+artifact while staying on-topic. It holds beyond physics, too (70B):
+
+| prompt | 25 % removed | 50 % removed |
+|---|---|---|
+| *"The capital of France is"* | "…the city of Paris, the largest city in France, on the Seine." *(correct)* | "…a city of light, love and luxury… a popular tourist destination." *(brochure drift — keeps "Paris")* |
+| *"Step by step, to bake bread you first"* | "…prepare the dough. Then wait for it to rise. Finally, bake." *(fine)* | "A. mix the ingredients · B. bake · C. knead… Answer: A" *(collapses into a multiple-choice artifact)* |
+
+At **half its layers removed**, 405B is still producing on-topic physics prose. The
+8B *"…blue collar, a blue collar…"* degeneration (§6) was the **Instruct** model on
+the concept band, scored by *agreement with its own greedy continuation*. Reconciling
+the two: **KL and top-1 measure how far the next-token distribution moved, not whether
+the text is still readable.** By the strict metric everything eventually collapses; by
+the reading-it test, the workspace degrades far more gracefully at scale.
+
+**Takeaway.** The workspace phenomenon is size-robust and not a quantization / Instruct
+artifact — and *how* you measure "broken" (distributional divergence vs. generation
+fluency) changes how dramatic the collapse looks. Bigger models carry a more
+distributed, more forgiving middle.
+
+---
+
+## 9. The connection: a blunt version of the "global workspace"
 
 Anthropic's **"Verbalizable Representations Form a Global Workspace in Language
 Models"** (Gurnee, Sofroniew, … Lindsey; July 2026) [10] introduces the **Jacobian
@@ -352,7 +435,7 @@ ability to reason. That is where the workspace lives.
 
 ---
 
-## 9. Related work
+## 10. Related work
 
 **Depth redundancy & layer pruning.** That a *single* middle layer is nearly free
 to drop is the empirical backbone of the depth-pruning literature. Gromov et al.,
@@ -385,7 +468,7 @@ layer ablation coarsens.
 
 ---
 
-## 10. Honest caveats
+## 11. Honest caveats
 
 - **Layer ≠ subspace.** We remove *entire layers* (sledgehammer); the J-space is a
   *low-rank subspace within* layers (scalpel). Layer ablation is a coarse,
@@ -397,8 +480,12 @@ layer ablation coarsens.
 - **Regime boundaries are eyeballed.** The three-band story is a reading of the
   UMAP grid; §3b's decodability-vs-silhouette gap is the load-bearing evidence, and
   mean-pooling + UMAP shape the *early*-layer picture in particular.
-- **Scope.** One model, 4-bit, 20-Newsgroups (400 texts) + 8/100 prompts, short
-  greedy continuations. Directional, not a benchmark.
+- **Scope.** The core study is one model, 4-bit, 20-Newsgroups (400 texts) + 8/100
+  prompts, short greedy continuations. Directional, not a benchmark.
+- **The scale study (§8) is coarser still.** Base (not Instruct) models, 8 prompts, a
+  single centred band placement, and a *next-token* metric — plus a small generation
+  gallery for fluency. The two disagree (strict metric collapses; fluency persists),
+  which is the point, but neither is a benchmark.
 
 Still — a satisfying result on a single T4: **the layers where classes stop looking
 separated are precisely the layers you can't remove as a group without losing the
@@ -406,7 +493,7 @@ ability to reason.**
 
 ---
 
-## 11. Reproduce
+## 12. Reproduce
 
 ```bash
 # On the GPU box (VM):
@@ -416,6 +503,11 @@ python experiments/run_queries100.py          # 100-query sweep + per-category +
 
 # From a laptop: tunnel + open ui.html, ablate any subset of layers interactively
 gcloud compute ssh <vm> -- -N -L 8000:localhost:8000
+
+# No GPU? Run full-precision / large models remotely on NDIF via nnsight (§8):
+python experiments/nnsight_remote_sweep.py                     # full-precision 8B replication
+python experiments/nnsight_scale_compare.py                    # 8B / 70B / 405B scale figure
+python experiments/nnsight_remote_generate.py <model> 40 0.25  # generation under band removal
 ```
 
 Code, data, and figures: [`rockerritesh/nlp-remove-jspace-layer`](https://github.com/rockerritesh/nlp-remove-jspace-layer).
@@ -438,12 +530,22 @@ Code, data, and figures: [`rockerritesh/nlp-remove-jspace-layer`](https://github
 12. *On the Limits of Layer Pruning for Generative Reasoning in Large Language Models* (2026). arXiv:2602.01997.
 13. *The Achilles' Heel of LLMs: How Altering a Handful of Neurons Can Cripple Language Abilities* (2025). arXiv:2510.10238.
 14. *Sparse Neuron Ablation Triggers Catastrophic Collapse of the Language Core in Large Vision-Language Models* (2025). arXiv:2512.00918.
+15. Fiotto-Kaufman et al. (2024). *NNsight and NDIF: Democratizing Access to Open-Weight Foundation Model Internals.* arXiv:2407.14561. · <https://nnsight.net> · <https://ndif.us>
 
 ---
 
-*Built on a GCloud T4 VM · Llama-3.1-8B-Instruct (4-bit) · interactive charts driven
-by `metrics.json` / `metrics_100.json` from the run · figures from
-`experiments/run_experiments.py`.*
+## Acknowledgments
+
+The large-model experiments (§8) were only possible because of **nnsight** and the
+**National Deep Inference Fabric (NDIF)** [15], which host open-weight models up to
+**405B** and let a laptop run interventions on them remotely — no local GPU. Huge
+thanks to the NDIF team for democratizing access to foundation-model internals.
+
+---
+
+*Built on a single GCloud T4 (8B, 4-bit) · large models (70B/405B, full precision) via
+nnsight + NDIF · interactive charts driven by `metrics.json` / `metrics_100.json` /
+`metrics_scale.json` from the runs.*
 
 <script>
 (function(){
