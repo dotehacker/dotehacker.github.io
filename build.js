@@ -128,14 +128,51 @@ class JekyllLikeBuilder {
     </section>`;
   }
 
+  // Resolve a post's display image to a usable URL (bundle bare filename → post URL).
+  postImageUrl(p) {
+    let u = p.featuredImage;
+    if (!u) return null;
+    if (/^https?:\/\//i.test(u) || u.startsWith('/')) return u;
+    return p.url + u;
+  }
+
+  // Derive a short TL;DR/summary from a post (frontmatter description, else clean body text).
+  blogSummary(p) {
+    if (p.description) return p.description.trim();
+    let html = (p.content || '')
+      .replace(/<(script|style|figure|pre|table|svg|iframe|noscript)[\s\S]*?<\/\1>/gi, ' ')
+      .replace(/<h[1-6][^>]*>[\s\S]*?<\/h[1-6]>/gi, ' ');
+    let t = html.replace(/<[^>]+>/g, ' ')
+      .replace(/&amp;/g, '&').replace(/&[a-z]+;/gi, ' ')
+      .replace(/\s+/g, ' ').trim();
+    if (!t) return '';
+    const max = 220;
+    if (t.length > max) {
+      t = t.slice(0, max);
+      const sp = t.lastIndexOf(' ');
+      if (sp > 80) t = t.slice(0, sp);
+      t = t.replace(/[,;:.\s]+$/, '') + '…';
+    }
+    return t;
+  }
+
   blogRow(p) {
     const date = this.formatDate(p.date, '%Y-%m-%d');
-    const cat = p.category || '';
-    return `<div class="blog-row" data-cat="${this.esc(cat)}">
-      <span class="blog-date">${date}</span>
-      <a class="blog-title" href="${this.esc(p.url)}">${this.esc(p.title)}</a>
-      ${cat ? `<span class="blog-cat">${this.esc(cat)}</span>` : ''}
-    </div>`;
+    const cat = p.category || (p.categories || [])[0] || '';
+    const img = this.postImageUrl(p);
+    const initial = this.esc((p.title || '?').trim().charAt(0));
+    const thumb = img
+      ? `<span class="blog-thumb" style="background-image:url('${this.esc(img)}')"></span>`
+      : `<span class="blog-thumb blog-thumb--default" style="background:${p.defaultImageBg || 'var(--accent-soft)'}">${initial}</span>`;
+    const sum = this.blogSummary(p);
+    return `<a class="blog-card" href="${this.esc(p.url)}" data-cat="${this.esc(cat)}">
+      ${thumb}
+      <span class="blog-info">
+        <span class="blog-title">${this.esc(p.title)}</span>
+        ${sum ? `<span class="blog-sum">${this.esc(sum)}</span>` : ''}
+        <span class="blog-meta">${cat ? `<span class="blog-cat">${this.esc(cat)}</span>` : ''}<span class="blog-date">${date}</span></span>
+      </span>
+    </a>`;
   }
 
   renderBlogPreview() {

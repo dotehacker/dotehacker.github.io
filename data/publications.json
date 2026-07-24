@@ -60,6 +60,7 @@
     "venue": "B.E. Thesis (Electronics & Computer Engineering), Tribhuvan University, 2024",
     "year": 2024,
     "topics": ["Low-resource NLP"],
+    "image": "/pub-figs/thesis-mlm.png",
     "tldr": "A Maithili masked language model built via transfer learning — the precursor work to maiBERT.",
     "note": "Builds a Maithili masked language model via transfer learning and fine-tunes it on a curated Maithili news classification dataset — the precursor work to maiBERT, addressing the absence of dedicated language models and task-specific data for Maithili.",
     "links": { "paper": "https://www.researchgate.net/publication/407471788_EVALUATING_AUTO-ENCODING_TRANSFORMER_LANGUAGE_MODELS_FOR_MAITHILI_TEXT_CLASSIFICATION" }
@@ -70,6 +71,7 @@
     "venue": "Technical Report, Tribhuvan University, 2023",
     "year": 2023,
     "topics": ["Low-resource NLP"],
+    "image": "/pub-figs/tirhuta.png",
     "tldr": "Character recognition for the endangered Tirhuta script at 97% accuracy, enabling OCR for Maithili.",
     "note": "Character recognition for the Tirhuta script (Maithili) — MobileNet embeddings with logistic regression reach 0.97 accuracy, enabling OCR and translation for a low-resource script.",
     "links": { "paper": "https://www.researchgate.net/publication/373370042_Machine_Learning_Analysis_of_Tirhuta_Lipi", "doi": "https://doi.org/10.13140/RG.2.2.15213.97765" }
@@ -79,7 +81,8 @@
     "authors": "Sumit Yadav et al.",
     "venue": "2023",
     "year": 2023,
-    "topics": ["Vision & Other"],
+    "topics": ["Text Classification"],
+    "image": "/pub-figs/support-vector.png",
     "tldr": "For 100+ imbalanced text classes, a TF-IDF support-vector pipeline beats neural baselines and retrains incrementally.",
     "note": "A TF-IDF + n-gram support-vector pipeline for text classification across 100+ classes on highly imbalanced data. It outperforms neural baselines on the test set and supports incremental retraining as users supply fresh data. Consolidates the team's 1st Runner-Up submissions at Docsumo DataRush (LOCUS 2021) and DataVerse (LOCUS 2023).",
     "links": { "paper": "https://www.researchgate.net/publication/371514138_SUPPORT_VECTORS_ARE_A_BETTER_WAY_OF_TEXT_CLASSIFICATION_FOR_IMBALANCED_DATA" }
