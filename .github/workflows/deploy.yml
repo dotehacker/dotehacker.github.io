@@ -15,6 +15,7 @@ on:
       - '_sass/**'
       - '_config.yml'
       - 'build.js'
+      - 'pub-figs/**'
   workflow_dispatch:
 
 permissions:

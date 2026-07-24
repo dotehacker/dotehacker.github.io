@@ -5,6 +5,8 @@
     "venue": "ACL 2026 (Main) — Proc. 64th Annual Meeting of the ACL, Vol. 1: Long Papers, pp. 44424–44440. San Diego, USA.",
     "year": 2026,
     "topics": ["Interpretability & Safety"],
+    "image": "/pub-figs/safeconstellations.png",
+    "tldr": "Steering only over-refusal-prone tasks in representation space cuts LLM over-refusals by up to 73% — no retraining, minimal utility loss.",
     "note": "LLM representations follow distinct per-task \"constellation\" trajectories in embedding space; SafeConstellations is an inference-time method that selectively steers only over-refusal-prone tasks toward non-refusal pathways — cutting over-refusals by up to 73% with minimal utility loss and no retraining.",
     "links": { "paper": "https://aclanthology.org/2026.acl-long.2056/", "arxiv": "https://arxiv.org/abs/2508.11290", "doi": "https://doi.org/10.18653/v1/2026.acl-long.2056" }
   },
@@ -14,6 +16,8 @@
     "venue": "Preprint, 2026",
     "year": 2026,
     "topics": ["Interpretability & Safety"],
+    "image": "/pub-figs/representation-geometry.png",
+    "tldr": "A label-free geometric metric — effective dimension — predicts, and causally drives, generalization across vision and language models.",
     "note": "Effective dimension — an unsupervised, label-free geometric metric — predicts generalization across domains: partial r = 0.75 over 52 ImageNet classifiers (13 architecture families), replicating on CIFAR-10 and generalizing to NLP (8 encoders on SST-2/MNLI, 15 decoder-only LLMs on AG News). Establishes bidirectional causality — degrading geometry with noise drops accuracy (r = −0.94), while PCA that improves geometry preserves it.",
     "links": { "paper": "https://arxiv.org/abs/2602.00130", "doi": "https://doi.org/10.48550/arXiv.2602.00130" }
   },
@@ -23,6 +27,8 @@
     "venue": "GLOW 2026 — Workshop on Generalizing from Limited Resources in the Open World @ IJCAI 2026 (Poster)",
     "year": 2026,
     "topics": ["Interpretability & Safety"],
+    "image": "/pub-figs/geometric-phases.png",
+    "tldr": "Neural-network classification mechanisms form output-layer-first, within the first ~5% of training — from small models up to LLM pretraining.",
     "note": "Using linear probes and centered kernel alignment (CKA) across dense training checkpoints, finds that classification mechanisms form output-layer-first and within the first ~5% of training: output layers reach >70% probe accuracy by epoch 5 while input layers stay below 50% (Cohen's d = 3.68). The same deep-first pattern holds in the first ~200M tokens of from-scratch LLM pretraining (GPT-2 Small, SmolLM2-135M) and reproduces on public Pythia / OLMo-2 checkpoints — and isn't explained by gradient magnitude. Code coming soon.",
     "links": { "preprint": "https://www.researchgate.net/publication/408634954_Geometric_Phases_of_Mechanism_Formation_in_Neural_Networks", "doi": "https://doi.org/10.13140/RG.2.2.35227.84005" }
   },
@@ -32,6 +38,8 @@
     "venue": "LoResLM @ ACL 2026 (pp. 444–452), Rabat, Morocco",
     "year": 2026,
     "topics": ["Low-resource NLP"],
+    "image": "/pub-figs/maibert.png",
+    "tldr": "The first BERT for Maithili (~50M speakers), reaching 87% news-classification accuracy and beating multilingual baselines like MuRIL and NepBERTa.",
     "note": "The first monolingual BERT for Maithili (~50M speakers), pre-trained with masked language modeling on a newly constructed Maithili corpus. Reaches 87.02% accuracy on news classification — outperforming regional models NepBERTa and HindiBERT with 5–7% gains across classes — and is open-sourced for downstream tasks like sentiment analysis and NER. (Earlier preprint: \"Can maiBERT Speak for Maithili?\")",
     "links": { "paper": "https://aclanthology.org/2026.loreslm-1.38/", "arxiv": "https://arxiv.org/abs/2509.15048", "doi": "https://doi.org/10.18653/v1/2026.loreslm-1.38", "model": "https://huggingface.co/rockerritesh/maiBERT_TF" }
   },
@@ -41,6 +49,8 @@
     "venue": "J. Bus. Econ. Stud., 2024",
     "year": 2024,
     "topics": ["Vision & Other"],
+    "image": "/pub-figs/yolov8.png",
+    "tldr": "A YOLOv8 detector for counterfeit Nepali banknotes, reaching 0.986 true-positive recall on the note's back face.",
     "note": "Classifies Nepalese banknotes as genuine or counterfeit to help curb financial fraud. On 180 samples of the 1000-rupee note, YOLOv8 reaches a true-positive recall of 0.82 on the front face and 0.9863 on the back, with strong mAP — and the approach is adaptable across hardware platforms.",
     "links": { "paper": "https://doi.org/10.61440/JBES.2024.v1.47" }
   },
@@ -50,6 +60,7 @@
     "venue": "B.E. Thesis (Electronics & Computer Engineering), Tribhuvan University, 2024",
     "year": 2024,
     "topics": ["Low-resource NLP"],
+    "tldr": "A Maithili masked language model built via transfer learning — the precursor work to maiBERT.",
     "note": "Builds a Maithili masked language model via transfer learning and fine-tunes it on a curated Maithili news classification dataset — the precursor work to maiBERT, addressing the absence of dedicated language models and task-specific data for Maithili.",
     "links": { "paper": "https://www.researchgate.net/publication/407471788_EVALUATING_AUTO-ENCODING_TRANSFORMER_LANGUAGE_MODELS_FOR_MAITHILI_TEXT_CLASSIFICATION" }
   },
@@ -59,6 +70,7 @@
     "venue": "Technical Report, Tribhuvan University, 2023",
     "year": 2023,
     "topics": ["Low-resource NLP"],
+    "tldr": "Character recognition for the endangered Tirhuta script at 97% accuracy, enabling OCR for Maithili.",
     "note": "Character recognition for the Tirhuta script (Maithili) — MobileNet embeddings with logistic regression reach 0.97 accuracy, enabling OCR and translation for a low-resource script.",
     "links": { "paper": "https://www.researchgate.net/publication/373370042_Machine_Learning_Analysis_of_Tirhuta_Lipi", "doi": "https://doi.org/10.13140/RG.2.2.15213.97765" }
   },
@@ -68,6 +80,7 @@
     "venue": "2023",
     "year": 2023,
     "topics": ["Vision & Other"],
+    "tldr": "For 100+ imbalanced text classes, a TF-IDF support-vector pipeline beats neural baselines and retrains incrementally.",
     "note": "A TF-IDF + n-gram support-vector pipeline for text classification across 100+ classes on highly imbalanced data. It outperforms neural baselines on the test set and supports incremental retraining as users supply fresh data. Consolidates the team's 1st Runner-Up submissions at Docsumo DataRush (LOCUS 2021) and DataVerse (LOCUS 2023).",
     "links": { "paper": "https://www.researchgate.net/publication/371514138_SUPPORT_VECTORS_ARE_A_BETTER_WAY_OF_TEXT_CLASSIFICATION_FOR_IMBALANCED_DATA" }
   }

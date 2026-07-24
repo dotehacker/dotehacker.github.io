@@ -92,17 +92,32 @@ class JekyllLikeBuilder {
     const chips = ['All', ...topics].map((t, i) =>
       `<button class="chip${i === 0 ? ' active' : ''}" data-filter="${i === 0 ? '*' : this.esc(t)}">${this.esc(t)}</button>`
     ).join('');
-    const labels = { paper: 'paper', arxiv: 'arXiv', doi: 'DOI', code: 'code', blog: 'blog', bibtex: 'BibTeX', model: 'model', demo: 'demo', data: 'data' };
+    const labels = { paper: 'Paper', arxiv: 'arXiv', doi: 'DOI', code: 'Code', blog: 'Blog', bibtex: 'BibTeX', model: 'Model', demo: 'Demo', data: 'Data', preprint: 'Preprint' };
+    const docIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M6 2h8l4 4v16H6z"/><path d="M14 2v4h4"/><path d="M9 12h6M9 16h6"/></svg>';
+    const boldSelf = (a) => this.esc(a).replace(/Sumit Yadav/g, '<strong>Sumit Yadav</strong>');
+    const shortVenue = (v) => (v || '').split(' — ')[0].split(' (pp')[0].trim();
     const cards = pubs.map(p => {
-      const links = Object.entries(p.links || {}).map(([k, v]) =>
-        `<a href="${this.esc(v)}">${this.esc(labels[k] || k)}</a>`).join('');
+      const linkItems = Object.entries(p.links || {}).map(([k, v]) =>
+        `<a href="${this.esc(v)}">${this.esc(labels[k] || k)}</a>`);
+      const venue = shortVenue(p.venue);
+      const meta = [venue ? `<span class="pub-venue">${this.esc(venue)}</span>` : '', ...linkItems]
+        .filter(Boolean).join('<span class="pub-sep">|</span>');
       const dt = (p.topics || []).map(t => this.esc(t)).join('|');
+      const tag = (p.topics || [])[0];
+      const fig = p.image
+        ? `<div class="pub-fig"><img src="${this.esc(p.image)}" alt="Figure — ${this.esc(p.title)}" loading="lazy"></div>`
+        : `<div class="pub-fig pub-fig--empty">${docIcon}</div>`;
       return `<div class="pub-card" data-topics="${dt}">
-        <p class="pub-title">${this.esc(p.title)}</p>
-        ${p.authors ? `<p class="pub-authors">${this.esc(p.authors)}</p>` : ''}
-        ${p.venue ? `<p class="pub-venue">${this.esc(p.venue)}</p>` : ''}
-        ${p.note ? `<p class="pub-note">${this.esc(p.note)}</p>` : ''}
-        ${links ? `<p class="pub-links">${links}</p>` : ''}
+        ${fig}
+        <div class="pub-body">
+          <h3 class="pub-title">${this.esc(p.title)}</h3>
+          ${p.authors ? `<p class="pub-authors">${boldSelf(p.authors)}</p>` : ''}
+          ${(p.tldr || p.note) ? `<p class="pub-tldr"><span class="tldr-label">TL;DR:</span> ${this.esc(p.tldr || p.note)}</p>` : ''}
+          <div class="pub-foot">
+            <span class="pub-meta">${meta}</span>
+            ${tag ? `<span class="pub-tag">${this.esc(tag)}</span>` : ''}
+          </div>
+        </div>
       </div>`;
     }).join('\n');
     return `<section class="section" id="publications">
@@ -244,7 +259,7 @@ class JekyllLikeBuilder {
   }
 
   copyStaticAssets() {
-    const items = ['files', 'photo', 'photography', 'drum', 'posts',
+    const items = ['files', 'photo', 'photography', 'drum', 'posts', 'pub-figs',
       'cv.pdf', 'resume.pdf', 'TPUs-2.pdf', 'rockerritesh.png', 'profile.jpg',
       'favicon.ico', 'favicon-16x16.png', 'favicon-32x32.png', 'apple-touch-icon.png',
       'android-chrome-192x192.png', 'android-chrome-512x512.png', 'mstile-150x150.png',
