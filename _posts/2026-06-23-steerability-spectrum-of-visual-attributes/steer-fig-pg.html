@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root{
+    --panel:#FFFFFF; --text:#1C1B22; --muted:#6f6f64; --line:#E7E6DE;
+    --warm:#C2410C; --cool:#3730A3; --rep:#B21F2D;
+    --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){ :root:where(:not([data-theme="light"])){
+    --panel:#181922;--text:#ECECF2;--muted:#9a9aa6;--line:#2a2b34;--warm:#F0843C;--cool:#8a82f5;--rep:#ef5b6b;} }
+  :root[data-theme="dark"]{--panel:#181922;--text:#ECECF2;--muted:#9a9aa6;--line:#2a2b34;--warm:#F0843C;--cool:#8a82f5;--rep:#ef5b6b;}
+  :root[data-theme="light"]{--panel:#FFFFFF;--text:#1C1B22;--muted:#6f6f64;--line:#E7E6DE;--warm:#C2410C;--cool:#3730A3;--rep:#B21F2D;}
+  *{box-sizing:border-box}
+  html,body{margin:0;background:transparent}
+  .kfig{border:1px solid var(--line);border-radius:14px;padding:1.15rem 1.15rem 1rem;background:var(--panel);color:var(--text)}
+  .kfig-eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .kfig-title{font-family:var(--sans);font-weight:640;font-size:1.06rem;margin:.1rem 0 .8rem}
+  .kfig-controls{display:flex;flex-wrap:wrap;gap:.8rem;margin-bottom:.45rem}
+  .kfig-group{display:inline-flex;gap:.22rem;background:color-mix(in srgb,var(--text) 6%,transparent);border-radius:9px;padding:.22rem}
+  .kfig-group button{font-family:var(--sans);font-size:.82rem;border:0;background:transparent;color:var(--muted);padding:.3rem .62rem;border-radius:7px;cursor:pointer;transition:.12s}
+  .kfig-group button.on{background:var(--panel);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.12);font-weight:600}
+  .kfig-canvas{width:100%;height:360px;display:block;touch-action:none;cursor:ew-resize}
+  .kfig-readout{font-family:var(--mono);font-size:.82rem;color:var(--text);margin-top:.6rem;min-height:1.3em;line-height:1.5}
+  .kfig-readout b{font-weight:700}
+  .kfig-caption{font-family:var(--sans);font-size:.8rem;color:var(--muted);margin-top:.55rem;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="kfig" id="fig-pg">
+  <div class="kfig-eyebrow">Figure 2 — PaliGemma: representation vs language</div>
+  <div class="kfig-title">The same edit, read two ways</div>
+  <div class="kfig-controls">
+    <div class="kfig-group" data-role="attr">
+      <button data-val="orientation" class="on">orientation</button>
+      <button data-val="size">size</button>
+    </div>
+  </div>
+  <canvas class="kfig-canvas" height="360" aria-label="Representation versus language steering versus rank K"></canvas>
+  <div class="kfig-readout"></div>
+  <div class="kfig-caption">Solid red = representation steering (tower probe). Dashed = language steering (caption preference, change from baseline). Dotted = object identity. Vertical line = k*.</div>
+</div>
+<script>
+(function(){
+  var PG_R=[1,2,4,8,16,32,64,128];
+  var PG={size:{k:13,pb:.429,rep:[.211,.341,.742,.812,.812,.814,.793,.78],lang:[.435,.436,.425,.401,.4,.385,.385,.384],i:[.688,.688,.5,.375,.375,.438,.312,.25]},
+    orientation:{k:54,pb:.719,rep:[.448,.509,.593,.719,.781,.836,1.067,1.482],lang:[.719,.72,.719,.719,.72,.721,.723,.728],i:[.562,.5,.5,.5,.5,.5,.375,.25]}};
+  function css(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim();}
+  function dark(){var t=document.documentElement.getAttribute("data-theme"); if(t) return t==="dark"; return window.matchMedia&&window.matchMedia("(prefers-color-scheme:dark)").matches;}
+  function chart(cv,spec){
+    var dpr=window.devicePixelRatio||1, W=cv.clientWidth, H=cv.clientHeight||360;
+    cv.width=W*dpr; cv.height=H*dpr; var g=cv.getContext("2d"); g.setTransform(dpr,0,0,dpr,0,0);
+    g.clearRect(0,0,W,H);
+    var d=dark(), grid=d?"#2a2b34":"#e7e6de", axc=d?"#7a7a86":"#9a9a8e", kc=d?"#7fae6a":"#5f8f48";
+    var m={l:46,r:16,t:14,b:42}, x0=m.l,x1=W-m.r,y0=H-m.b,y1=m.t;
+    var R=spec.ranks, lg=R.map(function(r){return Math.log(r);}), lmin=lg[0], lmax=lg[lg.length-1];
+    var X=function(t){return x0+(t-lmin)/(lmax-lmin)*(x1-x0);};
+    var ya=spec.ylim[0], yb=spec.ylim[1], Y=function(v){return y0+(v-ya)/(yb-ya)*(y1-y0);};
+    g.font="11px "+(css("--mono")||"monospace"); g.textBaseline="middle";
+    [0,.5,1,1.5].forEach(function(v){ if(v<ya||v>yb)return; var y=Y(v);
+      g.strokeStyle=grid; g.lineWidth=1; g.beginPath(); g.moveTo(x0,y); g.lineTo(x1,y); g.stroke();
+      g.fillStyle=axc; g.textAlign="right"; g.fillText(v.toFixed(1),x0-8,y); });
+    if(ya<0){ g.strokeStyle=axc; g.globalAlpha=.6; g.beginPath(); g.moveTo(x0,Y(0)); g.lineTo(x1,Y(0)); g.stroke(); g.globalAlpha=1; }
+    g.textAlign="center"; g.textBaseline="top";
+    R.forEach(function(r,j){ g.fillStyle=axc; g.fillText(String(r),X(lg[j]),y0+8); });
+    g.fillStyle=axc; g.fillText("steering rank K  (log scale)",(x0+x1)/2,y0+24);
+    var kx=X(Math.log(spec.kstar));
+    g.strokeStyle=kc; g.lineWidth=1.5; g.setLineDash([4,3]); g.beginPath(); g.moveTo(kx,y1); g.lineTo(kx,y0); g.stroke(); g.setLineDash([]);
+    g.fillStyle=kc; g.textBaseline="bottom"; g.fillText("k*="+spec.kstar,kx,y1+11);
+    spec.series.forEach(function(s){
+      g.strokeStyle=s.color; g.lineWidth=s.w||2.6; g.setLineDash(s.dash||[]);
+      g.beginPath(); s.vals.forEach(function(v,j){ var x=X(lg[j]),y=Y(v); j?g.lineTo(x,y):g.moveTo(x,y); }); g.stroke(); g.setLineDash([]);
+      if(!s.noDots) s.vals.forEach(function(v,j){ g.fillStyle=s.color; g.beginPath(); g.arc(X(lg[j]),Y(v),2.6,0,7); g.fill(); });
+    });
+    var cx=X(lg[spec.cur]); g.strokeStyle=d?"#ececf2":"#1c1b22"; g.globalAlpha=.45; g.lineWidth=1.25;
+    g.beginPath(); g.moveTo(cx,y1); g.lineTo(cx,y0); g.stroke(); g.globalAlpha=1;
+    spec.series.forEach(function(s){ g.fillStyle=s.color; g.strokeStyle=css("--panel")||"#fff"; g.lineWidth=2;
+      g.beginPath(); g.arc(cx,Y(s.vals[spec.cur]),5,0,7); g.fill(); g.stroke(); });
+    cv._geo={X:X,lg:lg};
+  }
+  function attach(cv,onIdx){
+    function pick(ev){ var r=cv.getBoundingClientRect(), px=(ev.touches?ev.touches[0].clientX:ev.clientX)-r.left,
+      lg=cv._geo.lg,best=0,bd=1e9; for(var j=0;j<lg.length;j++){var dd=Math.abs(cv._geo.X(lg[j])-px); if(dd<bd){bd=dd;best=j;}} onIdx(best); }
+    var down=false;
+    cv.addEventListener("mousedown",function(e){down=true;pick(e);});
+    window.addEventListener("mousemove",function(e){if(down)pick(e);});
+    window.addEventListener("mouseup",function(){down=false;});
+    cv.addEventListener("touchstart",function(e){down=true;pick(e);e.preventDefault();},{passive:false});
+    cv.addEventListener("touchmove",function(e){if(down){pick(e);e.preventDefault();}},{passive:false});
+    cv.addEventListener("touchend",function(){down=false;});
+  }
+  function bindGroups(root,st,render){
+    root.querySelectorAll(".kfig-group").forEach(function(grp){
+      var role=grp.getAttribute("data-role");
+      grp.querySelectorAll("button").forEach(function(b){ b.addEventListener("click",function(){
+        grp.querySelectorAll("button").forEach(function(x){x.classList.remove("on");});
+        b.classList.add("on"); st[role]=b.getAttribute("data-val"); render(); }); });
+    });
+  }
+  var root=document.getElementById("fig-pg"), cv=root.querySelector(".kfig-canvas"), ro=root.querySelector(".kfig-readout");
+  var st={attr:"orientation",cur:0};
+  function render(){ var x=PG[st.attr], lang=x.lang.map(function(v){return v-x.pb;});
+    chart(cv,{ranks:PG_R,kstar:x.k,cur:st.cur,ylim:[-.2,1.6],
+      series:[{vals:x.rep,color:css("--rep")},{vals:lang,color:css("--cool"),dash:[5,4]},{vals:x.i,color:"#9a9a8e",dash:[2,3],w:1.8,noDots:true}]});
+    var K=PG_R[st.cur], dP=x.lang[st.cur]-x.pb;
+    ro.innerHTML="rank <b>K="+K+"</b> &nbsp;·&nbsp; <span style='color:"+css("--rep")+"'>representation</span> <b>"+Math.round(x.rep[st.cur]*100)+"%</b> &nbsp;·&nbsp; <span style='color:"+css("--cool")+"'>language</span> ΔP <b>"+(dP>=0?"+":"")+Math.round(dP*100)+"%</b> &nbsp;·&nbsp; identity <b>"+Math.round(x.i[st.cur]*100)+"%</b>";
+  }
+  bindGroups(root,st,render); attach(cv,function(j){st.cur=j;render();}); window.addEventListener("resize",render); render();
+  window.addEventListener("message",function(e){ if(e.data&&e.data.type==="theme"&&e.data.theme){ document.documentElement.setAttribute("data-theme",e.data.theme); render(); } });
+})();
+</script>
+</body>
+</html>
