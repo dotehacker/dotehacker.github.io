@@ -1,5 +1,33 @@
 [
   {
+    "id": "/posts/2026/07/28/csa-ai-security-compliance-stack/",
+    "title": "CCM, CAIQ, STAR, AICM, AISMM: A Field Guide to CSA's AI Security and Compliance Stack",
+    "excerpt": "\n\n  /* Keep the Mermaid figures in this post legible: scroll rather than shrink to nothing. */\n  .post-content .mermaid { overflow-x: auto; overflow-y: hidden; margin: 1.7em 0; text-align: center; }\n  .post-content .mermaid > svg { height: auto; }\n  .post-content table { font-size: .94rem; }\n",
+    "content": "\n  /* Keep the Mermaid figures in this post legible: scroll rather than shrink to nothing. */\n  .post-content .mermaid { overflow-x: auto; overflow-y: hidden; margin: 1.7em 0; text-align: center; }\n  .post-content .mermaid > svg { height: auto; }\n  .post-content table { font-size: .94rem; }\n\n\nSomeone on your board has asked what the security program is doing about AI. Meanwhile the business has already shipped Copilot to every employee, signed an enterprise LLM contract, and approved three agent pilots — two of which security learned about from the invoice. You go looking for a framework, and the Cloud Security Alliance hands you five of them: CCM, CAIQ, STAR, AICM, and AISMM.\nThey sound interchangeable. They are not. Each one answers a genuinely different question, and the reason there are five is that &quot;is this thing secure?&quot; decomposes into five different questions that need five different kinds of artifact to answer.\nThis post is the map I wish I&#39;d had. By the end you should be able to look at any of the five and say, in one sentence, what it&#39;s for and who it&#39;s for.\nThe one-sentence version\nHere&#39;s the whole family, compressed:\n\nA control is a promise about how a system is built. A questionnaire is how you make someone state that promise on the record. A registry is where the promise becomes public and checkable. A maturity model is the order in which you should build the capability to make those promises truthfully.\n\nCCM and AICM are the controls. CAIQ and AI-CAIQ are the questionnaires. STAR is the registry and the assurance program around it. AISMM is the maturity model. Cloud came first; AI is the second branch grown from the same trunk.\nflowchart TD\n    subgraph CLOUD[\"☁️ Cloud branch · since 2011\"]\n        CCM[\"CCM v4.1207 controls · 17 domainswhat good looks like\"]\n        CAIQ[\"CAIQ v4.1283 questionsprove it\"]\n        CCM -->|\"controls becomequestions\"| CAIQ\n    end\n\n    subgraph AIB[\"🤖 AI branch · since 2025\"]\n        AICM[\"AICM v1.1247 controls · 18 domainssame, for AI\"]\n        AICAIQ[\"AI-CAIQ v1.1320 questionsprove it, for AI\"]\n        AICM -->|\"same derivation\"| AICAIQ\n    end\n\n    STAR[\"STAR · Security, Trust, Assurance, RiskPublic registry · L1 self / L2 third-partywhere the answers live\"]\n    AISMM[\"AISMM · AI Security Maturity Model12 categories × 5 levelswhat to build first\"]\n\n    CCM ==>|\"17 domainsinherited\"| AICM\n    CAIQ --> STAR\n    AICAIQ --> STAR\n    AISMM -.->|\"KPIs map toAICM controls\"| AICM\n    AISMM -.->|\"which claims arehonest yet\"| STAR\n\n    style CCM fill:#1b3a6b,stroke:#0d2340,color:#fff\n    style CAIQ fill:#2d6cb5,stroke:#1b3a6b,color:#fff\n    style AICM fill:#5b3a8e,stroke:#3a2159,color:#fff\n    style AICAIQ fill:#8055c4,stroke:#5b3a8e,color:#fff\n    style STAR fill:#0f8a6a,stroke:#095944,color:#fff\n    style AISMM fill:#c25a1c,stroke:#8a3d10,color:#fff\nFigure 1 — The five artifacts and how they feed each other. Solid arrows are derivation; dotted arrows are cross-reference.\nEverything below is an expansion of that diagram.\n\nPart 1 — CCM: the control catalog\nThe Cloud Controls Matrix is the trunk of the tree. It is a catalog of 207 control objectives across 17 domains, and it has been the de-facto vocabulary for cloud security assurance since long before anyone was worried about prompt injection.\nA &quot;control objective&quot; here is a short, testable statement of a desired property. Not &quot;use AES-256&quot; — that&#39;s an implementation. Something closer to &quot;cryptographic keys are managed through a defined lifecycle with documented ownership.&quot; Deliberately technology-agnostic, so it survives the next five years of tooling churn.\nThe thing people miss about CCM is that the spreadsheet of 207 controls is only one of about six components in the download. The rest is what makes it usable:\n\n\n\nComponent\nWhat it gives you\n\n\n\nCCM Controls\nThe 207 control objectives across 17 domains\n\n\nImplementation Guidelines\nPer-control: how to actually achieve it, written by practitioners\n\n\nAuditing Guidelines\nPer-control: what an auditor should look at and ask\n\n\nMappings\nEquivalences to ISO 27001/27002/27017/27018, AICPA TSC, CIS Controls, NIST CSF, NIST 800-53, PCI DSS, and more\n\n\nCCM Metrics\nThe Continuous Audit Metrics Catalog — turning controls into measurable, potentially real-time signals\n\n\nMachine-readable forms\nJSON / YAML / OSCAL, for automating all of the above\n\n\nTwo of those deserve emphasis.\nThe mappings are the real product. A control framework&#39;s value is roughly proportional to how much duplicate work it eliminates. If you can demonstrate a CCM control and mechanically show that it satisfies the corresponding ISO 27001 and NIST 800-53 requirements, you have collapsed three audits into one evidence-gathering exercise. This is the entire economic argument for adopting CCM rather than inventing your own control set, and it&#39;s why the mappings get as much working-group attention as the controls.\nThe metrics are where this is headin",
+    "date": "2026-07-28T00:00:00.000Z",
+    "tags": [
+      "ai-safety",
+      "compliance",
+      "ai-governance",
+      "csa",
+      "ccm",
+      "caiq",
+      "star",
+      "aicm",
+      "aismm",
+      "cloud-security",
+      "ai-security",
+      "ssrm",
+      "iso-42001",
+      "nist-ai-rmf",
+      "eu-ai-act"
+    ],
+    "categories": [
+      "ai-safety",
+      "compliance"
+    ]
+  },
+  {
     "id": "/posts/2026/07/16/removing-the-workspace-layers-of-llama/",
     "title": "Where Does a Language Model Think? Finding and Removing the 'Workspace' Layers of Llama-3.1-8B",
     "excerpt": "\n*A hands-on interpretability walkthrough. We watch concepts form layer-by-layer inside\nLlama-3.1-8B-Instruct, measure precisely which layers carry meaning, then **delete\nlayers** — one at a time and in whole bands — and quantify exactly how generation\ndegrades. Every chart below is interactive and ",
