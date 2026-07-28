@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCM, CAIQ, STAR, AICM, AISMM — A Field Guide to CSA's AI Security and Compliance Stack</title>
+<meta name="description" content="A field guide to the Cloud Security Alliance's five governance frameworks — CCM, CAIQ, STAR, AICM and AISMM — with ten diagrams showing how the cloud and AI branches interlock, and where compliance stops and AI safety begins.">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg-primary:#0f0f1a; --bg-secondary:#1a1a2e; --bg-card:#16213e; --bg-card-hover:#1e2a4e;
+    --text-primary:#e0e0e0; --text-secondary:#a0a0b0;
+    --accent-blue:#00d2ff; --accent-yellow:#ffd93d; --accent-green:#6bcb77;
+    --accent-purple:#c56cf0; --accent-red:#ff6b6b; --border:#2a2a4a;
+    --max:1000px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    background:var(--bg-primary); color:var(--text-primary);
+    line-height:1.75; font-size:16px; scroll-behavior:smooth;
+  }
+
+  .topbar{
+    background:var(--bg-secondary); border-bottom:1px solid var(--border);
+    padding:0.9rem 1.5rem; display:flex; align-items:center; gap:0.6rem;
+    position:sticky; top:0; z-index:20;
+  }
+  .topbar a{color:var(--accent-blue); text-decoration:none; font-weight:600}
+  .topbar a:hover{text-decoration:underline}
+  .topbar .crumb{color:var(--text-secondary); font-size:0.9rem}
+  .topbar .crumb strong{color:var(--text-primary)}
+
+  .wrap{max-width:var(--max); margin:0 auto; padding:0 1.5rem}
+
+  header.hero{
+    background:radial-gradient(1100px 460px at 18% 0%,rgba(0,210,255,.16),transparent 60%),
+               radial-gradient(900px 400px at 88% 18%,rgba(197,108,240,.14),transparent 60%),
+               linear-gradient(180deg,#0d0d17 0%,#12121f 100%);
+    border-bottom:1px solid var(--border);
+    padding:56px 0 40px;
+  }
+  .badge{
+    display:inline-block; font-weight:600; font-size:.75rem; letter-spacing:.08em;
+    text-transform:uppercase; background:rgba(0,210,255,.12); color:#8ae8ff;
+    padding:6px 12px; border-radius:999px; border:1px solid rgba(0,210,255,.32); margin-bottom:16px;
+  }
+  header.hero h1{
+    font-size:2.2rem; line-height:1.22; letter-spacing:-.01em; margin-bottom:12px;
+    background:linear-gradient(135deg,var(--accent-blue),var(--accent-purple));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  }
+  header.hero .sub{color:var(--text-secondary); font-size:1.02rem; max-width:70ch}
+  .tags{margin-top:16px; display:flex; flex-wrap:wrap; gap:6px}
+  .tag{
+    font-size:.74rem; color:var(--text-secondary); background:var(--bg-secondary);
+    border:1px solid var(--border); padding:3px 9px; border-radius:999px;
+  }
+
+  main{padding:34px 0 70px}
+  section{margin:38px 0}
+
+  h2{
+    font-size:1.55rem; margin:2.2rem 0 .8rem; letter-spacing:-.005em;
+    border-left:4px solid var(--accent-blue); padding-left:12px; line-height:1.3;
+  }
+  h3{font-size:1.16rem; margin:1.8rem 0 .5rem; color:#fff}
+  p{margin:0 0 1rem; color:#d3d8e0}
+  ul,ol{margin:0 0 1rem 1.4rem}
+  li{margin:.4rem 0; color:#d3d8e0}
+  a{color:var(--accent-blue)}
+  strong{color:#fff}
+  hr{border:none; border-top:1px solid var(--border); margin:2.4rem 0}
+
+  nav.toc{
+    background:var(--bg-card); border:1px solid var(--border); border-radius:12px;
+    padding:14px 18px; margin:0 0 26px;
+  }
+  nav.toc b{display:block; font-size:.76rem; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--text-secondary); margin-bottom:8px}
+  nav.toc a{color:#c8d0db; text-decoration:none; font-size:.9rem; margin-right:16px;
+    display:inline-block; padding:2px 0}
+  nav.toc a:hover{color:var(--accent-blue)}
+
+  blockquote{
+    border-left:3px solid var(--accent-yellow); margin:1.2rem 0; padding:.7rem 1.1rem;
+    color:#f0e4c0; background:rgba(255,217,61,.06); border-radius:0 10px 10px 0;
+  }
+  blockquote p{color:inherit; margin:.35rem 0}
+
+  /* Diagrams: give them the full column and let them scroll rather than shrink to nothing. */
+  figure{margin:1.6rem 0; background:var(--bg-card); border:1px solid var(--border);
+    border-radius:14px; overflow:hidden}
+  figure .mermaid{
+    overflow-x:auto; overflow-y:hidden; text-align:center;
+    padding:18px 14px; background:#fdfdfd;
+  }
+  figure .mermaid svg{height:auto; max-width:none}
+  figure img{width:100%; display:block}
+  figcaption{
+    color:var(--text-secondary); padding:10px 14px; font-size:.87rem;
+    border-top:1px solid var(--border); background:var(--bg-secondary);
+  }
+  figcaption b{color:#d0d7e0}
+
+  .tablewrap{overflow-x:auto; margin:1.3rem 0}
+  table{
+    width:100%; border-collapse:collapse; font-size:.92rem;
+    background:var(--bg-card); border:1px solid var(--border); border-radius:10px;
+  }
+  th,td{padding:9px 12px; text-align:left; border-bottom:1px solid var(--border); vertical-align:top}
+  th{background:var(--bg-secondary); font-weight:600; color:#fff; white-space:nowrap}
+  td.num,th.num{text-align:right; font-variant-numeric:tabular-nums}
+  tr:last-child td{border-bottom:none}
+  tbody tr:hover{background:var(--bg-card-hover)}
+
+  code{
+    background:var(--bg-secondary); border:1px solid var(--border);
+    padding:1px 5px; border-radius:5px; font-size:.88em; color:#9ff0dd;
+    font-family:"SF Mono",Menlo,Monaco,Consolas,monospace;
+  }
+
+  .callout{
+    background:linear-gradient(180deg,rgba(0,210,255,.07),rgba(0,210,255,.02));
+    border:1px solid rgba(0,210,255,.3); border-radius:12px; padding:16px 18px; margin:1.3rem 0;
+  }
+
+  footer{border-top:1px solid var(--border); padding:26px 0 10px; color:var(--text-secondary); font-size:.9rem}
+  footer a{color:var(--accent-blue); text-decoration:none}
+  footer a:hover{text-decoration:underline}
+  .backlink{text-align:center; margin-top:2rem; font-size:.88rem}
+
+  @media (max-width:620px){
+    header.hero h1{font-size:1.65rem}
+    header.hero{padding:38px 0 30px}
+    h2{font-size:1.32rem}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">Tatva</a>
+  <span class="crumb">› <a href="../">Study</a> › <strong>CSA AI Security &amp; Compliance Stack</strong></span>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="badge">AI Safety &amp; Compliance · Field Guide</span>
+    <h1>CCM, CAIQ, STAR, AICM, AISMM</h1>
+    <p class="sub">A field guide to the Cloud Security Alliance's five governance frameworks — what each one is actually for, how the cloud and AI branches interlock, and where compliance stops and AI safety begins. Ten diagrams and a summary table.</p>
+    <div class="tags">
+      <span class="tag">CCM v4.1 · 207 controls</span>
+      <span class="tag">CAIQ v4.1 · 283 questions</span>
+      <span class="tag">AICM v1.1 · 247 controls</span>
+      <span class="tag">AI-CAIQ v1.1 · 320 questions</span>
+      <span class="tag">AISMM · 12 × 5</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+<nav class="toc">
+  <b>Contents</b>
+  <a href="#one-sentence">The one-sentence version</a>
+  <a href="#ccm">1 · CCM</a>
+  <a href="#caiq">2 · CAIQ</a>
+  <a href="#star">3 · STAR</a>
+  <a href="#aicm">4 · AICM</a>
+  <a href="#ssrm">5 · Five actors</a>
+  <a href="#aismm">6 · AISMM</a>
+  <a href="#interlock">7 · How they interlock</a>
+  <a href="#which">8 · Which do you need?</a>
+  <a href="#safety">9 · Where this meets AI safety</a>
+  <a href="#summary">Summary table</a>
+  <a href="#sources">Sources</a>
+</nav>
+
+<figure>
+  <img src="star-universe.png" alt="The CSA STAR Universe — CCM and CAIQ on the left feeding the STAR program at centre, with the assessment portfolio, registry, enabled solutions and assurance education radiating outward">
+  <figcaption>The CSA STAR universe, as CSA draws it. © Cloud Security Alliance, from the STAR Program Knowledge Guide — reproduced here for educational explanation. Every other figure on this page is my own.</figcaption>
+</figure>
+
+<p>Someone on your board has asked what the security program is doing about AI. Meanwhile the business has already shipped Copilot to every employee, signed an enterprise LLM contract, and approved three agent pilots — two of which security learned about from the invoice. You go looking for a framework, and the Cloud Security Alliance hands you five of them: <strong>CCM</strong>, <strong>CAIQ</strong>, <strong>STAR</strong>, <strong>AICM</strong>, and <strong>AISMM</strong>.</p>
+
+<p>They sound interchangeable. They are not. Each one answers a genuinely different question, and the reason there are five is that "is this thing secure?" decomposes into five different questions that need five different kinds of artifact to answer.</p>
+
+<p>This is the map I wish I'd had. By the end you should be able to look at any of the five and say, in one sentence, what it's for and who it's for.</p>
+
+<section id="one-sentence">
+<h2>The one-sentence version</h2>
+
+<p>Here's the whole family, compressed:</p>
+
+<blockquote>
+  <p>A <strong>control</strong> is a promise about how a system is built. A <strong>questionnaire</strong> is how you make someone state that promise on the record. A <strong>registry</strong> is where the promise becomes public and checkable. A <strong>maturity model</strong> is the order in which you should build the capability to make those promises truthfully.</p>
+</blockquote>
+
+<p>CCM and AICM are the controls. CAIQ and AI-CAIQ are the questionnaires. STAR is the registry and the assurance program around it. AISMM is the maturity model. Cloud came first; AI is the second branch grown from the same trunk.</p>
+
+<figure>
+<div class="mermaid">
+flowchart TD
+    subgraph CLOUD["☁️ Cloud branch · since 2011"]
+        CCM["<b>CCM v4.1</b><br/>207 controls · 17 domains<br/><i>what good looks like</i>"]
+        CAIQ["<b>CAIQ v4.1</b><br/>283 questions<br/><i>prove it</i>"]
+        CCM -->|"controls become<br/>questions"| CAIQ
+    end
+
+    subgraph AIB["🤖 AI branch · since 2025"]
+        AICM["<b>AICM v1.1</b><br/>247 controls · 18 domains<br/><i>same, for AI</i>"]
+        AICAIQ["<b>AI-CAIQ v1.1</b><br/>320 questions<br/><i>prove it, for AI</i>"]
+        AICM -->|"same derivation"| AICAIQ
+    end
+
+    STAR["<b>STAR</b> · Security, Trust, Assurance, Risk<br/>Public registry · L1 self / L2 third-party<br/><i>where the answers live</i>"]
+    AISMM["<b>AISMM</b> · AI Security Maturity Model<br/>12 categories × 5 levels<br/><i>what to build first</i>"]
+
+    CCM ==>|"17 domains<br/>inherited"| AICM
+    CAIQ --> STAR
+    AICAIQ --> STAR
+    AISMM -.->|"KPIs map to<br/>AICM controls"| AICM
+    AISMM -.->|"which claims are<br/>honest yet"| STAR
+
+    style CCM fill:#1b3a6b,stroke:#0d2340,color:#fff
+    style CAIQ fill:#2d6cb5,stroke:#1b3a6b,color:#fff
+    style AICM fill:#5b3a8e,stroke:#3a2159,color:#fff
+    style AICAIQ fill:#8055c4,stroke:#5b3a8e,color:#fff
+    style STAR fill:#0f8a6a,stroke:#095944,color:#fff
+    style AISMM fill:#c25a1c,stroke:#8a3d10,color:#fff
+</div>
+<figcaption><b>Figure 1</b> — The five artifacts and how they feed each other. Solid arrows are derivation; dotted arrows are cross-reference.</figcaption>
+</figure>
+
+<p>Everything below is an expansion of that diagram.</p>
+</section>
+
+<hr>
+
+<section id="ccm">
+<h2>Part 1 — CCM: the control catalog</h2>
+
+<p>The <strong>Cloud Controls Matrix</strong> is the trunk of the tree. It is a catalog of <strong>207 control objectives across 17 domains</strong>, and it has been the de-facto vocabulary for cloud security assurance since long before anyone was worried about prompt injection.</p>
+
+<p>A "control objective" here is a short, testable statement of a desired property. Not "use AES-256" — that's an implementation. Something closer to <i>"cryptographic keys are managed through a defined lifecycle with documented ownership."</i> Deliberately technology-agnostic, so it survives the next five years of tooling churn.</p>
+
+<p>The thing people miss about CCM is that the spreadsheet of 207 controls is only one of about six components in the download. The rest is what makes it usable:</p>
+
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Component</th><th>What it gives you</th></tr></thead>
+  <tbody>
+    <tr><td><strong>CCM Controls</strong></td><td>The 207 control objectives across 17 domains</td></tr>
+    <tr><td><strong>Implementation Guidelines</strong></td><td>Per-control: <i>how</i> to actually achieve it, written by practitioners</td></tr>
+    <tr><td><strong>Auditing Guidelines</strong></td><td>Per-control: what an auditor should look at and ask</td></tr>
+    <tr><td><strong>Mappings</strong></td><td>Equivalences to ISO 27001/27002/27017/27018, AICPA TSC, CIS Controls, NIST CSF, NIST 800-53, PCI DSS, and more</td></tr>
+    <tr><td><strong>CCM Metrics</strong></td><td>The Continuous Audit Metrics Catalog — turning controls into measurable, potentially real-time signals</td></tr>
+    <tr><td><strong>Machine-readable forms</strong></td><td>JSON / YAML / OSCAL, for automating all of the above</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Two of those deserve emphasis.</p>
+
+<p><strong>The mappings are the real product.</strong> A control framework's value is roughly proportional to how much duplicate work it eliminates. If you can demonstrate a CCM control and mechanically show that it satisfies the corresponding ISO 27001 and NIST 800-53 requirements, you have collapsed three audits into one evidence-gathering exercise. This is the entire economic argument for adopting CCM rather than inventing your own control set, and it's why the mappings get as much working-group attention as the controls.</p>
+
+<p><strong>The metrics are where this is heading.</strong> The Continuous Audit Metrics Catalog exists because point-in-time audits are a poor fit for systems that redeploy hourly. A metric, in the ISO/IEC 19086-1 sense, defines both a measurement rule and how to interpret the result. Get enough of those wired into telemetry and "compliance" stops being an annual event and becomes a dashboard. CSA has been explicit that these metrics may fold into STAR later as a foundation for <i>continuous</i> certification. Worth watching.</p>
+
+<h3>The Shared Security Responsibility Model</h3>
+
+<p>One idea from CCM carries all the way through to the AI frameworks, so it's worth pinning down now: the <strong>Shared Security Responsibility Model (SSRM)</strong>.</p>
+
+<p>In cloud, nobody implements a control alone. The provider secures the hypervisor; you configure the security groups. A control framework that doesn't say <i>who</i> is responsible produces an argument at every audit. So CCM annotates controls with ownership, and CAIQ asks providers to declare it.</p>
+
+<p>Hold onto this. When we get to AI, the SSRM is the single biggest structural change — because the AI supply chain has five actors instead of two.</p>
+</section>
+
+<hr>
+
+<section id="caiq">
+<h2>Part 2 — CAIQ: turning controls into questions</h2>
+
+<p>The <strong>Consensus Assessment Initiative Questionnaire</strong> is CCM rotated ninety degrees. Same content, different grammar.</p>
+
+<p>CCM says: <i>this property should hold.</i> CAIQ asks: <i>does it hold in your environment — yes or no?</i></p>
+
+<p>CAIQ v4.1 contains <strong>283 questions</strong> derived from the 207 controls. More questions than controls, because some controls have several independently-verifiable parts. Each question is answerable Yes/No, with room to explain and — critically — to declare SSRM ownership.</p>
+
+<figure>
+<div class="mermaid">
+flowchart TB
+    A["<b>1 · CCM control</b><br/><i>Keys are managed through a defined<br/>lifecycle with documented ownership</i>"]
+    B["<b>2 · CAIQ question</b><br/><i>Do you have a documented<br/>key management lifecycle?</i>"]
+    C["<b>3 · Provider answer</b><br/>Yes / No / NA + explanation<br/>+ SSRM ownership"]
+    D["<b>4 · STAR entry</b><br/>Public · dated · service-scoped"]
+
+    A -->|"reframe as a<br/>verifiable question"| B
+    B -->|"provider completes"| C
+    C -->|"submit to registry"| D
+
+    style A fill:#1b3a6b,stroke:#0d2340,color:#fff
+    style B fill:#2d6cb5,stroke:#1b3a6b,color:#fff
+    style C fill:#4a8fd4,stroke:#2d6cb5,color:#fff
+    style D fill:#0f8a6a,stroke:#095944,color:#fff
+</div>
+<figcaption><b>Figure 2</b> — One control's journey from abstract objective to public claim. This pipeline is identical on the AI side; only the inputs change.</figcaption>
+</figure>
+
+<p>Why does this rotation matter so much? Because it solves a coordination problem that was eating the industry alive.</p>
+
+<p>Before CAIQ, every enterprise sent every vendor its own bespoke security questionnaire. A mid-sized SaaS company might answer four hundred of them a year, each asking the same forty things in different words. CAIQ replaced <i>n × m</i> bespoke interrogations with one standard artifact that a provider fills out once and publishes.</p>
+
+<p>That is a genuinely large efficiency win, and it explains a quirk that confuses newcomers: <strong>the CAIQ in the CCM bundle is not the one you submit.</strong> The bundle's copy is a reference/working version. The submittable artifact is the separately-packaged <i>STAR Level 1: Security Questionnaire</i>, which is format-locked so the registry can parse it. Same questions, different packaging, and mixing them up is the most common reason a submission bounces.</p>
+</section>
+
+<hr>
+
+<section id="star">
+<h2>Part 3 — STAR: where claims become public</h2>
+
+<p><strong>STAR</strong> — Security, Trust, Assurance and Risk — launched in 2011 and is the part of this family that isn't a document. It's a program: a public registry, two assurance levels, a network of authorized assessors, and the governance around all of it.</p>
+
+<p>The problem STAR solves is the mirror image of CAIQ's. CAIQ gives providers one artifact to fill in. STAR gives them <strong>one place to put it</strong> so a thousand customers can read it without a thousand emails.</p>
+
+<figure>
+<div class="mermaid">
+flowchart TD
+    Q["Completed questionnaire<br/>CAIQ or AI-CAIQ"]
+
+    Q --> L1
+    Q --> L2
+
+    subgraph L1["STAR Level 1 — Self-Assessment"]
+        L1A["Provider attests to<br/>its own answers"]
+        L1B["<b>Valid-AI-ted</b><br/>AI-assisted review of the<br/>self-assessment, with<br/>actionable feedback"]
+        L1A -.->|"optional<br/>enhancement"| L1B
+    end
+
+    subgraph L2["STAR Level 2 — Third-Party Assessment"]
+        L2A["Authorized assessor firm<br/>independently verifies"]
+        L2B["Certification /<br/>attestation issued"]
+        L2A --> L2B
+    end
+
+    L1 --> REG["<b>STAR Registry</b><br/>Public. Free to read.<br/>Scoped to a named service."]
+    L2 --> REG
+
+    REG --> C1["Enterprise buyers doing<br/>vendor due diligence"]
+    REG --> C2["Auditors reusing<br/>existing evidence"]
+    REG --> C3["Regulators &amp; consortia<br/>via <b>STAR Extended</b>"]
+
+    style Q fill:#2d6cb5,stroke:#1b3a6b,color:#fff
+    style REG fill:#0f8a6a,stroke:#095944,color:#fff
+    style L1B fill:#c25a1c,stroke:#8a3d10,color:#fff
+    style L2B fill:#5b3a8e,stroke:#3a2159,color:#fff
+</div>
+<figcaption><b>Figure 3</b> — The two assurance levels and who consumes the output.</figcaption>
+</figure>
+
+<p>The two levels are a deliberate cost/credibility trade:</p>
+
+<ul>
+  <li><strong>Level 1</strong> is self-assessment. Cheap, fast, and exactly as trustworthy as the organization publishing it. Its value isn't that it's independently verified — it's that the claims are <strong>specific, dated, and public</strong>, which makes them falsifiable and reputationally costly to fake. <strong>Valid-AI-ted</strong> sits here as an AI-powered reviewer that catches internal contradictions and thin answers before a human ever reads them, which is a rather nice bit of recursion: AI reviewing your AI-governance homework.</li>
+  <li><strong>Level 2</strong> is third-party assessment by an authorized firm. Expensive, slow, and carries real weight. This is what enterprise procurement asks for when the deal is large enough.</li>
+</ul>
+
+<p>Around these sit the other pillars: the <strong>STAR Assessment Portfolio</strong> (the expanding menu of security and privacy assessments), <strong>STAR Enabled Solutions</strong> (the assessor firms, Trusted Cloud Consultants, and technology licensees of the CCM and STAR API), and <strong>STAR Extended</strong>, which lets a government or industry consortium run the STAR machinery against its own tailored requirements while keeping control of what providers must comply with.</p>
+
+<p>And then — the reason we're here — <strong>STAR for AI</strong>.</p>
+</section>
+
+<hr>
+
+<section id="aicm">
+<h2>Part 4 — AICM: the same idea, pointed at AI</h2>
+
+<p>The <strong>AI Controls Matrix</strong> is the AI-branch counterpart to CCM. Published in July 2025 as v1.0 with 243 controls, updated to <strong>v1.1 with 247 controls across 18 domains</strong> in mid-2026, this time under consolidated governance: CSA merged the CCM and AI Controls Framework working groups into a <strong>Security Controls Catalog</strong> under the <strong>Compliance Automation Revolution (CAR)</strong> working group. That reorganization is a signal worth reading — controls, mappings, and machine-readable formats are being maintained as one canonical catalog rather than parallel silos, which is what has to happen if the mappings are going to stay honest.</p>
+
+<p>Here's the structural fact that makes AICM easy to reason about:</p>
+
+<blockquote>
+  <p><strong>AICM's 18 domains are CCM's 17 domains, plus one new AI-specific domain: Model Development Security (MDS).</strong></p>
+</blockquote>
+
+<p>That is a much more conservative design than it might have been, and it's the right call. Securing an AI system is mostly <i>securing a system</i>: identity, logging, encryption, change control, supply chain, incident response. Those don't need reinventing for AI; they need re-interpreting. So AICM keeps the CCM domain structure — which means your existing control program, audit evidence, and mappings mostly carry over — and adds a domain for the genuinely new thing: the model itself.</p>
+
+<figure>
+<div class="mermaid">
+flowchart TD
+    CCMD["<b>CCM's 17 domains</b><br/>234 controls, re-interpreted for AI<br/><i>identity, logging, crypto, change control,<br/>supply chain, incident response…</i>"]
+    NEW["<b>+ MDS · 13 controls</b><br/><b>Model Development Security</b><br/><i>AI-specific: training data integrity, model<br/>weights, algorithms, dev infrastructure,<br/>provenance and validation</i>"]
+    TOTAL["<b>AICM v1.1 = 247 controls · 18 domains</b>"]
+
+    CCMD --> TOTAL
+    NEW --> TOTAL
+
+    style CCMD fill:#1b3a6b,stroke:#0d2340,color:#fff
+    style NEW fill:#c25a1c,stroke:#8a3d10,color:#fff
+    style TOTAL fill:#5b3a8e,stroke:#3a2159,color:#fff
+</div>
+<figcaption><b>Figure 4</b> — AICM v1.1's composition. The seventeen inherited domains carry 234 controls; MDS adds 13, giving 247.</figcaption>
+</figure>
+
+<p>The full domain breakdown, which is worth having in one place:</p>
+
+<div class="tablewrap">
+<table>
+  <thead><tr><th>ID</th><th>Domain</th><th class="num">Controls</th><th>Type</th></tr></thead>
+  <tbody>
+    <tr><td>A&amp;A</td><td>Audit &amp; Assurance</td><td class="num">6</td><td>Cloud &amp; AI</td></tr>
+    <tr><td>AIS</td><td>Application &amp; Interface Security</td><td class="num">15</td><td>Cloud &amp; AI</td></tr>
+    <tr><td>BCR</td><td>Business Continuity &amp; Operational Resilience</td><td class="num">11</td><td>Cloud &amp; AI</td></tr>
+    <tr><td>CCC</td><td>Change Control &amp; Configuration Management</td><td class="num">9</td><td>Cloud &amp; AI</td></tr>
+    <tr><td>CEK</td><td>Cryptography, Encryption &amp; Key Management</td><td class="num">21</td><td>Cloud &amp; AI</td></tr>
+    <tr><td>DCS</td><td>Datacenter Security</td><td class="num">18</td><td>Cloud-specific</td></tr>
+    <tr><td>DSP</td><td>Data Security &amp; Privacy Lifecycle Management</td><td class="num">24</td><td>Cloud &amp; AI</td></tr>
+    <tr><td>GRC</td><td>Governance, Risk Management &amp; Compliance</td><td class="num">15</td><td>Cloud &amp; AI</td></tr>
+    <tr><td>HRS</td><td>Human Resources</td><td class="num">15</td><td>Cloud &amp; AI</td></tr>
+    <tr><td>IAM</td><td>Identity &amp; Access Management</td><td class="num">18</td><td>Cloud &amp; AI</td></tr>
+    <tr><td>IPY</td><td>Interoperability &amp; Portability</td><td class="num">4</td><td>Cloud &amp; AI</td></tr>
+    <tr><td>I&amp;S</td><td>Infrastructure Security</td><td class="num">9</td><td>Cloud &amp; AI</td></tr>
+    <tr><td>LOG</td><td>Logging &amp; Monitoring</td><td class="num">16</td><td>Cloud &amp; AI</td></tr>
+    <tr><td><strong>MDS</strong></td><td><strong>Model Development Security</strong></td><td class="num"><strong>13</strong></td><td><strong>AI-specific</strong></td></tr>
+    <tr><td>SEF</td><td>Security Incident Management, E-Discovery &amp; Forensics</td><td class="num">10</td><td>Cloud &amp; AI</td></tr>
+    <tr><td>STA</td><td>Supply Chain Management, Transparency &amp; Accountability</td><td class="num">16</td><td>Cloud &amp; AI</td></tr>
+    <tr><td>TVM</td><td>Threat &amp; Vulnerability Management</td><td class="num">13</td><td>Cloud &amp; AI</td></tr>
+    <tr><td>UEM</td><td>Universal Endpoint Management</td><td class="num">14</td><td>Cloud &amp; AI</td></tr>
+    <tr><td></td><td><strong>Total</strong></td><td class="num"><strong>247</strong></td><td><strong>18 domains</strong></td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>The distribution tells you where the drafters thought the risk concentrates: <strong>DSP at 24</strong> and <strong>CEK at 21</strong> are the two heaviest domains, which is a reasonable statement about what actually goes wrong.</p>
+
+<p><strong>MDS</strong> is the interesting one. Thirteen controls covering what has no cloud analogue: the confidentiality, integrity and availability of <i>training data, model weights, algorithms, and development infrastructure</i>, plus provenance and validation. Note who owns these: if you fine-tune, you share MDS responsibility. If you only consume an API, you mostly don't — you inherit whatever your upstream provider did, which is precisely why you'd want to read their STAR for AI entry.</p>
+
+<p>AICM also ships the same supporting cast as CCM — Implementation Guidelines, Auditing Guidelines, and <strong>framework mappings to ISO/IEC 42001, NIST AI RMF, the EU AI Act, BSI AIC4, and AIUC-1</strong>. That mapping set is the reason a compliance team can treat AICM as a hub: implement once, report into several regimes. With the EU AI Act's obligations landing on real products, "which of my controls satisfies which article?" stopped being academic.</p>
+</section>
+
+<hr>
+
+<section id="ssrm">
+<h2>Part 5 — Five actors: the SSRM gets complicated</h2>
+
+<p>Remember the Shared Security Responsibility Model? In cloud it was essentially a two-party split. In AI it is a <strong>five-actor supply chain</strong>, and this is the single most useful concept in AICM.</p>
+
+<figure>
+<div class="mermaid">
+flowchart TD
+    MP["<b>MP — Model Provider</b><br/>Trains and distributes foundation<br/>and fine-tuned models.<br/>Owns model architecture, training<br/>methodology, capability docs.<br/><i>Heavy MDS ownership.</i>"]
+
+    OSP["<b>OSP — Orchestrated Service Provider</b><br/>Platforms, frameworks and tooling for<br/>orchestration, API access, prompt<br/>management, workflow automation,<br/>monitoring and governance."]
+
+    AP["<b>AP — Application Provider</b><br/>Builds end-user applications on<br/>GenAI models — chatbots, code<br/>generation, content, automation.<br/>Usually delivered as SaaS."]
+
+    AIC["<b>AIC — AI Customer</b><br/>Consumes AI services and products.<br/>Owns controls in the context of<br/>what it consumes — and owns<br/>the due diligence upward."]
+
+    CSP["<b>CSP — Cloud Service Provider</b><br/>Compute, storage, networking.<br/>The substrate everything above runs on."]
+
+    MP -->|"model access"| OSP
+    OSP -->|"orchestration"| AP
+    AP -->|"product"| AIC
+    MP -.->|"direct API access"| AP
+    MP -.->|"direct API access"| AIC
+
+    CSP ==> MP
+    CSP ==> OSP
+    CSP ==> AP
+
+    AIC -.->|"due diligence flows<br/><b>upstream</b>"| AP
+    AP -.->|"verify upstream<br/>controls"| OSP
+    OSP -.->|"verify upstream<br/>controls"| MP
+
+    style MP fill:#5b3a8e,stroke:#3a2159,color:#fff
+    style OSP fill:#2d6cb5,stroke:#1b3a6b,color:#fff
+    style AP fill:#0f8a6a,stroke:#095944,color:#fff
+    style AIC fill:#c25a1c,stroke:#8a3d10,color:#fff
+    style CSP fill:#3d4450,stroke:#22262e,color:#fff
+</div>
+<figcaption><b>Figure 5</b> — The AI supply chain in AICM's SSRM. Value flows down; accountability flows up.</figcaption>
+</figure>
+
+<p>Every AICM control is annotated with which of these five owns it. The ownership vocabulary is precise: <strong>CSP-Owned</strong>, <strong>MP-Owned</strong>, and so on for a control that sits entirely with one actor, plus shared expressions where responsibility genuinely splits.</p>
+
+<p>Two observations from staring at this diagram:</p>
+
+<p><strong>First, most organizations are more than one actor.</strong> If you fine-tune an open-weights model, wrap it in your own orchestration, and sell the result as SaaS, you are simultaneously MP, OSP and AP — and an AIC of whoever hosts you. The framework doesn't assign you a single identity; it asks you to work out your role <i>per control</i>. That's more work up front and much more accurate.</p>
+
+<p><strong>Second, notice the dotted arrows going up.</strong> Each actor is responsible not only for its own controls but for <i>conducting due diligence on its upstream providers</i> to verify that theirs are implemented. This is the mechanism by which assurance is supposed to become transitive — and it only functions if upstream providers publish something checkable. Which is what STAR for AI is for. The design is circular by intent: the registry exists so the due-diligence obligation is satisfiable without an NDA and a six-week questionnaire cycle.</p>
+
+<h3>AI-CAIQ and STAR for AI</h3>
+
+<p>The rest of the AI branch is a faithful copy of the cloud pattern, which is exactly what you want — no new process to learn.</p>
+
+<p><strong>AI-CAIQ</strong> is the questionnaire derived from AICM: <strong>320 questions</strong> in v1.1. <strong>STAR for AI</strong> is the assurance program, and submitting a Level 1 self-assessment is the same six-step flow as classic STAR: create an account on the STAR platform, fill in the AI-CAIQ <strong>in the original CSA format</strong>, submit via the STAR submission form selecting <i>Self-assessment</i> and <i>AI-CAIQ</i>, confirm by email, pick your organization and service, and wait — typically one business day, up to five if it needs manual review. <strong>Valid-AI-ted</strong> is available here too, at no extra cost to CSA members.</p>
+
+<div class="callout">
+  <p>The format-strictness bears repeating because it's where submissions die: <strong>no columns, rows or sheets added or removed</strong>, every field in the <i>Service Provider AI-CAIQ Answer</i> and <i>SSRM Control Ownership</i> columns populated. If a control isn't marked NA, ownership is usually <code>ND</code> (Not Determined). Boring, mechanical, and the single most common cause of a rejected submission.</p>
+</div>
+</section>
+
+<hr>
+
+<section id="aismm">
+<h2>Part 6 — AISMM: the model that tells you what to do first</h2>
+
+<p>Everything so far answers a question about a <i>thing</i>: is this service secure, is this model's training data controlled, does this provider manage keys properly. The <strong>AI Security Maturity Model</strong> answers a different question entirely, and getting this distinction right is the key to the whole family:</p>
+
+<blockquote>
+  <p><strong>AICM asks: is this AI project secure?</strong><br>
+  <strong>AISMM asks: is our security <i>program</i> capable of securing AI at all?</strong></p>
+</blockquote>
+
+<p>AISMM is explicitly <i>not</i> a checklist of AI controls, <i>not</i> an assessment of any single project, and — a scope boundary the authors are emphatic about — <i>not</i> a measure of how well the security team uses AI internally. It is a structural map of the capabilities an enterprise security program needs, and what each looks like at five levels of maturity.</p>
+
+<p>Its lineage is the <strong>Cloud Security Maturity Model (CSMM)</strong>, which has been in use for years across hundreds of organizations. AISMM keeps what worked — twelve categories in three domains, five CMM-aligned levels, control objectives as KPIs — and adds what AI specifically needs.</p>
+
+<h3>Twelve categories, three domains</h3>
+
+<figure>
+<div class="mermaid">
+flowchart TD
+    F["<b>🏛️ FOUNDATIONAL</b> — start here<br/><br/><b>GOV</b> Governance · <b>ORG</b> Organization Mgmt<br/><b>IAM</b> Identity · <b>MON</b> Security Monitoring"]
+    S["<b>🧱 STRUCTURAL</b> — the deployments<br/><br/><b>INF</b> Infrastructure · <b>MOD</b> Model Security<br/><b>APP</b> App Security · <b>DAT</b> Data Security"]
+    P["<b>⚙️ PROCEDURAL</b> — sustaining it<br/><br/><b>RSK</b> Risk &amp; Provider · <b>DEV</b> Dev &amp; Supply Chain<br/><b>CMP</b> Privacy &amp; Compliance · <b>IR</b> Incident Response"]
+
+    F ==>|"if these don't work,<br/>the rest is aspirational"| S
+    S ==>|"these mature last,<br/>but sustain everything"| P
+
+    style F fill:#1b3a6b,stroke:#0d2340,color:#fff
+    style S fill:#0f8a6a,stroke:#095944,color:#fff
+    style P fill:#c25a1c,stroke:#8a3d10,color:#fff
+</div>
+<figcaption><b>Figure 6</b> — AISMM's twelve categories grouped into three domains. The vertical ordering is a genuine dependency claim, not presentation.</figcaption>
+</figure>
+
+<p>What each category actually covers:</p>
+
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Domain</th><th>Category</th><th>Scope</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Foundational</strong></td><td><strong>GOV</strong> Governance</td><td>Policies, decision rights, the AI Council or equivalent, authoritative registries of approved use cases and deployments, acceptable use, role-based training, ethics review for high-risk cases</td></tr>
+    <tr><td></td><td><strong>ORG</strong> Organization Management</td><td>Technical <i>enforcement</i> of governance decisions — cloud org policies restricting AI services, AI-SPM and AI-BOM discovery, blast-radius isolation, shared security services</td></tr>
+    <tr><td></td><td><strong>IAM</strong> Identity &amp; Access</td><td>Human identity into AI services, non-human identity for agents and MCP tools, authorization scopes, delegation chains, credential lifecycle</td></tr>
+    <tr><td></td><td><strong>MON</strong> Security Monitoring</td><td>Prompt and response capture, guardrail-violation logging, agent action logs, model behaviour monitoring, and the SOC workflows that consume them</td></tr>
+    <tr><td><strong>Structural</strong></td><td><strong>INF</strong> Infrastructure &amp; Resilience</td><td>Training clusters, inference servers, network isolation, host vulnerability management, AI-specific resilience patterns</td></tr>
+    <tr><td></td><td><strong>MOD</strong> Model Security</td><td>Selection, approval, version pinning, integrity, provenance, parameter bounds, and the approved-model registry downstream categories anchor to</td></tr>
+    <tr><td></td><td><strong>APP</strong> Application Security</td><td>System prompt hardening, guardrails, input/output validation, tool and MCP restrictions, runtime I/O monitoring, human-in-the-loop enforcement</td></tr>
+    <tr><td></td><td><strong>DAT</strong> Data Security</td><td>Training data governance, RAG and vector store access control, permission-aware retrieval, output sanitization, poisoning detection</td></tr>
+    <tr><td><strong>Procedural</strong></td><td><strong>RSK</strong> Risk &amp; Provider Assessment</td><td>Provider, model and project risk assessment; reassessment cadence; the approved-provider registry</td></tr>
+    <tr><td></td><td><strong>DEV</strong> Dev &amp; Supply Chain</td><td>Coding assistants, AI-BOM, library scanning, CI/CD integration, AI-specific supply-chain concerns</td></tr>
+    <tr><td></td><td><strong>CMP</strong> Privacy, Compliance &amp; Audit</td><td>Audit evidence collection, AI-CAIQ completion, privacy impact assessments, IP and licensing tracking</td></tr>
+    <tr><td></td><td><strong>IR</strong> Incident Response</td><td>Playbooks for prompt injection, agent compromise, model abuse, exfiltration via AI flows, plus threat-intel integration</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>The domain split encodes an opinion I find persuasive. <strong>Foundational</strong> categories — governance, org management, IAM, monitoring — span everything else, and the model is blunt that <i>if governance and identity aren't working, the rest of the model is mostly aspirational.</i> <strong>Structural</strong> categories are per-deployment security of infrastructure, models, applications and data; familiar territory for anyone with an AppSec background, except the underlying technology misbehaves in ways existing playbooks don't cover. <strong>Procedural</strong> categories sustain the program over time and, realistically, mature last.</p>
+
+<p>Note <strong>MOD (Model Security)</strong> has no CSMM counterpart — it exists because AI needed it, mirroring how MDS appeared in AICM. And the model's own assessment of where organizations are weakest is worth quoting: on data security, <i>"the data side of AI is where most organizations are weakest."</i> Matches everything I've seen.</p>
+
+<h3>Five levels, and the honesty of skipping Level 1</h3>
+
+<p>The levels are standard CMM: <strong>L1 Initial · L2 Repeatable · L3 Defined · L4 Capable · L5 Efficient</strong>. There are deliberately <strong>no Level 1 control objectives</strong> — L1 is the state where no AI-specific capability exists, so there's nothing to measure. That's an unusually candid design decision for a maturity model.</p>
+
+<figure>
+<div class="mermaid">
+flowchart TB
+    L1["<b>L1 · Initial</b> — teams self-manage, self-selected<br/>tools, no AI policy · <i>nothing to measure</i>"]
+    L2["<b>L2 · Repeatable</b> — basic policy exists<br/>'no sensitive data in GenAI' · no governance structure"]
+    L3["<b>L3 · Defined</b> — AI Council exists · deployment registry<br/>AICM adoption begun · approved-model registry"]
+    L4["<b>L4 · Capable</b> — central team with authority<br/>automated tracking · ethics review for high-risk cases"]
+    L5["<b>L5 · Efficient</b> — policy-as-code · continuous automated<br/>discovery · proactive response to model releases"]
+
+    L1 --> L2 --> L3 --> L4 --> L5
+
+    style L1 fill:#6b7280,stroke:#374151,color:#fff
+    style L2 fill:#2d6cb5,stroke:#1b3a6b,color:#fff
+    style L3 fill:#1d4ed8,stroke:#1b3a6b,color:#fff
+    style L4 fill:#5b3a8e,stroke:#3a2159,color:#fff
+    style L5 fill:#0f8a6a,stroke:#095944,color:#fff
+</div>
+<figcaption><b>Figure 7</b> — The maturity ladder, illustrated with the Governance category's trajectory.</figcaption>
+</figure>
+
+<p>The control objectives are <strong>KPIs, not exhaustive controls</strong>. This is the load-bearing idea, and it's cleverer than it first appears. The claim is not "meeting this KPI makes you Level 3." It's: <i>an organization that could not plausibly meet this KPI without having the broader capability of Level 3, therefore probably has Level 3 maturity.</i> The KPI is an indicator chosen because it <strong>discriminates between levels</strong> — a cheap probe for an expensive-to-measure property.</p>
+
+<p>Every objective carries a <strong>Key Indicator Rationale</strong>: one sentence explaining why the inference holds. That field is what makes the model auditable rather than arbitrary — if you want to substitute your own KPI, you can check whether it supports the same inference.</p>
+
+<p>A concrete example, paraphrased from the Governance category's first Level 2 objective (GOV-02.1). The KPI: a version-controlled AI acceptable-use policy exists, and <strong>at least 90% of employees and contractors have signed an attestation</strong> within the trailing twelve months. The rationale is sharp:</p>
+
+<blockquote>
+  <p>The signal is not that a policy exists in a document library — it is that every employee has seen it, attested to it, and therefore has no deniability about the ground rules.</p>
+</blockquote>
+
+<p>And the threshold does real work: an organization whose policy 60% of staff have signed is, in practice, still at Level 1. Contractors count, because contractors are a common shadow-AI vector.</p>
+
+<p>That's the texture throughout — thresholds chosen to be <i>falsifiable on an assessor visit</i>, with reasoning attached.</p>
+
+<h3>Three deployment types</h3>
+
+<p>The one genuinely new field versus CSMM. AI deployments cluster into three patterns that differ enough to matter:</p>
+
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Type</th><th>What it means</th><th>Who owns the model</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Self-hosted</strong></td><td>Running the model on your own infrastructure</td><td>You. Full MDS/MOD weight lands on you.</td></tr>
+    <tr><td><strong>PaaS</strong></td><td>Model APIs via a cloud-managed service — Bedrock, Azure OpenAI</td><td>Shared. You configure; the platform operates.</td></tr>
+    <tr><td><strong>API/SaaS</strong></td><td>Model APIs direct from a provider, or an embedded AI feature in a SaaS product</td><td>Them. You own consumption controls and due diligence.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Every AISMM objective is tagged with the types it applies to, so an organization that only consumes API/SaaS AI can filter the model down to what's actually relevant instead of pretending to care about training-cluster isolation. Small feature; large practical difference.</p>
+
+<p>Each objective also carries a <strong>Manual / Automated / Either</strong> flag for its realistic assessment mode, and an <strong>AICM Mapping</strong> — which is the seam where the two frameworks join.</p>
+</section>
+
+<hr>
+
+<section id="interlock">
+<h2>Part 7 — How they interlock</h2>
+
+<p>Here's the mental model I've settled on. The family varies along two independent axes, and each artifact occupies a distinct cell.</p>
+
+<figure>
+<div class="mermaid">
+flowchart TD
+    subgraph AXIS["Two questions, two axes"]
+        direction TB
+        Q1["<b>Axis 1 — What is being assessed?</b><br/>a specific project/service ⟷ the whole program"]
+        Q2["<b>Axis 2 — What kind of answer?</b><br/>a binary claim ⟷ a position on a journey"]
+    end
+
+    AICM2["<b>AICM</b><br/>Project · Breadth<br/><i>247 controls: everything<br/>that should be true</i>"]
+    AICAIQ2["<b>AI-CAIQ</b><br/>Project · Binary claim<br/><i>320 questions:<br/>is it true here?</i>"]
+    STAR2["<b>STAR for AI</b><br/>Project · Public proof<br/><i>the claim, dated<br/>and attributable</i>"]
+    AISMM2["<b>AISMM</b><br/>Program · Journey<br/><i>12 categories × 5 levels:<br/>what to build next</i>"]
+
+    AXIS --> AICM2
+    AXIS --> AISMM2
+
+    AICM2 --> AICAIQ2 --> STAR2
+
+    AISMM2 -->|"'we're L2 in Data Security,<br/>so we cannot honestly<br/>answer Yes to these<br/>AICM controls yet'"| AICM2
+    AICM2 -->|"'these controls are<br/>failing, which points at<br/>a program capability gap'"| AISMM2
+
+    style AICM2 fill:#5b3a8e,stroke:#3a2159,color:#fff
+    style AICAIQ2 fill:#8055c4,stroke:#5b3a8e,color:#fff
+    style STAR2 fill:#0f8a6a,stroke:#095944,color:#fff
+    style AISMM2 fill:#c25a1c,stroke:#8a3d10,color:#fff
+</div>
+<figcaption><b>Figure 8</b> — The two frameworks are complementary diagnostics that feed each other.</figcaption>
+</figure>
+
+<p>The feedback loop in the middle of that diagram is the point, and it runs both directions:</p>
+
+<ul>
+  <li><strong>AISMM → AICM.</strong> Your maturity level tells you which control claims you can make <i>honestly</i>. A program at L2 in Data Security filling in AI-CAIQ answers about permission-aware RAG retrieval is writing fiction. AISMM tells you that before an assessor does.</li>
+  <li><strong>AICM → AISMM.</strong> A cluster of failing controls in one domain is rarely a collection of independent bugs. It's usually one missing program capability expressing itself repeatedly. AISMM is where you look up which one.</li>
+</ul>
+
+<p>Zoom out and the layering is clean:</p>
+
+<figure>
+<div class="mermaid">
+flowchart BT
+    L0["<b>External regimes</b><br/>ISO/IEC 42001 · NIST AI RMF · EU AI Act · BSI AIC4 · AIUC-1<br/>ISO 27001 · NIST CSF · NIST 800-53 · PCI DSS · AICPA TSC · CIS"]
+    L1B["<b>Mappings layer</b><br/>equivalences, gaps, misalignments — implement once, report many"]
+    L2B["<b>Control catalogs</b><br/>CCM 207 · AICM 247 — technology-agnostic objectives"]
+    L3B["<b>Assessment instruments</b><br/>CAIQ 283 · AI-CAIQ 320 — controls rendered as verifiable questions"]
+    L4B["<b>Assurance &amp; transparency</b><br/>STAR · STAR for AI — Level 1 self, Level 2 third-party, public registry"]
+    L5B["<b>Program maturity</b><br/>AISMM · CSMM — sequencing, capability, investment decisions"]
+
+    L0 --- L1B --- L2B --- L3B --- L4B --- L5B
+
+    style L0 fill:#3d4450,stroke:#22262e,color:#fff
+    style L1B fill:#1b3a6b,stroke:#0d2340,color:#fff
+    style L2B fill:#2d6cb5,stroke:#1b3a6b,color:#fff
+    style L3B fill:#5b3a8e,stroke:#3a2159,color:#fff
+    style L4B fill:#0f8a6a,stroke:#095944,color:#fff
+    style L5B fill:#c25a1c,stroke:#8a3d10,color:#fff
+</div>
+<figcaption><b>Figure 9</b> — The full stack. Each layer consumes the one below and serves the one above.</figcaption>
+</figure>
+</section>
+
+<hr>
+
+<section id="which">
+<h2>Part 8 — Which one do you actually need?</h2>
+
+<p>Reasonable question, given that reading all five cover to cover is a week of your life.</p>
+
+<div class="tablewrap">
+<table>
+  <thead><tr><th>If your goal is…</th><th>Start with</th><th>Then</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Prove our AI service is secure</strong> to buyers</td><td><strong>AICM</strong> — implement the controls that apply to your actor role</td><td><strong>AI-CAIQ</strong> to answer them → <strong>STAR for AI Level 1</strong> to publish. Run <strong>Valid-AI-ted</strong> before submitting.</td></tr>
+    <tr><td><strong>Evaluate someone else's</strong> AI service</td><td>Their <strong>STAR</strong> entry, if it exists</td><td>Missing? Send them the <strong>AI-CAIQ</strong>. Use the <strong>SSRM</strong> to work out which actor owns the controls you actually care about.</td></tr>
+    <tr><td><strong>Know where our security program stands</strong></td><td><strong>AISMM</strong> — score all twelve categories</td><td>Find your real floor, sequence investment. Foundational domain first.</td></tr>
+    <tr><td><strong>Satisfy EU AI Act / ISO 42001 / NIST AI RMF</strong></td><td><strong>AICM mappings</strong></td><td>Implement AICM controls once, report through the mapping into each regime.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Whichever row you start on, the last step is the same:</p>
+
+<figure>
+<div class="mermaid">
+flowchart TB
+    ANY["<b>Whichever path you took</b><br/>controls implemented · questionnaire answered<br/>registry entry published"]
+    LOOP["<b>Close the loop with AISMM</b><br/><i>can our program actually sustain<br/>the controls we just claimed?</i>"]
+    ANY --> LOOP
+
+    style ANY fill:#1b3a6b,stroke:#0d2340,color:#fff
+    style LOOP fill:#c25a1c,stroke:#8a3d10,color:#fff
+</div>
+<figcaption><b>Figure 10</b> — Every path ends in the same sanity check.</figcaption>
+</figure>
+
+<p>A practical note on sequencing: score yourself on AISMM <i>before</i> you start filling in AI-CAIQ. It takes an afternoon, and it will tell you which of the 320 answers you're about to write are aspirational. Finding that out yourself is much cheaper than having an assessor find it.</p>
+</section>
+
+<hr>
+
+<section id="safety">
+<h2>Part 9 — Where this meets AI safety, and where it doesn't</h2>
+
+<p>I want to be straight about the limits, because "AI safety" gets used for two quite different things and this family only covers one of them.</p>
+
+<p><strong>What these frameworks genuinely do well.</strong> They convert vague anxiety into enumerated, ownable, auditable obligations. That is not a small thing. Most real-world AI harm to date has come from mundane failures — an agent with over-broad credentials, a RAG index that ignored source permissions, a coding assistant trained on the wrong repository, a vector store on default access controls, an incident with no playbook and no telemetry to reconstruct it. Every one of those has a control. AICM's data-security and model-development domains, AISMM's blunt observation that data security is where organizations are weakest, the SSRM's insistence that someone specifically owns each control — this is exactly the machinery that prevents boring, expensive, entirely foreseeable failures. The unglamorous 90%.</p>
+
+<p><strong>What they don't touch.</strong> None of this addresses whether a model's objectives are aligned with its operator's intent, whether interpretability tools can detect deceptive behaviour, whether scaling introduces qualitatively new failure modes, or whether a capable system in an agentic loop pursues something nobody specified. Those are research problems. A control framework can require that you monitor model behaviour and log agent actions; it cannot tell you what to look for in the logs, because nobody fully knows yet.</p>
+
+<div class="callout">
+  <p>The honest framing is that these are <strong>complementary layers, not substitutes</strong>. Compliance handles the failures we can already enumerate. Safety research works on the ones we can't. A mature program needs both, and confusing them in either direction is a mistake — a fully STAR-for-AI-certified deployment of a misaligned model is still a misaligned model, and a beautifully interpretable model with no access controls will still leak your customer data.</p>
+</div>
+
+<p>Two more caveats worth stating plainly:</p>
+
+<p><strong>Self-assessment is self-assessment.</strong> STAR Level 1 is an organization grading its own work. Its value is specificity and public commitment, not verification. Valid-AI-ted helps with internal consistency; it does not make L1 into L2. Read L1 entries as <i>what the vendor is willing to claim in public</i> — genuinely useful, and not the same as evidence.</p>
+
+<p><strong>Point-in-time artifacts age badly against systems that change weekly.</strong> A questionnaire answered in March describes March. When your provider ships a new model version in April, half your assumptions may have moved. AISMM's higher levels acknowledge this directly — L5 Governance is <i>"monitored via automated tooling"</i>, L5 Risk includes <i>"rapid frontier-release assessment"</i> — and CSA's continuous-audit metrics work is aimed squarely at the same gap. But the tooling to make compliance continuous is, for most organizations, still ahead of them.</p>
+</section>
+
+<hr>
+
+<section id="summary">
+<h2>The summary table</h2>
+
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Framework</th><th>Question it answers</th><th>Unit</th><th>Scope</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><strong>CCM</strong> v4.1</td><td>What should be true of a secure cloud service?</td><td>207 controls, 17 domains</td><td>Cloud service</td><td>Control objectives + guidelines + mappings</td></tr>
+    <tr><td><strong>CAIQ</strong> v4.1</td><td>Is it true in your cloud environment?</td><td>283 questions</td><td>Cloud service</td><td>Yes/No + SSRM ownership</td></tr>
+    <tr><td><strong>STAR</strong></td><td>Where can I read your answers?</td><td>2 assurance levels</td><td>Named service</td><td>Public registry entry</td></tr>
+    <tr><td><strong>AICM</strong> v1.1</td><td>What should be true of a secure AI system?</td><td>247 controls, 18 domains</td><td>AI system</td><td>Control objectives, 5-actor SSRM, 5 regime mappings</td></tr>
+    <tr><td><strong>AI-CAIQ</strong> v1.1</td><td>Is it true in your AI system?</td><td>320 questions</td><td>AI service</td><td>Yes/No + SSRM ownership</td></tr>
+    <tr><td><strong>STAR for AI</strong></td><td>Where can I read your AI answers?</td><td>L1 self / L2 third-party</td><td>Named AI service</td><td>Public registry entry</td></tr>
+    <tr><td><strong>AISMM</strong></td><td>Can our program secure AI at all?</td><td>12 categories × 5 levels</td><td>The security program</td><td>Maturity scores + investment sequence</td></tr>
+  </tbody>
+</table>
+</div>
+</section>
+
+<hr>
+
+<section id="closing">
+<h2>Closing</h2>
+
+<p>The thing that finally made this family click for me was realizing the five artifacts aren't five attempts at the same job. They're one pipeline, split at the points where the <i>audience</i> changes.</p>
+
+<p>An engineer needs a control. An auditor needs a question. A customer needs a registry. A CISO needs a maturity model and a budget argument. Same underlying reality, four incompatible formats — and the mappings are what keep them from drifting into four different truths.</p>
+
+<p>The AI branch's most encouraging property is how <i>unoriginal</i> it is. Seventeen of eighteen domains inherited. Same questionnaire grammar. Same submission flow. One genuinely new domain for the genuinely new thing. That's a framework designed by people who understood that most of securing AI is securing software, and that the fastest way to get organizations to do the new work is to not make them relearn the old.</p>
+
+<p>Whether the compliance layer can keep pace with a technology that ships a new frontier model every few months is the open question. The direction of travel — machine-readable controls, continuous metrics, policy-as-code at L5, AI-assisted assessment review — suggests the people building these frameworks know it too.</p>
+</section>
+
+<hr>
+
+<section id="sources">
+<h2>Sources</h2>
+
+<p>All five frameworks are published by the <strong>Cloud Security Alliance</strong> and available from <a href="https://cloudsecurityalliance.org" target="_blank" rel="noopener">cloudsecurityalliance.org</a>. This is my own synthesis and explanation; the frameworks, their structure, and all quoted phrases are CSA's work, cited here for educational commentary. The opening "STAR Universe" image is CSA's, from the STAR Program Knowledge Guide; Figures 1–10 are my own diagrams, drawn to illustrate the relationships described.</p>
+
+<ul>
+  <li><strong>CCM &amp; CAIQ v4.1</strong> — <i>Guide to the CCM and CAIQ</i>; <i>Introductory Guidance to CCM</i>; <i>CCM v4.1 Implementation Guidelines v2.1</i>; <i>The Continuous Audit Metrics Catalog v1.1</i>; <i>Code of Practice for Implementing and Maintaining Key Metrics</i>. → <a href="https://cloudsecurityalliance.org/research/cloud-controls-matrix" target="_blank" rel="noopener">CCM</a></li>
+  <li><strong>STAR</strong> — <i>STAR Program Overview</i>; <i>STAR Registry FAQ</i>; <i>STAR Assessment Portfolio FAQ</i>; <i>STAR Enabled Solutions FAQ</i>; <i>STAR Extended FAQ</i>; <i>STAR Program Knowledge Guide</i>. → <a href="https://cloudsecurityalliance.org/star" target="_blank" rel="noopener">STAR</a></li>
+  <li><strong>AICM v1.1</strong> — <i>Introductory Guidance to AICM v1.1</i>, Marina Bregkou et al., Compliance Automation Revolution Working Group / Security Controls Catalog. → <a href="https://cloudsecurityalliance.org/artifacts/ai-controls-matrix-v1-1" target="_blank" rel="noopener">AICM v1.1</a></li>
+  <li><strong>AI-CAIQ &amp; STAR for AI</strong> — <i>STAR for AI Level 1 Submission Guide</i>; <i>Filling in the AI CAIQ: Instructions and Recommendations</i>. → <a href="https://cloudsecurityalliance.org/star/ai/" target="_blank" rel="noopener">STAR for AI</a></li>
+  <li><strong>AISMM</strong> — <i>AI Security Maturity Model: Introduction</i>; <i>AISMM Control Objectives Details</i>; AISMM poster and main grid.</li>
+</ul>
+</section>
+
+<footer>
+  <div>
+    <p>Written by Sumit Yadav · July 2026 · Tagged AI safety &amp; compliance.</p>
+    <p class="backlink"><a href="../">← Back to Study materials</a></p>
+  </div>
+</footer>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+<script>
+  // The diagram nodes carry their own dark fills with white text, so render on a
+  // light figure background using the default theme rather than mermaid's dark one.
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'default',
+    flowchart: { htmlLabels: true, useMaxWidth: false, padding: 12 }
+  });
+</script>
+
+</body>
+</html>
