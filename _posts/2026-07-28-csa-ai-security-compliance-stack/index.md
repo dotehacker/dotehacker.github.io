@@ -2,6 +2,7 @@
 title: "CCM, CAIQ, STAR, AICM, AISMM: A Field Guide to CSA's AI Security and Compliance Stack"
 date: 2026-07-28
 category: "AI & ML"
+description: "CSA hands you five frameworks — CCM, CAIQ, STAR, AICM and AISMM — and they sound interchangeable. They aren't. A control is a promise, a questionnaire makes you state it on the record, a registry makes it public, and a maturity model tells you what to build first. Ten diagrams mapping how the cloud and AI branches fit together, and where compliance stops and AI safety begins."
 tags: [ai-safety, compliance, ai-governance, csa, ccm, caiq, star, aicm, aismm, cloud-security, ai-security, ssrm, iso-42001, nist-ai-rmf, eu-ai-act]
 categories: [ai-safety, compliance]
 ---
@@ -12,6 +13,10 @@ categories: [ai-safety, compliance]
   .post-content .mermaid > svg { height: auto; }
   .post-content table { font-size: .94rem; }
 </style>
+
+![The CSA STAR Universe — CCM and CAIQ on the left feeding the STAR program at centre, with the assessment portfolio, registry, enabled solutions and assurance education radiating outward](star-universe.png)
+
+*The CSA STAR universe, as CSA draws it. © Cloud Security Alliance, from the STAR Program Knowledge Guide — reproduced here for educational explanation. Every other figure in this post is my own.*
 
 Someone on your board has asked what the security program is doing about AI. Meanwhile the business has already shipped Copilot to every employee, signed an enterprise LLM contract, and approved three agent pilots — two of which security learned about from the invoice. You go looking for a framework, and the Cloud Security Alliance hands you five of them: **CCM**, **CAIQ**, **STAR**, **AICM**, and **AISMM**.
 
@@ -537,7 +542,7 @@ Whether the compliance layer can keep pace with a technology that ships a new fr
 
 ## Sources
 
-All five frameworks are published by the **Cloud Security Alliance** and available from [cloudsecurityalliance.org](https://cloudsecurityalliance.org). This post is my own synthesis and explanation; the frameworks, their structure, and all quoted phrases are CSA's work, cited here for educational commentary. All figures in this post are my own diagrams, drawn to illustrate the relationships described.
+All five frameworks are published by the **Cloud Security Alliance** and available from [cloudsecurityalliance.org](https://cloudsecurityalliance.org). This post is my own synthesis and explanation; the frameworks, their structure, and all quoted phrases are CSA's work, cited here for educational commentary. The opening "STAR Universe" image is CSA's, from the STAR Program Knowledge Guide; Figures 1–10 are my own diagrams, drawn to illustrate the relationships described.
 
 - **CCM & CAIQ v4.1** — *Guide to the CCM and CAIQ*; *Introductory Guidance to CCM*; *CCM v4.1 Implementation Guidelines v2.1*; *The Continuous Audit Metrics Catalog v1.1*; *Code of Practice for Implementing and Maintaining Key Metrics*. → [CCM](https://cloudsecurityalliance.org/research/cloud-controls-matrix)
 - **STAR** — *STAR Program Overview*; *STAR Registry FAQ*; *STAR Assessment Portfolio FAQ*; *STAR Enabled Solutions FAQ*; *STAR Extended FAQ*; *STAR Program Knowledge Guide*. → [STAR](https://cloudsecurityalliance.org/star)
