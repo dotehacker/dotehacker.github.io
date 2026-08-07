@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root{
+    --panel:#FFFFFF; --text:#1C1B22; --muted:#6f6f64; --line:#E7E6DE;
+    --pos:#2a78d6; --neg:#B21F2D; --ok:#1baf7a;
+    --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){ :root:where(:not([data-theme="light"])){
+    --panel:#181922;--text:#ECECF2;--muted:#9a9aa6;--line:#2a2b34;--pos:#5b9bea;--neg:#ef5b6b;--ok:#3ecf9a;} }
+  :root[data-theme="dark"]{--panel:#181922;--text:#ECECF2;--muted:#9a9aa6;--line:#2a2b34;--pos:#5b9bea;--neg:#ef5b6b;--ok:#3ecf9a;}
+  :root[data-theme="light"]{--panel:#FFFFFF;--text:#1C1B22;--muted:#6f6f64;--line:#E7E6DE;--pos:#2a78d6;--neg:#B21F2D;--ok:#1baf7a;}
+  *{box-sizing:border-box}
+  html,body{margin:0;background:transparent}
+  .kfig{border:1px solid var(--line);border-radius:14px;padding:1.15rem 1.15rem 1rem;background:var(--panel);color:var(--text)}
+  .kfig-eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .kfig-title{font-family:var(--sans);font-weight:640;font-size:1.06rem;margin:.1rem 0 .8rem}
+  .kfig-group{display:inline-flex;gap:.22rem;background:color-mix(in srgb,var(--text) 6%,transparent);border-radius:9px;padding:.22rem;margin-bottom:.7rem}
+  .kfig-group button{font-family:var(--sans);font-size:.82rem;border:0;background:transparent;color:var(--muted);padding:.3rem .62rem;border-radius:7px;cursor:pointer;transition:.12s}
+  .kfig-group button.on{background:var(--panel);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.12);font-weight:600}
+  canvas{width:100%;height:380px;display:block;touch-action:none;cursor:crosshair}
+  .readout{font-family:var(--mono);font-size:.82rem;margin-top:.55rem;min-height:3.4em;line-height:1.6}
+  .readout b{font-weight:700}
+  .kfig-caption{font-family:var(--sans);font-size:.78rem;color:var(--muted);margin-top:.6rem;line-height:1.5;border-top:1px solid var(--line);padding-top:.6rem}
+  .swatch{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:.28rem;vertical-align:baseline}
+</style>
+</head>
+<body>
+<div class="kfig">
+  <div class="kfig-eyebrow">Figure — seven models, two tests</div>
+  <div class="kfig-title">The circuit spreads out as models get deeper</div>
+  <div class="kfig-group" data-role="side">
+    <button data-val="writers" class="on">writing side · prev-token heads</button>
+    <button data-val="indHeads">reading side · induction heads</button>
+  </div>
+  <canvas height="380" aria-label="Circuit redundancy versus model depth"></canvas>
+  <div class="readout" id="ro"></div>
+  <div class="kfig-caption">
+    <span class="swatch" style="background:var(--pos)"></span>filled = joint ablation degrades the induction head &nbsp;·&nbsp;
+    <span class="swatch" style="background:transparent;border:2px solid currentColor"></span>ring = single-head ablation also does.
+    Circle = GPT-2, square = Pythia, diamond = Llama. Hover or tap a point.
+  </div>
+</div>
+<script>
+(function(){
+  var D = {"models":[{"name":"gpt2-small","L":12,"H":12,"loss1":13.3,"loss2":0.48,"ind":0.906,"prev":0.992,"indDepth":0.455,"prevDepth":0.364,"single":true,"joint":true,"writers":2,"indHeads":9,"family":"gpt2"},{"name":"gpt2-medium","L":24,"H":16,"loss1":13.33,"loss2":0.5,"ind":0.938,"prev":0.992,"indDepth":0.391,"prevDepth":0.217,"single":false,"joint":true,"writers":6,"indHeads":19,"family":"gpt2"},{"name":"gpt2-large","L":36,"H":20,"loss1":13.23,"loss2":0.65,"ind":0.952,"prev":0.994,"indDepth":0.457,"prevDepth":0.4,"single":false,"joint":true,"writers":7,"indHeads":23,"family":"gpt2"},{"name":"gpt2-xl","L":48,"H":25,"loss1":13.12,"loss2":0.48,"ind":0.954,"prev":0.996,"indDepth":0.617,"prevDepth":0.319,"single":false,"joint":true,"writers":9,"indHeads":32,"family":"gpt2"},{"name":"EleutherAI/pythia-410m","L":24,"H":16,"loss1":13.22,"loss2":0.75,"ind":0.945,"prev":0.935,"indDepth":0.348,"prevDepth":0.217,"single":true,"joint":true,"writers":5,"indHeads":13,"family":"pythia"},{"name":"EleutherAI/pythia-1.4b","L":24,"H":16,"loss1":13.22,"loss2":0.63,"ind":0.94,"prev":0.932,"indDepth":0.435,"prevDepth":0.043,"single":true,"joint":true,"writers":4,"indHeads":11,"family":"pythia"},{"name":"meta-llama/Llama-3.2-1B","L":16,"H":32,"loss1":14.46,"loss2":0.65,"ind":0.953,"prev":0.603,"indDepth":0.667,"prevDepth":0.533,"single":false,"joint":true,"writers":7,"indHeads":9,"family":"llama"}]}, M = D.models;
+  var canvas=document.querySelector("canvas"), ctx=canvas.getContext("2d");
+  var side="writers", hover=-1;
+  var css=function(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); };
+
+  document.querySelectorAll('[data-role="side"] button').forEach(function(b){
+    b.onclick=function(){
+      document.querySelectorAll('[data-role="side"] button').forEach(function(x){x.classList.remove("on");});
+      b.classList.add("on"); side=b.dataset.val; draw();
+    };
+  });
+
+  var pad={l:58,r:22,t:18,b:46}, pts=[];
+  function resize(){
+    var r=canvas.getBoundingClientRect(), dpr=window.devicePixelRatio||1;
+    canvas.width=r.width*dpr; canvas.height=380*dpr; ctx.setTransform(dpr,0,0,dpr,0,0); draw();
+  }
+  function shape(ctx,fam,x,y,s){
+    if(fam==="pythia"){ ctx.rect(x-s,y-s,2*s,2*s); }
+    else if(fam==="llama"){ ctx.moveTo(x,y-s*1.25);ctx.lineTo(x+s*1.25,y);ctx.lineTo(x,y+s*1.25);ctx.lineTo(x-s*1.25,y);ctx.closePath(); }
+    else { ctx.arc(x,y,s,0,6.284); }
+  }
+  function draw(){
+    var W=canvas.getBoundingClientRect().width, H=380;
+    ctx.clearRect(0,0,W,H);
+    var text=css("--text"), muted=css("--muted"), line=css("--line"), pos=css("--pos");
+    var xs=M.map(function(m){return m.L;}), ys=M.map(function(m){return m[side];});
+    var xmin=8, xmax=52, ymin=0, ymax=Math.max.apply(null,ys)*1.18;
+    var X=function(v){ return pad.l+(v-xmin)/(xmax-xmin)*(W-pad.l-pad.r); };
+    var Y=function(v){ return H-pad.b-(v-ymin)/(ymax-ymin)*(H-pad.t-pad.b); };
+
+    ctx.strokeStyle=line; ctx.lineWidth=1; ctx.font="11px "+css("--mono");
+    ctx.fillStyle=muted; ctx.textAlign="right"; ctx.textBaseline="middle";
+    var step = ymax>25?10:2;
+    for(var g=0; g<=ymax; g+=step){
+      ctx.beginPath(); ctx.moveTo(pad.l,Y(g)); ctx.lineTo(W-pad.r,Y(g)); ctx.stroke();
+      ctx.fillText(g, pad.l-8, Y(g));
+    }
+    ctx.textAlign="center"; ctx.textBaseline="top";
+    [12,16,24,36,48].forEach(function(t){ ctx.fillText(t, X(t), H-pad.b+8); });
+    ctx.fillText("layers in the model", (pad.l+W-pad.r)/2, H-pad.b+26);
+    ctx.save(); ctx.translate(14,(pad.t+H-pad.b)/2); ctx.rotate(-Math.PI/2); ctx.textBaseline="top";
+    ctx.fillText(side==="writers"?"previous-token heads passing the criterion":"heads within 50% of the top induction score",0,0);
+    ctx.restore();
+
+    // least-squares fit
+    var n=xs.length, sx=0,sy=0,sxy=0,sxx=0;
+    for(var i=0;i<n;i++){ sx+=xs[i]; sy+=ys[i]; sxy+=xs[i]*ys[i]; sxx+=xs[i]*xs[i]; }
+    var b=(n*sxy-sx*sy)/(n*sxx-sx*sx), a=(sy-b*sx)/n;
+    ctx.strokeStyle=muted; ctx.setLineDash([5,4]); ctx.globalAlpha=.75; ctx.beginPath();
+    ctx.moveTo(X(xmin),Y(a+b*xmin)); ctx.lineTo(X(xmax),Y(a+b*xmax)); ctx.stroke();
+    ctx.setLineDash([]); ctx.globalAlpha=1;
+
+    var mx=sx/n,my=sy/n,num=0,d1=0,d2=0;
+    for(i=0;i<n;i++){ num+=(xs[i]-mx)*(ys[i]-my); d1+=(xs[i]-mx)*(xs[i]-mx); d2+=(ys[i]-my)*(ys[i]-my); }
+    var r=num/Math.sqrt(d1*d2);
+    ctx.fillStyle=text; ctx.textAlign="left"; ctx.font="600 13px "+css("--mono");
+    ctx.fillText("r = "+(r>=0?"+":"")+r.toFixed(2), pad.l+10, pad.t+4);
+
+    pts=[];
+    M.forEach(function(m,i){
+      var x=X(m.L), y=Y(m[side]); pts.push({x:x,y:y,i:i});
+      if(m.single){ ctx.beginPath(); ctx.arc(x,y,13,0,6.284); ctx.strokeStyle=text; ctx.lineWidth=1.4; ctx.stroke(); }
+      ctx.beginPath(); shape(ctx,m.family,x,y,7);
+      ctx.fillStyle = m.joint ? pos : css("--panel");
+      ctx.fill(); ctx.strokeStyle=pos; ctx.lineWidth=2; ctx.stroke();
+      ctx.fillStyle = i===hover ? text : muted;
+      ctx.font=(i===hover?"600 ":"")+"10.5px "+css("--sans");
+      ctx.textAlign="left"; ctx.textBaseline="middle";
+      var short=m.name.replace("EleutherAI/","").replace("meta-llama/","").replace("gpt2-","GPT-2 ");
+      ctx.fillText(short, x+18, y+ (i%2?10:-10));
+    });
+    var m = hover>=0 ? M[hover] : null;
+    document.getElementById("ro").innerHTML = m
+      ? "<b>"+m.name+"</b> — "+m.L+" layers × "+m.H+" heads<br>"+
+        m.writers+" prev-token writers · "+m.indHeads+" induction heads within 50% of the top<br>"+
+        "single-head test: <b style='color:"+(m.single?css("--ok"):css("--neg"))+"'>"+(m.single?"supported":"NOT supported")+
+        "</b> &nbsp;·&nbsp; joint test: <b style='color:"+css("--ok")+"'>supported</b>"
+      : "In-context copying appears in <b>7 / 7</b> models. K-composition is supported in <b>7 / 7</b> by joint ablation "+
+        "and <b>3 / 7</b> by single-head ablation.<br>The four disagreements are the four models with 6 or more writers.";
+  }
+  function pick(ev){
+    var r=canvas.getBoundingClientRect(), mx=ev.clientX-r.left, my=ev.clientY-r.top, best=-1, bd=1e9;
+    pts.forEach(function(p){ var d=(p.x-mx)*(p.x-mx)+(p.y-my)*(p.y-my); if(d<bd){bd=d;best=p.i;} });
+    hover = bd<900 ? best : -1; draw();
+  }
+  canvas.addEventListener("mousemove",pick);
+  canvas.addEventListener("mouseleave",function(){hover=-1;draw();});
+  canvas.addEventListener("touchstart",function(e){ pick(e.touches[0]); },{passive:true});
+  window.addEventListener("resize",resize);
+  if(window.matchMedia) window.matchMedia("(prefers-color-scheme:dark)").addEventListener("change",draw);
+  resize();
+})();
+</script>
+</body></html>

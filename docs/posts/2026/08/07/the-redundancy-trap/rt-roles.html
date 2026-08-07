@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root{
+    --panel:#FFFFFF; --text:#1C1B22; --muted:#6f6f64; --line:#E7E6DE;
+    --pos:#2a78d6; --neg:#B21F2D; --ok:#1baf7a;
+    --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){ :root:where(:not([data-theme="light"])){
+    --panel:#181922;--text:#ECECF2;--muted:#9a9aa6;--line:#2a2b34;--pos:#5b9bea;--neg:#ef5b6b;--ok:#3ecf9a;} }
+  :root[data-theme="dark"]{--panel:#181922;--text:#ECECF2;--muted:#9a9aa6;--line:#2a2b34;--pos:#5b9bea;--neg:#ef5b6b;--ok:#3ecf9a;}
+  :root[data-theme="light"]{--panel:#FFFFFF;--text:#1C1B22;--muted:#6f6f64;--line:#E7E6DE;--pos:#2a78d6;--neg:#B21F2D;--ok:#1baf7a;}
+  *{box-sizing:border-box}
+  html,body{margin:0;background:transparent}
+  .kfig{border:1px solid var(--line);border-radius:14px;padding:1.15rem 1.15rem 1rem;background:var(--panel);color:var(--text)}
+  .kfig-eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .kfig-title{font-family:var(--sans);font-weight:640;font-size:1.06rem;margin:.1rem 0 .8rem}
+  .kfig-group{display:inline-flex;gap:.22rem;background:color-mix(in srgb,var(--text) 6%,transparent);border-radius:9px;padding:.22rem;margin-bottom:.8rem}
+  .kfig-group button{font-family:var(--sans);font-size:.82rem;border:0;background:transparent;color:var(--muted);padding:.3rem .62rem;border-radius:7px;cursor:pointer;transition:.12s}
+  .kfig-group button.on{background:var(--panel);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.12);font-weight:600}
+  .wrap{overflow-x:auto}
+  table{border-collapse:separate;border-spacing:3px;font-family:var(--mono);font-size:.76rem;min-width:560px}
+  th{font-weight:500;color:var(--muted);font-size:.68rem;padding:.2rem .3rem;text-align:center;line-height:1.35;white-space:nowrap}
+  th.rowh{text-align:right;padding-right:.5rem}
+  td{text-align:center;padding:.42rem .3rem;border-radius:6px;transition:opacity .2s, filter .2s;min-width:66px}
+  td.pass{outline:2px solid var(--text);font-weight:700}
+  td.na{color:var(--muted);font-style:italic;opacity:.55}
+  .dim{opacity:.13;filter:grayscale(1)}
+  tr.addedrow th.rowh{color:var(--pos);font-weight:700}
+  .readout{font-family:var(--mono);font-size:.82rem;margin-top:.75rem;min-height:3.2em;line-height:1.6}
+  .kfig-caption{font-family:var(--sans);font-size:.78rem;color:var(--muted);margin-top:.6rem;line-height:1.5;border-top:1px solid var(--line);padding-top:.6rem}
+</style>
+</head>
+<body>
+<div class="kfig">
+  <div class="kfig-eyebrow">Figure — what the taxonomy could represent</div>
+  <div class="kfig-title">Two columns that did not exist</div>
+  <div class="kfig-group" data-role="view">
+    <button data-val="all" class="on">full role registry</button>
+    <button data-val="old">what the old 3 fields could see</button>
+  </div>
+  <div class="wrap"><table id="t"></table></div>
+  <div class="readout" id="ro"></div>
+  <div class="kfig-caption">Each cell is the head's score as a fraction of that criterion's model-wide maximum;
+  the cutoff is under the column name and an outline marks a pass. Hover a row.</div>
+</div>
+<script>
+(function(){
+  var D={"rows":["L3H0","L4H11","L5H5","L7H9","L8H6","L8H10","L9H6","L9H9","L10H0"],"cols":["previous_token","duplicate_token","induction","s_inhibition","name_movers","backup_name_mover","negative"],"scores":[[0.011,1.0,0.015,-0.0,-0.003,0.0,0.003],[1.0,0.0,0.0,0.0,0.007,0.001,-0.009],[0.013,0.004,1.0,-0.0,0.002,0.0,-0.003],[0.034,0.005,0.021,0.383,0.065,0.014,-0.087],[0.042,0.022,0.146,1.0,-0.021,0.0,0.028],[0.033,0.011,0.07,0.761,0.098,0.02,-0.13],[0.02,0.011,0.55,null,0.392,null,-0.522],[0.017,0.013,0.545,null,1.0,null,-1.332],[0.029,0.029,0.463,null,0.25,0.896,-0.334]],"thresholds":[0.5,0.5,0.5,0.3,0.3,0.3,0.3],"oldSchema":["name_movers","s_inhibition","duplicate_token"],"handPicked":["L0H1","L0H5","L1H11","L3H0","L7H9","L8H6","L8H10","L9H6","L9H9"]}, view="all", hover=-1;
+  var NICE={previous_token:"previous<br>token",duplicate_token:"duplicate<br>token",induction:"induction",
+            s_inhibition:"S-inhibition",name_movers:"name<br>movers",backup_name_mover:"backup<br>name mover",negative:"negative"};
+  var added=D.rows.filter(function(r){ return D.handPicked.indexOf(r)<0; });
+
+  function colour(v,i){
+    if(v===null) return "transparent";
+    var t=Math.max(-1,Math.min(1, v/Math.max(0.001,D.thresholds[i]*3.2)));
+    if(t>=0) return "color-mix(in srgb, var(--neg) "+Math.round(t*62)+"%, transparent)";
+    return "color-mix(in srgb, var(--pos) "+Math.round(-t*62)+"%, transparent)";
+  }
+  function build(){
+    var t=document.getElementById("t"); t.innerHTML="";
+    var hr=document.createElement("tr"); hr.appendChild(document.createElement("th"));
+    D.cols.forEach(function(c,i){
+      var th=document.createElement("th");
+      th.innerHTML=NICE[c]+"<br><span style='opacity:.7'>["+D.thresholds[i].toFixed(2)+"]</span>";
+      if(view==="old" && D.oldSchema.indexOf(c)<0) th.className="dim";
+      hr.appendChild(th);
+    });
+    t.appendChild(hr);
+    D.rows.forEach(function(rl,r){
+      var tr=document.createElement("tr");
+      if(added.indexOf(rl)>=0) tr.className="addedrow";
+      var th=document.createElement("th"); th.className="rowh"; th.textContent=rl; tr.appendChild(th);
+      D.cols.forEach(function(c,i){
+        var v=D.scores[r][i], td=document.createElement("td");
+        if(v===null){ td.textContent="n/a"; td.className="na"; }
+        else{
+          td.textContent=v.toFixed(2);
+          td.style.background=colour(v,i);
+          if(v>=D.thresholds[i]) td.className="pass";
+        }
+        if(view==="old" && D.oldSchema.indexOf(c)<0) td.className+=" dim";
+        tr.appendChild(td);
+      });
+      tr.onmouseenter=function(){ hover=r; say(); };
+      t.appendChild(tr);
+    });
+    say();
+  }
+  function say(){
+    var el=document.getElementById("ro");
+    if(hover<0){
+      el.innerHTML = view==="all"
+        ? "Six criteria. Every member of the corrected circuit passes at least one — <b>L4H11</b> only under previous-token, <b>L5H5</b> only under induction, <b>L10H0</b> only under backup name mover."
+        : "Grey columns did not exist. <b>L4H11 and L5H5 have no ringed cell left</b> — their best score under any surviving criterion is 0.01 and 0.00, which is 2% and 1% of that cutoff. No threshold could have selected them.";
+      return;
+    }
+    var rl=D.rows[hover], best=-9, bestc="", bestOld=-9, bestOldC="";
+    D.cols.forEach(function(c,i){
+      var v=D.scores[hover][i]; if(v===null) return;
+      var ratio=v/D.thresholds[i];
+      if(ratio>best){ best=ratio; bestc=c; }
+      if(D.oldSchema.indexOf(c)>=0 && ratio>bestOld){ bestOld=ratio; bestOldC=c; }
+    });
+    var isAdded = added.indexOf(rl)>=0;
+    el.innerHTML = "<b>"+rl+"</b> — best fit: <b>"+bestc.replace(/_/g," ")+"</b> at "+(best*100).toFixed(0)+"% of its cutoff.<br>"+
+      "Best fit among the three OLD fields: "+bestOldC.replace(/_/g," ")+" at <b style='color:"+
+      (bestOld>=1?"var(--ok)":"var(--neg)")+"'>"+(bestOld*100).toFixed(0)+"%</b> of cutoff."+
+      (isAdded ? "<br><span style='color:var(--pos)'>Missing from the hand-picked circuit.</span>" : "");
+  }
+  document.querySelectorAll('[data-role="view"] button').forEach(function(b){
+    b.onclick=function(){
+      document.querySelectorAll('[data-role="view"] button').forEach(function(x){x.classList.remove("on");});
+      b.classList.add("on"); view=b.dataset.val; hover=-1; build();
+    };
+  });
+  document.getElementById("t").addEventListener("mouseleave",function(){ hover=-1; say(); });
+  build();
+})();
+</script>
+</body></html>
