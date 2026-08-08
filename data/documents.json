@@ -4,6 +4,7 @@
     { "label": "Résumé", "url": "/resume.pdf", "kind": "PDF" },
     { "label": "Tensor Processing Units", "url": "/TPUs-2.pdf", "kind": "PDF" },
     { "label": "YouTube — Audio Obsession", "url": "https://www.youtube.com/@Audio-Obsession", "kind": "AI & Math" },
+    { "label": "Study Materials", "url": "/study/", "kind": "notes & references" },
     { "label": "Photography", "url": "/photography/", "kind": "gallery" },
     { "label": "Drum Machine", "url": "/drum/", "kind": "interactive" },
     { "label": "Hugging Face", "url": "https://huggingface.co/rockerritesh", "kind": "models" },

@@ -937,13 +937,3 @@ The future of API proxying is intelligent, secure, and policy-aware. Our SSE-to-
 *This implementation showcases the power of combining transport protocol bridging with intelligent policy enforcement, creating a foundation for secure, scalable real-time communication systems.*
 
 **Tags**: #SSE #Proxy #Security #PolicyEngine #RealTime #API #Python #Production
-
----
-
-## 📚 Additional Resources
-
-- **Source Code**: [GitHub Repository](https://github.com/your-org/mcp-proxy-clone)
-- **Documentation**: [Complete Usage Guide](../examples/sse_to_sse_usage.md)
-- **Architecture Details**: [Technical Specifications](../research/technical_specifications.md)
-- **Policy System**: [Policy Engine Documentation](../plan/policy_system.md)
-- **Deployment Guides**: [Production Deployment](../examples/sse_to_sse_usage.md#docker-deployment)

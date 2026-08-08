@@ -1141,6 +1141,18 @@ class JekyllLikeBuilder {
   }
 
   // Generate sitemap.xml file dynamically
+  // Sitemap <loc> values must be valid URLs — several post slugs contain spaces,
+  // colons and apostrophes, which are illegal raw and make the entry unparseable.
+  // Encode each path segment, then escape the XML entities.
+  encodeLoc(url) {
+    return url
+      .split('/')
+      .map(seg => (seg ? encodeURIComponent(decodeURIComponent(seg)) : seg))
+      .join('/')
+      .replace(/&/g, '&amp;')
+      .replace(/'/g, '&apos;');
+  }
+
   generateSitemap() {
     const destPath = 'docs/sitemap.xml';
     
@@ -1182,7 +1194,7 @@ class JekyllLikeBuilder {
       
       sitemapContent += `
   <url>
-    <loc>${fullBaseUrl}${pageUrl}/</loc>
+    <loc>${fullBaseUrl}${this.encodeLoc(pageUrl)}/</loc>
     <lastmod>${lastmod}T00:00:00Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -1196,7 +1208,7 @@ class JekyllLikeBuilder {
       
       sitemapContent += `
   <url>
-    <loc>${fullBaseUrl}${post.url}</loc>
+    <loc>${fullBaseUrl}${this.encodeLoc(post.url)}</loc>
     <lastmod>${lastmod}</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
@@ -1210,7 +1222,7 @@ class JekyllLikeBuilder {
       for (const dir of studyDirs) {
         sitemapContent += `
   <url>
-    <loc>${fullBaseUrl}/study/${dir.name}/</loc>
+    <loc>${fullBaseUrl}/study/${this.encodeLoc(dir.name)}/</loc>
     <lastmod>${new Date().toISOString()}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -1517,6 +1529,45 @@ Allow: /
     return scoredPosts;
   }
 
+  // Single source of truth for tag slugs, so the links rendered on a post always
+  // match the directory generateTagPages() writes.
+  tagSlug(tag) {
+    return tag.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+  }
+
+  // How many posts carry each tag. Used to decide which tag pages are worth
+  // linking to — a tag page holding a single post is just a thin duplicate of
+  // that post, so it gets rendered as plain text and kept out of the index.
+  tagPostCounts() {
+    if (this._tagCounts) return this._tagCounts;
+    const counts = new Map();
+    for (const p of this.posts) {
+      for (const t of (p.tags || [])) {
+        counts.set(t, (counts.get(t) || 0) + 1);
+      }
+    }
+    this._tagCounts = counts;
+    return counts;
+  }
+
+  // Tag row for the bottom of a post. Tags shared with other posts become real
+  // links, which is what gives the tag pages inbound links and lets a reader
+  // move between related posts without going back to the archive.
+  renderTagLinks(post) {
+    const tags = post.tags || [];
+    if (!tags.length) return null;
+    const counts = this.tagPostCounts();
+    const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const items = tags.map(tag => {
+      const label = esc(tag);
+      if ((counts.get(tag) || 0) < 2) {
+        return `<span class="post-tag is-solo">${label}</span>`;
+      }
+      return `<a class="post-tag" href="/tags/${this.tagSlug(tag)}/">${label}</a>`;
+    });
+    return `<span class="post-tags-label">Tagged</span>${items.join('')}`;
+  }
+
   // Generate tag and category pages
   generateTagPages() {
     const tagMap = new Map();
@@ -1537,7 +1588,7 @@ Allow: /
 
     // Generate tag pages
     tagMap.forEach((posts, tag) => {
-      const tagSlug = tag.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+      const tagSlug = this.tagSlug(tag);
       const outputPath = path.join('docs', 'tags', tagSlug, 'index.html');
 
       const content = this.renderTagPage(tag, posts);
@@ -1545,7 +1596,10 @@ Allow: /
         title: `Posts tagged "${tag}"`,
         url: `/tags/${tagSlug}/`,
         tag: tag,
-        posts: posts
+        posts: posts,
+        // A tag page holding one post is a thin duplicate of it; keep it
+        // crawlable for the outbound link but out of the index.
+        noindex: posts.length < 2
       };
 
       const html = this.applyLayout(content, 'default', pageData);
@@ -1730,8 +1784,9 @@ Allow: /
         continue;
       }
 
-      // Add related posts to page data
-      const relatedPosts = this.findRelatedPosts(post);
+      // Add related posts to page data. Empty arrays are truthy in the template
+      // engine, so pass null when there is nothing to show.
+      const relatedPosts = this.findRelatedPosts(post, 5);
       // SEO description: front-matter description, else a clean plain-text summary of the content
       const seoDesc = (post.description
         || post.content.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 155).trim())
@@ -1739,7 +1794,8 @@ Allow: /
       const pageData = {
         ...post,
         description: seoDesc,
-        relatedPosts
+        relatedPosts: relatedPosts.length ? relatedPosts : null,
+        tagLinks: this.renderTagLinks(post)
       };
 
       const html = this.applyLayout(post.content, layoutName, pageData);

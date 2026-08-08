@@ -15,7 +15,25 @@ layout: default
         {{ content }}
     </div>
 
+    {% if page.tagLinks %}
+    <div class="post-tags">{{ page.tagLinks }}</div>
+    {% endif %}
+
     {% include citation.html %}
+
+    {% if page.relatedPosts %}
+    <nav class="related-posts" aria-label="Related posts">
+        <h2>Related posts</h2>
+        <ul>
+            {% for related in page.relatedPosts %}
+            <li>
+                <a href="{{ related.url }}">{{ related.title }}</a>
+                {% if related.category %}<span class="related-cat">{{ related.category }}</span>{% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </nav>
+    {% endif %}
 
     <footer class="post-footer">
         <p><a href="{{ '/blog/' | relative_url }}">← All posts</a></p>

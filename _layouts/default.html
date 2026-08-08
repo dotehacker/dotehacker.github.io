@@ -29,6 +29,7 @@
     <meta name="author" content="{{ site.author.name }}">
     <meta name="google-site-verification" content="IVG1y4MVA_6MT0wsjk13ooZDQLWXxvYcPXQlmf83MLM" />
     <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+    {% if page.noindex %}<meta name="robots" content="noindex,follow">{% endif %}
 
     <!-- Open Graph / Twitter -->
     <meta property="og:site_name" content="{{ site.title }}">
