@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google tag (gtag.js) with Consent Mode v2 — analytics denied until the visitor allows -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DVZFLJD4KX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        'analytics_storage': 'denied',
+        'ad_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied'
+      });
+      try {
+        if (localStorage.getItem('cookie-consent') === 'granted') {
+          gtag('consent', 'update', { 'analytics_storage': 'granted' });
+        }
+      } catch (e) {}
+      gtag('js', new Date());
+      gtag('config', 'G-DVZFLJD4KX');
+    </script>
+
+    <title>Machine Learning Analysis of Tirhuta Lipi — B.E. AI Project (IOE, Pulchowk Campus) · Sumit Yadav</title>
+    <meta name="description" content="Undergraduate AI project report (Department of Electronics & Computer Engineering, Pulchowk Campus, IOE, Tribhuvan University, 2023): machine-learning character recognition for the low-resource Tirhuta (Mithilakshar) script — MobileNet embeddings + logistic regression reach 0.97 accuracy. By Sumit Yadav, Raju Kumar Yadav, Prashant Bhandari.">
+    <meta name="author" content="Sumit Yadav">
+    <meta name="google-site-verification" content="IVG1y4MVA_6MT0wsjk13ooZDQLWXxvYcPXQlmf83MLM" />
+    <link rel="canonical" href="https://sumityadav.com.np/ioe_bachelors_ai_project_pulchowk_campus/">
+    
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:site_name" content="Sumit Yadav">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Machine Learning Analysis of Tirhuta Lipi — B.E. AI Project (IOE, Pulchowk Campus) · Sumit Yadav">
+    <meta property="og:description" content="Undergraduate AI project report (Department of Electronics & Computer Engineering, Pulchowk Campus, IOE, Tribhuvan University, 2023): machine-learning character recognition for the low-resource Tirhuta (Mithilakshar) script — MobileNet embeddings + logistic regression reach 0.97 accuracy. By Sumit Yadav, Raju Kumar Yadav, Prashant Bhandari.">
+    <meta property="og:url" content="https://sumityadav.com.np/ioe_bachelors_ai_project_pulchowk_campus/">
+    <meta property="og:image" content="https://sumityadav.com.np/profile.jpg">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Machine Learning Analysis of Tirhuta Lipi — B.E. AI Project (IOE, Pulchowk Campus) · Sumit Yadav">
+    <meta name="twitter:description" content="Undergraduate AI project report (Department of Electronics & Computer Engineering, Pulchowk Campus, IOE, Tribhuvan University, 2023): machine-learning character recognition for the low-resource Tirhuta (Mithilakshar) script — MobileNet embeddings + logistic regression reach 0.97 accuracy. By Sumit Yadav, Raju Kumar Yadav, Prashant Bhandari.">
+    <meta name="twitter:image" content="https://sumityadav.com.np/profile.jpg">
+
+    <!-- Structured data: Person -->
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"Person","name":"Sumit Yadav","alternateName":"rockerritesh","url":"https://sumityadav.com.np","image":"https://sumityadav.com.np/profile.jpg","jobTitle":"AI Researcher","description":"AI researcher working on interpretability, AI safety, and low-resource NLP.","sameAs":["https://github.com/rockerritesh","https://scholar.google.com/citations?user=ag74ytsAAAAJ&hl=en","https://www.linkedin.com/in/rockerritesh/","https://x.com/rocker_ritesh","https://huggingface.co/rockerritesh","https://www.youtube.com/@Audio-Obsession"]}
+    </script>
+
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- Mermaid.js for diagram rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+
+    <!-- MathJax for LaTeX math -->
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+            options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+        };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <div class="scroll-progress"><div class="scroll-progress-bar" id="scroll-progress-bar"></div></div>
+
+    <header class="site-header">
+    <div class="wrap">
+        <a class="site-title" href="/">Sumit Yadav</a>
+        <nav class="site-nav">
+            <a href="/#publications">Publications</a>
+            <a href="/blog/">Blog</a>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Switch theme: light, dark, rain" title="Theme — click to cycle: light → dark → rain">
+                <span class="theme-icon ti-light">☀️</span>
+                <span class="theme-icon ti-dark">🌙</span>
+                <span class="theme-icon ti-rain">🌧️</span>
+            </button>
+        </nav>
+    </div>
+</header>
+
+
+    <main class="page-content">
+        <div class="wrap">
+            <div class="content-area">
+                <h1>Machine Learning Analysis of Tirhuta Lipi</h1>
+<p><img src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.001.jpeg" alt=""></p>
+<p>TRIBHUVAN UNIVERSITY   INSTITUTE OF ENGINEERING PULCHOWK CAMPUS</p>
+<p>Machine Learning Analysis of Tirhuta Lipi</p>
+<p>By:</p>
+<p>Sumit Yadav (076/BCT/088)      Raju Kumar Yadav (076/BCT/100) Prashant Bhandari (076/BCT/049)</p>
+<p>AN AI PROJECT REPORT TO THE DEPARTMENT OF ELECTRONICS AND COMPUTER ENGINEERING.</p>
+<p>DEPARTMENT OF ELECTRONICS AND COMPUTER ENGINEERING LALITPUR, NEPAL</p>
+<p>March, 2023</p>
+<p>ACKNOWLEDGEMENT</p>
+<p>This project is prepared in partial fulfilment of the requirement for for the the bachelor’s degree in Electronics and Communication Engineering. First and foremost, We would also like to extend our sincere thanks to our passout seniors, friends, and family for their support and guidance throughout our research project. Their valuable inputs and feedback have been instrumental in shaping our ideas and improving our work.</p>
+<p>We would also like to express our gratitude to the Department of Electronics and Computer Engineering, Pulchowk Campus, Tribhuvan University for providing us with the necessary resources and infrastructure to carry out this research.</p>
+<p>Last but not least, we would like to thank our instructor, Basant Joshi, for his guidance, encouragement, and support throughout this project. His expertise and knowledge have been invaluable in helping us to achieve our research objectives.</p>
+<p>Finally, we would like to acknowledge the contribution of all the authors of this research report, namely Sumit Yadav, Raju Kumar Yadav, and Prashant Bhandari, for their hard work, dedication, and collaborative efforts in producing this research.</p>
+<p>Any kind of suggestion or criticism will be highly appreciated and acknowledged.</p>
+<p>ABSTRACT</p>
+<p>Tirhuta Lipi is a low resource language that is primarily spoken in the Indian states of Bi- har and Terai Belt of Nepal. The script is not widely used, and there are limited resources available for language processing tasks. In this project, we have explored machine learning techniques for character recognition of the low-resource language Tirhuta Lipi. We col- lected a diverse dataset of Tirhuta vowels Lipi and preprocessed it for training machine learning models. We tested different algorithms such as Sklearn and Tensorflow Keras to evaluate their performance in character recognition. Our results showed that the mobile net embedding with logistic regression achieved the highest accuracy of 0.97. We also found that fine-tuning the mobile net model in Tensorflow Keras resulted in an accuracy of 0.965. Our study demonstrates the feasibility of using machine learning for character recognition in TirhutaLipi,whichcouldhaveimportantapplicationsinareassuchastexttranslationandop- tical character recognition. This project contributes to the growing field of natural language processing for low-resource languages and highlights the potential of machine learning in language-related tasks.</p>
+<p>Keywords: Tirhuta Lipi, Character recognition, Digital accessibility</p>
+<ol>
+<li>INTRODUCTION</li>
+</ol>
+<p>Tirhuta Lipi is a script that is used to write the Tirhuta language, which is primarily spoken in the Indian states of Bihar and the Terai Belt of Nepal. Despite its cultural and linguis- tic significance, the script is not widely used and there are limited resources available for processing Tirhuta Lipi text. This lack of resources has made it difficult to use modern computational techniques to study and analyze the language. In this project, we propose a machine learning-based character recognition system for Tirhuta Lipi that aims to address this challenge.</p>
+<p>Our objective is to build a machine learning model that can accurately recognize individual characters in Tirhuta Lipi text with high precision and recall. This would allow us to create a digital archive of Tirhuta Lipi text, which could be used to promote the study and preser- vation of the language. Moreover, this work could have broader implications for the field of natural language processing, particularly for low resource languages that have limited computational resources available.</p>
+<p>To achieve our objective, we will collect a large and diverse dataset of Tirhuta Lipi text, which will be preprocessed and used to train a machine learning model. We will evaluate the performance of our model using appropriate metrics and compare it to several baseline models. This will allow us to demonstrate the feasibility and effectiveness of using machine learning techniques for Tirhuta Lipi character recognition.</p>
+<p>In this proposal, we provide a detailed description of our methodology, tools and technolo- gies, and expected outcomes. We also review relevant literature in the field of natural lan- guageprocessingforlowresourcelanguagesanddiscussthetheoreticalunderpinningsofour work. Overall, this project seeks to contribute to the growing field of language technology for low resource languages, while promoting the study and preservation of Tirhuta Lipi.</p>
+<ol>
+<li>Background</li>
+</ol>
+<p>Tirhuta Lipi is a script used to write the Tirhuta language, which has roots in the ancient Sanskrit language. The script is known for its complex and intricate design, which includes numerousdiacriticalmarksandligatures. TirhutaLipiisprimarilyusedintheIndianstatesof Bihar and the Terai Belt of Nepal, where it has been used for religious and literary purposes for centuries.</p>
+<p>Despite its cultural and linguistic significance, Tirhuta Lipi is not widely used in modern times, and there are limited resources available for processing text in this script. This has made it difficultto use modern computational techniques to study and analyze the language. As a result, Tirhuta Lipi has received relatively little attention in the fieldof natural language processing and language technology. Recent developments in machine learning have shown</p>
+<p><img src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.002.png" alt=""></p>
+<p>Figure 1.1: Tirhuta Script svara varna.</p>
+<p>promise for addressing the challenges of low resource languages. In particular, machine learning techniques such as convolutional neural networks have been shown to be effective for character recognition tasks, even with limited amounts of training data. These methods have been used successfully in other low resource language contexts, such as Devanagari, Urdu, and Tibetan.</p>
+<p>In this project, we build on these developments and apply machine learning techniques to the task of Tirhuta vowels Lipi character recognition. We believe that our work will contribute to the growing field of natural language processing for low resource languages, while also promoting the study and preservation of Tirhuta Lipi.</p>
+<ol start="2">
+<li>Objectives</li>
+</ol>
+<p>The objective of this project is to develop a machine learning-based character recognition system for Tirhuta Lipi that can accurately recognize individual characters in Tirhuta Lipi text with a high level of precision and recall. We aim to achieve this by collecting a large and diverse dataset of Tirhuta Lipi text and using it to train a machine learning and neural network based model.</p>
+<ol start="3">
+<li>Problem statement</li>
+</ol>
+<p>Tirhuta Lipi is a low resource language that is not widely used in modern times, making it difficult to use modern computational techniques to study and analyze the language. The lackofresourcesforprocessingtextinTirhutaLipihaslimiteditspotentialforuseinmodern</p>
+<p>contexts, and has hindered efforts to study and preserve the language.</p>
+<ol start="4">
+<li>Scope of Project</li>
+</ol>
+<p>Thescopeofthisprojectistodevelopamachinelearning-basedcharacterrecognitionsystem for Tirhuta Lipi, which has the potential to contribute to the existing body of knowledge on the topic. This study aims to provide new insights, perspectives, and solutions to the research problem, with the ultimate goal of informing policy decisions, guiding future research, and improving practices related to Tirhuta Lipi language technology.</p>
+<ol start="2">
+<li>LITERATURE REVIEW</li>
+</ol>
+<p>Tirhuta Lipi is a unique script that is primarily used for writing the Tirhuta language, which is spoken in the Mithila region of India and Nepal. While there are some resources available for studying and analyzing the script, it remains a low resource language that is not widely used in modern times. As such, there is limited literature on Tirhuta Lipi and the application of computational techniques to its analysis.</p>
+<p>Recent advances in machine learning and natural language processing, however, have shown promise for analyzing and processing low resource languages such as Tirhuta. Researchers have explored the use of machine learning techniques for language identification, part-of- speech tagging, and sentiment analysis, among other tasks. While much of this work has focusedonmorewidelyspokenlanguages,suchasHindiorBengali,thereisgrowinginterest in applying these techniques to less commonly studied languages.</p>
+<p>In the specific context of Tirhuta Lipi character recognition, there is a dearth of literature. However, researchonrelatedscriptssuchasDevanagariandBengalihasshownthatmachine learning techniques can achieve high levels of accuracy for character recognition tasks. We aim to build on this prior work and apply it to the specific context of Tirhuta Lipi character recognition. Ourliteraturereviewshows thatourproposedproject istimelyandrelevant, and hasthepotentialtocontributetothegrowingbodyofresearchonnaturallanguageprocessing for low resource languages.</p>
+<ol start="3">
+<li>THEORETICAL BACKGROUND</li>
+</ol>
+<p>Tirhuta Lipi is a script used for writing the Tirhuta language, which is a member of the Indo- Aryan language family. The script has 14 vowels and 38 consonants, along with a number of diacritics and modifiers. Each character in the script has a unique shape and can be written in several different forms, depending on its position in a word and the characters that surround it.</p>
+<p>Character recognition is the task of identifying and classifying individual characters in a given text. This is an important task in natural language processing and can have applica- tions in areas such as optical character recognition and text translation. Machine learning techniques have shown great promise in recent years for character recognition tasks, espe- cially in low resource language settings.</p>
+<p>The project will use a machine learning-based approach to recognize individual characters in Tirhuta vowels Lipi text. The model will be trained on a large and diverse dataset of Tirhuta Lipi text, which will be preprocessed to prepare it for training. The model will be built using neural networks, which have been shown to be effective for character recognition tasks in other scripts such as Devanagari and Bengali.</p>
+<p>Overall, theprojectbuildsonthetheoreticalfoundationofcharacterrecognitionandmachine learning, and applies it to the specific context of Tirhuta Lipi. By using machine learning techniques to recognize characters in Tirhuta Lipi text, we aim to make the language more accessible in the digital realm and contribute to efforts to preserve and study the language.</p>
+<ol start="4">
+<li>METHODOLOGY</li>
+</ol>
+<p>To achieve our objective of building a machine learning-based character recognition system for Tirhuta Lipi, we will follow the methodology described below.</p>
+<ol>
+<li>Data Collection Process</li>
+</ol>
+<p>WewillcollectalargeanddiversedatasetofTirhutaLipitextfromvarioussources,including books, manuscripts, and by writing by our self. The dataset will be carefully curated to ensure that it covers a broad range of topics and styles of writing, including handwritten and printed text. We will also ensure that the dataset includes a variety of fonts and styles of Tirhuta Lipi writing.</p>
+<p>The flowchart given below describes the steps involved in preprocessing raw images to ex- tract individual characters. The process starts by loading an image and converting it to grayscale. Then, thresholding is applied to convert the image to a binary format. The next step involves using morphological operations to remove noise from the image. This is done by dilating and eroding the image using a kernel.</p>
+<p>After the image has been cleaned up, contours are found in the binary image. These contours are then iterated through, and for each contour, a bounding box is extracted. The bounding box is used to isolate the individual character in the image, and this character image is saved to a separate file.</p>
+<p>Overall, the flowchart outlines the steps needed to preprocess an image in order to extract individual characters. These characters can then be used for further analysis. After the indi- vidual images are extracted and placed in same folder which contains images of all classes. We have applied unsupervised method to separate the images into different classes of differ- ent images. For that we have used K Means cluster to build algorithm and then we separate that into respective folder. As images have same pixel distribution it’s difficult to correctly classify images into different classes, so for outlier we did manually.</p>
+<p>Load the image <img src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.003.png" alt="">Convert to grayscale</p>
+<p><img src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.004.png" alt=""></p>
+<p>Apply thresholding</p>
+<p><img src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.005.png" alt=""></p>
+<p>Remove noise using morphological operations</p>
+<p><img src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.006.png" alt=""></p>
+<p>Find contours in the binary image</p>
+<p><img src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.007.png" alt=""></p>
+<p>Iterate through each contour<img src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.008.png" alt=""></p>
+<p>yes</p>
+<p>no Extract the bounding box? Save the letter image to a separate file</p>
+<ol start="2">
+<li>Preprocessing and Cleaning of Data</li>
+</ol>
+<p>In this step, we aim to preprocess and clean the collected Tirhuta Lipi dataset to make it suitable for machine learning. The primary objective of this step is to prepare a standardized dataset that can be used to train and test our machine learning models.</p>
+<p>The first step in this process is to remove any non-Tirhuta Lipi characters from the dataset. This is essential to ensure that we only have relevant data for our machine learning models. We only take Tirhuta Lipi characters with vowels for this project.</p>
+<p>The next step is to standardize the font and size of the characters. This is crucial because different fonts and sizes can affect the performance of our machine learning models. We resize all images to 50 x 50, which is a common size used for similar projects.</p>
+<p>Finally, we perform some basic data augmentation techniques to increase the size and di- versity of the dataset. This involves applying transformations such as rotation, flipping, and translation to the images to create additional variations of the same character. This helps to improve the robustness of our machine learning models, making them less sensitive to variations in the input data.</p>
+<p>Overall, the Preprocessing and Cleaning of Data step is critical to ensuring that our machine learning models can perform effectively on the Tirhuta Lipi dataset. By removing irrelevant data, standardizing the font and size of the characters, and augmenting the dataset, we can create a high-quality dataset that is suitable for training and testing machine learning models.</p>
+<ol start="3">
+<li>Data Analysis and Visualization Techniques</li>
+</ol>
+<p>In this section, we have performed various data analysis and visualization techniques on our preprocessed dataset. These techniques are aimed at gaining a deeper understanding of the dataset and identifying any patterns or trends that may be present.</p>
+<p>Specifically, we have done the following:</p>
+<ol start="4">
+<li>Machine Learning Algorithms Used</li>
+</ol>
+<p>Inthisproject, wehavedevelopedamachinelearningalgorithmfromscratchforTirhutaLipi character recognition. We started with implementing the Decision Tree Classifieralgorithm and passed the whole image into it.</p>
+<p>To improve the accuracy, we performed dimensionality reduction on the images using PCA and passed 200 embeddings of the whole images into the Decision Tree Classifier.</p>
+<p>Next, we utilized transfer learning techniques and extracted feature embeddings from the MobileNet architecture. We then passed these embeddings into the Decision Tree Classi- fier and achieved an F1 score of 0.56, which is a significant improvement from our initial attempts.</p>
+<p>Overall, we have used decision tree classifieralgorithm and implemented various techniques</p>
+<table>
+<thead>
+<tr>
+<th>Technique</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Pixel Distribution</td>
+<td>Plotted using the Insight Toolkit (ITK) library to visualize the distribution of pixel values across the images and identify any outliers or anomalies.</td>
+</tr>
+<tr>
+<td>t-SNE</td>
+<td>Used t-distributed stochastic neighbor embedding (t-SNE) visualization technique to reduce the high-dimensional data into a two-dimensional space. This allowed us to visualize the dataset and identify any clusters or patterns that may be present.</td>
+</tr>
+<tr>
+<td>PCA</td>
+<td><p>Applied principal component analysis (PCA) to reduce the dimensionality of the dataset and visualize it in a lower-dimensional space. This helped us to identify</p><p>the most important features of the dataset and understand the relationships between different variables.</p></td>
+</tr>
+<tr>
+<td>Correlation Vector Heatmap</td>
+<td>Generated a heatmap of the correlation vector to visualize the correlation between different features of the dataset. This allowed us to identify any strong correlations between features and remove any redundant features.</td>
+</tr>
+<tr>
+<td>Class Frequency Analysis</td>
+<td><p>Analyzed the frequency of different classes in the dataset.</p><p>We have a total of 14 classes, and each class has approximately 70-100 instances in the dataset. This helped us to identify</p><p>any class imbalances that may be present and adjust the dataset accordingly.</p></td>
+</tr>
+<tr>
+<td>such as PCA and transfer learning to improve the accuracy of our algorithm. 4.4.1. Decision Tree Classification</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>Decision tree is a popular machine learning algorithm used for classification and regression tasks. It is a tree-structured model where internal nodes represent features, branches repre- sent decisions based on the values of these features, and leaf nodes represent the output or class label. The DecisionTreeClassifier class provided in the code implements the decision tree algorithm for classificationtasks.</p>
+<p>The decision tree is grown recursively using a top-down, greedy approach. At each node, the algorithm searches for the feature and threshold that gives the maximum information gain. The information gain is calculated using a splitting criterion, such as entropy or Gini impurity. The algorithm continues to split the data at each internal node until a stopping criterionismet, suchasreachingamaximumdepthorhavingaminimumnumberofsamples in a leaf node.</p>
+<p>The implementation of the decision tree algorithm in the code can be explained as follows:</p>
+<p>Node class:</p>
+<p>The Node class represents each node in the decision tree. It contains the following attributes:</p>
+<p>feature: the feature used for splitting the data at this node. threshold: the threshold value used for splitting the data at this node. left: the left subtree of this node.</p>
+<p>right: the right subtree of this node.</p>
+<p>value: the predicted output value or class label if this is a leaf node. class probs: the probabilities of each class if this is a leaf node.</p>
+<p>DecisionTreeClassifierclass:</p>
+<p>init method: The constructor method initializes the maximum depth of the tree.</p>
+<p>fitmethod: The fitmethod is used to train the decision tree using the input data X and labels y. It initializes the number of classes and grows the decision tree by calling the grow tree method. grow tree method: The grow tree method is the heart of the decision tree algorithm. It recur- sively grows the tree by findingthe best split at each internal node and creating left and right subtrees. The stopping criteria are checked at each internal node, and if met, a leaf node is created with the class probabilities.</p>
+<p>information gain method: The information gain method calculates the information gain of a split using the entropy criterion.</p>
+<p>entropy method: The entropy method calculates the entropy of a given set of labels using the Shannon entropy formula.</p>
+<p>predict method: The predict method predicts the class labels for new input data X by travers- ing the decision tree from the root node to a leaf node and returning the class probabilities. predict proba method: The predict proba method returns the class probabilities for new input data X by traversing the decision tree from the root node to a leaf node and returning the class probabilities.</p>
+<ol start="5">
+<li>Mobile Net Embedding</li>
+</ol>
+<p>The code we used defines a function named dir to category that takes two arguments: Cate- gories and datadir.</p>
+<p>The Categories parameter is a list of categories or labels that will be used to classify the images. datadir parameter is the path to the directory where the images are located.</p>
+<p>The function then loops over each category in Categories and reads all the images in the corresponding subdirectory of datadir. It loads each image and converts it into an array of shape (224, 224, 3), which is the expected input shape for the pre-trained MobileNet model.</p>
+<p>Next, the code passes the image array through the MobileNet model to obtain the output of the layer named ’reshape 2’. This output is then flattened and added to a list called flat data arr.</p>
+<p>The function also creates another list called target arr that contains the corresponding target values for each image. The target value is the index of the category in the Categories list.</p>
+<p>Finally, the it converts the flat data arr and target arr lists to numpy arrays and creates a pandas dataframe from the flattened arrays. It adds a new column named ’Target’ to the dataframe, which contains the target values.</p>
+<p>The function then returns two values: x and y. x contains the flattened image arrays and y contains the target values.</p>
+<ol start="6">
+<li>Fine Tuning MobileNet</li>
+</ol>
+<p>The fine-tuning pre-trained MobileNet v2 model to classify images into 14 different cate- gories.</p>
+<p>First, the pre-trained MobileNetv2 model is loaded and the last fully connected layer is replaced with a new layer with 14 output features to match the number of categories. Then, all the pre-trained layers except the last layer are frozen to avoid overfitting.</p>
+<p>The data is loaded from the ’New’ folder using ImageFolder, and data transformations are applied to each image. The dataset is split into training and validation sets using the train test split method from sklearn. Data loaders are created for both the training and validation sets.</p>
+<p>A cross-entropy loss function and SGD optimizer are defined, and a cyclic learning rate scheduler is applied to the optimizer. The model is trained for 10 epochs, with each epoch iterating over the training set and updating the weights using backpropagation. After each epoch, the model is evaluated on the validation set and the accuracy is printed.</p>
+<p>The output shows the accuracy on the validation set after each epoch of training. The accu- racy improves with each epoch and reaches a high of 0.9655. This indicates that the model is learning to classify the images accurately and effectively.</p>
+<ol start="5">
+<li>TOOLS AND TECHNOLOGIES</li>
+</ol>
+<p>The proposed project is developed using the following tools and technologies:</p>
+<ul>
+<li>Python: Python is a widely-used programming language with a rich set of libraries and frameworks for machine learning and natural language processing. It is used as the primary language for developing the machine learning-based character recognition system.</li>
+<li>Scikit-learn (sklearn): Sklearn is a popular open-source machine learning library for Python. It provides a range of tools for data mining, data analysis, and machine learn- ing, including classification, regression, and clustering algorithms. Sklearn is used for implementing the machine learning algorithms for character recognition of Tirhuta Lipi.</li>
+<li>TensorFlow: TensorFlowisanopen-sourcemachinelearningframeworkdevelopedby Google that can be used to build neural networks and other machine learning models. It is used to build and train a convolutional neural network for recognizing Tirhuta Lipi characters.</li>
+<li>Keras: Keras is a high-level neural network API that is built on top of TensorFlow. It is used to simplify the process of building, training, and evaluating the neural network for character recognition.</li>
+<li>OpenCV: OpenCV is an open-source computer vision library that provides a wide range of image processing and computer vision algorithms. It is used for image pre- processing and feature extraction to improve the accuracy of the character recognition system.</li>
+<li>Flask: Flask is a lightweight web framework for Python that can be used to build web- based applications. It is used to develop a simple web-based interface for users to upload Tirhuta Lipi images and receive the recognized characters.</li>
+</ul>
+<p>The combination of these tools and technologies is used to develop a robust and accurate character recognition system for Tirhuta Lipi.</p>
+<ol start="6">
+<li>RESULTS</li>
+</ol>
+<p>For this project, we have tried many algorithms, which include the model written from scratch i.e. Decision tree and other classic machine learning model from sklearn repository and Tensorflow pretrained network like MobileNet.</p>
+<ol>
+<li>Decision Tree</li>
+</ol>
+<p>In this section, we present the results of our analysis using three different approaches: de- cision tree analysis on raw data (image), PCA 200 embedding, and feature vectors from MobileNet.</p>
+<ol>
+<li>Decision Tree Analysis on Raw Data (Image)</li>
+</ol>
+<p>We trained a decision tree classifier on the raw image data, and the accuracy of the model was found to be 0.12. This low accuracy can be attributed to the high dimensionality of the image data and the complex relationships between the pixels. The decision tree was not able to capture these complex relationships, leading to poor performance.</p>
+<ol start="2">
+<li>PCA 200 Embedding</li>
+</ol>
+<p>We applied PCA to reduce the dimensionality of the image data to 200, and then trained a decision tree classifier on this reduced dataset. The accuracy of the model was found to be 0.3-0.35. This is a significant improvement over the raw image data, indicating that PCA was able to capture the most important features of the images.</p>
+<ol start="3">
+<li>Feature Vectors from MobileNet</li>
+</ol>
+<p>We extracted feature vectors from the pre-trained MobileNet model and trained a decision tree classifier on these vectors. The accuracy of the model was found to be 0.56, which is</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Accuracy</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SVC (raw image)</td>
+<td>0.61</td>
+</tr>
+<tr>
+<td>KNN (raw image)</td>
+<td>0.47</td>
+</tr>
+<tr>
+<td>MobileNet embedding + Decision Tree</td>
+<td>0.55</td>
+</tr>
+<tr>
+<td>MobileNet embedding + Gradient Boosting</td>
+<td>0.86</td>
+</tr>
+<tr>
+<td>MobileNet embedding + Logistic Regression</td>
+<td>0.97</td>
+</tr>
+<tr>
+<td>MobileNet embedding + SVC</td>
+<td>0.95</td>
+</tr>
+<tr>
+<td>MobileNet embedding + KNN</td>
+<td>0.94</td>
+</tr>
+<tr>
+<td>significantlyhigherthanboththerawimagedataandthePCA200embedding. Thisindicates that the pre-trained MobileNet model was able to capture the most important features of the images, and the decision tree was able to learn from these features.</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>To further evaluate the performance of our model, we plotted the ROC curve and calculated the area under the curve (AUC) for each class. The AUC values for each class are as follows: class 0 (0.69), class 1 (0.71), class 2 (0.75), class 3 (0.76), class 4 (0.71), class 5 (0.79), class 6 (0.93), class 7 (0.85), class 8 (0.73), class 9 (0.75), class 10 (0.90), and class 13 (0.82).</p>
+<p>We also calculated the confusion matrix and classification report for our model. The con- fusion matrix shows that our model performed well for most classes, with some confusion between classes 0 and 1, and classes 3 and 4. The classificationreport shows that our model had reasonable precision, recall, and f1-score for most classes, with lower performance for classes 0, 1, and 4.</p>
+<p>Overall, our results show that using feature vectors from a pre-trained model like MobileNet can significantlyimprove the accuracy of a decision tree classifieron image data.</p>
+<ol start="2">
+<li>Analysis On Different SKLearn Algorith Below is the results got from different moddels.</li>
+</ol>
+<p>6.2.1. Fine tunning MobileNet</p>
+<p>From PyTorch model library, we used MobileNet and fine-tunedit to achieve an accuracy of 0.965.</p>
+<ol start="7">
+<li>DISCUSSION</li>
+</ol>
+<p>Decision trees are a popular method for classification and regression analysis, particularly in the field of machine learning. In this discussion, we analyze the results obtained from three decision tree models trained on different types of input data: raw images, PCA 200 embedding, and feature vectors extracted from MobileNet.</p>
+<p>The decision tree model trained on raw images had an accuracy of 0.12, which is quite low. This indicates that the model was not able to learn meaningful features from the raw image data. The low accuracy may be due to the high dimensionality of the raw image data and the lack of feature engineering.</p>
+<p>The decision tree model trained on PCA 200 embedding had an accuracy of 0.3-0.35. While this accuracy is an improvement over the raw image model, it is still quite low. PCA was used to reduce the dimensionality of the data, but it may not have been able to capture all of the relevant features. The low accuracy suggests that more sophisticated feature engineering may be necessary to improve the performance of the model.</p>
+<p>The decision tree model trained on feature vectors extracted from MobileNet had the highest accuracy of 0.56. The model was able to learn meaningful features from the pre-trained MobileNet network, which contributed to the improved accuracy. The ROC curve analysis showed that the model had good performance for most classes, with areas under the curve ranging from 0.65 to 0.93. The confusion matrix and classification report showed that the model had reasonable precision and recall for most classes, with some classes performing better than others. However, there is still room for improvement, particularly for classes with lower precision and recall.</p>
+<p>Wecanobservethattherawimage-basedmodels, SVCandKNN,havethelowestaccuracies of 0.61 and 0.47, respectively. This could be because raw images have high dimensionality, making it difficultfor these models to effectively capture the relevant features for classifica- tion.</p>
+<p>On the other hand, the models that use MobileNet embeddings perform significantly better, with accuracy ranging from 0.55 to 0.97. MobileNet is a pre-trained model that has been trainedonalargedatasetandhaslearnedtoextractrelevantfeatureseffectively. Thedecision tree-based model using MobileNet embeddings has an accuracy of 0.55, which is the lowest among all the MobileNet-based models. This could be because decision trees are prone to overfittingand may not generalize well on unseen data.</p>
+<p>The Gradient Boosting-based model using MobileNet embeddings has the highest accuracy of 0.86. Gradient Boosting is an ensemble-based method that combines multiple weak learn- ers to create a strong learner. It is known for its ability to handle complex datasets and produce accurate results.</p>
+<p>LogisticRegression-basedmodelusingMobileNetembeddingshasthesecond-highestaccu- racyof0.97. Logisticregressionisalinearmodelthatissimpletoimplementandinterpret. It works well on linearly separable data, and the use of MobileNet embeddings helps to reduce the dimensionality of the data.</p>
+<p>The SVC and KNN-based models using MobileNet embeddings also perform well with ac- curacies of 0.95 and 0.94, respectively. SVC is a kernel-based method that works well on non-linearly separable data. KNN is a lazy learning method that stores all the training data and uses it for classification.</p>
+<p>The result of 0.965 accuracy achieved using Tensorflow Keras/ PyTorch with MobileNet fine-tuning is impressive. Fine-tuning is the process of adjusting the pre-trained model’s parameters to fit the new dataset better. In this case, MobileNet, which is a pre-trained model on a large-scale dataset, was fine-tunedto improve its performance on a specifictask.</p>
+<p>The MobileNet architecture is popular in computer vision tasks due to its high accuracy and lowcomputationalrequirements. Itachievesthisby using depth-wiseseparableconvolutions that reduce the number of parameters in the model significantly. This makes it a great choice for transfer learning, where pre-trained models are used as a starting point for training on new data.</p>
+<p>In this case, fine-tuning MobileNet has led to a significant improvement in accuracy com- pared to the Sklearn algorithms. This result shows the power of transfer learning, especially when combined with fine-tuning,to improve the accuracy of deep learning models.</p>
+<p>It is worth noting that the accuracy achieved using MobileNet fine-tuning can still be im- proved further by experimenting with different hyperparameters, changing the number of layers, or using a different pre-trained model. It is also essential to ensure that the model is not overfittingor underfittingthe data by using techniques like cross-validation and regular- ization.</p>
+<p>Overall, the result shows the effectiveness of using transfer learning and fine-tuning to im- prove the accuracy of deep learning models, especially in computer vision tasks like image classification.</p>
+<ol start="8">
+<li>CONCLUSION</li>
+</ol>
+<p>In conclusion, our research aimed to explore the performance of various machine learning algorithms and deep learning techniques on image classification using a dataset of diverse images.</p>
+<p>The first set of experiments involved the implementation of the Scikit-learn algorithms on raw images. The highest accuracy achieved was 0.61 using the Support Vector Machine (SVM) model, while the K-Nearest Neighbor (KNN) model had an accuracy of 0.47. These results indicate that Scikit-learn models on raw images may not be sufficient for accurate image classification.</p>
+<p>In the second set of experiments, we used transfer learning with MobileNet embedding and implemented three different algorithms. The results demonstrated a significantimprovement in accuracy compared to the raw image implementation. The highest accuracy was achieved using logistic regression (0.97), followed by the Support Vector Classifier(SVC) (0.95) and the K-Nearest Neighbors (KNN) model (0.94). The Gradient Boosting Classifier(0.86) and Decision Tree Classifier (0.55) had lower accuracies in comparison. These results suggest that transfer learning with MobileNet embedding could be a promising approach for image classification.</p>
+<p>Finally, we fine-tuned the MobileNet model using TensorFlow Keras, which resulted in an accuracy of 0.965. This approach outperformed all other experiments, including the Mo- bileNet with transfer learning using logistic regression. These results demonstrate the effec- tiveness of deep learning techniques, particularly fine-tuning, in achieving high accuracy in image classificationtasks.</p>
+<p>Overall, the results suggest that deep learning techniques such as fine-tuning MobileNet models using TensorFlow Keras can be highly effective for image classification tasks, out- performing traditional machine learning models. Additionally, transfer learning using Mo- bileNet embedding with logistic regression, SVC, or KNN could also be effective for achiev- ing high accuracy in image classificationtasks.</p>
+<ol start="9">
+<li>LIMITATIONS AND FUTURE ENHANCEMENTS</li>
+</ol>
+<p>Limitations of this project include the fact that the model may not generalize well to other types of characters or scripts, as it has been trained and tested only on Tirhuta vowels Lipi. Additionally, there may be some limitations due to the size and diversity of the dataset used, which could affect the overall accuracy of the model.</p>
+<p>In future work, it would be beneficialto add more data per class to increase the overall diver- sity and size of the dataset. Pretrained models could also be used to improve the performance of the model. Additionally, more characters from the Tirhuta Lipi script could be added to the dataset to enhance the model’s ability to recognize a wider range of characters. Further- more, experiments with other machine learning algorithms or techniques could be explored to determine their effectiveness for character recognition in Tirhuta Lipi.</p>
+<p>References References</p>
+<ol>
+<li>A.Pandey,”N4035: ProposaltoEncodetheTirhutaScriptinISO/IEC10646,”Working Group Document, ISO/IEC JTC1/SC2/WG2, May 2011.</li>
+<li>P. T. Daniels, ”Writing systems of major and minor languages,” January 2008.</li>
+<li>R. Salomon, ”Indian Epigraphy,” 1998, pp. 41.</li>
+<li>B. Zhou et al., ”Learning Deep Features for Discriminative Localization,” in Proceed- ings of the IEEE Conference on Computer Vision and Pattern Recognition, Las Vegas, NV, USA, 2016, pp. 2921-2929, doi: 10.1109/CVPR.2016.315.</li>
+<li>K. He et al., ”Deep Residual Learning for Image Recognition,” in Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition, Las Vegas, NV, USA, 2016, pp. 770-778, doi: 10.1109/CVPR.2016.90.</li>
+<li>A. Krizhevsky et al., ”ImageNet Classification with Deep Convolutional Neural Net- works,” in Communications of the ACM, vol. 60, no. 6, pp. 84-90, June 2017, doi: 10.1145/3065386.</li>
+<li>Y. Kim, ”Convolutional Neural Networks for Sentence Classification,” in Proceedings of the Conference on Empirical Methods in Natural Language Processing, Doha, Qatar, 2014, pp. 1746-1751, doi: 10.1162/153244303322533223.</li>
+<li>”Decision tree,” Wikipedia, last modifiedJanuary 31, 2022.<a href="https://en.wikipedia.org/wiki/Decision_tree"> https://en.wikipedia. org/wiki/Decision_tree</a></li>
+<li>”Decision tree learning - Gini impurity,” Wikipedia, last modified January 17, 2022. <a href="https://en.wikipedia.org/wiki/Decision_tree_learning#Gini_impurity">https://en.wikipedia.org/wiki/Decision_tree_learning#Gini_impurity</a></li>
+<li>IMAGES</li>
+</ol>
+<p>This page contains images, and visualizations.</p>
+<p><img src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.009.jpeg" alt=""></p>
+<p>Figure 10.1: Written in tirhuta Script</p>
+<p><img src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.010.png" alt=""></p>
+<p>Figure 10.2: Data Collection Process</p>
+<p><img src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.011.png" alt=""></p>
+<p>Figure 10.3: Confusion matrix form the Decision tree scratch.</p>
+<p><img src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.012.png" alt=""></p>
+<p>Figure 10.4: ROC Score curve of Decision tree scratch.</p>
+<p><img src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.013.png" alt=""></p>
+<p>Figure 10.5: Learning curve to Decision tree scratch.</p>
+<p><img src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.014.png" alt=""></p>
+<p>Figure 10.6: Images Counts.</p>
+<p><img src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.015.png" alt=""></p>
+<p>Figure 10.7: Pixel Distribution of Images (Histogram).</p>
+<p><img src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.016.png" alt=""></p>
+<p>Figure 10.8: Correlation between features.</p>
+<p><img src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.017.png" alt=""></p>
+<p>Figure 10.9: 2D TSNE.</p>
+<p><img src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.018.png" alt=""></p>
+<p>Figure 10.10: 3D T-SNE.</p>
+<p><img src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.019.png" alt=""></p>
+<p>Figure 10.11: 2D PCA.</p>
+<p><img src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.020.png" alt=""></p>
+<p>Figure 10.12: 3D PCA.</p>
+<p><img src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.021.png" alt=""></p>
+<p>Figure 10.13: ClassificationReport of Logistic Head of MobileNet</p>
+<p><img src="/posts/IOE_Bachelors_AI_PROJECT_Pulchowk_Campus-5/Aspose.Words.dd0d622d-b77a-4f38-b697-0ec445ca6e6a.022.png" alt=""></p>
+<p>Figure 10.14: Confusion Matrix of Logistic regression on MobileNet Embedding.</p>
+
+            </div>
+        </div>
+    </main>
+
+    <div class="consent" id="consent-banner" hidden>
+        <p>I use minimal cookies for anonymous <b>analytics</b> (Google Analytics) — just to see which posts people find useful. No ads, no cross-site tracking.</p>
+        <div class="consent-actions">
+            <button class="consent-decline" id="consent-decline">Decline</button>
+            <button class="consent-accept" id="consent-accept">Allow</button>
+        </div>
+    </div>
+    <script>
+      (function () {
+        var b = document.getElementById('consent-banner');
+        var choice = null;
+        try { choice = localStorage.getItem('cookie-consent'); } catch (e) {}
+        if (!choice) b.hidden = false;
+        function decide(v) {
+          try { localStorage.setItem('cookie-consent', v); } catch (e) {}
+          b.hidden = true;
+          if (v === 'granted' && typeof gtag === 'function') {
+            gtag('consent', 'update', { 'analytics_storage': 'granted' });
+          }
+        }
+        document.getElementById('consent-accept').addEventListener('click', function () { decide('granted'); });
+        document.getElementById('consent-decline').addEventListener('click', function () { decide('denied'); });
+      })();
+    </script>
+
+    <footer class="site-footer">
+    <div class="wrap">
+        <p>© 2026 Sumit Yadav · Kathmandu, Nepal · <a href="/">home</a> · <a href="/blog/">blog</a></p>
+    </div>
+</footer>
+
+
+    <script>
+        (function() {
+            const ORDER = ['light', 'dark', 'rain'];   // toggle cycles through these
+            let rainLoading = null;
+            const loadRain = () => {
+                if (window.RainBG) return Promise.resolve();
+                if (rainLoading) return rainLoading;
+                rainLoading = new Promise((resolve) => {
+                    const s = document.createElement('script');
+                    s.src = '/assets/js/rain.js';
+                    s.onload = resolve; s.onerror = resolve;
+                    document.body.appendChild(s);
+                });
+                return rainLoading;
+            };
+            const getThemePreference = () => {
+                const stored = localStorage.getItem('theme-preference');
+                if (stored && ORDER.includes(stored)) return stored;
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            };
+            const applyTheme = (theme) => {
+                const root = document.documentElement;
+                root.classList.remove('light-theme', 'dark-theme', 'rain-theme');
+                root.classList.add(`${theme}-theme`);
+                const isDark = theme === 'dark' || theme === 'rain';
+                // Rain background (opt-in)
+                if (theme === 'rain') {
+                    loadRain().then(() => { if (window.RainBG) window.RainBG.start(); });
+                } else if (window.RainBG) {
+                    window.RainBG.stop();
+                }
+                // Mermaid follows dark/light
+                if (window.mermaid) {
+                    mermaid.initialize({ startOnLoad: false, theme: isDark ? 'dark' : 'default' });
+                    document.querySelectorAll('.mermaid').forEach(el => {
+                        if (el.getAttribute('data-processed')) {
+                            el.removeAttribute('data-processed');
+                            el.innerHTML = el.getAttribute('data-original') || el.innerHTML;
+                        }
+                    });
+                    if (window.mermaid.init) mermaid.init(undefined, '.mermaid');
+                }
+            };
+            document.addEventListener('DOMContentLoaded', () => {
+                applyTheme(getThemePreference());
+                const t = document.getElementById('theme-toggle');
+                if (t) t.addEventListener('click', () => {
+                    const cur = getThemePreference();
+                    const next = ORDER[(ORDER.indexOf(cur) + 1) % ORDER.length];
+                    localStorage.setItem('theme-preference', next);
+                    applyTheme(next);
+                });
+                document.querySelectorAll('.mermaid').forEach(el => {
+                    if (!el.getAttribute('data-original')) el.setAttribute('data-original', el.innerHTML);
+                });
+            });
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme-preference')) applyTheme(e.matches ? 'dark' : 'light');
+            });
+        })();
+        (function() {
+            const bar = document.getElementById('scroll-progress-bar');
+            if (!bar) return;
+            const upd = () => {
+                const st = window.pageYOffset || document.documentElement.scrollTop;
+                const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                bar.style.height = Math.min(Math.max((st / h) * 100, 0), 100) + '%';
+            };
+            window.addEventListener('scroll', upd, { passive: true });
+            window.addEventListener('resize', upd, { passive: true });
+            upd();
+        })();
+    </script>
+</body>
+</html>
