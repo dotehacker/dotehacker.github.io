@@ -969,7 +969,10 @@ class JekyllLikeBuilder {
       }
 
       const frontmatter = yaml.load(frontmatterMatch[1]) || {};
-      const body = frontmatterMatch[2];
+      // Flatten any absolute dated post refs (assets / cross-links) to the flat URL scheme.
+      // Slug segment allows any non-"/" chars (some slugs contain spaces / %20 / capitals).
+      // e.g. /posts/2021/07/19/autoencoder/img.png -> /posts/autoencoder/img.png
+      const body = frontmatterMatch[2].replace(/\/posts\/\d{4}\/\d{2}\/\d{2}\/([^/]+)\//g, '/posts/$1/');
 
       // URL from name: 2024-01-21-life -> /posts/2024/01/21/life/
       const dateMatch = file.match(/^(\d{4})-(\d{2})-(\d{2})-(.+)$/);
@@ -979,7 +982,8 @@ class JekyllLikeBuilder {
       }
 
       const [, year, month, day, slug] = dateMatch;
-      const url = `/posts/${year}/${month}/${day}/${slug}/`;
+      const url = `/posts/${slug}/`;                                  // flat, canonical URL
+      const datedUrl = `/posts/${year}/${month}/${day}/${slug}/`;     // legacy URL (kept as redirect)
 
       // Protect math, then Mermaid, before converting markdown to HTML
       const mathProtected = this.protectMath(body);
@@ -1005,6 +1009,7 @@ class JekyllLikeBuilder {
         content: finalContent,
         excerpt: frontmatter.excerpt || body.substring(0, 300) + '...',
         url,
+        datedUrl,
         date: frontmatter.date || `${year}-${month}-${day}`,
         slug,
         file: filePath,
@@ -1341,11 +1346,7 @@ Sitemap: ${fullSitemapUrl}
   // Generate a custom 404 page that invites visitors to browse the blog
   // Redirect legacy / short URLs to their current location (preserves old links & SEO)
   generateRedirects() {
-    const map = {
-      '/about/': '/',                                   // legacy tatva About → home (home is the about)
-      '/jur_shital/': '/posts/2023/04/14/jur-shital/'   // old Hugo page bundle → migrated post
-    };
-    for (const [from, to] of Object.entries(map)) {
+    const writeRedirect = (from, to) => {
       const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1363,11 +1364,24 @@ Sitemap: ${fullSitemapUrl}
         const dir = path.join('docs', from.replace(/^\/|\/$/g, ''));
         fs.mkdirSync(dir, { recursive: true });
         fs.writeFileSync(path.join(dir, 'index.html'), html);
-        console.log(`  ✅ Redirect ${from} → ${to}`);
       } catch (error) {
         console.error(`  ❌ Error generating redirect ${from}:`, error.message);
       }
+    };
+
+    // Legacy static redirects
+    const map = {
+      '/about/': '/',                    // legacy tatva About → home (home is the about)
+      '/jur_shital/': '/posts/jur-shital/'  // old Hugo page bundle → migrated post (flat URL)
+    };
+    for (const [from, to] of Object.entries(map)) writeRedirect(from, to);
+
+    // Backward-compat: every legacy dated post URL → its new flat URL
+    let n = 0;
+    for (const post of this.posts) {
+      if (post.datedUrl && post.datedUrl !== post.url) { writeRedirect(post.datedUrl, post.url); n++; }
     }
+    console.log(`  ✅ Redirects: ${Object.keys(map).length} static + ${n} legacy dated post URLs → flat`);
   }
 
   generate404() {
