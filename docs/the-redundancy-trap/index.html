@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google tag (gtag.js) with Consent Mode v2 — analytics denied until the visitor allows -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DVZFLJD4KX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        'analytics_storage': 'denied',
+        'ad_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied'
+      });
+      try {
+        if (localStorage.getItem('cookie-consent') === 'granted') {
+          gtag('consent', 'update', { 'analytics_storage': 'granted' });
+        }
+      } catch (e) {}
+      gtag('js', new Date());
+      gtag('config', 'G-DVZFLJD4KX');
+    </script>
+
+    <title>The Redundancy Trap: Why Single-Head Ablation Lies · Sumit Yadav</title>
+    <meta name="description" content="The Redundancy Trap I deleted the two attention heads with the largest positive direct effects in GPT-2 small. The model got better . Then I found the same">
+    <meta name="author" content="Sumit Yadav">
+    <meta name="google-site-verification" content="IVG1y4MVA_6MT0wsjk13ooZDQLWXxvYcPXQlmf83MLM" />
+    <link rel="canonical" href="https://sumityadav.com.np/the-redundancy-trap/">
+    
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:site_name" content="Sumit Yadav">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="The Redundancy Trap: Why Single-Head Ablation Lies · Sumit Yadav">
+    <meta property="og:description" content="The Redundancy Trap I deleted the two attention heads with the largest positive direct effects in GPT-2 small. The model got better . Then I found the same">
+    <meta property="og:url" content="https://sumityadav.com.np/the-redundancy-trap/">
+    <meta property="og:image" content="https://sumityadav.com.np/profile.jpg">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="The Redundancy Trap: Why Single-Head Ablation Lies · Sumit Yadav">
+    <meta name="twitter:description" content="The Redundancy Trap I deleted the two attention heads with the largest positive direct effects in GPT-2 small. The model got better . Then I found the same">
+    <meta name="twitter:image" content="https://sumityadav.com.np/profile.jpg">
+
+    <!-- Structured data: Person -->
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"Person","name":"Sumit Yadav","alternateName":"rockerritesh","url":"https://sumityadav.com.np","image":"https://sumityadav.com.np/profile.jpg","jobTitle":"AI Researcher","description":"AI researcher working on interpretability, AI safety, and low-resource NLP.","sameAs":["https://github.com/rockerritesh","https://scholar.google.com/citations?user=ag74ytsAAAAJ&hl=en","https://www.linkedin.com/in/rockerritesh/","https://x.com/rocker_ritesh","https://huggingface.co/rockerritesh","https://www.youtube.com/@Audio-Obsession"]}
+    </script>
+
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- Mermaid.js for diagram rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+
+    <!-- MathJax for LaTeX math -->
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+            options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+        };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <div class="scroll-progress"><div class="scroll-progress-bar" id="scroll-progress-bar"></div></div>
+
+    <header class="site-header">
+    <div class="wrap">
+        <a class="site-title" href="/">Sumit Yadav</a>
+        <nav class="site-nav">
+            <a href="/#publications">Publications</a>
+            <a href="/blog/">Blog</a>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Switch theme: light, dark, rain" title="Theme — click to cycle: light → dark → rain">
+                <span class="theme-icon ti-light">☀️</span>
+                <span class="theme-icon ti-dark">🌙</span>
+                <span class="theme-icon ti-rain">🌧️</span>
+            </button>
+        </nav>
+    </div>
+</header>
+
+
+    <main class="page-content">
+        <div class="wrap">
+            <div class="content-area">
+                
+<article class="post">
+    <header class="post-header">
+        <h1 class="post-title">The Redundancy Trap: Why Single-Head Ablation Lies</h1>
+        <p class="post-meta">
+            <time datetime="2026-08-07T00:00:00.000Z">August 07, 2026</time>
+             · <span>Interpretability</span>
+        </p>
+    </header>
+
+    <div class="post-content">
+        <h1>The Redundancy Trap</h1>
+<p><em>I deleted the two attention heads with the largest positive direct effects in GPT-2 small. The model got <strong>better</strong>. Then I found the same failure across seven models — and in my own code.</em></p>
+<div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.82rem;opacity:.65;margin:.2rem 0 1.1rem">Sumit Yadav · August 2026 · GPT-2 small/medium/large/XL · Pythia-410m/1.4b · Llama-3.2-1B · one T4</div>
+
+<p>There is a move that appears in almost every mechanistic interpretability result. You have a hypothesis that head $h$ does job $J$. You ablate $h$, the behaviour degrades, and you conclude that $h$ implements $J$. It is the workhorse of the field, it is what makes a claim causal rather than correlational, and it is the right instinct.</p>
+<p>This post is about the three separate ways it went wrong for me, all of them variations on one theme: <strong>a network that repairs itself cannot be interrogated one component at a time.</strong></p>
+<p>I set out to reproduce the canonical results on GPT-2 small — induction heads, K-composition, the indirect-object-identification circuit — to a standard where every claim came with the intervention that would have falsified it. That part worked. The interesting part is what happened when I went back and tried to break my own tests.</p>
+<blockquote>
+<p><strong>The one-line claim.</strong> Redundancy is not a caveat you note at the end. It determines which measurements mean anything. A circuit that repairs itself will report <em>no effect</em> from removing a component it genuinely depends on, <em>no importance</em> for a head that carries a third of the mechanism, and <em>absence</em> where there is only distribution — and each of those errors looks exactly like a clean negative result.</p>
+</blockquote>
+<hr>
+<h2>01 · The model, and the metric</h2>
+<p>Everything below is GPT-2 small unless stated: 12 layers, 12 heads per layer, 144 attention heads, $d_{\text{model}} = 768$, learned absolute positional embeddings. Milestone 5 adds GPT-2 medium/large/XL (24/36/48 layers), Pythia-410m and 1.4b (parallel attention+MLP, rotary embeddings), and Llama-3.2-1B (grouped-query attention, RMSNorm, SwiGLU). Everything runs in fp32 on a single T4.</p>
+<p>GPT-2 small is small enough that exhaustive things are affordable — a $2^9$ coalition lattice, 28,512 path patches, greedy elimination over all 144 heads — and that turns out to matter more than scale, because the exhaustive versions are where the single-component story breaks.</p>
+<p>Two tasks:</p>
+<p><strong>Induction.</strong> Feed <code>[BOS] + random(50) + the same random(50)</code>. Random tokens cannot be predicted from world knowledge or n-gram statistics, so getting the second copy right requires copying from the first. Per-position loss collapses <strong>13.298 → 0.485</strong> at the repeat boundary.</p>
+<p><img src="rt-m2_per_position_loss.png" alt="Per-position loss over the doubled random sequence. The collapse at position 50 is in-context copying, and it cannot come from anywhere else."></p>
+<p><strong>IOI.</strong> <em>&quot;When Mary and John went to the store, John gave a drink to →  Mary.&quot;</em> The metric throughout is the <strong>logit difference</strong> between the correct name and the distractor: clean +2.626, corrupted (roles swapped) −2.826. Every &quot;fraction of the gap&quot; below is measured against those two ends.</p>
+<hr>
+<h2>02 · The first crack: a 33.7% effect</h2>
+<p>Milestone 2 was textbook. The strongest previous-token head is L4H11 (score 0.992, next best 0.547); the strongest induction head is L5H5 (0.906). K-composition says the induction head reads the previous-token head&#39;s output as a <em>key</em> — remove the writer and the reader&#39;s attention pattern should collapse.</p>
+<p>Mean-ablate L4H11 and L5H5&#39;s induction score drops <strong>0.9059 → 0.6009</strong>, a 33.7% fall. Ablate a control head in the same layer and it drops 0.1%. The treatment is <strong>426× the control</strong>, which is what licenses a claim about a specific circuit rather than about generic damage.</p>
+<p><img src="rt-m2b_delta_induction.png" alt="Change in every head&#39;s induction score when L4H11 is ablated. Layers 0-4 show exactly zero, because an ablation at layer 4 cannot affect anything upstream — a correctness check that comes free with the measurement."></p>
+<p>But look at that number again. <strong>33.7%, not 100%.</strong> Two thirds of the induction behaviour survived losing the head that supposedly feeds it. I wrote at the time that the circuit was probably distributed across several previous-token heads, and moved on.</p>
+<p>That was a hypothesis presented as an explanation. Holding onto it properly would have saved me a lot later.</p>
+<hr>
+<h2>03 · A circuit, and the wrong reason it was wrong</h2>
+<p>Milestone 3 localised the IOI circuit by three criteria I chose:</p>
+<ul>
+<li><strong>name movers</strong> — direct effect on the logit difference, computed analytically by projecting each head&#39;s write onto $W_U[:,\text{IO}] - W_U[:,\text{S}]$</li>
+<li><strong>duplicate-token heads</strong> — attention from the subject&#39;s second occurrence back to its first</li>
+<li><strong>S-inhibition heads</strong> — the shift in the top name mover&#39;s attention when a sender is patched into its <em>query</em> only</li>
+</ul>
+<p>Each with a cutoff at some fraction of the measured maximum. Nine heads came out.</p>
+<p><img src="rt-m3_direct_effect.png" alt="Direct effect of all 144 heads on the IOI logit difference. L9H9 dominates at +2.8782; L10H7 is the most negative at -2.1602."></p>
+<p>Three hand-picked thresholds is the softest joint in any circuit result, so I replaced them with something threshold-free: <strong>greedy backward elimination</strong> over all 144 heads. Repeatedly ablate whichever remaining head costs least, and record the order. That gives a complete ranking by causal expendability and a circuit at <em>any</em> performance level, with no cutoff to choose. 10,440 forward passes.</p>
+<p><img src="rt-r3_greedy_trace.png" alt="Greedy elimination over all 144 heads. Performance rises before it falls — the first heads removed are ones writing against the answer."></p>
+<p>The two circuits agree on <strong>6 of 9</strong>.</p>
+<p>The obvious diagnosis is that my thresholds were badly set. It is worth checking, because the remedies are completely different: a bad threshold is fixed by sweeping it and nothing else needs to change.</p>
+<p>So for each head the hand-picked selection missed, I took its best score under <em>any criterion the old code could represent</em> and compared it to that criterion&#39;s cutoff:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Added head</th>
+<th align="left">Measured role</th>
+<th align="right">Best score under an old-schema criterion</th>
+<th align="left">Cause</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">L4H11</td>
+<td align="left">previous-token</td>
+<td align="right"><strong>2%</strong> of the nearest cutoff</td>
+<td align="left">schema</td>
+</tr>
+<tr>
+<td align="left">L5H5</td>
+<td align="left">induction</td>
+<td align="right"><strong>1%</strong></td>
+<td align="left">schema</td>
+</tr>
+<tr>
+<td align="left">L10H0</td>
+<td align="left">backup name mover</td>
+<td align="right">83% (0.250 against 0.30)</td>
+<td align="left">threshold</td>
+</tr>
+</tbody></table>
+<p><strong>Two of the three were unreachable by any threshold at all.</strong></p>
+<p>The circuit was stored in a dataclass with exactly three fields — <code>name_movers</code>, <code>s_inhibition</code>, <code>duplicate_token</code> — and milestone 3 measured exactly three matching quantities. L4H11 is a previous-token head. L5H5 is an induction head. Both had been measured back in milestone 2. Both are in the top four most causally load-bearing heads in the entire model. Neither could be recorded, because there was no field to put it in and no criterion that could have selected it.</p>
+<p>That is a different kind of error from a mis-set number, and worse in a specific way: <strong>it is silent.</strong> A threshold that is too high leaves a head just below the line, where a sweep finds it. A missing category leaves no trace. The circuit looked complete, every role was populated, and nothing failed.</p>
+<p>Toggle the second view below to see it directly — grey out the columns that did not exist, and watch two rows lose every ringed cell they had.</p>
+<iframe src="rt-roles.html" title="Role criteria grid" loading="lazy" scrolling="no" style="width:100%;height:660px;border:0;background:transparent"></iframe>
+
+<h3>The fix has to be structural</h3>
+<p>Adding an <code>induction</code> field would have fixed this instance and left the class of bug intact. So the taxonomy became data — one <code>Criterion</code> object per role, recording its metric, threshold, sign, source experiment, and the task its metric is defined on — with the part that actually matters being a test:</p>
+<pre><code class="language-python">def test_every_role_has_a_criterion_and_every_criterion_has_a_role():
+    criteria_roles = {c.role for c in CRITERIA}
+    declared = set(ROLES) - {&quot;unclassified&quot;}
+    assert criteria_roles == declared
+</code></pre>
+<p>A role with no way to be measured, or a measurement with nowhere to record its answer, is now a failing test rather than a hole in a result. That test would have caught the original defect the day it was introduced.</p>
+<p><code>unclassified</code> is a real role for the same reason. A head that the causal ranking proves is load-bearing but that no criterion describes is a <em>finding</em>; dropping it for want of a label repeats the original mistake one level up. L10H0 held that label for a while — and it turned into the most interesting experiment in the project.</p>
+<p>One thing fell out of the grid that no earlier experiment could have shown: <strong>L9H6 and L9H9 pass the induction criterion too</strong> (0.55 of L5H5&#39;s maximum), not just the name-mover one. That is not an artifact to be tuned away. A name mover on IOI copies a name from an earlier occurrence, which is precisely what the induction metric measures on repeated random tokens. The milestone-2 and milestone-3 mechanisms are measurably not disjoint — visible only because a head was finally scored under a criterion belonging to a different milestone.</p>
+<hr>
+<h2>04 · Play with the lattice</h2>
+<p>With nine heads, there are $2^9 = 512$ ways to choose which stay intact. That is 512 forward passes — seconds on a T4. So rather than measuring the two points everyone reports (ablate the circuit; ablate everything else), I measured the whole surface.</p>
+<p>Every number in the figure below is one of those measurements. Click heads off and on.</p>
+<iframe src="rt-lattice.html" title="The IOI ablation lattice" loading="lazy" scrolling="no" style="width:100%;height:620px;border:0;background:transparent"></iframe>
+
+<p>A few things worth trying:</p>
+<ul>
+<li><strong>All nine intact</strong> gives sufficiency <strong>1.1741</strong> — <em>above</em> the clean baseline. Ablating everything outside the circuit also removes the copy-suppression heads, so the model does slightly better than untouched.</li>
+<li><strong>The 7-head circuit</strong> gives <strong>0.9651</strong>. That number is a coalition of this lattice, and it independently reproduces the threshold-free greedy answer at $\tau = 0.95$ by a completely different method. Two roads, same place.</li>
+<li><strong>L9H9 alone</strong> — the head with by far the largest direct effect — recovers 36% of the gap.</li>
+</ul>
+<p><img src="rt-s3_sufficiency_ladder.png" alt="Faithfulness across every circuit variant. The 7-head figure is read off the lattice above as a sub-coalition, not measured separately."></p>
+<h3>Shapley, because single ablation is the wrong estimator</h3>
+<p>The whole lattice lets you compute <strong>exact Shapley values</strong>: each head&#39;s average marginal contribution over every coalition it could join. This is the correct attribution when components substitute for one another, and the reason it matters is stark — for two perfectly redundant heads, single-head ablation reports <em>zero for both</em>.</p>
+<p><img src="rt-s2_shapley_comparison.png" alt="Exact Shapley value per head, over each circuit&#39;s own 512-coalition lattice. A dashed slot means the head is not in that circuit, which is not the same as being a member that contributes nothing."></p>
+<p><strong>L8H10 is the most important head in the IOI circuit</strong> — 18.9% of the total — despite a direct effect roughly six times smaller than L9H9&#39;s. What a head <em>writes</em> is not what it is <em>worth</em>.</p>
+<p>The pairwise interactions say something too. Inside the circuit the structure is <strong>synergy</strong>, not redundancy: 8 synergistic pairs against 4 redundant. Redundancy lives outside the circuit, among the heads that step in when members are removed. And one specific redundant pair — L9H6 × L10H0 at −0.0796 — is the coalition lattice independently discovering a relationship I only measured causally two experiments later.</p>
+<p><img src="rt-r1_interaction.png" alt="Pairwise interaction structure. Positive means the two heads need each other; negative means they substitute."></p>
+<hr>
+<h2>05 · Deleting the two best heads makes it better</h2>
+<p>Milestone 4 had a pre-registered prediction I got wrong, and it was worth more than the ones I got right. L9H9&#39;s direct effect is <strong>+2.8782</strong>, so I predicted ablating it would cost about −2.30. It costs <strong>−0.585</strong>.</p>
+<p>The false assumption was that direct effect predicts ablation damage. It does not. I wrote &quot;other name movers compensate&quot; and left it there — which is a story, not a measurement, and it left 2.293 of logit difference unaccounted for in the middle of the headline result.</p>
+<p>So: ablate <strong>both</strong> primary name movers, L9H6 and L9H9, combined direct effect <strong>+4.0064</strong>.</p>
+<p>The logit difference goes <strong>up</strong> by 0.1488.</p>
+<p><img src="rt-s6_knockout_curve.png" alt="Progressive knockout. Step 1 removes both primary name movers and the behaviour improves. Every backup removed after that costs, because the compensation can only be withdrawn once."></p>
+<h3>Two mechanisms, not one</h3>
+<p>The way to find what absorbed it: recompute every head&#39;s direct effect with the primaries ablated, and subtract. One extra cached forward pass gives you all 144.</p>
+<p>My first version ranked heads by that rise, and its top result was <strong>L10H7</strong>, going from −2.1602 to −0.0200. But that head is not writing the answer more — it has <em>stopped writing against it</em>. Both are compensation, both show up as a positive rise, and calling a copy-suppression head the model&#39;s leading backup name mover would have been plainly wrong.</p>
+<p>The rise decomposes exactly, with no sign threshold to pick:</p>
+<p>$$\text{withdrawal} = \min(a,0) - \min(b,0), \qquad \text{promotion} = \max(a,0) - \max(b,0)$$</p>
+<p>where $b$ and $a$ are the head&#39;s direct effect before and after. The two sum to the rise identically. A head at −2.16 → −0.02 is pure withdrawal; +0.72 → +1.38 is pure promotion; −0.06 → +0.30 splits between them rather than being forced to one side by which side of zero it happened to start on.</p>
+<p><img src="rt-s5_compensation_split.png" alt="Separating the two mechanisms. Ranking on the raw rise would have crowned L10H7 — a copy-suppression head — the top backup name mover."></p>
+<table>
+<thead>
+<tr>
+<th align="left">Where the +4.0064 goes</th>
+<th align="right"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Actual cost of removing both</td>
+<td align="right"><strong>−0.1488</strong></td>
+</tr>
+<tr>
+<td align="left">Absorbed</td>
+<td align="right">+4.1552</td>
+</tr>
+<tr>
+<td align="left">— backup name movers promoting more</td>
+<td align="right">+2.5790</td>
+</tr>
+<tr>
+<td align="left">— copy-suppression heads opposing less</td>
+<td align="right">+2.3920</td>
+</tr>
+</tbody></table>
+<p><img src="rt-s4_backup_promotion.png" alt="Growth in direct effect when both primaries are ablated. Backups concentrate in layer 10, immediately after them."></p>
+<p>And L10H0 — the head no criterion could describe — is confirmed: promotion <strong>+0.6558</strong> against a same-layer control&#39;s +0.0033, a ratio of <strong>198×</strong>, rank 2 of 144.</p>
+<p>Its small direct effect in the intact model is not weak evidence. It is the signature. <strong>A head that only acts once the primaries are gone cannot be found by any criterion measured on the intact model.</strong> The causal ranking put it 9th; every score in milestone 3 put it nowhere. That is the whole shape of the problem in one head.</p>
+<hr>
+<h2>06 · A loop, tested instead of asserted</h2>
+<p>Milestone 3 measured three hand-picked edges and documented the gap honestly. The exhaustive version is 3 inputs × 144 receivers × 66 senders = <strong>28,512 path patches</strong>, which is minutes on a T4 — so the scope bound was an effort choice dressed as a resource constraint.</p>
+<p><img src="rt-r2_channels.png" alt="Total absolute influence by input channel over all 28,512 patches. Milestone 3 measured only Q. It was the dominant channel, but V carries influence that was invisible to it."></p>
+<p>The exhaustive sweep found that the two largest edges in the entire model both run from the top name mover into a <strong>copy-suppression head&#39;s query</strong>: L9H9 → L10H7.q at +2.2856, L9H9 → L11H10.q at +1.8881.</p>
+<p>I described that as a negative feedback loop. But that is an interpretation of a magnitude — the same magnitude is equally consistent with L9H9&#39;s output being a large vector that perturbs whatever it is added to. So I wrote the predictions down first, committed them to git before the experiment ran, and tested it.</p>
+<p><strong>The decisive test is open loop versus closed loop.</strong> If the loop is real, part of what protects L9H9 from its own removal is the suppression it stops provoking. So ablate it again with the loop already cut:</p>
+<p>$$\text{gain} = \underbrace{\big[\text{LD}(\text{ablate }h + \text{supp}) - \text{LD}(\text{ablate supp})\big]}_{\text{open}} - \underbrace{\big[\text{LD}(\text{ablate }h) - \text{LD}(\text{base})\big]}_{\text{closed}}$$</p>
+<p>Whatever the backup heads contribute appears in <em>both</em> terms and cancels, which is what makes the difference a clean estimator of the loop rather than a mixture of the two mechanisms.</p>
+<table>
+<thead>
+<tr>
+<th align="left">Arm</th>
+<th align="right">Logit difference</th>
+<th align="right">Δ</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">baseline</td>
+<td align="right">+2.6263</td>
+<td align="right">—</td>
+</tr>
+<tr>
+<td align="left">ablate L9H9, loop intact</td>
+<td align="right">+2.0388</td>
+<td align="right"><strong>−0.5875</strong></td>
+</tr>
+<tr>
+<td align="left">suppressors ablated</td>
+<td align="right">+6.0836</td>
+<td align="right">—</td>
+</tr>
+<tr>
+<td align="left">ablate L9H9, loop cut first</td>
+<td align="right">+4.3669</td>
+<td align="right"><strong>−1.7168</strong></td>
+</tr>
+</tbody></table>
+<p><strong>Loop gain −1.1293</strong>, against a control head&#39;s +0.0029 — <strong>394×</strong>. Removing the name mover costs nearly three times as much once the suppression it provoked can no longer be withdrawn along with it.</p>
+<p><img src="rt-s7_loop_gain.png" alt="Cost of removing the top name mover, with and without the suppression loop."></p>
+<p>Cutting the single edge in isolation — adding L9H9&#39;s ablation delta to L10H7&#39;s <em>query input only</em>, leaving keys and values untouched, so L9H9 still writes its +2.8782 into the residual stream and the suppressor simply cannot see it — <strong>raises</strong> the logit difference by <strong>+0.9199</strong>, at <strong>2562×</strong> its control. One wire is worth about a third of the entire clean–corrupt gap.</p>
+<p>All five pre-registered predictions hit. Which is a <em>weaker</em> signal than milestone 4&#39;s three-from-four, not a stronger one: the miss there taught more than any hit here.</p>
+<h3>The disagreement I kept</h3>
+<p><img src="rt-s8_suppressor_mechanism.png" alt="The suppression heads&#39; own direct effect, before and after ablating L9H9. L10H7 follows the loop story exactly. L11H10 does not."></p>
+<table>
+<thead>
+<tr>
+<th align="left">Head</th>
+<th align="right">Baseline</th>
+<th align="right">With L9H9 ablated</th>
+<th align="left">Attention to IO</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">L10H7</td>
+<td align="right">−2.1602</td>
+<td align="right">−0.9369 (<strong>56.6% gone</strong>)</td>
+<td align="left">0.8583 → 0.5535</td>
+</tr>
+<tr>
+<td align="left">L11H10</td>
+<td align="right">−0.9913</td>
+<td align="right">−1.1375 (14.8% <em>deeper</em>)</td>
+<td align="left">0.6261 → 0.6597</td>
+</tr>
+</tbody></table>
+<p>L11H10 does not follow. Its suppression slightly <em>deepens</em> under full ablation, even though cutting its single edge gives the <strong>larger</strong> isolated effect of +1.0873.</p>
+<p>The two facts are not in conflict once you separate the interventions. A path patch cuts one wire and holds everything else fixed. An ablation removes the head entirely and lets the network reorganise — with L9H9 gone, L10H7&#39;s suppression withdraws and six backup heads fire, so what reaches L11H10 at layer 11 is a <em>different residual stream</em>, and it may well be reading the backups instead.</p>
+<p><strong>Path patching measures an edge. Ablation measures a world without the node.</strong> Reporting only the head that agreed would have made the loop look cleaner than it is.</p>
+<p><img src="rt-r_circuit_revised.png" alt="The circuit after all corrections. Node area is proportional to Shapley value; status encodes what changed."></p>
+<p>Laid out over token position and depth, with every edge carrying its measured path-patching magnitude:</p>
+<p><img src="rt-r_attribution_graph.png" alt="The IOI circuit as an attribution graph. Position on one axis, depth on the other; edge labels are measured path-patching effects with their input channel."></p>
+<hr>
+<h2>07 · Seven models, and the test that fails at scale</h2>
+<p>Everything so far concerns one 124M-parameter network. Nothing measured could distinguish a fact about transformers from a fact about GPT-2 small.</p>
+<p>So: seven models on two axes. GPT-2 small → medium → large → XL holds the architecture fixed while depth goes 12 → 48. Pythia-410m and 1.4b run attention and MLP <strong>in parallel</strong> from the same residual input, with rotary embeddings. Llama-3.2-1B uses <strong>grouped-query attention</strong>, RMSNorm and SwiGLU — the sharpest test, because several query heads share one key/value head, so &quot;ablate the previous-token head&quot; is not even the same intervention.</p>
+<p>Identical method for every model, every head index derived from that model&#39;s own measurements. The generalisation question is whether the <em>answer</em> transfers, so the <em>method</em> must not vary.</p>
+<iframe src="rt-universality.html" title="Universality across scale and architecture" loading="lazy" scrolling="no" style="width:100%;height:620px;border:0;background:transparent"></iframe>
+
+<ul>
+<li><strong>In-context copying: 7/7.</strong> Every model collapses per-position loss at the repeat boundary.</li>
+<li><strong>K-composition by the single-head test: 3/7.</strong></li>
+<li><strong>K-composition by the joint test: 7/7.</strong></li>
+</ul>
+<p>Where the two disagree, the disagreement is in the <strong>test</strong>. On gpt2-medium, ablating L5H11 — previous-token score 0.992, the strongest in that model — moves the top induction head from 0.9377 to <strong>0.9400</strong>. Nothing at all. But gpt2-medium has six heads clearing the criterion and three above 0.95, so removing one writer is absorbed by the others.</p>
+<p>This is section 02&#39;s 33.7% again, at a larger scale and with the answer this time.</p>
+<p><strong>GPT-2 small is the case where the single-head test works at all</strong>, because it has one writer at 0.992 and the next at 0.547. That is the test I used for my own causal K-composition claim. Reporting only that number across these seven models would have concluded that the induction circuit does not generalise — recording redundancy as absence.</p>
+<h3>What actually scales</h3>
+<table>
+<thead>
+<tr>
+<th align="left"></th>
+<th align="right">correlation with depth</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">previous-token writers</td>
+<td align="right"><strong>r = +0.77</strong></td>
+</tr>
+<tr>
+<td align="left">induction heads within 50% of the top</td>
+<td align="right"><strong>r = +0.95</strong></td>
+</tr>
+</tbody></table>
+<p>The reading side is almost perfectly linear in depth: 9 induction heads at 12 layers, 32 at 48. The mechanism does not change; it is implemented by progressively more components.</p>
+<p>Llama-3.2-1B is the informative outlier. At 16 layers it has 7 writers, far more than GPT-2 small&#39;s 2, and its top previous-token score is only <strong>0.603</strong> against 0.99+ everywhere else. Under GQA the previous-token function is spread thin across query heads sharing key/value projections, so no single head looks like a canonical previous-token head. The single-head test fails there for a <em>different reason</em> than it fails on gpt2-xl — same verdict, different cause.</p>
+<h3>The stronger claim</h3>
+<p><img src="rt-s14_relative_depth.png" alt="Circuit depth as a fraction of model depth, across 12 to 48 layers and three architecture families."></p>
+<p>Induction heads sit at <strong>0.48 ± 0.12</strong> of depth and previous-token heads at <strong>0.30 ± 0.16</strong>, across three architecture families. The circuit occupies a consistent <em>relative</em> position regardless of how deep the model is.</p>
+<p>Absolute layer indices would not be comparable at all — L5H5 in a 12-layer model and L5H11 in a 24-layer one are not the same place — and reporting them as though they were is an easy way to manufacture or destroy an apparent universality result.</p>
+<hr>
+<h2>08 · Two numbers that stayed uncomfortable</h2>
+<p>Not everything got better when I looked harder.</p>
+<p><strong>Sufficiency depends on what you ablate toward, and correcting the circuit made it worse.</strong> Mean-ablation replaces an activation with &quot;what this component typically does&quot;, and the answer depends entirely on what distribution &quot;typically&quot; is over. I used means over the corrupted batch — a choice made quietly and never tested.</p>
+<p><img src="rt-s11_reference_comparison.png" alt="Sufficiency under four on-distribution references plus the zero control, for both circuits."></p>
+<p>The spread across four on-distribution references went from 0.2518 on the wrong circuit to <strong>0.4425</strong> on the corrected one. So reference-dependence is a property of <strong>mean-ablation itself</strong>, not of a bad circuit, and any single sufficiency figure quoted without its reference is underdetermined — including in the work I was reproducing.</p>
+<p>The corrected circuit does sharpen the picture. Three of the four references now agree within <strong>0.063</strong>, and the entire spread is carried by one outlier: the reference in which <em>no name is duplicated</em>. That is not noise — it is the one reference that destroys the duplicate-token cue the circuit runs on, so ablating toward it genuinely removes more. A mechanistically interpretable spread is a more useful statement than either &quot;0.792&quot; or &quot;0.54 to 0.79&quot;.</p>
+<p><strong>A stability test that measured the wrong thing.</strong> I checked whether each circuit head stays in the top-9 <em>by direct effect</em> across 15 template × seed conditions, and flagged three heads as unstable. But only name movers were ever selected by direct effect. Asking whether a duplicate-token head has a large direct effect is asking whether it does a job nobody claimed it did — a low score is the expected answer, not instability.</p>
+<p><img src="rt-s9_stability_handpicked.png" alt="The hand-picked circuit under both tests. Five of nine verdicts change."></p>
+<p><img src="rt-s10_stability_corrected.png" alt="The corrected circuit under both tests. Every member is re-selected in 100% of conditions by its own criterion."></p>
+<p>Re-run so that each head faces <strong>its own</strong> selection rule, on the task that rule is defined on: every head of both circuits is re-selected in <strong>100%</strong> of conditions, and <strong>5 of 9 verdicts change</strong>. The instability flags are withdrawn. That those three heads contribute approximately nothing remains true — it is the Shapley result, established by a different measurement that never depended on this one.</p>
+<p>That distinction matters more than the correction. Two claims had been sitting on top of each other; one was right, one was wrong, and only pulling them apart showed which.</p>
+<hr>
+<h2>09 · What I would tell myself at the start</h2>
+<p><strong>Redundancy is not a caveat. It is a property that determines which measurements mean anything.</strong> Three of the corrections here — the 33.7%, the −0.585, the 3/7 — are the same fact appearing at three scales. Every single-component ablation in a self-repairing network is a lower bound of unknown tightness.</p>
+<p><strong>Structural choices are the ones that hide.</strong> Every correction that came from a <em>parameter</em> was found by sweeping it. The three costliest errors were encoded in structure — three fields in a dataclass, one criterion per role, one head per ablation — and structure does not look like a decision when you read the code back. A rigour pass built entirely around varying parameters missed all three.</p>
+<p><strong>An instrumentation bug that doubles a number is worse than one that garbles it.</strong> My model-cache eviction reported gpt2-medium at 3.05 GB against its 1.52 GB checkpoint — exactly twice, every time. I read that as the hub downloading two weight formats and wrote an optimisation to avoid it. The doubling was my own size walk counting each file once as a blob and again as a symlink. The constraint did not exist; the optimisation then broke three models. A garbled number gets investigated. A plausible wrong one gets built on.</p>
+<p><strong>Report the measurement that disagreed.</strong> L11H10 does not follow the loop story. The <code>abc</code> reference is an outlier. Ablating both name movers <em>improves</em> the model. Each was tempting to average away, and each turned out to be the most informative thing in its section.</p>
+<p><strong>Pre-registration earns its keep on the miss.</strong> Milestone 4 scored 3 hits and 1 miss; the miss — that direct effect does not predict ablation damage — set up two later experiments and explained a number I would otherwise have narrated past. The 5/5 that followed taught me less.</p>
+<hr>
+<h2>Numbers, in one place</h2>
+<table>
+<thead>
+<tr>
+<th align="left"></th>
+<th align="right"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Residual identity max error, all 12 layers</td>
+<td align="right">0.000e+00</td>
+</tr>
+<tr>
+<td align="left">Per-position loss, first → second copy</td>
+<td align="right">13.298 → 0.485</td>
+</tr>
+<tr>
+<td align="left">K-composition, treatment / control</td>
+<td align="right">426×</td>
+</tr>
+<tr>
+<td align="left">IOI clean / corrupt logit difference</td>
+<td align="right">+2.626 / −2.826</td>
+</tr>
+<tr>
+<td align="left">Circuit agreement, hand-picked vs threshold-free</td>
+<td align="right">6 of 9</td>
+</tr>
+<tr>
+<td align="left">Additions unreachable by <em>any</em> threshold</td>
+<td align="right"><strong>2 of 3</strong></td>
+</tr>
+<tr>
+<td align="left">Sufficiency, 7-head circuit at $\tau = 0.95$</td>
+<td align="right"><strong>0.9651</strong></td>
+</tr>
+<tr>
+<td align="left">Top Shapley value</td>
+<td align="right">L8H10, 18.9%</td>
+</tr>
+<tr>
+<td align="left">Cost of ablating both primary name movers</td>
+<td align="right"><strong>−0.1488</strong> (improves)</td>
+</tr>
+<tr>
+<td align="left">— absorbed by backup promotion / withdrawn suppression</td>
+<td align="right">+2.579 / +2.392</td>
+</tr>
+<tr>
+<td align="left">Feedback loop gain / control</td>
+<td align="right"><strong>−1.1293</strong> / +0.0029</td>
+</tr>
+<tr>
+<td align="left">Single-edge cut, L9H9 → L10H7.q</td>
+<td align="right">+0.9199 (2562× control)</td>
+</tr>
+<tr>
+<td align="left">Path patches measured</td>
+<td align="right">28,512</td>
+</tr>
+<tr>
+<td align="left">Coalitions measured</td>
+<td align="right">512</td>
+</tr>
+<tr>
+<td align="left">In-context copying</td>
+<td align="right">7 / 7 models</td>
+</tr>
+<tr>
+<td align="left">K-composition, single-head / joint</td>
+<td align="right"><strong>3 / 7</strong> and <strong>7 / 7</strong></td>
+</tr>
+<tr>
+<td align="left">Redundancy vs depth, writers / induction heads</td>
+<td align="right">r = +0.77 / <strong>+0.95</strong></td>
+</tr>
+<tr>
+<td align="left">Relative depth, induction / previous-token</td>
+<td align="right">0.48 ± 0.12 / 0.30 ± 0.16</td>
+</tr>
+<tr>
+<td align="left">Pre-registered predictions</td>
+<td align="right">3/4, then 5/5</td>
+</tr>
+<tr>
+<td align="left">Harness defects found by running rather than reasoning</td>
+<td align="right">12</td>
+</tr>
+</tbody></table>
+<hr>
+<p><em>Twelve harness defects turned up along the way; three produced confidently wrong output before being caught. The most instructive: one where the code was correct, the run was clean, and the result came back empty because the <strong>question</strong> was mis-posed; and one where a mean-ablation used its own target as the reference — making the intervention a perfect no-op — and the experiment reported a confident refutation anyway.</em></p>
+
+    </div>
+
+    
+    <div class="post-tags"><span class="post-tags-label">Tagged</span><a class="post-tag" href="/tags/interpretability/">interpretability</a><a class="post-tag" href="/tags/mechanistic-interpretability/">mechanistic-interpretability</a><span class="post-tag is-solo">gpt-2</span><a class="post-tag" href="/tags/induction-heads/">induction-heads</a><span class="post-tag is-solo">ioi</span><span class="post-tag is-solo">ablation</span><span class="post-tag is-solo">shapley</span><a class="post-tag" href="/tags/circuits/">circuits</a><span class="post-tag is-solo">pythia</span><a class="post-tag" href="/tags/llama/">llama</a><a class="post-tag" href="/tags/interactive/">interactive</a></div>
+    
+
+    <details class="cite">
+  <summary>Cite this post</summary>
+  <div class="cite-body" id="citation-section">
+    <div class="citation-tabs" role="tablist">
+        <button class="citation-tab active" data-target="bibtex" role="tab" aria-selected="true">BibTeX</button>
+        <button class="citation-tab" data-target="apa" role="tab" aria-selected="false">APA</button>
+        <button class="citation-tab" data-target="mla" role="tab" aria-selected="false">MLA</button>
+        <button class="citation-tab" data-target="chicago" role="tab" aria-selected="false">Chicago</button>
+    </div>
+    <div class="citation-panels">
+        <div class="citation-panel active" id="panel-bibtex" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-bibtex"></pre><button class="copy-btn" data-cite="cite-bibtex">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-apa" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-apa"></pre><button class="copy-btn" data-cite="cite-apa">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-mla" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-mla"></pre><button class="copy-btn" data-cite="cite-mla">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-chicago" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-chicago"></pre><button class="copy-btn" data-cite="cite-chicago">Copy</button></div>
+        </div>
+    </div>
+    <p class="citation-note">Auto-generated. Verify for your institution's requirements.</p>
+  </div>
+</details>
+
+<template id="cite-meta">The Redundancy Trap: Why Single-Head Ablation Lies</template>
+
+<script>
+(function() {
+    var meta = document.getElementById('cite-meta');
+    if (!meta) return;
+    var t = meta.content ? meta.content.textContent : meta.innerHTML;
+    var a = 'Sumit Yadav';
+    var j = 'Sumit Yadav';
+    var u = 'https://sumityadav.com.np/the-redundancy-trap/';
+    var y = '2026';
+    var mo = 'August';
+    var ms = 'Aug';
+    var dy = '07';
+    var k = a.split(' ')[0].toLowerCase() + y + t.toLowerCase().replace(/[^a-z0-9]+/g, '');
+
+    document.getElementById('cite-bibtex').textContent =
+        '@article{' + k + ',\n  title     = {' + t + '},\n  author    = {' + a +
+        '},\n  journal   = {' + j + '},\n  year      = {' + y + '},\n  month     = {' + mo +
+        '},\n  day       = {' + dy + '},\n  url       = {' + u + '}\n}';
+    document.getElementById('cite-apa').textContent =
+        a + '. (' + y + ', ' + mo + ' ' + dy + '). ' + t + '. ' + j + '. ' + u;
+    document.getElementById('cite-mla').textContent =
+        a + '. “' + t + '.” ' + j + ', ' + dy + ' ' + ms + ' ' + y + ', ' + u + '.';
+    document.getElementById('cite-chicago').textContent =
+        a + '. “' + t + '.” ' + j + '. ' + mo + ' ' + dy + ', ' + y + '. ' + u + '.';
+
+    var sec = document.getElementById('citation-section');
+    sec.querySelectorAll('.citation-tab').forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            sec.querySelectorAll('.citation-tab').forEach(function(x) { x.classList.remove('active'); x.setAttribute('aria-selected', 'false'); });
+            sec.querySelectorAll('.citation-panel').forEach(function(p) { p.classList.remove('active'); });
+            this.classList.add('active'); this.setAttribute('aria-selected', 'true');
+            sec.querySelector('#panel-' + this.dataset.target).classList.add('active');
+        });
+    });
+    sec.querySelectorAll('.copy-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var text = document.getElementById(this.dataset.cite).textContent;
+            var b = this;
+            var done = function() { b.textContent = 'Copied!'; b.classList.add('copied'); setTimeout(function() { b.textContent = 'Copy'; b.classList.remove('copied'); }, 2000); };
+            navigator.clipboard.writeText(text).then(done).catch(function() {
+                var ta = document.createElement('textarea'); ta.value = text; ta.style.cssText = 'position:fixed;opacity:0';
+                document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); done();
+            });
+        });
+    });
+})();
+</script>
+
+
+    
+    <nav class="related-posts" aria-label="Related posts">
+        <h2>Related posts</h2>
+        <ul>
+            
+            <li>
+                <a href="/removing-the-workspace-layers-of-llama/">Where Does a Language Model Think? Finding and Removing the 'Workspace' Layers of Llama-3.1-8B</a>
+                <span class="related-cat">AI & ML</span>
+            </li>
+            
+            <li>
+                <a href="/why-does-attention-attend-there-qk/">Why Does Attention Attend There? Tracing the Other Half of the Circuit</a>
+                <span class="related-cat">AI & ML</span>
+            </li>
+            
+            <li>
+                <a href="/circuit-tracing-attribution-graphs/">Circuit Tracing: How We Draw the Wiring Diagram of an AI's Thoughts</a>
+                <span class="related-cat">AI & ML</span>
+            </li>
+            
+            <li>
+                <a href="/biology-of-a-large-language-model/">The Biology of a Large Language Model: Tracing the Circuits Inside Claude</a>
+                <span class="related-cat">AI & ML</span>
+            </li>
+            
+            <li>
+                <a href="/zoom-in-circuits-neural-network-interpretability/">Zoom In: How to Read the Circuits Inside a Neural Network</a>
+                <span class="related-cat">Interpretability & Safety</span>
+            </li>
+            
+        </ul>
+    </nav>
+    
+
+    <footer class="post-footer">
+        <p><a href="/blog/">← All posts</a></p>
+    </footer>
+</article>
+
+            </div>
+        </div>
+    </main>
+
+    <div class="consent" id="consent-banner" hidden>
+        <p>I use minimal cookies for anonymous <b>analytics</b> (Google Analytics) — just to see which posts people find useful. No ads, no cross-site tracking.</p>
+        <div class="consent-actions">
+            <button class="consent-decline" id="consent-decline">Decline</button>
+            <button class="consent-accept" id="consent-accept">Allow</button>
+        </div>
+    </div>
+    <script>
+      (function () {
+        var b = document.getElementById('consent-banner');
+        var choice = null;
+        try { choice = localStorage.getItem('cookie-consent'); } catch (e) {}
+        if (!choice) b.hidden = false;
+        function decide(v) {
+          try { localStorage.setItem('cookie-consent', v); } catch (e) {}
+          b.hidden = true;
+          if (v === 'granted' && typeof gtag === 'function') {
+            gtag('consent', 'update', { 'analytics_storage': 'granted' });
+          }
+        }
+        document.getElementById('consent-accept').addEventListener('click', function () { decide('granted'); });
+        document.getElementById('consent-decline').addEventListener('click', function () { decide('denied'); });
+      })();
+    </script>
+
+    <footer class="site-footer">
+    <div class="wrap">
+        <p>© 2026 Sumit Yadav · Kathmandu, Nepal · <a href="/">home</a> · <a href="/blog/">blog</a></p>
+    </div>
+</footer>
+
+
+    <script>
+        (function() {
+            const ORDER = ['light', 'dark', 'rain'];   // toggle cycles through these
+            let rainLoading = null;
+            const loadRain = () => {
+                if (window.RainBG) return Promise.resolve();
+                if (rainLoading) return rainLoading;
+                rainLoading = new Promise((resolve) => {
+                    const s = document.createElement('script');
+                    s.src = '/assets/js/rain.js';
+                    s.onload = resolve; s.onerror = resolve;
+                    document.body.appendChild(s);
+                });
+                return rainLoading;
+            };
+            const getThemePreference = () => {
+                const stored = localStorage.getItem('theme-preference');
+                if (stored && ORDER.includes(stored)) return stored;
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            };
+            const applyTheme = (theme) => {
+                const root = document.documentElement;
+                root.classList.remove('light-theme', 'dark-theme', 'rain-theme');
+                root.classList.add(`${theme}-theme`);
+                const isDark = theme === 'dark' || theme === 'rain';
+                // Rain background (opt-in)
+                if (theme === 'rain') {
+                    loadRain().then(() => { if (window.RainBG) window.RainBG.start(); });
+                } else if (window.RainBG) {
+                    window.RainBG.stop();
+                }
+                // Mermaid follows dark/light
+                if (window.mermaid) {
+                    mermaid.initialize({ startOnLoad: false, theme: isDark ? 'dark' : 'default' });
+                    document.querySelectorAll('.mermaid').forEach(el => {
+                        if (el.getAttribute('data-processed')) {
+                            el.removeAttribute('data-processed');
+                            el.innerHTML = el.getAttribute('data-original') || el.innerHTML;
+                        }
+                    });
+                    if (window.mermaid.init) mermaid.init(undefined, '.mermaid');
+                }
+            };
+            document.addEventListener('DOMContentLoaded', () => {
+                applyTheme(getThemePreference());
+                const t = document.getElementById('theme-toggle');
+                if (t) t.addEventListener('click', () => {
+                    const cur = getThemePreference();
+                    const next = ORDER[(ORDER.indexOf(cur) + 1) % ORDER.length];
+                    localStorage.setItem('theme-preference', next);
+                    applyTheme(next);
+                });
+                document.querySelectorAll('.mermaid').forEach(el => {
+                    if (!el.getAttribute('data-original')) el.setAttribute('data-original', el.innerHTML);
+                });
+            });
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme-preference')) applyTheme(e.matches ? 'dark' : 'light');
+            });
+        })();
+        (function() {
+            const bar = document.getElementById('scroll-progress-bar');
+            if (!bar) return;
+            const upd = () => {
+                const st = window.pageYOffset || document.documentElement.scrollTop;
+                const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                bar.style.height = Math.min(Math.max((st / h) * 100, 0), 100) + '%';
+            };
+            window.addEventListener('scroll', upd, { passive: true });
+            window.addEventListener('resize', upd, { passive: true });
+            upd();
+        })();
+    </script>
+</body>
+</html>

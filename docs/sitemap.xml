@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://sumityadav.com.np/</loc>
-    <lastmod>2026-09-05T04:20:58.696Z</lastmod>
+    <lastmod>2026-09-05T04:25:25.369Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -13,500 +13,500 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/the-redundancy-trap/</loc>
+    <loc>https://sumityadav.com.np/the-redundancy-trap/</loc>
     <lastmod>2026-08-07T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/removing-the-workspace-layers-of-llama/</loc>
+    <loc>https://sumityadav.com.np/removing-the-workspace-layers-of-llama/</loc>
     <lastmod>2026-07-16T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/world-models-toy-experiments/</loc>
+    <loc>https://sumityadav.com.np/world-models-toy-experiments/</loc>
     <lastmod>2026-06-29T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/steerability-spectrum-of-visual-attributes/</loc>
+    <loc>https://sumityadav.com.np/steerability-spectrum-of-visual-attributes/</loc>
     <lastmod>2026-06-23T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/safeconstellations-task-aware-representation-steering/</loc>
+    <loc>https://sumityadav.com.np/safeconstellations-task-aware-representation-steering/</loc>
     <lastmod>2026-06-22T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/double-descent-why-more-data-can-hurt/</loc>
+    <loc>https://sumityadav.com.np/double-descent-why-more-data-can-hurt/</loc>
     <lastmod>2026-06-18T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/why-does-attention-attend-there-qk/</loc>
+    <loc>https://sumityadav.com.np/why-does-attention-attend-there-qk/</loc>
     <lastmod>2026-06-17T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/how-an-llm-knows-when-to-start-a-new-line/</loc>
+    <loc>https://sumityadav.com.np/how-an-llm-knows-when-to-start-a-new-line/</loc>
     <lastmod>2026-06-16T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/towards-monosemanticity-dictionary-learning/</loc>
+    <loc>https://sumityadav.com.np/towards-monosemanticity-dictionary-learning/</loc>
     <lastmod>2026-06-15T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/scaling-monosemanticity-golden-gate-claude/</loc>
+    <loc>https://sumityadav.com.np/scaling-monosemanticity-golden-gate-claude/</loc>
     <lastmod>2026-06-14T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/circuit-tracing-attribution-graphs/</loc>
+    <loc>https://sumityadav.com.np/circuit-tracing-attribution-graphs/</loc>
     <lastmod>2026-06-13T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/biology-of-a-large-language-model/</loc>
+    <loc>https://sumityadav.com.np/biology-of-a-large-language-model/</loc>
     <lastmod>2026-06-12T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/can-an-ai-look-inward-introspection/</loc>
+    <loc>https://sumityadav.com.np/can-an-ai-look-inward-introspection/</loc>
     <lastmod>2026-06-11T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/emotion-concepts-in-large-language-models/</loc>
+    <loc>https://sumityadav.com.np/emotion-concepts-in-large-language-models/</loc>
     <lastmod>2026-06-10T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/vision-transformer-image-is-worth-16x16-words/</loc>
+    <loc>https://sumityadav.com.np/vision-transformer-image-is-worth-16x16-words/</loc>
     <lastmod>2026-06-09T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/zoom-in-circuits-neural-network-interpretability/</loc>
+    <loc>https://sumityadav.com.np/zoom-in-circuits-neural-network-interpretability/</loc>
     <lastmod>2026-06-08T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/birdclef-2026-bronze-medal-perch-knn-probe/</loc>
+    <loc>https://sumityadav.com.np/birdclef-2026-bronze-medal-perch-knn-probe/</loc>
     <lastmod>2026-06-07T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/boltzmann-machine-energy-based-models/</loc>
+    <loc>https://sumityadav.com.np/boltzmann-machine-energy-based-models/</loc>
     <lastmod>2026-06-05T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/mathematical-framework-transformer-circuits/</loc>
+    <loc>https://sumityadav.com.np/mathematical-framework-transformer-circuits/</loc>
     <lastmod>2026-06-05T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/mechanistic-interpretability-sparse-autoencoders/</loc>
+    <loc>https://sumityadav.com.np/mechanistic-interpretability-sparse-autoencoders/</loc>
     <lastmod>2026-06-05T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/natural-language-autoencoders/</loc>
+    <loc>https://sumityadav.com.np/natural-language-autoencoders/</loc>
     <lastmod>2026-06-05T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/git-govind/</loc>
+    <loc>https://sumityadav.com.np/git-govind/</loc>
     <lastmod>2026-05-23T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/lunar-wheel-of-devotion/</loc>
+    <loc>https://sumityadav.com.np/lunar-wheel-of-devotion/</loc>
     <lastmod>2026-04-25T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/stellar-steering/</loc>
+    <loc>https://sumityadav.com.np/stellar-steering/</loc>
     <lastmod>2026-04-18T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/King%20Salhesh%2C%20the%20Blooming%20Love%20and%20Jur%20Shital/</loc>
+    <loc>https://sumityadav.com.np/King%20Salhesh%2C%20the%20Blooming%20Love%20and%20Jur%20Shital/</loc>
     <lastmod>2026-04-14T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/ect-study-material/</loc>
+    <loc>https://sumityadav.com.np/ect-study-material/</loc>
     <lastmod>2026-04-14T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/Internet-Penetration-and-RSPs-Success/</loc>
+    <loc>https://sumityadav.com.np/Internet-Penetration-and-RSPs-Success/</loc>
     <lastmod>2026-03-08T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/geometric-signatures/</loc>
+    <loc>https://sumityadav.com.np/geometric-signatures/</loc>
     <lastmod>2026-02-14T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/attention-is-all-you-need-visualization/</loc>
+    <loc>https://sumityadav.com.np/attention-is-all-you-need-visualization/</loc>
     <lastmod>2025-12-28T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/safe-mcp-security-framework/</loc>
+    <loc>https://sumityadav.com.np/safe-mcp-security-framework/</loc>
     <lastmod>2025-12-26T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/Mastering%20Hexagonal%20Architecture%3A%20A%20Complete%20Guide%20with%20Python%20Implementation/</loc>
+    <loc>https://sumityadav.com.np/Mastering%20Hexagonal%20Architecture%3A%20A%20Complete%20Guide%20with%20Python%20Implementation/</loc>
     <lastmod>2025-12-03T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/npl/</loc>
+    <loc>https://sumityadav.com.np/npl/</loc>
     <lastmod>2025-11-27T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/Neural%20Modularity%20Principle/</loc>
+    <loc>https://sumityadav.com.np/Neural%20Modularity%20Principle/</loc>
     <lastmod>2025-10-30T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/advance_scanner/</loc>
+    <loc>https://sumityadav.com.np/advance_scanner/</loc>
     <lastmod>2025-09-22T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/layers-travel/</loc>
+    <loc>https://sumityadav.com.np/layers-travel/</loc>
     <lastmod>2025-09-16T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/The%20Legend%20of%20Jimutavahana%3A%20A%20Detailed%20Story%20of%20Sacrifice%20and%20Compassion/</loc>
+    <loc>https://sumityadav.com.np/The%20Legend%20of%20Jimutavahana%3A%20A%20Detailed%20Story%20of%20Sacrifice%20and%20Compassion/</loc>
     <lastmod>2025-09-13T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/mcp-proxy-sse-to-sse/</loc>
+    <loc>https://sumityadav.com.np/mcp-proxy-sse-to-sse/</loc>
     <lastmod>2025-09-13T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/embeddinggemma-300m/</loc>
+    <loc>https://sumityadav.com.np/embeddinggemma-300m/</loc>
     <lastmod>2025-09-05T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/Ten%20Mahavidyas/</loc>
+    <loc>https://sumityadav.com.np/Ten%20Mahavidyas/</loc>
     <lastmod>2025-09-02T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/gpt-oss/</loc>
+    <loc>https://sumityadav.com.np/gpt-oss/</loc>
     <lastmod>2025-08-06T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/Kakbhushundi%20and%20Thoth/</loc>
+    <loc>https://sumityadav.com.np/Kakbhushundi%20and%20Thoth/</loc>
     <lastmod>2025-08-06T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/lagpachai-maithili-festival-types-of-nagas/</loc>
+    <loc>https://sumityadav.com.np/lagpachai-maithili-festival-types-of-nagas/</loc>
     <lastmod>2025-07-29T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/The%20Churia%20Forests/</loc>
+    <loc>https://sumityadav.com.np/The%20Churia%20Forests/</loc>
     <lastmod>2025-07-23T15:58:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/The%20Brain&apos;s%20Thinking%20Cycle%3A%20From%20Thought%20to%20Reply/</loc>
+    <loc>https://sumityadav.com.np/The%20Brain&apos;s%20Thinking%20Cycle%3A%20From%20Thought%20to%20Reply/</loc>
     <lastmod>2025-07-17T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/clock/</loc>
+    <loc>https://sumityadav.com.np/clock/</loc>
     <lastmod>2025-07-14T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/WanderingMind/</loc>
+    <loc>https://sumityadav.com.np/WanderingMind/</loc>
     <lastmod>2025-07-13T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/love/</loc>
+    <loc>https://sumityadav.com.np/love/</loc>
     <lastmod>2025-07-07T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/Go%3ABackend%20Programming%20For%20ML%20Service/</loc>
+    <loc>https://sumityadav.com.np/Go%3ABackend%20Programming%20For%20ML%20Service/</loc>
     <lastmod>2025-07-06T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/tatva-development-journey/</loc>
+    <loc>https://sumityadav.com.np/tatva-development-journey/</loc>
     <lastmod>2025-07-04T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/agentsAI/</loc>
+    <loc>https://sumityadav.com.np/agentsAI/</loc>
     <lastmod>2025-07-01T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/tatva/</loc>
+    <loc>https://sumityadav.com.np/tatva/</loc>
     <lastmod>2025-06-03T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/agents/</loc>
+    <loc>https://sumityadav.com.np/agents/</loc>
     <lastmod>2025-06-01T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/lines/</loc>
+    <loc>https://sumityadav.com.np/lines/</loc>
     <lastmod>2025-05-30T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/life/</loc>
+    <loc>https://sumityadav.com.np/life/</loc>
     <lastmod>2024-01-21T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/familyTree/</loc>
+    <loc>https://sumityadav.com.np/familyTree/</loc>
     <lastmod>2024-01-21T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/mahadev/</loc>
+    <loc>https://sumityadav.com.np/mahadev/</loc>
     <lastmod>2023-10-19T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/jur-shital/</loc>
+    <loc>https://sumityadav.com.np/jur-shital/</loc>
     <lastmod>2023-04-14T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/functional-dependency/</loc>
+    <loc>https://sumityadav.com.np/functional-dependency/</loc>
     <lastmod>2023-04-09T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/operating-system/</loc>
+    <loc>https://sumityadav.com.np/operating-system/</loc>
     <lastmod>2023-04-09T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/query-optimization-techniques/</loc>
+    <loc>https://sumityadav.com.np/query-optimization-techniques/</loc>
     <lastmod>2023-04-09T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/maithili-script-recognition/</loc>
+    <loc>https://sumityadav.com.np/maithili-script-recognition/</loc>
     <lastmod>2023-04-01T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/mithila-festivals/</loc>
+    <loc>https://sumityadav.com.np/mithila-festivals/</loc>
     <lastmod>2022-11-28T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/tensor-processing-units/</loc>
+    <loc>https://sumityadav.com.np/tensor-processing-units/</loc>
     <lastmod>2022-06-09T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/multi-class-text-classification/</loc>
+    <loc>https://sumityadav.com.np/multi-class-text-classification/</loc>
     <lastmod>2022-03-30T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/dashain/</loc>
+    <loc>https://sumityadav.com.np/dashain/</loc>
     <lastmod>2021-10-07T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/vim/</loc>
+    <loc>https://sumityadav.com.np/vim/</loc>
     <lastmod>2021-08-27T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/syllabus-of-bct/</loc>
+    <loc>https://sumityadav.com.np/syllabus-of-bct/</loc>
     <lastmod>2021-08-19T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/nepali-ocr-python/</loc>
+    <loc>https://sumityadav.com.np/nepali-ocr-python/</loc>
     <lastmod>2021-08-16T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/julia-set-fractal/</loc>
+    <loc>https://sumityadav.com.np/julia-set-fractal/</loc>
     <lastmod>2021-07-22T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/autoencoder/</loc>
+    <loc>https://sumityadav.com.np/autoencoder/</loc>
     <lastmod>2021-07-19T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/simple-math/</loc>
+    <loc>https://sumityadav.com.np/simple-math/</loc>
     <lastmod>2021-07-10T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/unsupervised-learning/</loc>
+    <loc>https://sumityadav.com.np/unsupervised-learning/</loc>
     <lastmod>2021-07-09T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/nepali-devanagari-letter-classifier/</loc>
+    <loc>https://sumityadav.com.np/nepali-devanagari-letter-classifier/</loc>
     <lastmod>2021-06-21T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/sentences-that-define-me/</loc>
+    <loc>https://sumityadav.com.np/sentences-that-define-me/</loc>
     <lastmod>2021-06-21T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sumityadav.com.np/posts/moments/</loc>
+    <loc>https://sumityadav.com.np/moments/</loc>
     <lastmod>2020-01-17T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://sumityadav.com.np/study/csa-ai-security-compliance-stack/</loc>
-    <lastmod>2026-09-05T04:20:58.696Z</lastmod>
+    <lastmod>2026-09-05T04:25:25.369Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://sumityadav.com.np/study/ect/</loc>
-    <lastmod>2026-09-05T04:20:58.696Z</lastmod>
+    <lastmod>2026-09-05T04:25:25.369Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://sumityadav.com.np/study/nec-bct-licensure/</loc>
-    <lastmod>2026-09-05T04:20:58.696Z</lastmod>
+    <lastmod>2026-09-05T04:25:25.369Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://sumityadav.com.np/study/nepal-budget-2083-84/</loc>
-    <lastmod>2026-09-05T04:20:58.696Z</lastmod>
+    <lastmod>2026-09-05T04:25:25.369Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://sumityadav.com.np/study/python-codesignal-prep/</loc>
-    <lastmod>2026-09-05T04:20:58.696Z</lastmod>
+    <lastmod>2026-09-05T04:25:25.369Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://sumityadav.com.np/study/steerability-spectrum/</loc>
-    <lastmod>2026-09-05T04:20:58.696Z</lastmod>
+    <lastmod>2026-09-05T04:25:25.369Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://sumityadav.com.np/study/stellar-steering/</loc>
-    <lastmod>2026-09-05T04:20:58.696Z</lastmod>
+    <lastmod>2026-09-05T04:25:25.369Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://sumityadav.com.np/study/tithi-wheel/</loc>
-    <lastmod>2026-09-05T04:20:58.696Z</lastmod>
+    <lastmod>2026-09-05T04:25:25.369Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
