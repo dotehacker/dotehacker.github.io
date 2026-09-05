@@ -969,10 +969,11 @@ class JekyllLikeBuilder {
       }
 
       const frontmatter = yaml.load(frontmatterMatch[1]) || {};
-      // Flatten any absolute dated post refs (assets / cross-links) to the flat URL scheme.
+      // Flatten any absolute dated post refs (assets / cross-links) to the root URL scheme.
       // Slug segment allows any non-"/" chars (some slugs contain spaces / %20 / capitals).
-      // e.g. /posts/2021/07/19/autoencoder/img.png -> /posts/autoencoder/img.png
-      const body = frontmatterMatch[2].replace(/\/posts\/\d{4}\/\d{2}\/\d{2}\/([^/]+)\//g, '/posts/$1/');
+      // e.g. /posts/2021/07/19/autoencoder/img.png -> /autoencoder/img.png
+      // NOTE: only *dated* paths are rewritten, so static /posts/syllabus/, /posts/IOE_.../ stay put.
+      const body = frontmatterMatch[2].replace(/\/posts\/\d{4}\/\d{2}\/\d{2}\/([^/]+)\//g, '/$1/');
 
       // URL from name: 2024-01-21-life -> /posts/2024/01/21/life/
       const dateMatch = file.match(/^(\d{4})-(\d{2})-(\d{2})-(.+)$/);
@@ -982,8 +983,9 @@ class JekyllLikeBuilder {
       }
 
       const [, year, month, day, slug] = dateMatch;
-      const url = `/posts/${slug}/`;                                  // flat, canonical URL
-      const datedUrl = `/posts/${year}/${month}/${day}/${slug}/`;     // legacy URL (kept as redirect)
+      const url = `/${slug}/`;                                        // canonical: root-level URL
+      const datedUrl = `/posts/${year}/${month}/${day}/${slug}/`;     // legacy dated URL (redirect)
+      const postsUrl = `/posts/${slug}/`;                             // legacy /posts/<slug>/ (redirect)
 
       // Protect math, then Mermaid, before converting markdown to HTML
       const mathProtected = this.protectMath(body);
@@ -1010,6 +1012,7 @@ class JekyllLikeBuilder {
         excerpt: frontmatter.excerpt || body.substring(0, 300) + '...',
         url,
         datedUrl,
+        postsUrl,
         date: frontmatter.date || `${year}-${month}-${day}`,
         slug,
         file: filePath,
@@ -1371,17 +1374,21 @@ Sitemap: ${fullSitemapUrl}
 
     // Legacy static redirects
     const map = {
-      '/about/': '/',                    // legacy tatva About → home (home is the about)
-      '/jur_shital/': '/posts/jur-shital/'  // old Hugo page bundle → migrated post (flat URL)
+      '/about/': '/',                 // legacy tatva About → home (home is the about)
+      '/jur_shital/': '/jur-shital/'  // old Hugo page bundle → migrated post (root URL)
     };
     for (const [from, to] of Object.entries(map)) writeRedirect(from, to);
 
-    // Backward-compat: every legacy dated post URL → its new flat URL
+    // Backward-compat: both legacy post URL schemes → the new root-level URL
+    //   /posts/YYYY/MM/DD/<slug>/  → /<slug>/
+    //   /posts/<slug>/             → /<slug>/
     let n = 0;
     for (const post of this.posts) {
-      if (post.datedUrl && post.datedUrl !== post.url) { writeRedirect(post.datedUrl, post.url); n++; }
+      for (const legacy of [post.datedUrl, post.postsUrl]) {
+        if (legacy && legacy !== post.url) { writeRedirect(legacy, post.url); n++; }
+      }
     }
-    console.log(`  ✅ Redirects: ${Object.keys(map).length} static + ${n} legacy dated post URLs → flat`);
+    console.log(`  ✅ Redirects: ${Object.keys(map).length} static + ${n} legacy post URLs → root-level`);
   }
 
   generate404() {
