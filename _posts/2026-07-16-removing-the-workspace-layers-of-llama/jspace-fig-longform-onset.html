@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How soon a tiny cut shows up in generation</title>
+<style>
+  :root{
+    --bg:#ffffff; --surface:#faf9fb; --ink:#1f2328; --muted:#6a6f76; --faint:#8b9097;
+    --rule:#e8e6ec; --grid:#eeecf1; --accent:#5b4b9e;
+    --c1:#86b6ef; --c2:#2a78d6; --c3:#0d366b;
+    --tip-bg:rgba(255,255,255,.97); --tip-bd:#d9d7e0;
+  }
+  @media (prefers-color-scheme:dark){ :root:where(:not([data-theme="light"])){
+    --bg:#14151a; --surface:#1b1d24; --ink:#e6e7ea; --muted:#a3a8b2; --faint:#7e848f;
+    --rule:#2a2d36; --grid:#232630; --accent:#a48fff;
+    --c1:#b7d3f6; --c2:#6da7ec; --c3:#3987e5;
+    --tip-bg:rgba(27,29,36,.97); --tip-bd:#3a3d47;
+  }}
+  :root[data-theme="dark"]{
+    --bg:#14151a; --surface:#1b1d24; --ink:#e6e7ea; --muted:#a3a8b2; --faint:#7e848f;
+    --rule:#2a2d36; --grid:#232630; --accent:#a48fff;
+    --c1:#b7d3f6; --c2:#6da7ec; --c3:#3987e5;
+    --tip-bg:rgba(27,29,36,.97); --tip-bd:#3a3d47;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .wrap{padding:14px 12px 8px}
+  .head h3{margin:0 0 2px;font-size:15px;font-weight:700;letter-spacing:-.01em}
+  .head p{margin:0 0 8px;font-size:12.5px;color:var(--muted);line-height:1.45}
+  .legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin:2px 0 6px;font-size:12px}
+  .legend span{display:inline-flex;align-items:center;gap:7px;color:var(--ink)}
+  .swatch{width:20px;height:0;border-top-width:3px;border-top-style:solid;border-radius:2px}
+  .plot{position:relative}
+  svg{width:100%;height:auto;display:block;overflow:visible}
+  .grid line{stroke:var(--grid);stroke-width:1}
+  .axis line{stroke:var(--rule);stroke-width:1}
+  .tick text{fill:var(--muted);font-size:11px}
+  .axlabel{fill:var(--faint);font-size:11px}
+  .cross{stroke:var(--faint);stroke-width:1;stroke-dasharray:3 3;opacity:0}
+  .tip{position:absolute;pointer-events:none;opacity:0;transform:translate(-50%,-108%);
+    background:var(--tip-bg);border:1px solid var(--tip-bd);border-radius:8px;padding:8px 10px;
+    font-size:11.5px;line-height:1.6;white-space:nowrap;box-shadow:0 6px 20px rgba(0,0,0,.14);z-index:5}
+  .tip .r{display:flex;justify-content:space-between;gap:14px}
+  .cap{margin:6px 2px 0;font-size:11px;color:var(--faint);line-height:1.4}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <h3>How soon does a tiny cut show up in a 1024-token generation? (405B)</h3>
+    <p>Removing just <b>1–3 of 126</b> layers. The curve is the fraction of 100 long-form generations that have <b>diverged from the intact baseline</b> by each token. Even one layer cut: half diverge by ~token 100.</p>
+  </div>
+  <div class="legend" id="legend"></div>
+  <div class="plot">
+    <svg id="svg" viewBox="0 0 820 400" role="img" aria-label="Divergence onset CDF for 1/2/3 layers removed"></svg>
+    <div class="tip" id="tip"></div>
+  </div>
+  <p class="cap">Source: <code>results/longform405b/metrics.csv</code> · 100 prompts × 5 categories, greedy, 1024 tokens, contiguous band centred on L63. "Diverged" = first token where the ablated generation differs from baseline (~5% never diverge → the plateau below 100%).</p>
+</div>
+<script>
+const DIV={
+ "1":[0,0,0,0,0,0,1,2,2,3,5,7,8,8,10,14,16,16,17,18,20,21,24,25,26,26,31,33,44,46,46,51,53,55,56,56,59,61,65,66,71,73,73,76,77,77,83,88,94,99,103,103,112,115,125,126,127,128,131,136,143,148,151,157,165,171,171,172,191,198,204,204,209,210,215,221,225,250,261,265,272,281,286,288,291,306,310,318,322,341,404,439,445,453,1024,1024,1024,1024,1024,1024],
+ "2":[0,0,0,0,0,0,0,0,0,0,0,0,1,1,2,2,2,2,4,4,5,6,7,7,8,8,10,10,11,16,17,18,19,20,23,24,26,33,40,43,43,44,44,46,48,49,51,53,54,56,59,60,61,65,69,73,73,77,85,85,87,94,100,123,125,127,143,147,157,159,162,171,174,176,187,191,209,231,243,247,250,261,269,284,285,288,313,319,319,337,345,373,398,439,453,550,1024,1024,1024,1024],
+ "3":[0,0,0,0,0,0,0,0,0,0,0,1,1,2,2,2,3,3,3,4,4,5,5,6,6,6,7,8,8,9,10,11,14,16,18,20,23,24,28,31,33,33,35,36,37,48,51,52,53,53,53,56,58,59,61,62,69,73,78,85,94,100,106,109,110,114,119,120,123,124,127,133,153,159,174,193,199,231,233,247,247,250,261,265,267,267,271,286,313,321,357,368,373,377,439,449,453,486,1024,1024]
+};
+const SERIES=[
+ {key:'c1',cond:'1',name:'1 layer cut',med:101},
+ {key:'c2',cond:'2',name:'2 layers cut',med:58},
+ {key:'c3',cond:'3',name:'3 layers cut',med:53}
+];
+function cdf(arr){let pts=[[0,0]],cum=0;for(const v of arr){if(v<1024){cum++;pts.push([v,cum]);}}pts.push([1024,cum]);return pts;}
+SERIES.forEach(s=>s.pts=cdf(DIV[s.cond]));
+function pctAt(arr,t){let c=0;for(const v of arr){if(v<1024&&v<=t)c++;}return c;}
+
+const svg=document.getElementById('svg'),tip=document.getElementById('tip');
+const W=820,H=400,pad={l:46,r:16,t:14,b:44},xd=[0,1024],yd=[0,100];
+const NS="http://www.w3.org/2000/svg";
+const el=(n,a)=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);return e;};
+const sx=v=>pad.l+(v-xd[0])/(xd[1]-xd[0])*(W-pad.l-pad.r);
+const sy=v=>(H-pad.b)-(v-yd[0])/(yd[1]-yd[0])*(H-pad.t-pad.b);
+document.getElementById('legend').innerHTML=SERIES.map(s=>`<span><span class="swatch" style="border-top-color:var(--${s.key})"></span>${s.name} · median tok ${s.med}</span>`).join('');
+// grid + y
+const g=el('g',{'class':'grid'});svg.appendChild(g);
+[0,20,40,60,80,100].forEach(v=>{g.appendChild(el('line',{x1:pad.l,y1:sy(v),x2:W-pad.r,y2:sy(v)}));
+  const t=el('text',{x:pad.l-8,y:sy(v)+3.5,'text-anchor':'end','class':'tick'});t.textContent=v+'%';g.appendChild(t);});
+// x
+const ax=el('g',{'class':'axis'});svg.appendChild(ax);
+ax.appendChild(el('line',{x1:pad.l,y1:H-pad.b,x2:W-pad.r,y2:H-pad.b}));
+[0,200,400,600,800,1024].forEach(v=>{const t=el('text',{x:sx(v),y:H-pad.b+16,'text-anchor':'middle','class':'tick'});t.textContent=v;ax.appendChild(t);});
+const xl=el('text',{x:(pad.l+W-pad.r)/2,y:H-6,'text-anchor':'middle','class':'axlabel'});xl.textContent='token index of first difference from the baseline';svg.appendChild(xl);
+const yl=el('text',{x:13,y:(pad.t+H-pad.b)/2,'text-anchor':'middle','class':'axlabel',transform:`rotate(-90 13 ${(pad.t+H-pad.b)/2})`});yl.textContent='% of 100 generations diverged';svg.appendChild(yl);
+// lines
+SERIES.forEach(s=>{
+  svg.appendChild(el('path',{d:s.pts.map((p,i)=>(i?'L':'M')+sx(p[0]).toFixed(1)+' '+sy(p[1]).toFixed(1)).join(' '),
+    fill:'none',stroke:`var(--${s.key})`,'stroke-width':2.4,'stroke-linejoin':'round'}));
+});
+// hover
+const cross=el('line',{'class':'cross',y1:pad.t,y2:H-pad.b});svg.appendChild(cross);
+const hd=SERIES.map(s=>{const c=el('circle',{r:4.4,fill:`var(--${s.key})`,stroke:'var(--bg)','stroke-width':1.6,opacity:0});svg.appendChild(c);return c;});
+const rect=el('rect',{x:pad.l,y:pad.t,width:W-pad.l-pad.r,height:(H-pad.b)-pad.t,fill:'transparent'});svg.appendChild(rect);
+const toX=evt=>{const p=svg.createSVGPoint();p.x=evt.clientX;p.y=evt.clientY;return p.matrixTransform(svg.getScreenCTM().inverse()).x;};
+function move(evt){
+  let t=Math.round((toX(evt)-pad.l)/((W-pad.l-pad.r)/(xd[1]-xd[0])));t=Math.max(0,Math.min(1024,t));
+  cross.style.opacity=1;cross.setAttribute('x1',sx(t));cross.setAttribute('x2',sx(t));
+  const rows=SERIES.map((s,j)=>{const y=pctAt(DIV[s.cond],t);hd[j].style.opacity=1;hd[j].setAttribute('cx',sx(t));hd[j].setAttribute('cy',sy(y));return {name:s.name,key:s.key,y};});
+  tip.style.opacity=1;
+  tip.innerHTML=`<div class="r" style="color:var(--faint);margin-bottom:2px"><span>by token <b>${t}</b></span></div>`+
+    rows.map(r=>`<div class="r"><span><span style="color:var(--${r.key})">■</span> ${r.name}</span><b>${r.y}%</b></div>`).join('');
+  const bb=svg.getBoundingClientRect();let lx=sx(t)/W*bb.width;lx=Math.max(70,Math.min(bb.width-70,lx));
+  tip.style.left=lx+'px';tip.style.top=(sy(Math.max(...rows.map(r=>r.y)))/H*bb.height-6)+'px';
+}
+rect.addEventListener('mousemove',move);
+rect.addEventListener('mouseleave',()=>{cross.style.opacity=0;hd.forEach(c=>c.style.opacity=0);tip.style.opacity=0;});
+svg.addEventListener('touchmove',e=>{if(e.touches[0]){move(e.touches[0]);e.preventDefault();}},{passive:false});
+window.addEventListener('message',e=>{if(e.data&&e.data.type==='theme'&&e.data.theme)document.documentElement.dataset.theme=e.data.theme;});
+</script>
+</body>
+</html>
