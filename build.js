@@ -92,7 +92,7 @@ class JekyllLikeBuilder {
     const chips = ['All', ...topics].map((t, i) =>
       `<button class="chip${i === 0 ? ' active' : ''}" data-filter="${i === 0 ? '*' : this.esc(t)}">${this.esc(t)}</button>`
     ).join('');
-    const labels = { paper: 'Paper', arxiv: 'arXiv', doi: 'DOI', code: 'Code', blog: 'Blog', bibtex: 'BibTeX', model: 'Model', demo: 'Demo', data: 'Data', preprint: 'Preprint' };
+    const labels = { paper: 'Paper', arxiv: 'arXiv', doi: 'DOI', code: 'Code', blog: 'Blog', bibtex: 'BibTeX', model: 'Model', demo: 'Demo', data: 'Data', preprint: 'Preprint', project: 'Project' };
     const docIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M6 2h8l4 4v16H6z"/><path d="M14 2v4h4"/><path d="M9 12h6M9 16h6"/></svg>';
     const boldSelf = (a) => this.esc(a).replace(/Sumit Yadav/g, '<strong>Sumit Yadav</strong>');
     const shortVenue = (v) => (v || '').split(' — ')[0].split(' (pp')[0].trim();
