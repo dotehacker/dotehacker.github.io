@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google tag (gtag.js) with Consent Mode v2 — analytics denied until the visitor allows -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DVZFLJD4KX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        'analytics_storage': 'denied',
+        'ad_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied'
+      });
+      try {
+        if (localStorage.getItem('cookie-consent') === 'granted') {
+          gtag('consent', 'update', { 'analytics_storage': 'granted' });
+        }
+      } catch (e) {}
+      gtag('js', new Date());
+      gtag('config', 'G-DVZFLJD4KX');
+    </script>
+
+    <title>The Residual Stream: From AlexNet to DeepSeek-V4 · Sumit Yadav</title>
+    <meta name="description" content="A complete research dossier — the one idea, $\text{output} = \text{input} + F(\text{input})$, traced from computer vision in 2015 to the multi-lane residua">
+    <meta name="author" content="Sumit Yadav">
+    <meta name="google-site-verification" content="IVG1y4MVA_6MT0wsjk13ooZDQLWXxvYcPXQlmf83MLM" />
+    <link rel="canonical" href="https://sumityadav.com.np/the-residual-stream/">
+    
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:site_name" content="Sumit Yadav">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="The Residual Stream: From AlexNet to DeepSeek-V4 · Sumit Yadav">
+    <meta property="og:description" content="A complete research dossier — the one idea, $\text{output} = \text{input} + F(\text{input})$, traced from computer vision in 2015 to the multi-lane residua">
+    <meta property="og:url" content="https://sumityadav.com.np/the-residual-stream/">
+    <meta property="og:image" content="https://sumityadav.com.np/profile.jpg">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="The Residual Stream: From AlexNet to DeepSeek-V4 · Sumit Yadav">
+    <meta name="twitter:description" content="A complete research dossier — the one idea, $\text{output} = \text{input} + F(\text{input})$, traced from computer vision in 2015 to the multi-lane residua">
+    <meta name="twitter:image" content="https://sumityadav.com.np/profile.jpg">
+
+    <!-- Structured data: Person -->
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"Person","name":"Sumit Yadav","alternateName":"rockerritesh","url":"https://sumityadav.com.np","image":"https://sumityadav.com.np/profile.jpg","jobTitle":"AI Researcher","description":"AI researcher working on interpretability, AI safety, and low-resource NLP.","sameAs":["https://github.com/rockerritesh","https://scholar.google.com/citations?user=ag74ytsAAAAJ&hl=en","https://www.linkedin.com/in/rockerritesh/","https://x.com/rocker_ritesh","https://huggingface.co/rockerritesh","https://www.youtube.com/@Audio-Obsession"]}
+    </script>
+
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- Mermaid.js for diagram rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+
+    <!-- MathJax for LaTeX math -->
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+            options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+        };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <div class="scroll-progress"><div class="scroll-progress-bar" id="scroll-progress-bar"></div></div>
+
+    <header class="site-header">
+    <div class="wrap">
+        <a class="site-title" href="/">Sumit Yadav</a>
+        <nav class="site-nav">
+            <a href="/#publications">Publications</a>
+            <a href="/blog/">Blog</a>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Switch theme: light, dark, rain" title="Theme — click to cycle: light → dark → rain">
+                <span class="theme-icon ti-light">☀️</span>
+                <span class="theme-icon ti-dark">🌙</span>
+                <span class="theme-icon ti-rain">🌧️</span>
+            </button>
+        </nav>
+    </div>
+</header>
+
+
+    <main class="page-content">
+        <div class="wrap">
+            <div class="content-area">
+                
+<article class="post">
+    <header class="post-header">
+        <h1 class="post-title">The Residual Stream: From AlexNet to DeepSeek-V4</h1>
+        <p class="post-meta">
+            <time datetime="2026-09-13T00:00:00.000Z">September 13, 2026</time>
+             · <span>AI & ML</span>
+        </p>
+    </header>
+
+    <div class="post-content">
+        <p><em>A complete research dossier — the one idea, $\text{output} = \text{input} + F(\text{input})$, traced from computer vision in 2015 to the multi-lane residual streams of today&#39;s frontier models.</em></p>
+<p>📺 <strong>The 12-part video series is on YouTube:</strong> <a href="https://youtube.com/playlist?list=PLP0xG5prbG1Y">The Residual Stream — full playlist</a></p>
+<style>
+.rstl{margin:1.6em 0;border:1px solid var(--rule);border-radius:10px;background:var(--surface);padding:0 15px}
+.rstl>summary{cursor:pointer;padding:12px 0;font:600 .88rem/1 var(--sans);color:var(--muted);list-style:none}
+.rstl>summary::-webkit-details-marker{display:none}
+.rstl>summary::before{content:"\25B8\00a0";color:var(--accent)}
+.rstl[open]>summary::before{content:"\25BE\00a0"}
+.rstl-body{padding:0 0 10px}
+.rstl-y{display:grid;grid-template-columns:46px 1fr;gap:10px;padding:7px 0;border-top:1px solid var(--rule)}
+.rstl-y>b{font:700 .76rem/1.6 var(--sans);color:var(--accent);font-variant-numeric:tabular-nums}
+.rstl-y ul{margin:0;padding:0;list-style:none}
+.rstl-y li{font-size:.82rem;line-height:1.5;margin:0 0 2px;color:var(--muted)}
+.rstl-y li.k{font-weight:600;color:var(--ink)}
+.post-content .rstl a{text-decoration:none;color:inherit}
+.post-content .rstl a:hover{text-decoration:underline;color:var(--accent)}
+.rstl-note{font-size:.76rem;color:var(--faint);padding:9px 0 0;border-top:1px solid var(--rule);margin-top:4px;line-height:1.5}
+@media (min-width:1300px){
+  .rstl{position:fixed;left:calc(50% - 630px);top:78px;width:232px;margin:0;z-index:5;
+        max-height:calc(100vh - 110px);overflow-y:auto;padding:0 12px;scrollbar-width:thin}
+  .rstl>summary{display:none}
+  .rstl-y{grid-template-columns:38px 1fr;gap:8px;padding:6px 0}
+  .rstl-y li{font-size:.76rem;line-height:1.45}
+}
+</style>
+
+<details class="rstl" id="rstl">
+<summary>Timeline &mdash; when each paper landed (76 papers, 1991&ndash;2026)</summary>
+<div class="rstl-body">
+<div class="rstl-y"><b>1991</b><ul><li><span>Hochreiter — vanishing gradients (thesis)</span></li></ul></div>
+<div class="rstl-y"><b>1994</b><ul><li><a href="https://doi.org/10.1109/72.279181" target="_blank" rel="noopener">Bengio, Simard & Frasconi — long-term dependencies</a></li></ul></div>
+<div class="rstl-y"><b>1997</b><ul><li class="k"><a href="https://doi.org/10.1162/neco.1997.9.8.1735" target="_blank" rel="noopener">LSTM — the constant error carousel</a></li></ul></div>
+<div class="rstl-y"><b>2010</b><ul><li><a href="https://proceedings.mlr.press/v9/glorot10a.html" target="_blank" rel="noopener">Glorot & Bengio — Xavier init</a></li></ul></div>
+<div class="rstl-y"><b>2012</b><ul><li class="k"><a href="https://doi.org/10.1145/3065386" target="_blank" rel="noopener">AlexNet</a></li></ul></div>
+<div class="rstl-y"><b>2014</b><ul><li><a href="https://arxiv.org/abs/1409.1556" target="_blank" rel="noopener">VGG</a></li><li><a href="https://arxiv.org/abs/1409.4842" target="_blank" rel="noopener">GoogLeNet / Inception</a></li></ul></div>
+<div class="rstl-y"><b>2015</b><ul><li><a href="https://arxiv.org/abs/1502.03167" target="_blank" rel="noopener">Batch Normalization</a></li><li><a href="https://arxiv.org/abs/1502.01852" target="_blank" rel="noopener">He / Kaiming init</a></li><li><a href="https://arxiv.org/abs/1505.00387" target="_blank" rel="noopener">Highway Networks</a></li><li class="k"><a href="https://arxiv.org/abs/1512.03385" target="_blank" rel="noopener">ResNet — y = F(x) + x</a></li></ul></div>
+<div class="rstl-y"><b>2016</b><ul><li class="k"><a href="https://arxiv.org/abs/1603.05027" target="_blank" rel="noopener">Identity Mappings — the +1</a></li><li><a href="https://arxiv.org/abs/1605.06431" target="_blank" rel="noopener">Veit — unraveled / ensemble view</a></li><li><a href="https://arxiv.org/abs/1603.09382" target="_blank" rel="noopener">Stochastic Depth</a></li><li><a href="https://arxiv.org/abs/1605.07146" target="_blank" rel="noopener">Wide ResNets</a></li></ul></div>
+<div class="rstl-y"><b>2017</b><ul><li class="k"><a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">Transformer — Post-LN</a></li><li><a href="https://arxiv.org/abs/1608.06993" target="_blank" rel="noopener">DenseNet — concatenate, not add</a></li><li><a href="https://arxiv.org/abs/1702.08591" target="_blank" rel="noopener">Shattered Gradients</a></li><li><a href="https://arxiv.org/abs/1612.07771" target="_blank" rel="noopener">Greff — unrolled iterative estimation</a></li><li><a href="https://arxiv.org/abs/1712.08969" target="_blank" rel="noopener">Mean-Field Residual Networks</a></li></ul></div>
+<div class="rstl-y"><b>2018</b><ul><li><a href="https://arxiv.org/abs/1806.07366" target="_blank" rel="noopener">Neural ODEs</a></li><li><a href="https://arxiv.org/abs/1710.04773" target="_blank" rel="noopener">Jastrzębski — iterative inference</a></li></ul></div>
+<div class="rstl-y"><b>2019</b><ul><li><a href="https://arxiv.org/abs/1901.09321" target="_blank" rel="noopener">Fixup — 10,000 layers, no norm</a></li></ul></div>
+<div class="rstl-y"><b>2020</b><ul><li class="k"><a href="https://arxiv.org/abs/2002.04745" target="_blank" rel="noopener">Xiong — Pre-LN analysis</a></li><li><a href="https://arxiv.org/abs/2002.10444" target="_blank" rel="noopener">SkipInit</a></li><li><a href="https://arxiv.org/abs/2003.04887" target="_blank" rel="noopener">ReZero</a></li><li><a href="https://arxiv.org/abs/2004.08249" target="_blank" rel="noopener">ADMIN</a></li><li><a href="https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens" target="_blank" rel="noopener">Logit lens</a></li></ul></div>
+<div class="rstl-y"><b>2021</b><ul><li class="k"><a href="https://transformer-circuits.pub/2021/framework/index.html" target="_blank" rel="noopener">A Mathematical Framework — “the residual stream”</a></li><li><a href="https://arxiv.org/abs/2012.14913" target="_blank" rel="noopener">Geva — FFNs as key-value memories</a></li><li><a href="https://arxiv.org/abs/2102.06171" target="_blank" rel="noopener">NF-Nets</a></li><li><a href="https://arxiv.org/abs/2110.09456" target="_blank" rel="noopener">NormFormer</a></li><li><a href="https://arxiv.org/abs/2105.13290" target="_blank" rel="noopener">Sandwich-LN (CogView)</a></li><li><a href="https://arxiv.org/abs/2103.17239" target="_blank" rel="noopener">LayerScale (CaiT)</a></li></ul></div>
+<div class="rstl-y"><b>2022</b><ul><li class="k"><a href="https://arxiv.org/abs/2203.00555" target="_blank" rel="noopener">DeepNet / DeepNorm — 1000 layers</a></li><li><a href="https://transformer-circuits.pub/2022/toy_model/index.html" target="_blank" rel="noopener">Toy Models of Superposition</a></li><li><a href="https://arxiv.org/abs/2210.02414" target="_blank" rel="noopener">GLM-130B</a></li></ul></div>
+<div class="rstl-y"><b>2023</b><ul><li class="k"><a href="https://arxiv.org/abs/2309.08600" target="_blank" rel="noopener">Cunningham — SAEs find interpretable features</a></li><li><a href="https://transformer-circuits.pub/2023/monosemantic-features/index.html" target="_blank" rel="noopener">Towards Monosemanticity</a></li><li><a href="https://arxiv.org/abs/2308.10248" target="_blank" rel="noopener">ActAdd — steering vectors</a></li><li><a href="https://arxiv.org/abs/2310.01405" target="_blank" rel="noopener">Representation Engineering</a></li><li><a href="https://arxiv.org/abs/2311.03658" target="_blank" rel="noopener">Linear Representation Hypothesis</a></li><li><a href="https://arxiv.org/abs/2303.08112" target="_blank" rel="noopener">Tuned lens</a></li><li><a href="https://arxiv.org/abs/2309.17453" target="_blank" rel="noopener">StreamingLLM — attention sinks</a></li><li><a href="https://arxiv.org/abs/2303.06296" target="_blank" rel="noopener">Attention entropy collapse</a></li><li><a href="https://arxiv.org/abs/2302.05442" target="_blank" rel="noopener">QK-Norm (ViT-22B)</a></li></ul></div>
+<div class="rstl-y"><b>2024</b><ul><li class="k"><a href="https://transformer-circuits.pub/2024/scaling-monosemanticity/index.html" target="_blank" rel="noopener">Scaling Monosemanticity — 34M features</a></li><li class="k"><a href="https://arxiv.org/abs/2406.11717" target="_blank" rel="noopener">Refusal is one direction</a></li><li class="k"><a href="https://arxiv.org/abs/2409.19606" target="_blank" rel="noopener">Hyper-Connections — n lanes</a></li><li><a href="https://arxiv.org/abs/2408.05147" target="_blank" rel="noopener">Gemma Scope</a></li><li><a href="https://arxiv.org/abs/2406.04093" target="_blank" rel="noopener">OpenAI TopK SAEs on GPT-4</a></li><li><a href="https://arxiv.org/abs/2407.14435" target="_blank" rel="noopener">JumpReLU SAEs</a></li><li><a href="https://arxiv.org/abs/2406.17759" target="_blank" rel="noopener">SAEs on attention outputs</a></li><li><a href="https://arxiv.org/abs/2402.17762" target="_blank" rel="noopener">Massive Activations</a></li><li><a href="https://arxiv.org/abs/2402.02622" target="_blank" rel="noopener">DenseFormer</a></li><li><a href="https://arxiv.org/abs/2410.01131" target="_blank" rel="noopener">nGPT — the hypersphere</a></li><li><a href="https://arxiv.org/abs/2410.17897" target="_blank" rel="noopener">Value Residual (ResFormer)</a></li><li><a href="https://arxiv.org/abs/2408.00118" target="_blank" rel="noopener">Gemma 2 — double norm</a></li><li><a href="https://arxiv.org/abs/2405.09818" target="_blank" rel="noopener">Chameleon</a></li><li><a href="https://arxiv.org/abs/2403.17887" target="_blank" rel="noopener">Unreasonable ineffectiveness of deeper layers</a></li><li><a href="https://arxiv.org/abs/2403.03853" target="_blank" rel="noopener">ShortGPT</a></li><li><a href="https://transformer-circuits.pub/2024/crosscoders/index.html" target="_blank" rel="noopener">Crosscoders</a></li><li><a href="https://arxiv.org/abs/2405.00208" target="_blank" rel="noopener">Primer on the inner workings of LMs</a></li><li><a href="https://arxiv.org/abs/2412.13795" target="_blank" rel="noopener">Mix-LN</a></li></ul></div>
+<div class="rstl-y"><b>2025</b><ul><li class="k"><a href="https://arxiv.org/abs/2502.05795" target="_blank" rel="noopener">The Curse of Depth</a></li><li class="k"><a href="https://arxiv.org/abs/2512.24880" target="_blank" rel="noopener">DeepSeek mHC — doubly stochastic</a></li><li class="k"><a href="https://arxiv.org/abs/2502.16681" target="_blank" rel="noopener">Are Sparse Autoencoders Useful?</a></li><li><a href="https://arxiv.org/abs/2502.02732" target="_blank" rel="noopener">Peri-LN</a></li><li><a href="https://arxiv.org/abs/2501.00656" target="_blank" rel="noopener">OLMo 2 — reordered norm</a></li><li><a href="https://arxiv.org/abs/2503.14125" target="_blank" rel="noopener">Frac-Connections</a></li><li><a href="https://transformer-circuits.pub/2025/attribution-graphs/biology.html" target="_blank" rel="noopener">Circuit Tracing / Biology of an LLM</a></li><li><a href="https://arxiv.org/abs/2510.26692" target="_blank" rel="noopener">Kimi Linear</a></li><li><span>MUDDFormer</span></li><li><span>Pangu — Depth-Scaled Sandwich-Norm</span></li></ul></div>
+<div class="rstl-y"><b>2026</b><ul><li class="k"><a href="https://arxiv.org/abs/2603.15031" target="_blank" rel="noopener">Kimi AttnRes — layers choose what to read</a></li><li class="k"><a href="https://arxiv.org/abs/2606.19348" target="_blank" rel="noopener">DeepSeek-V4 — mHC in production</a></li></ul></div>
+<div class="rstl-note">Bold = a turning point in the story. Every entry links to its primary source.</div>
+</div>
+</details>
+
+<script>
+(function(){var d=document.getElementById('rstl');
+function f(){if(window.matchMedia('(min-width:1300px)').matches)d.open=true;}
+f();window.addEventListener('resize',f);})();
+</script>
+
+<hr>
+<h2>TL;DR</h2>
+<p>The &quot;residual line&quot; is one idea — $\text{output} = \text{input} + F(\text{input})$ — that migrated from computer vision (ResNet, 2015) into every large language model, where Anthropic reframed it as the <strong>&quot;residual stream,&quot;</strong> a purely linear communication channel that every layer reads from and writes to.</p>
+<p>The story has a clean three-act arc:</p>
+<ol>
+<li><strong>Solving the degradation problem</strong> so networks could go deep.</li>
+<li><strong>Taming the residual stream with normalization</strong> (Post-LN → Pre-LN → DeepNorm → sandwich/double-norm).</li>
+<li><strong>Discovering that the residual stream is where meaning lives</strong> — making it the preferred site for interpretability (SAEs, steering, refusal directions) — and, most recently, <strong>widening it into multiple &quot;lanes&quot;</strong> (Hyper-Connections, DeepSeek&#39;s mHC, Kimi&#39;s Attention Residuals).</li>
+</ol>
+<p>A proposed 12-video series is included at the end, each with a one-line key idea, the exact math to animate, and the specific figures to recreate.</p>
+<hr>
+<h2>Area 1 · Pre-history and the degradation problem</h2>
+<h3><a href="https://doi.org/10.1145/3065386">AlexNet</a> (Krizhevsky, Sutskever, Hinton, 2012)</h3>
+<ul>
+<li><strong>Architecture:</strong> 8 learned layers — 5 convolutional + 3 fully connected — ~60 million parameters. Input 224×224×3 (often quoted as 227). First conv: 96 filters, 11×11, stride 4.</li>
+<li><strong>Result:</strong> Won ILSVRC 2012 with <strong>15.3% top-5 error</strong>, versus 26.2% for second place — a &gt;10-point jump.</li>
+<li><strong>Key innovations:</strong> ReLU ($f(x)=\max(0,x)$); dropout ($p=0.5$) in the first two FC layers; trained on two NVIDIA GTX 580 GPUs (3 GB each) — the two-GPU split was a memory hack, not a speedup. Exact ReLU claim (for a caption): in the original paper&#39;s Figure 1, <em>&quot;A four-layer convolutional neural network with ReLUs (solid line) reaches a 25% training error rate on CIFAR-10 six times faster than an equivalent network with tanh neurons (dashed line).&quot;</em></li>
+<li><strong>Story beat:</strong> the spark of the deep-learning revolution; depth (8 layers) was the headline.</li>
+</ul>
+<h3><a href="https://arxiv.org/abs/1409.1556">VGG</a> (Simonyan &amp; Zisserman, 2014)</h3>
+<ul>
+<li><strong>Philosophy:</strong> replace large filters with stacks of small 3×3 convs (two 3×3s = one 5×5 receptive field, three = one 7×7, with fewer params and more nonlinearity).</li>
+<li><strong>VGG-16:</strong> 13 conv + 3 FC = 16 weight layers, ~138 million parameters, ~92.7% top-5 accuracy on ImageNet. <strong>VGG-19:</strong> 16 conv + 3 FC, ~144M params.</li>
+<li><strong>Story beat:</strong> VGG showed &quot;deeper + simpler filters = better,&quot; but stalled ~19 layers; going deeper plainly hurt. Runner-up at ILSVRC 2014 (GoogLeNet won classification).</li>
+</ul>
+<h3><a href="https://arxiv.org/abs/1409.4842">GoogLeNet / Inception</a> (Szegedy et al., 2014)</h3>
+<p>Introduced <strong>auxiliary classifiers</strong> — extra softmax heads mid-network — explicitly as a hack to inject gradient into early layers and combat vanishing gradients.</p>
+<h3>The degradation problem — the crux</h3>
+<ul>
+<li><strong>Definition:</strong> as plain nets get deeper, accuracy saturates then degrades — and critically, <strong>training error goes UP</strong>, so it is not overfitting; it is an <strong>optimization failure</strong>.</li>
+<li><strong>ResNet Figure 1 (recreate this):</strong> on CIFAR-10, a 56-layer plain net has higher training and test error than a 20-layer plain net. <em>This is the money shot of the whole series.</em></li>
+<li><strong>The thought experiment:</strong> a deeper net should match a shallower one by setting extra layers to identity mappings — yet SGD can&#39;t find that solution in plain nets. That gap motivates residual learning.</li>
+</ul>
+<h3>Vanishing / exploding gradients — the deeper cause</h3>
+<ul>
+<li><strong>Hochreiter 1991</strong> (diploma thesis) and <strong>Bengio, Simard, Frasconi 1994</strong> (<a href="https://doi.org/10.1109/72.279181">&quot;Learning long-term dependencies with gradient descent is difficult&quot;</a>) formalized how gradients shrink/explode exponentially through many layers.</li>
+<li><strong>Glorot &amp; Bengio 2010</strong> (<a href="https://proceedings.mlr.press/v9/glorot10a.html">Xavier init</a>) and <strong>He et al. 2015</strong> (<a href="https://arxiv.org/abs/1502.01852">Kaiming/He init</a>, for ReLU) rescaled initialization so activations/gradients keep variance ~constant across layers.</li>
+<li><strong><a href="https://arxiv.org/abs/1502.03167">Batch Normalization</a> (Ioffe &amp; Szegedy, 2015):</strong> normalizes layer inputs; let nets of &quot;tens of layers&quot; start converging. <strong>What BN did NOT solve:</strong> the degradation problem persisted even with BN — deeper plain+BN nets still trained worse. That&#39;s the gap ResNet fills.</li>
+</ul>
+<h3>LSTM&#39;s constant error carousel (<a href="https://doi.org/10.1162/neco.1997.9.8.1735">Hochreiter &amp; Schmidhuber, 1997</a>) — the true ancestor</h3>
+<p>The LSTM cell state $c_t = c_{t-1} + (\text{input})$ has an additive, gradient-preserving path — the <strong>&quot;constant error carousel,&quot;</strong> the conceptual grandparent of the residual connection: an uninterrupted additive highway for gradients.</p>
+<h3>Highway Networks (Srivastava, Greff, Schmidhuber, 2015; <a href="https://arxiv.org/abs/1505.00387">arXiv:1505.00387</a>)</h3>
+<ul>
+<li><strong>Gating equation:</strong> $y = H(x)\cdot T(x) + x \cdot C(x)$, with transform gate $T$ and carry gate $C$, usually $C = 1 - T$, $T(x)=\sigma(W_T x + b_T)$. Explicitly inspired by LSTM gates.</li>
+<li>Trained nets with <strong>hundreds of layers via plain SGD — before ResNet</strong>.</li>
+<li><strong>ResNet as a special case:</strong> set $T=C=\text{identity}$ (gates fixed open) → $y = H(x) + x$. ResNet won because the ungated identity path is simpler, has no gate parameters to learn, and never attenuates the gradient.</li>
+<li><strong>Story beat / open debate:</strong> Schmidhuber has publicly argued for Highway Networks&#39; (and LSTM&#39;s) priority over ResNet — a genuine credit dispute worth a dramatic beat.</li>
+</ul>
+<hr>
+<h2>Area 2 · ResNet itself</h2>
+<h3>Deep Residual Learning (He, Zhang, Ren, Sun, 2015; <a href="https://arxiv.org/abs/1512.03385">arXiv:1512.03385</a>)</h3>
+<ul>
+<li><strong>Core formulation:</strong> $y = F(x, \{W_i\}) + x$. The block learns the <strong>residual</strong> $F(x) = H(x) - x$; if identity is optimal, drive $F \to 0$.</li>
+<li><strong>Blocks:</strong> Basic block = two 3×3 convs (ResNet-18/34). Bottleneck block = 1×1 → 3×3 → 1×1 (ResNet-50/101/152), the 1×1s reduce then restore dimensions.</li>
+<li><strong>Depths:</strong> ResNet-18, 34, 50, 101, 152. ResNet-50 ≈ 25.5M params.</li>
+<li><strong>Results:</strong> <strong>3.57% top-5 error</strong> on ImageNet (ensemble) — won ILSVRC 2015, and also swept detection/localization (ImageNet + COCO 2015).</li>
+<li><strong>The 1202-layer experiment (CIFAR-10):</strong> they successfully optimized a 1202-layer ResNet (it trained fine, though it slightly overfit vs the 110-layer net). The shock: <strong>&gt;1000 layers trains at all.</strong> Story beat.</li>
+</ul>
+<h3>Identity Mappings in Deep Residual Networks (He et al., 2016; <a href="https://arxiv.org/abs/1603.05027">arXiv:1603.05027</a>) — the critical math</h3>
+<ul>
+<li><strong>Pre-activation ResNet:</strong> move BN and ReLU <em>before</em> the conv (BN→ReLU→conv), making the skip path a clean identity.</li>
+<li><strong>Forward recursion:</strong> with identity skip $x_{l+1} = x_l + F(x_l, W_l)$, unrolling gives:</li>
+</ul>
+<p>$$x_L = x_l + \sum_{i=l}^{L-1} F(x_i, W_i)$$</p>
+<p>  → Any deep feature = <strong>a shallow feature plus a sum of residuals</strong> (contrast plain nets, which are <em>products</em> of matrices).</p>
+<ul>
+<li><strong>Backward gradient (THE equation to animate):</strong></li>
+</ul>
+<p>$$\frac{\partial \varepsilon}{\partial x_l} = \frac{\partial \varepsilon}{\partial x_L} \cdot \left(1 + \frac{\partial}{\partial x_l}\sum_{i=l}^{L-1} F\right)$$</p>
+<p>  The <strong>&quot;+1&quot;</strong> term guarantees gradient flows directly to any earlier layer and <strong>cannot vanish</strong> (the sum term would have to be exactly $-1$ across an entire mini-batch to cancel it, which essentially never happens).</p>
+<ul>
+<li><strong>Empirical payoff:</strong> pre-activation ResNet-1001 reached lower error than the original on CIFAR-10/100.</li>
+<li><strong>Design lessons:</strong> BN-after-addition hurts; ReLU-before-addition forces the residual $\geq 0$ (should be free to live in $(-\infty,\infty)$) and worsens results (7.84% on CIFAR-10).</li>
+</ul>
+<h3>Interpretations of why residuals help</h3>
+<ul>
+<li><strong>Unraveled / ensemble view (Veit, Wilber, Belongie, 2016; <a href="https://arxiv.org/abs/1605.06431">arXiv:1605.06431</a>):</strong> a ResNet = an implicit collection of $2^n$ paths of varying length. Lesion studies (delete/reorder layers at test time) show only a smooth, modest performance drop — ensemble-like; paths don&#39;t strongly depend on each other. Most gradient in a 110-layer ResNet comes from paths only <strong>10–34 layers deep</strong>. So ResNets <em>&quot;avoid vanishing gradients by introducing short paths,&quot;</em> rather than truly training the full depth. <strong>Figure to recreate:</strong> the binomial path-length distribution + the &quot;effective path&quot; gradient histogram.</li>
+<li><strong><a href="https://arxiv.org/abs/1702.08591">Shattered Gradients</a> (Balduzzi et al., 2017):</strong> in plain deep nets gradients become like white noise (&quot;shatter&quot;); residuals keep gradients spatially correlated (brown-noise-like), which is why they stay trainable.</li>
+<li><strong>Iterative refinement / unrolled estimation (<a href="https://arxiv.org/abs/1612.07771">Greff, Srivastava, Schmidhuber, ICLR 2017</a>; <a href="https://arxiv.org/abs/1710.04773">Jastrzębski et al., 2018</a>):</strong> residual layers don&#39;t compute fresh representations — they <strong>iteratively refine a running estimate held in the stream</strong>. This directly foreshadows the &quot;residual stream&quot; and logit-lens views.</li>
+<li><strong><a href="https://arxiv.org/abs/1806.07366">Neural ODEs</a> (Chen, Rubanova, Bettencourt, Duvenaud, NeurIPS 2018):</strong> a residual block $x_{t+1} = x_t + h \cdot f(x_t)$ is exactly one <strong>Euler step</strong> of an ODE $dx/dt = f(x)$. Let the layer step $h \to 0$ and depth becomes continuous &quot;time.&quot; <strong>Figure:</strong> discrete residual steps morphing into a smooth ODE trajectory.</li>
+</ul>
+<h3>Initialization / normalization theory: why residuals + BN really work at init</h3>
+<ul>
+<li><strong><a href="https://arxiv.org/abs/1712.08969">Mean-Field Residual Networks</a> (Yang &amp; Schoenholz, 2017):</strong> residual nets have far better signal-propagation depth scales than plain nets.</li>
+<li><strong>Fixup (Zhang, Dauphin, Ma, 2019; <a href="https://arxiv.org/abs/1901.09321">arXiv:1901.09321</a>):</strong> you can train <strong>10,000-layer</strong> residual nets with <strong>no normalization</strong> by rescaling the initialization of residual branches — proof that the key was the residual branch scale, not BN per se.</li>
+<li><strong>SkipInit / &quot;Batch Normalization Biases Residual Blocks Towards the Identity Function&quot; (De &amp; Smith, 2020; <a href="https://arxiv.org/abs/2002.10444">arXiv:2002.10444</a>):</strong> shows BN&#39;s real trick — at init, BN downscales the residual branch relative to the skip by ~$1/\sqrt{\text{depth}}$, so blocks <strong>start near identity</strong>. Replacing BN with a single scalar $\alpha=0$ on the residual branch (SkipInit) reproduces the benefit and trains 1000-layer ResNets without norm. <em>The load-bearing insight linking BN → residual scaling.</em></li>
+<li><strong>NF-Nets (Brock et al., 2021; <a href="https://arxiv.org/abs/2102.06171">arXiv:2102.06171</a>):</strong> normalizer-free nets + Adaptive Gradient Clipping match/beat EfficientNet; NFNet-F5 reaches ~86.0% ImageNet top-1. <strong>Normalization is not sacred.</strong></li>
+<li><strong>ReZero (Bachlechner et al., 2020; <a href="https://arxiv.org/abs/2003.04887">arXiv:2003.04887</a>):</strong> gate every residual branch with a zero-initialized scalar: $x_{i+1} = x_i + \alpha_i \cdot F(x_i)$, $\alpha_i=0$ at init. Trains 120-layer Transformers and even 10,000-layer fully-connected nets; ~56% faster convergence on a 12-layer Transformer (enwiki8).</li>
+</ul>
+<h3>Variants worth a mention</h3>
+<ul>
+<li><strong><a href="https://arxiv.org/abs/1603.09382">Stochastic Depth</a> (Huang et al., 2016):</strong> randomly drop residual blocks during training (identity passes through) — a regularizer that also confirms the ensemble/short-path view.</li>
+<li><strong><a href="https://arxiv.org/abs/1608.06993">DenseNet</a> (Huang et al., 2017):</strong> <strong>concatenation</strong> instead of addition — every layer sees all previous feature maps. Contrast with ResNet&#39;s additive stream; a great &quot;add vs concatenate&quot; beat.</li>
+<li><strong><a href="https://arxiv.org/abs/1605.07146">Wide ResNets</a> (Zagoruyko &amp; Komodakis, 2016):</strong> width beats depth for a given budget; a 16-layer wide net rivals a 1000-layer thin one.</li>
+</ul>
+<hr>
+<h2>Area 3 · Residuals in Transformers</h2>
+<h3>The original Transformer (<a href="https://arxiv.org/abs/1706.03762">Vaswani et al., 2017</a>) — Post-LN</h3>
+<p>Each sublayer: $\text{output} = \text{LayerNorm}(x + \text{Sublayer}(x))$ — the residual add happens <em>inside</em> the norm (&quot;Post-LN&quot;). Notoriously needs learning-rate <strong>warmup</strong> to train.</p>
+<h3>On Layer Normalization in the Transformer Architecture (Xiong et al., 2020; <a href="https://arxiv.org/abs/2002.04745">arXiv:2002.04745</a>) — pivotal analysis</h3>
+<ul>
+<li><strong>Pre-LN:</strong> $x + \text{Sublayer}(\text{LayerNorm}(x))$ — norm goes <em>inside</em> the residual branch, leaving the skip path clean.</li>
+<li><strong>Theorem (mean-field):</strong> at init, Post-LN has large gradients near the output layer (the final-layer gradient norm stays ~1.6 regardless of depth), so a big LR is unstable → <strong>warmup needed</strong>. Pre-LN gradients are well-behaved at init and decrease with depth, so <strong>warmup can be removed</strong>.</li>
+<li><strong>Figures to recreate:</strong> gradient norm vs layer index for Post-LN (spikes at output) vs Pre-LN (flat); loss-vs-time showing Pre-LN converges faster.</li>
+<li><strong>Consequence:</strong> essentially all modern LLMs (GPT-2 onward) use Pre-LN.</li>
+</ul>
+<h3>The Pre-LN side effect and the fixes</h3>
+<ul>
+<li><strong>NormFormer (Shleifer et al., 2021; <a href="https://arxiv.org/abs/2110.09456">arXiv:2110.09456</a>):</strong> Pre-LN has the <em>opposite</em> gradient imbalance — early-layer gradients larger than late-layer. Adds 3 extra norms per layer to rebalance.</li>
+<li><strong>ADMIN / <a href="https://arxiv.org/abs/2004.08249">&quot;Understanding the Difficulty of Training Transformers&quot;</a> (Liu et al., 2020):</strong> Post-LN instability traced to heavy dependency on residual branches; ADMIN init controls it.</li>
+<li><strong>DeepNet / DeepNorm (Wang et al., 2022; <a href="https://arxiv.org/abs/2203.00555">arXiv:2203.00555</a>):</strong> $x_{l+1} = \text{LayerNorm}(\alpha \cdot x_l + G_l(x_l))$ with residual-branch weights scaled by $\beta$. For an $N$-layer encoder, $\alpha=(2N)^{1/4}$ (encoder-decoder uses the $0.81(N^4M)^{1/16}$ etc. constants). Combines Post-LN performance with Pre-LN stability. <strong>Scaled Transformers to 1000 layers (2500 sublayers).</strong> A 200-layer, 3.2B model beat a 48-layer, 12B SOTA by <strong>5 BLEU</strong> on a 7,482-direction multilingual benchmark. <strong>Figure:</strong> update magnitude $\|\Delta F\|$ stable for DeepNet vs exploding for vanilla Post-LN.</li>
+</ul>
+<h3>The residual-stream GROWTH problem (Pre-LN)</h3>
+<p>In Pre-LN models the residual-stream <strong>variance grows with depth</strong> (roughly exponentially/sub-exponentially), because each layer keeps adding to the stream. As the stream norm balloons, each new layer&#39;s contribution becomes relatively smaller, and LayerNorm&#39;s $1/\|x\|$ scaling shrinks gradients through later layers.</p>
+<ul>
+<li><strong>The Curse of Depth (Sun, Song, Li, Yin, Zheng, Liu, 2025; <a href="https://arxiv.org/abs/2502.05795">arXiv:2502.05795</a>, NeurIPS 2025):</strong> confirmed across Llama, Mistral, DeepSeek, Qwen that <strong>nearly half the layers are less effective than expected</strong>. Cause: Pre-LN output variance explodes with depth, making deep blocks&#39; Jacobians approach the identity matrix → they barely contribute. <strong>Fix — LayerNorm Scaling (LNS):</strong> scale each layer&#39;s LN output by $1/\sqrt{l}$ ($l$ = depth index). Hyperparameter-free; improves pretraining across 130M–7B. <strong>Figure to recreate:</strong> Jacobian heatmaps of LLaMA2-7B pre-LN blocks becoming diagonal (identity) with depth.</li>
+<li><strong>Peri-LN (<a href="https://arxiv.org/abs/2502.02732">arXiv:2502.02732</a>):</strong> normalize <strong>both</strong> input and output of each module; explains why Gemma/OLMo-style placements work and links QK-Norm to Pre-LN.</li>
+</ul>
+<h3>Sandwich / double normalization</h3>
+<ul>
+<li><strong>Sandwich-LN (<a href="https://arxiv.org/abs/2105.13290">CogView</a>, Ding et al., 2021):</strong> add a LayerNorm at the <em>end</em> of each branch too, bracketing the sublayer — introduced to stop value explosion in large training.</li>
+<li><strong><a href="https://arxiv.org/abs/2210.02414">GLM-130B</a> (Zeng et al., 2022):</strong> used DeepNorm (Post-LN variant) for stability at 130B scale.</li>
+<li><strong>Gemma 2 (2024; <a href="https://arxiv.org/abs/2408.00118">arXiv:2408.00118</a>):</strong> applies RMSNorm in <strong>both</strong> pre-norm and post-norm positions around each sublayer (attention and FFN) — i.e. <code>input_layernorm</code>, <code>post_attention_layernorm</code>, <code>pre_feedforward_layernorm</code>, <code>post_feedforward_layernorm</code>. <strong>This is the &quot;double norm.&quot;</strong> Also uses logit soft-capping (50.0 attention, 30.0 final) and interleaved local/global attention.</li>
+<li><strong>OLMo 2 (2025; <a href="https://arxiv.org/abs/2501.00656">arXiv:2501.00656</a>):</strong> <strong>reordered norm</strong> — normalize the <em>outputs</em> of attention and FFN (a post-norm-like placement inside the residual path) rather than inputs, plus QK-Norm. In isolation neither helps, but <strong>together</strong> they tame the L2 gradient-norm growth and spikiness. Uses RMSNorm and z-loss ($10^{-5}$) to regularize final logits.</li>
+<li><strong><a href="https://arxiv.org/abs/2405.09818">Chameleon</a> (2024):</strong> QK-Norm + norm reordering + z-loss specifically for stability of a mixed-modal model.</li>
+<li><strong>Pangu (DSSN, 2025):</strong> &quot;Depth-Scaled Sandwich-Norm&quot; — extra RMSNorm after attention and FFN; reports <strong>&quot;zero loss spikes&quot;</strong> in pretraining.</li>
+</ul>
+<h3>QK-Norm and attention entropy collapse</h3>
+<p><strong><a href="https://arxiv.org/abs/2303.06296">&quot;Stabilizing Transformer Training by Preventing Attention Entropy Collapse&quot;</a> (Zhai et al., Apple, 2023):</strong> attention logits can grow so large that softmax becomes one-hot (&quot;entropy collapse&quot;), destabilizing training. <strong>QK-Norm</strong> (RMSNorm on queries and keys before the dot product; <a href="https://arxiv.org/abs/2302.05442">Dehghani et al. 2023</a>) caps logit magnitude — now standard (Gemma 3, OLMo 2, many others).</p>
+<h3>nGPT — Normalized Transformer on the hypersphere (NVIDIA, Loshchilov et al., 2024; <a href="https://arxiv.org/abs/2410.01131">arXiv:2410.01131</a>)</h3>
+<ul>
+<li>Puts <strong>all</strong> vectors (embeddings, attention/MLP matrices, hidden state) on a <strong>unit hypersphere</strong>; matrix-vector products become cosine similarities in $[-1,1]$.</li>
+<li><strong>Replaces the residual addition with SLERP/LERP:</strong> instead of $h + f(h)$, it interpolates on the sphere, $h \leftarrow \text{Norm}(h + \alpha(f(h) - h))$, with learnable <strong>&quot;eigen learning rates&quot;</strong> $\alpha$ per block acting as diagonal entries of a variable-metric optimizer. Normalization = a Riemannian retraction back onto the sphere.</li>
+<li><strong>Result:</strong> <strong>4–20× fewer training steps</strong> to a given loss (larger gains at longer context — e.g. ~10× at 4k). Removes weight decay and explicit LayerNorm/RMSNorm.</li>
+</ul>
+<h3>Multi-lane residual streams — the &quot;single lane vs multi lane&quot; arc</h3>
+<ul>
+<li><strong>DenseFormer (Pagliardini et al., 2024; <a href="https://arxiv.org/abs/2402.02622">arXiv:2402.02622</a>):</strong> Depth-Weighted-Average — each layer can read a learned weighted average of <strong>all previous layer outputs</strong>, not just the immediate stream.</li>
+<li><strong>Hyper-Connections (Zhu et al., ByteDance Seed, 2024; <a href="https://arxiv.org/abs/2409.19606">arXiv:2409.19606</a>; ICLR 2025):</strong> expand the residual stream from $\mathbb{R}^d$ to $n \times d$ — <strong>$n$ parallel residual &quot;lanes.&quot;</strong> Learnable matrices define <strong>depth-connections</strong> (how a layer&#39;s output routes into lanes) and <strong>width-connections</strong> (how lanes exchange). Key motivation: standard residuals face a <strong>seesaw</strong> between gradient vanishing (Pre-Norm) and representation collapse (Post-Norm); HC lets the net learn connection strengths and even reorder layers sequentially/parallel. <strong>Dynamic Hyper-Connections (DHC)</strong> make weights input-dependent. Near-zero extra params/compute; significant LLM and vision gains. <strong>Figure:</strong> the $n=2$ lane diagram with the $\alpha/\beta$ connection matrix.</li>
+<li><strong>Frac-Connections (Zhu et al., 2025; <a href="https://arxiv.org/abs/2503.14125">arXiv:2503.14125</a>):</strong> fractional (memory-cheaper) variant of HC.</li>
+<li><strong>DeepSeek mHC — Manifold-Constrained Hyper-Connections (Xie et al., DeepSeek-AI, Dec 2025; <a href="https://arxiv.org/abs/2512.24880">arXiv:2512.24880</a>):</strong> the &quot;DeepSeek residual line paper.&quot; Unconstrained HC mixing matrices can have spectral norm &gt;1 → signal amplification measured at <strong>~3000×</strong> in a 27B model → catastrophic divergence. mHC constrains each mixing matrix to be <strong>doubly stochastic</strong> (Birkhoff polytope) via the <strong>Sinkhorn–Knopp</strong> algorithm, restoring the identity-mapping/norm-preserving property while keeping HC&#39;s expressivity. Configs built on DeepSeek-V3 at 3B/9B/27B. <strong>Adopted in DeepSeek-V4 (<a href="https://arxiv.org/abs/2606.19348">arXiv:2606.19348</a>)</strong> to &quot;strengthen conventional residual connections.&quot; <em>Analogy for animation:</em> a multi-lane highway with on/off ramps where total traffic must be conserved.</li>
+<li><strong>MUDDFormer (Xiao et al., 2025):</strong> multiway dynamic dense connections — another cross-layer densification of the stream.</li>
+</ul>
+<h3>Attention-specific residuals — Value Residual &amp; Kimi&#39;s Attention Residuals</h3>
+<ul>
+<li><strong>Value Residual Learning / ResFormer &amp; SVFormer (Zhou, Wu, Jiang, Lan, 2024; <a href="https://arxiv.org/abs/2410.17897">arXiv:2410.17897</a>; ACL 2025):</strong> add a residual on the <strong>value</strong> stream: each layer mixes its values with the <em>first</em> layer&#39;s values $V_1$ (scalar coefficients $\lambda_1, \lambda_2$), approximating cross-layer attention cheaply. Fixes attention concentration/sinks, value-state drains, and residual-state peaks in deep layers. <strong>ResFormer</strong> matches baseline loss with <strong>16.11% fewer params and 20.3% less data</strong>; <strong>SVFormer</strong> shares one value across all layers, cutting KV cache <strong>~50%</strong>. (Residualizing queries/keys was found unstable.)</li>
+<li><strong>Kimi Attention Residuals — &quot;AttnRes&quot; (Kimi Team / Moonshot AI, 2026; <a href="https://arxiv.org/abs/2603.15031">arXiv:2603.15031</a>):</strong> a &quot;drop-in replacement for residual connections with consistent scaling gains.&quot; Each layer gets one extra RMSNorm and a <strong>pseudo-query vector</strong> $w_l$; attention-style weights $\alpha_{i \to l}$ let each layer <strong>choose which earlier layers to draw from</strong> (instead of summing all equally). Pseudo-queries must be <strong>zero-initialized</strong> so early training is an equal-weight average (prevents volatility). Built on the <strong>Kimi Linear</strong> architecture (<a href="https://arxiv.org/abs/2510.26692">arXiv:2510.26692</a> — Kimi Delta Attention + Multi-Head Latent Attention in a 3:1 ratio, Moonlight/DeepSeek-V3 lineage). Deployed in <strong>Kimi K3 (2.8T params)</strong>, which credits AttnRes + KDA + sparser MoE for <strong>~2.5× training efficiency</strong>.</li>
+</ul>
+<hr>
+<h2>Area 4 · The residual stream as memory / communication channel</h2>
+<h3><a href="https://transformer-circuits.pub/2021/framework/index.html">A Mathematical Framework for Transformer Circuits</a> (Elhage et al., Anthropic, 2021)</h3>
+<p>The founding reframing. Verbatim:</p>
+<blockquote>
+<p>&quot;The residual stream is simply the sum of the output of all the previous layers and the original embedding. We generally think of the residual stream as a communication channel, since it doesn&#39;t do any processing itself and all layers communicate through it.&quot;</p>
+</blockquote>
+<ul>
+<li>Every component <strong>reads</strong> from the stream (linear projection in) and <strong>writes</strong> to it (linear projection out); because writes are additive, any component can influence any downstream component → a <strong>fully-connected computational graph</strong>.</li>
+<li><strong>Deeply linear structure:</strong> unusually, the transformer residual stream is <strong>purely linear</strong> (unlike ResNets, which have nonlinearities on/around the stream) — this is what makes decomposition into subspaces, <strong>&quot;virtual weights,&quot;</strong> and <strong>&quot;virtual attention heads&quot;</strong> tractable.</li>
+<li><strong>Residual-stream &quot;bandwidth&quot;:</strong> the stream is a bottleneck of fixed dimension $d_{\text{model}}$; far more features than dimensions compete for space (→ <strong>superposition</strong>). Memory-management components read subspaces to &quot;clear&quot;/overwrite information.</li>
+</ul>
+<h3>FFNs as key-value memories (<a href="https://arxiv.org/abs/2012.14913">Geva et al., 2021</a>)</h3>
+<p>Feed-forward layers act as <strong>key-value memories</strong>: the first weight matrix&#39;s rows are &quot;keys&quot; that detect input patterns; the second matrix&#39;s columns are &quot;values&quot; written into the residual stream. Later layers refine these into the output distribution.</p>
+<h3>Iterative inference / the lens family</h3>
+<ul>
+<li><strong><a href="https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens">Logit lens</a> (nostalgebraist, 2020):</strong> apply the final unembedding to the residual stream at <strong>every layer</strong> → you can watch the model&#39;s predicted token sharpen layer by layer. Direct evidence for iterative refinement.</li>
+<li><strong><a href="https://arxiv.org/abs/2303.08112">Tuned lens</a> (Belrose et al., 2023):</strong> learn a per-layer affine probe for a more faithful readout; shows predictions converge gradually up the stack.</li>
+</ul>
+<h3>Superposition and privileged bases</h3>
+<p><strong><a href="https://transformer-circuits.pub/2022/toy_model/index.html">Toy Models of Superposition</a> (Elhage et al., Anthropic, 2022):</strong> networks store more features than dimensions by placing them in <strong>near-orthogonal directions</strong> — superposition. The residual stream has <strong>no privileged basis</strong> (rotating it and undoing the rotation is a symmetry), so <strong>features are directions, not neurons</strong> — motivating dictionary learning (SAEs).</p>
+<h3>Massive activations &amp; attention sinks — residual-stream phenomena</h3>
+<ul>
+<li><strong>Massive Activations (Sun, Chen, Kolter, Liu, 2024; <a href="https://arxiv.org/abs/2402.17762">arXiv:2402.17762</a>):</strong> a tiny number of residual-stream activations are far larger than the rest. Verbatim: <em>&quot;very few activations exhibit significantly larger values than others (e.g., 100,000 times larger).&quot;</em> In LLaMA2-7B the largest (~2,000 in magnitude) is <em>&quot;approximately 10,000 times larger than the median magnitude (about 0.2),&quot;</em> concentrated in <strong>fixed dims 1415 &amp; 2533</strong>. Their values stay ~constant regardless of input and act as <strong>implicit bias terms</strong>, causing attention to concentrate on their tokens.</li>
+<li><strong>Attention sinks / StreamingLLM (Xiao et al., 2023; <a href="https://arxiv.org/abs/2309.17453">arXiv:2309.17453</a>; ICLR 2024):</strong> models dump excess attention onto the first token(s) as a <strong>&quot;sink.&quot;</strong> Verbatim: <em>&quot;StreamingLLM can enable Llama-2, MPT, Falcon, and Pythia to perform stable and efficient language modeling with up to 4 million tokens… outperforms the sliding window recomputation baseline by up to 22.2× speedup,&quot;</em> with just <strong>4 initial sink tokens</strong> sufficing. These interact with LayerNorm and residual-stream norm growth.</li>
+</ul>
+<hr>
+<h2>Area 5 · Interpretability and SAEs</h2>
+<h3>The lineage</h3>
+<ul>
+<li><strong>Cunningham et al., 2023 — <a href="https://arxiv.org/abs/2309.08600">&quot;Sparse Autoencoders Find Highly Interpretable Features in Language Models&quot;</a>:</strong> SAEs on LM activations (incl. residual stream) yield interpretable, causally-relevant features.</li>
+<li><strong>Bricken et al., 2023 — <a href="https://transformer-circuits.pub/2023/monosemantic-features/index.html">&quot;Towards Monosemanticity&quot;</a> (Anthropic):</strong> SAEs on a one-layer transformer&#39;s MLP activations recover monosemantic features; introduced <strong>feature splitting</strong>.</li>
+<li><strong>Templeton et al., 2024 — <a href="https://transformer-circuits.pub/2024/scaling-monosemanticity/index.html">&quot;Scaling Monosemanticity&quot;</a> (Anthropic):</strong> trained SAEs with up to <strong>33,554,432 (~34M) features</strong> on Claude 3 Sonnet&#39;s <strong>middle-layer residual stream</strong>. Verbatim: <em>&quot;For all three SAEs, the average number of features active … on a given token was fewer than 300, and the SAE reconstruction explained at least 65% of the variance.&quot;</em> Found multilingual/multimodal and safety-relevant features (deception, sycophancy, bias, dangerous code) that <strong>causally steer</strong> behavior.</li>
+<li><strong>Gemma Scope (Lieberum et al., DeepMind, 2024; <a href="https://arxiv.org/abs/2408.05147">arXiv:2408.05147</a>):</strong> an open suite of <strong>JumpReLU SAEs</strong> on residual stream, MLP output, and attention output at <strong>every layer/sublayer</strong> of Gemma 2 2B/9B (+ select 27B). <strong>&gt;400 SAEs, &gt;30 million features</strong> total, trained on 4–16B tokens each; used <strong>&gt;20% of GPT-3&#39;s training compute</strong>; ~20 PiB of activations saved. (JumpReLU from Rajamanoharan et al. 2024, <a href="https://arxiv.org/abs/2407.14435">arXiv:2407.14435</a>.)</li>
+<li><strong>OpenAI — &quot;Scaling and evaluating sparse autoencoders&quot; (Gao et al., 2024; <a href="https://arxiv.org/abs/2406.04093">arXiv:2406.04093</a>):</strong> <strong>TopK</strong> ($k$-sparse) autoencoders; trained a <strong>16-million-latent SAE on GPT-4 activations</strong> for 40B tokens; clean reconstruction scaling laws. GPT-2 experiments on the post-MLP residual stream at layer 8.</li>
+</ul>
+<h3>Why the residual stream is the preferred SAE site</h3>
+<ul>
+<li><strong>It&#39;s the bottleneck / communication channel (Elhage 2021):</strong> all information passes through it, so it captures features used by many downstream components at once.</li>
+<li><strong>It accumulates features:</strong> as Ferrando et al.&#39;s <em>&quot;Primer on the Inner Workings of Transformer-based LMs&quot;</em> (<a href="https://arxiv.org/abs/2405.00208">arXiv:2405.00208</a>) puts it, <em>&quot;residual stream states gather information about the sum of previous components&#39; outputs,&quot;</em> so SAE features there illuminate how information is added/transformed across the forward pass.</li>
+<li><strong>It&#39;s smaller/cheaper than the components:</strong> the residual stream ($d_{\text{model}}$) is much smaller than the MLP hidden layer, so training an SAE on it is cheaper (explicitly noted for Scaling Monosemanticity&#39;s middle-layer choice). The middle layer also sits at a &quot;reasonable level of abstraction.&quot;</li>
+<li><strong>Comparison to attention outputs (Kissane, Krzyzanowski, Bloom, Conmy, Nanda, 2024; <a href="https://arxiv.org/abs/2406.17759">arXiv:2406.17759</a>):</strong> most prior modern-model SAE work targeted the residual stream at a single layer; Kissane et al. showed SAEs also work on <strong>attention layer outputs</strong> ($z_{\text{cat}}$), finding long-range-context, short-range-context, and <strong>induction</strong> feature families, and estimating <strong>≥90% of GPT-2-Small heads are polysemantic</strong> (why per-head interpretation is hard, and why the aggregated stream is easier). The induction feature family is unique to attention outputs and needs ~50k+ SAE width to capture.</li>
+<li><strong>Arguments against residual-stream SAEs:</strong> <strong>feature absorption</strong> and <strong>feature splitting</strong> (Chanin et al. 2024; Bricken 2023), and <strong>cross-layer superposition</strong> where a feature is smeared across layers — motivating crosscoders/transcoders.</li>
+</ul>
+<h3>Beyond per-layer SAEs (2024–2025)</h3>
+<ul>
+<li><strong><a href="https://transformer-circuits.pub/2024/crosscoders/index.html">Crosscoders</a> (Lindsey, Templeton, Marcus, Conerly, Batson, Olah; Anthropic, Oct 2024):</strong> an SAE variant that reads and writes <strong>across multiple layers at once</strong>, resolving cross-layer superposition and tracking persistent residual-stream features. (Framed by Anthropic as a &quot;research update,&quot; i.e. preliminary.)</li>
+<li><strong><a href="https://transformer-circuits.pub/2025/attribution-graphs/methods.html">Circuit Tracing</a> + <a href="https://transformer-circuits.pub/2025/attribution-graphs/biology.html">&quot;On the Biology of a Large Language Model&quot;</a> (Anthropic, 2025):</strong> use <strong>cross-layer transcoders (CLTs)</strong> to build a &quot;replacement model&quot; and <strong>attribution graphs</strong> (attention frozen), applied to Claude 3.5 Haiku to trace multi-step reasoning, planning, and arithmetic. Verbatim: <em>&quot;we simply use the attention patterns of the original model and treat them as fixed components.&quot;</em></li>
+</ul>
+<h3>Residual-stream interventions (steering)</h3>
+<ul>
+<li><strong>ActAdd / &quot;Steering GPT-2-XL by adding an activation vector&quot; (Turner et al., 2023; <a href="https://arxiv.org/abs/2308.10248">arXiv:2308.10248</a>):</strong> compute a steering vector as the <strong>activation difference between a pair of prompts</strong> and add it to the residual stream at inference — no fine-tuning.</li>
+<li><strong>Representation Engineering (Zou et al., 2023; <a href="https://arxiv.org/abs/2310.01405">arXiv:2310.01405</a>):</strong> top-down reading/controlling of population-level representations for honesty, harmlessness, power-seeking.</li>
+<li><strong>&quot;Refusal in LLMs is mediated by a single direction&quot; (Arditi et al., 2024; <a href="https://arxiv.org/abs/2406.11717">arXiv:2406.11717</a>; NeurIPS 2024):</strong> refusal is a <strong>one-dimensional subspace</strong> in the residual stream. Verbatim: refusal is mediated by this subspace <em>&quot;across 13 popular open-source chat models up to 72B parameters… erasing this direction from the model&#39;s residual stream activations prevents it from refusing harmful instructions, while adding this direction elicits refusal on even harmless instructions.&quot;</em> The cleanest &quot;one direction = one behavior&quot; demo.</li>
+<li><strong>Linear Representation Hypothesis (Park, Choe, Veitch, 2023; <a href="https://arxiv.org/abs/2311.03658">arXiv:2311.03658</a>):</strong> high-level concepts are <strong>directions</strong> in representation space; formalizes a &quot;causal inner product.&quot; Grounds all of the above.</li>
+</ul>
+<h3>Has the field cooled on SAEs? (2025 critique — real debate)</h3>
+<p><strong>&quot;Are Sparse Autoencoders Useful? A Case Study in Sparse Probing&quot; (Kantamneni, Engels, Rajamanoharan, Tegmark, Nanda, 2025; <a href="https://arxiv.org/abs/2502.16681">arXiv:2502.16681</a>; ICML 2025):</strong> across data scarcity, class imbalance, label noise, and covariate shift, <strong>SAE probes fail to consistently beat simple baselines</strong> (logistic regression, prompting). Plus the <strong>&quot;dark matter&quot;</strong> problem (Engels et al.) — a linearly-predictable chunk of SAE error is unexplained. This has shifted 2025 attention toward transcoders, crosscoders, and attribution graphs.</p>
+<blockquote>
+<p><strong>Honest caveat to state on-camera:</strong> SAEs are a powerful lens, not a solved solution.</p>
+</blockquote>
+<hr>
+<h2>Area 6 · Vanishing gradients &quot;still&quot; — now due to norm</h2>
+<ul>
+<li><strong>The reframed problem:</strong> ResNets/Transformers solved vanishing gradients via the additive skip — but <strong>normalization re-introduces a depth-dependent gradient issue</strong>. LayerNorm scales gradients by ~$1/\|x\|$; as the Pre-LN residual stream&#39;s norm grows with depth, gradients through later layers shrink and those layers <strong>drift toward identity</strong>.</li>
+<li><strong>Direct evidence:</strong> The Curse of Depth (<a href="https://arxiv.org/abs/2502.05795">arXiv:2502.05795</a>) shows deep Pre-LN Jacobians → identity; Hyper-Connections frames the whole thing as a <strong>seesaw</strong> between vanishing gradients (Pre-Norm) and representation collapse (Post-Norm).</li>
+<li><strong>Deep layers are prunable:</strong> <em><a href="https://arxiv.org/abs/2403.17887">&quot;The Unreasonable Ineffectiveness of the Deeper Layers&quot;</a></em> (Gromov et al., 2024) and <strong><a href="https://arxiv.org/abs/2403.03853">ShortGPT</a></strong> (Men et al., 2024) show you can delete a large fraction of the deepest layers of Llama-style models with little loss — empirical proof that the residual-stream growth problem <strong>wastes depth</strong>.</li>
+<li><strong>Fixes recap:</strong> DeepNorm ($\alpha,\beta$ scaling), LayerNorm Scaling ($1/\sqrt{l}$), sandwich/double norm (Gemma 2), reordered norm + QK-Norm (OLMo 2), Peri-LN, <strong>Mix-LN</strong> (<a href="https://arxiv.org/abs/2412.13795">arXiv:2412.13795</a>, combine Pre-LN + Post-LN so both shallow and deep layers stay effective).</li>
+<li><strong>Why warmup, loss spikes:</strong> Post-LN&#39;s large output-layer gradients at init (Xiong 2020) demand warmup; QK-Norm / z-loss / logit-capping suppress the logit-explosion loss spikes seen in large runs (OLMo 2, Chameleon, PaLM).</li>
+</ul>
+<hr>
+<h2>Area 7 · Practical &quot;how to better use the residual stream&quot;</h2>
+<ul>
+<li><strong>Residual output scaling at init:</strong> GPT-2 scales residual-branch projection weights by $1/\sqrt{2N}$ ($N$ = number of layers) so the accumulated stream variance stays controlled — a standard, cheap trick.</li>
+<li><strong><a href="https://arxiv.org/abs/2103.17239">LayerScale</a> (Touvron et al., CaiT, 2021):</strong> multiply each residual branch by a learned per-channel diagonal, initialized to a tiny value (e.g. 1e-4/1e-5), so deep vision transformers start near-identity and train stably. Cousin of ReZero/SkipInit.</li>
+<li><strong>ReZero / SkipInit / Fixup:</strong> all say the same thing — <strong>start residual branches near zero</strong> so the network is initially an identity function, then let it grow.</li>
+<li><strong>Read/write to the stream:</strong> the unembedding reads the final residual stream; weight tying between embedding and unembedding is common; the logit/tuned lens exploit that the stream is always in &quot;output coordinates.&quot;</li>
+<li><strong>Optimizer interactions (2025):</strong> work like <em>&quot;Does Your Optimizer Care How You Normalize?&quot;</em> shows normalization choice and optimizer (e.g. Muon vs AdamW) interact — one normalizer&#39;s gap to RMSNorm grew from <strong>+0.31 nats (AdamW) to +0.97 (Muon)</strong>. Normalization/residual-scaling and optimizer must be <strong>co-designed</strong>.</li>
+<li><strong>Newest architectural directions:</strong> <strong>widen</strong> the stream (Hyper-Connections, mHC), <strong>route</strong> it (AttnRes, DenseFormer/MUDDFormer), or <strong>reparametrize</strong> it entirely (nGPT on the hypersphere). The trend line: <em>the residual stream is no longer a passive pipe — it&#39;s becoming a learned, structured, multi-lane memory system.</em></li>
+</ul>
+<hr>
+<h2>The 12-part video series</h2>
+<p>12 episodes, 5–7 minutes each. 📺 <a href="https://youtube.com/playlist?list=PLP0xG5prbG1Y">Watch the full playlist</a></p>
+<ol>
+<li><strong>&quot;The Wall at 20 Layers&quot;</strong> — <em>Key idea:</em> depth should help but plain nets degrade (training error rises → not overfitting). Recreate ResNet Fig. 1 (20 vs 56-layer CIFAR-10). <em>Math:</em> why stacking matrix products vanishes gradients.</li>
+<li><strong>&quot;The Highway Before the Highway&quot;</strong> — <em>Key idea:</em> LSTM&#39;s constant error carousel and Highway Networks&#39; gated skip $y=H\cdot T+x\cdot C$ set up the additive path; ResNet drops the gates. Include the Schmidhuber priority debate.</li>
+<li><strong>&quot;y = F(x) + x&quot;</strong> — <em>Key idea:</em> ResNet&#39;s one equation and the ILSVRC 2015 sweep (3.57% top-5); basic vs bottleneck blocks; the 1202-layer shock.</li>
+<li><strong>&quot;The +1 That Saved Deep Learning&quot;</strong> — <em>Key idea:</em> Identity Mappings paper — derive $x_L = x_l + \sum F$ and the backward $(1 + \sum \partial F)$ term. Pre-activation. <strong>The math centerpiece.</strong></li>
+<li><strong>&quot;What Is a ResNet Really Doing?&quot;</strong> — <em>Key idea:</em> ensembles of shallow paths (Veit), iterative refinement (Greff), and residual block = Euler step of an ODE (Neural ODEs). Three views, one animation morphing between them.</li>
+<li><strong>&quot;Post, Pre, Deep: Normalizing the Stream&quot;</strong> — <em>Key idea:</em> Transformer Post-LN needs warmup; Pre-LN fixes gradients (Xiong 2020); DeepNorm scales to 1000 layers. Animate gradient-norm-vs-layer curves.</li>
+<li><strong>&quot;The Residual Stream Is a Communication Channel&quot;</strong> — <em>Key idea:</em> Anthropic&#39;s reframing — linear stream, read/write subspaces, virtual heads, bandwidth/superposition. The pivot from vision to interpretability.</li>
+<li><strong>&quot;Memory in the Stream&quot;</strong> — <em>Key idea:</em> FFNs as key-value memories, logit/tuned lens iterative sharpening, massive activations &amp; attention sinks as bias terms living in the stream.</li>
+<li><strong>&quot;Reading the Mind: SAEs on the Residual Stream&quot;</strong> — <em>Key idea:</em> why the stream (not attention heads) is the SAE site; Scaling Monosemanticity (34M features, Claude 3 Sonnet mid-layer, &lt;300 active/token); Gemma Scope; OpenAI TopK on GPT-4.</li>
+<li><strong>&quot;Steering by Vector&quot;</strong> — <em>Key idea:</em> one direction = one behavior — refusal direction (Arditi), ActAdd, RepE, linear representation hypothesis. Plus the 2025 SAE-usefulness critique (honest debate).</li>
+<li><strong>&quot;Vanishing Gradients, Round Two&quot;</strong> — <em>Key idea:</em> the Curse of Depth — Pre-LN variance growth makes deep layers identity/prunable (Gromov, ShortGPT); fixes: LayerNorm Scaling, sandwich/double norm (Gemma 2), reordered norm + QK-Norm (OLMo 2).</li>
+<li><strong>&quot;One Lane to Many: The Future of the Residual Line&quot;</strong> — <em>Key idea:</em> Value Residual, Kimi&#39;s AttnRes, Hyper-Connections&#39; $n$-lane stream and the seesaw, DeepSeek&#39;s mHC (3000× blow-up → Sinkhorn doubly-stochastic fix → V4), and nGPT&#39;s hypersphere. The residual stream becomes a structured, multi-lane memory.</li>
+</ol>
+<p><em>(If you prefer 14 videos, split #4 into &quot;Forward view&quot; + &quot;Backward view,&quot; and split #12 into &quot;Widening the stream&quot; (HC/mHC) + &quot;Rethinking the stream&quot; (nGPT/AttnRes).)</em></p>
+<hr>
+<h2>Recommendations — production plan &amp; staged next steps</h2>
+<ol>
+<li><strong>Lead with the drama, teach the math second.</strong> Open Episode 1 on the ResNet Fig. 1 paradox (deeper = worse training error). The single most re-watchable asset in the series is an animation of the $(1 + \sum \partial F)$ &quot;+1&quot; term in Episode 4 — budget your best animator there.</li>
+<li><strong>Use one persistent visual metaphor across all 12 videos:</strong> a vertical &quot;stream/river&quot; of vectors that layers write into (arrows adding) and read from (arrows tapping). Every later concept (norm placement, SAEs, steering, multi-lane) is a modification of this same visual. <em>This is what turns 12 videos into a series rather than 12 explainers.</em></li>
+<li><strong>Verify-before-animate for the 2026-dated papers.</strong> The Kimi AttnRes (<a href="https://arxiv.org/abs/2603.15031">arXiv:2603.15031</a>), DeepSeek-V4 (<a href="https://arxiv.org/abs/2606.19348">arXiv:2606.19348</a>), and mHC (<a href="https://arxiv.org/abs/2512.24880">arXiv:2512.24880</a>) numbers are technical-report-grade. Before scripting Episode 12&#39;s headline stats (2.8T params, ~2.5× efficiency, ~3000× signal blow-up), pull the primary PDFs and quote figures/tables directly on screen; present them as &quot;reported by the labs,&quot; not peer-reviewed.</li>
+<li><strong>Pin exact equations from primary PDFs</strong> for the math-heavy episodes (4, 6, 12). For Episode 6, fetch the DeepNorm pseudocode (Fig. 2 of <a href="https://arxiv.org/abs/2203.00555">arXiv:2203.00555</a>) for the exact $\alpha/\beta$ per architecture. For Episode 12, fetch the Hyper-Connections matrix figure (Fig. 2 of 2409.19606) and the mHC Sinkhorn description.</li>
+<li><strong>Recreate these specific figures</strong> (highest pedagogical value): ResNet Fig. 1 (degradation); Identity-Mappings gradient equation; Veit path-length binomial + effective-path histogram; Xiong gradient-norm-vs-layer (Post vs Pre); Curse-of-Depth Jacobian heatmaps; Hyper-Connections $n=2$ lane diagram; the refusal-direction ablation demo.</li>
+<li><strong>Benchmarks/thresholds that would change the plan:</strong> if the Kimi/DeepSeek 2026 reports turn out to be paywalled or retracted, fall back to Hyper-Connections (ICLR 2025, fully public) as Episode 12&#39;s anchor and treat mHC/AttnRes as &quot;emerging.&quot; If the series runs long, the two most compressible episodes are 5 (interpretation theories) and 8 (memory) — they can merge.</li>
+<li><strong>Fact-check the one soft spot:</strong> the &quot;LayerNorm scales gradients by $1/\|x\|$ → later-layer gradients shrink&quot; chain (Area 6) is well-supported qualitatively (Curse of Depth, HC seesaw) but state it as <em>mechanism as described by these papers</em>, not as an independently derived theorem, unless you pull the explicit derivation from <a href="https://arxiv.org/abs/2502.05795">arXiv:2502.05795</a> §2.</li>
+</ol>
+<hr>
+<h2>Caveats &amp; open debates to flag on-camera</h2>
+<ul>
+<li><strong>Credit for the idea:</strong> Schmidhuber (Highway/LSTM) vs He et al. (ResNet) — a genuine, ongoing priority dispute.</li>
+<li><strong>Why residuals work:</strong> better optimization landscape vs ensemble-of-short-paths vs iterative refinement vs BN-downscaling-at-init — these are complementary, not mutually exclusive, but the field hasn&#39;t fully unified them.</li>
+<li><strong>Do deep layers matter?</strong> The Curse of Depth / layer-pruning results vs the fact that scaling depth still helps with the right normalization — the resolution is <em>&quot;depth helps if you control variance.&quot;</em></li>
+<li><strong>Are SAEs useful?</strong> 2024 enthusiasm vs the 2025 sparse-probing critique; field pivoting to transcoders/crosscoders/attribution graphs. <strong>Don&#39;t oversell SAEs.</strong></li>
+<li><strong>Norm placement has no single winner:</strong> Pre-LN (most LLMs), sandwich/double (Gemma 2), reordered (OLMo 2), Peri-LN, DeepNorm all coexist; the choice is empirical and scale-dependent.</li>
+<li><strong>Dating note:</strong> several 2026-dated arXiv IDs (Kimi AttnRes 2603.15031, DeepSeek-V4 2606.19348, mHC 2512.24880) appear in current search results; treat their exact numbers as preliminary/technical-report-grade rather than peer-reviewed, and re-verify before publication.</li>
+<li><strong>Secondary sources:</strong> a few figure/number details (VGG-19 param count, some Gemma 2 config specifics) came from high-quality secondary explainers corroborated across multiple sources; the primary PDFs should be cited on screen where you display exact figures.</li>
+</ul>
+
+    </div>
+
+    
+    <div class="post-tags"><span class="post-tags-label">Tagged</span><a class="post-tag" href="/tags/residual-stream/">residual-stream</a><span class="post-tag is-solo">resnet</span><a class="post-tag" href="/tags/transformers/">transformers</a><a class="post-tag" href="/tags/interpretability/">interpretability</a><a class="post-tag" href="/tags/sparse-autoencoders/">sparse-autoencoders</a><a class="post-tag" href="/tags/steering/">steering</a><span class="post-tag is-solo">normalization</span><span class="post-tag is-solo">hyper-connections</span><span class="post-tag is-solo">deepseek</span><a class="post-tag" href="/tags/llm/">llm</a></div>
+    
+
+    <details class="cite">
+  <summary>Cite this post</summary>
+  <div class="cite-body" id="citation-section">
+    <div class="citation-tabs" role="tablist">
+        <button class="citation-tab active" data-target="bibtex" role="tab" aria-selected="true">BibTeX</button>
+        <button class="citation-tab" data-target="apa" role="tab" aria-selected="false">APA</button>
+        <button class="citation-tab" data-target="mla" role="tab" aria-selected="false">MLA</button>
+        <button class="citation-tab" data-target="chicago" role="tab" aria-selected="false">Chicago</button>
+    </div>
+    <div class="citation-panels">
+        <div class="citation-panel active" id="panel-bibtex" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-bibtex"></pre><button class="copy-btn" data-cite="cite-bibtex">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-apa" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-apa"></pre><button class="copy-btn" data-cite="cite-apa">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-mla" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-mla"></pre><button class="copy-btn" data-cite="cite-mla">Copy</button></div>
+        </div>
+        <div class="citation-panel" id="panel-chicago" role="tabpanel">
+            <div class="citation-box"><pre class="citation-text" id="cite-chicago"></pre><button class="copy-btn" data-cite="cite-chicago">Copy</button></div>
+        </div>
+    </div>
+    <p class="citation-note">Auto-generated. Verify for your institution's requirements.</p>
+  </div>
+</details>
+
+<template id="cite-meta">The Residual Stream: From AlexNet to DeepSeek-V4</template>
+
+<script>
+(function() {
+    var meta = document.getElementById('cite-meta');
+    if (!meta) return;
+    var t = meta.content ? meta.content.textContent : meta.innerHTML;
+    var a = 'Sumit Yadav';
+    var j = 'Sumit Yadav';
+    var u = 'https://sumityadav.com.np/the-residual-stream/';
+    var y = '2026';
+    var mo = 'September';
+    var ms = 'Sep';
+    var dy = '13';
+    var k = a.split(' ')[0].toLowerCase() + y + t.toLowerCase().replace(/[^a-z0-9]+/g, '');
+
+    document.getElementById('cite-bibtex').textContent =
+        '@article{' + k + ',\n  title     = {' + t + '},\n  author    = {' + a +
+        '},\n  journal   = {' + j + '},\n  year      = {' + y + '},\n  month     = {' + mo +
+        '},\n  day       = {' + dy + '},\n  url       = {' + u + '}\n}';
+    document.getElementById('cite-apa').textContent =
+        a + '. (' + y + ', ' + mo + ' ' + dy + '). ' + t + '. ' + j + '. ' + u;
+    document.getElementById('cite-mla').textContent =
+        a + '. “' + t + '.” ' + j + ', ' + dy + ' ' + ms + ' ' + y + ', ' + u + '.';
+    document.getElementById('cite-chicago').textContent =
+        a + '. “' + t + '.” ' + j + '. ' + mo + ' ' + dy + ', ' + y + '. ' + u + '.';
+
+    var sec = document.getElementById('citation-section');
+    sec.querySelectorAll('.citation-tab').forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            sec.querySelectorAll('.citation-tab').forEach(function(x) { x.classList.remove('active'); x.setAttribute('aria-selected', 'false'); });
+            sec.querySelectorAll('.citation-panel').forEach(function(p) { p.classList.remove('active'); });
+            this.classList.add('active'); this.setAttribute('aria-selected', 'true');
+            sec.querySelector('#panel-' + this.dataset.target).classList.add('active');
+        });
+    });
+    sec.querySelectorAll('.copy-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var text = document.getElementById(this.dataset.cite).textContent;
+            var b = this;
+            var done = function() { b.textContent = 'Copied!'; b.classList.add('copied'); setTimeout(function() { b.textContent = 'Copy'; b.classList.remove('copied'); }, 2000); };
+            navigator.clipboard.writeText(text).then(done).catch(function() {
+                var ta = document.createElement('textarea'); ta.value = text; ta.style.cssText = 'position:fixed;opacity:0';
+                document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); done();
+            });
+        });
+    });
+})();
+</script>
+
+
+    
+    <nav class="related-posts" aria-label="Related posts">
+        <h2>Related posts</h2>
+        <ul>
+            
+            <li>
+                <a href="/safeconstellations-task-aware-representation-steering/">SafeConstellations: Mitigating Over-Refusals in LLMs Through Task-Aware Representation Steering</a>
+                <span class="related-cat">Interpretability & Safety</span>
+            </li>
+            
+            <li>
+                <a href="/towards-monosemanticity-dictionary-learning/">Towards Monosemanticity: Pulling Clean Features Out of a Messy Neuron</a>
+                <span class="related-cat">AI & ML</span>
+            </li>
+            
+            <li>
+                <a href="/scaling-monosemanticity-golden-gate-claude/">Reading the Mind of Claude: Millions of Features Inside a Frontier AI</a>
+                <span class="related-cat">AI & ML</span>
+            </li>
+            
+            <li>
+                <a href="/mechanistic-interpretability-sparse-autoencoders/">Mechanistic Interpretability & Sparse Autoencoders: Giving AI an X-Ray</a>
+                <span class="related-cat">Interpretability & Safety</span>
+            </li>
+            
+            <li>
+                <a href="/steerability-spectrum-of-visual-attributes/">The Steerability Spectrum: When Reading a Feature Isn't Enough to Steer It</a>
+                <span class="related-cat">Interpretability</span>
+            </li>
+            
+        </ul>
+    </nav>
+    
+
+    <footer class="post-footer">
+        <p><a href="/blog/">← All posts</a></p>
+    </footer>
+</article>
+
+            </div>
+        </div>
+    </main>
+
+    <div class="consent" id="consent-banner" hidden>
+        <p>I use minimal cookies for anonymous <b>analytics</b> (Google Analytics) — just to see which posts people find useful. No ads, no cross-site tracking.</p>
+        <div class="consent-actions">
+            <button class="consent-decline" id="consent-decline">Decline</button>
+            <button class="consent-accept" id="consent-accept">Allow</button>
+        </div>
+    </div>
+    <script>
+      (function () {
+        var b = document.getElementById('consent-banner');
+        var choice = null;
+        try { choice = localStorage.getItem('cookie-consent'); } catch (e) {}
+        if (!choice) b.hidden = false;
+        function decide(v) {
+          try { localStorage.setItem('cookie-consent', v); } catch (e) {}
+          b.hidden = true;
+          if (v === 'granted' && typeof gtag === 'function') {
+            gtag('consent', 'update', { 'analytics_storage': 'granted' });
+          }
+        }
+        document.getElementById('consent-accept').addEventListener('click', function () { decide('granted'); });
+        document.getElementById('consent-decline').addEventListener('click', function () { decide('denied'); });
+      })();
+    </script>
+
+    <footer class="site-footer">
+    <div class="wrap">
+        <p>© 2026 Sumit Yadav · Kathmandu, Nepal · <a href="/">home</a> · <a href="/blog/">blog</a></p>
+    </div>
+</footer>
+
+
+    <script>
+        (function() {
+            const ORDER = ['light', 'dark', 'rain'];   // toggle cycles through these
+            let rainLoading = null;
+            const loadRain = () => {
+                if (window.RainBG) return Promise.resolve();
+                if (rainLoading) return rainLoading;
+                rainLoading = new Promise((resolve) => {
+                    const s = document.createElement('script');
+                    s.src = '/assets/js/rain.js';
+                    s.onload = resolve; s.onerror = resolve;
+                    document.body.appendChild(s);
+                });
+                return rainLoading;
+            };
+            const getThemePreference = () => {
+                const stored = localStorage.getItem('theme-preference');
+                if (stored && ORDER.includes(stored)) return stored;
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            };
+            const applyTheme = (theme) => {
+                const root = document.documentElement;
+                root.classList.remove('light-theme', 'dark-theme', 'rain-theme');
+                root.classList.add(`${theme}-theme`);
+                const isDark = theme === 'dark' || theme === 'rain';
+                // Rain background (opt-in)
+                if (theme === 'rain') {
+                    loadRain().then(() => { if (window.RainBG) window.RainBG.start(); });
+                } else if (window.RainBG) {
+                    window.RainBG.stop();
+                }
+                // Mermaid follows dark/light
+                if (window.mermaid) {
+                    mermaid.initialize({ startOnLoad: false, theme: isDark ? 'dark' : 'default' });
+                    document.querySelectorAll('.mermaid').forEach(el => {
+                        if (el.getAttribute('data-processed')) {
+                            el.removeAttribute('data-processed');
+                            el.innerHTML = el.getAttribute('data-original') || el.innerHTML;
+                        }
+                    });
+                    if (window.mermaid.init) mermaid.init(undefined, '.mermaid');
+                }
+            };
+            document.addEventListener('DOMContentLoaded', () => {
+                applyTheme(getThemePreference());
+                const t = document.getElementById('theme-toggle');
+                if (t) t.addEventListener('click', () => {
+                    const cur = getThemePreference();
+                    const next = ORDER[(ORDER.indexOf(cur) + 1) % ORDER.length];
+                    localStorage.setItem('theme-preference', next);
+                    applyTheme(next);
+                });
+                document.querySelectorAll('.mermaid').forEach(el => {
+                    if (!el.getAttribute('data-original')) el.setAttribute('data-original', el.innerHTML);
+                });
+            });
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme-preference')) applyTheme(e.matches ? 'dark' : 'light');
+            });
+        })();
+        (function() {
+            const bar = document.getElementById('scroll-progress-bar');
+            if (!bar) return;
+            const upd = () => {
+                const st = window.pageYOffset || document.documentElement.scrollTop;
+                const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                bar.style.height = Math.min(Math.max((st / h) * 100, 0), 100) + '%';
+            };
+            window.addEventListener('scroll', upd, { passive: true });
+            window.addEventListener('resize', upd, { passive: true });
+            upd();
+        })();
+    </script>
+</body>
+</html>
