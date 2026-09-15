@@ -1,10 +1,34 @@
 [
-  { "year": "2019", "label": "Began B.E. Computer Engineering, Pulchowk Campus; started learning AI/ML" },
-  { "year": "2020", "label": "First project — IRB image-recognition robotic arm; Deep Learning Specialization (DeepLearning.AI)" },
-  { "year": "2021", "label": "GANs Specialization & DeepLearning.AI GAN mentor; LogPoint CTF win" },
-  { "year": "2022", "label": "DELTA 3.0 & IT-Meet vision wins" },
-  { "year": "2023", "label": "ML for Tirhuta Lipi; GritFeat AI Hackathon" },
-  { "year": "2024", "label": "AI Engineer at AMNIL; banknote-security paper" },
-  { "year": "2025", "label": "AI research at Astha.ai (safety & agents)" },
-  { "year": "2026", "label": "ACL Main, GLOW @ IJCAI, maiBERT; CE graduate" }
+  {
+    "year": "2019",
+    "label": "Began B.E. Computer Engineering, Pulchowk Campus; started learning AI/ML"
+  },
+  {
+    "year": "2020",
+    "label": "First project — IRB image-recognition robotic arm; Deep Learning Specialization (DeepLearning.AI)"
+  },
+  {
+    "year": "2021",
+    "label": "GANs Specialization & DeepLearning.AI GAN mentor; LogPoint CTF win"
+  },
+  {
+    "year": "2022",
+    "label": "DELTA 3.0 & IT-Meet vision wins"
+  },
+  {
+    "year": "2023",
+    "label": "ML for Tirhuta Lipi; GritFeat AI Hackathon"
+  },
+  {
+    "year": "2024",
+    "label": "AI Engineer at AMNIL; banknote-security paper"
+  },
+  {
+    "year": "2025",
+    "label": "AI security research at Astha.ai — SAFE-MCP scanner, safe-k8s compliance agent"
+  },
+  {
+    "year": "2026",
+    "label": "ACL Main, GLOW @ IJCAI, maiBERT; CE graduate"
+  }
 ]
