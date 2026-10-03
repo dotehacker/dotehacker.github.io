@@ -17,6 +17,22 @@
     }
   },
   {
+    "title": "Your Intervention Was Too Narrow: Mechanism Width as a Precondition for Interpretability-Driven Discovery",
+    "authors": "Sumit Yadav, Basanta Joshi",
+    "venue": "Interp4Discovery @ NeurIPS 2026 — Workshop on Interpretability for Discovery (Accepted)",
+    "year": 2026,
+    "topics": [
+      "Interpretability & Safety"
+    ],
+    "image": "/pub-figs/mechanism-width.png",
+    "tldr": "Standard single-unit interventions recover only ~10% of the achievable causal effect — measure a mechanism's width first, widen the intervention to match, and you recover 95–100%.",
+    "note": "Interpretability-driven discovery rests on interventions: a component is credited with a function when perturbing it changes behaviour, and dismissed when nothing happens. Across three testbeds the standard intervention unit recovers only about 10% of the achievable causal effect — a single attention head reaches 8.6% on GPT-2 small's IOI circuit, removing one decoder layer reaches 9.6% on Llama-3.1-8B, and rank-1 steering reaches 11.1% in DINOv2. Measuring mechanism width k* before intervening and widening the intervention to k* recovers 95–100% of the effect (k*_eff = 9 heads, 13 layers and 53 directions respectively), and a writer-ladder cliff predicts width-1 success at ρ = 0.81. The paper gives a protocol for separating width-limited failures from readout-limited and basis-limited ones before a discovery claim is made — a null result from a too-narrow intervention is not evidence of absence.",
+    "links": {
+      "preprint": "https://rockerritesh.github.io/width-artifacts/paper.pdf",
+      "project": "https://rockerritesh.github.io/width-artifacts/"
+    }
+  },
+  {
     "title": "How Far Can a Single Vector Carry a Language? Mechanistic Limits of Inference-Time Steering for Low-Resource Devanagari Languages",
     "authors": "Sumit Yadav, Santosh Giri, Ganesh Gautam",
     "venue": "Under review, Machine Learning (Springer)",
