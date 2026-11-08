@@ -80,10 +80,11 @@
         <nav class="site-nav">
             <a href="/#publications">Publications</a>
             <a href="/blog/">Blog</a>
-            <button class="theme-toggle" id="theme-toggle" aria-label="Switch theme: light, dark, rain" title="Theme — click to cycle: light → dark → rain">
+            <button class="theme-toggle" id="theme-toggle" aria-label="Switch theme: light, dark, rain, snow" title="Theme — click to cycle: light → dark → rain → snow">
                 <span class="theme-icon ti-light">☀️</span>
                 <span class="theme-icon ti-dark">🌙</span>
                 <span class="theme-icon ti-rain">🌧️</span>
+                <span class="theme-icon ti-snow">❄️</span>
             </button>
         </nav>
     </div>
@@ -308,8 +309,8 @@ M1 --> M2 --> M3 --> M4 --> M5 --> M6 --> M7 --> M8 --> M9 --> M10 --> M11 --> M
 
     <script>
         (function() {
-            const ORDER = ['light', 'dark', 'rain'];   // toggle cycles through these
-            let rainLoading = null;
+            const ORDER = ['light', 'dark', 'rain', 'snow'];   // toggle cycles through these
+            let rainLoading = null, snowLoading = null;
             const loadRain = () => {
                 if (window.RainBG) return Promise.resolve();
                 if (rainLoading) return rainLoading;
@@ -321,6 +322,17 @@ M1 --> M2 --> M3 --> M4 --> M5 --> M6 --> M7 --> M8 --> M9 --> M10 --> M11 --> M
                 });
                 return rainLoading;
             };
+            const loadSnow = () => {
+                if (window.SnowBG) return Promise.resolve();
+                if (snowLoading) return snowLoading;
+                snowLoading = new Promise((resolve) => {
+                    const s = document.createElement('script');
+                    s.src = '/assets/js/snow.js';
+                    s.onload = resolve; s.onerror = resolve;
+                    document.body.appendChild(s);
+                });
+                return snowLoading;
+            };
             const getThemePreference = () => {
                 const stored = localStorage.getItem('theme-preference');
                 if (stored && ORDER.includes(stored)) return stored;
@@ -328,14 +340,20 @@ M1 --> M2 --> M3 --> M4 --> M5 --> M6 --> M7 --> M8 --> M9 --> M10 --> M11 --> M
             };
             const applyTheme = (theme) => {
                 const root = document.documentElement;
-                root.classList.remove('light-theme', 'dark-theme', 'rain-theme');
+                root.classList.remove('light-theme', 'dark-theme', 'rain-theme', 'snow-theme');
                 root.classList.add(`${theme}-theme`);
-                const isDark = theme === 'dark' || theme === 'rain';
+                const isDark = theme === 'dark' || theme === 'rain' || theme === 'snow';
                 // Rain background (opt-in)
                 if (theme === 'rain') {
                     loadRain().then(() => { if (window.RainBG) window.RainBG.start(); });
                 } else if (window.RainBG) {
                     window.RainBG.stop();
+                }
+                // Snow background (opt-in)
+                if (theme === 'snow') {
+                    loadSnow().then(() => { if (window.SnowBG) window.SnowBG.start(); });
+                } else if (window.SnowBG) {
+                    window.SnowBG.stop();
                 }
                 // Mermaid follows dark/light
                 if (window.mermaid) {

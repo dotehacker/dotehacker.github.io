@@ -80,10 +80,11 @@
         <nav class="site-nav">
             <a href="/#publications">Publications</a>
             <a href="/blog/">Blog</a>
-            <button class="theme-toggle" id="theme-toggle" aria-label="Switch theme: light, dark, rain" title="Theme — click to cycle: light → dark → rain">
+            <button class="theme-toggle" id="theme-toggle" aria-label="Switch theme: light, dark, rain, snow" title="Theme — click to cycle: light → dark → rain → snow">
                 <span class="theme-icon ti-light">☀️</span>
                 <span class="theme-icon ti-dark">🌙</span>
                 <span class="theme-icon ti-rain">🌧️</span>
+                <span class="theme-icon ti-snow">❄️</span>
             </button>
         </nav>
     </div>
@@ -102,7 +103,7 @@
         <article class="post-list-item">
           <h2 class="post-list-title"><a href="/the-redundancy-trap/">The Redundancy Trap: Why Single-Head Ablation Lies</a></h2>
           <div class="post-list-meta">
-            <time datetime="Fri Aug 07 2026 00:00:00 GMT+0000 (Coordinated Universal Time)">August 7, 2026</time>
+            <time datetime="Fri Aug 07 2026 05:45:00 GMT+0545 (Nepal Time)">August 7, 2026</time>
             <span class="separator">•</span><span>20 min read</span>
           </div>
           <p class="post-list-excerpt">
@@ -113,7 +114,7 @@
         <article class="post-list-item">
           <h2 class="post-list-title"><a href="/removing-the-workspace-layers-of-llama/">Where Does a Language Model Think? Finding and Removing the 'Workspace' Layers of Llama-3.1-8B</a></h2>
           <div class="post-list-meta">
-            <time datetime="Thu Jul 16 2026 00:00:00 GMT+0000 (Coordinated Universal Time)">July 16, 2026</time>
+            <time datetime="Thu Jul 16 2026 05:45:00 GMT+0545 (Nepal Time)">July 16, 2026</time>
             <span class="separator">•</span><span>19 min read</span>
           </div>
           <p class="post-list-excerpt">
@@ -124,7 +125,7 @@ layers** — one at a time and </p>
         <article class="post-list-item">
           <h2 class="post-list-title"><a href="/world-models-toy-experiments/">World Models from Scratch: Two Toy Experiments (with an in-browser demo)</a></h2>
           <div class="post-list-meta">
-            <time datetime="Mon Jun 29 2026 00:00:00 GMT+0000 (Coordinated Universal Time)">June 29, 2026</time>
+            <time datetime="Mon Jun 29 2026 05:45:00 GMT+0545 (Nepal Time)">June 29, 2026</time>
             <span class="separator">•</span><span>16 min read</span>
           </div>
           <p class="post-list-excerpt">
@@ -168,8 +169,8 @@ A world model has three pieces: an **encoder**, a **state-space model**, and a *
 
     <script>
         (function() {
-            const ORDER = ['light', 'dark', 'rain'];   // toggle cycles through these
-            let rainLoading = null;
+            const ORDER = ['light', 'dark', 'rain', 'snow'];   // toggle cycles through these
+            let rainLoading = null, snowLoading = null;
             const loadRain = () => {
                 if (window.RainBG) return Promise.resolve();
                 if (rainLoading) return rainLoading;
@@ -181,6 +182,17 @@ A world model has three pieces: an **encoder**, a **state-space model**, and a *
                 });
                 return rainLoading;
             };
+            const loadSnow = () => {
+                if (window.SnowBG) return Promise.resolve();
+                if (snowLoading) return snowLoading;
+                snowLoading = new Promise((resolve) => {
+                    const s = document.createElement('script');
+                    s.src = '/assets/js/snow.js';
+                    s.onload = resolve; s.onerror = resolve;
+                    document.body.appendChild(s);
+                });
+                return snowLoading;
+            };
             const getThemePreference = () => {
                 const stored = localStorage.getItem('theme-preference');
                 if (stored && ORDER.includes(stored)) return stored;
@@ -188,14 +200,20 @@ A world model has three pieces: an **encoder**, a **state-space model**, and a *
             };
             const applyTheme = (theme) => {
                 const root = document.documentElement;
-                root.classList.remove('light-theme', 'dark-theme', 'rain-theme');
+                root.classList.remove('light-theme', 'dark-theme', 'rain-theme', 'snow-theme');
                 root.classList.add(`${theme}-theme`);
-                const isDark = theme === 'dark' || theme === 'rain';
+                const isDark = theme === 'dark' || theme === 'rain' || theme === 'snow';
                 // Rain background (opt-in)
                 if (theme === 'rain') {
                     loadRain().then(() => { if (window.RainBG) window.RainBG.start(); });
                 } else if (window.RainBG) {
                     window.RainBG.stop();
+                }
+                // Snow background (opt-in)
+                if (theme === 'snow') {
+                    loadSnow().then(() => { if (window.SnowBG) window.SnowBG.start(); });
+                } else if (window.SnowBG) {
+                    window.SnowBG.stop();
                 }
                 // Mermaid follows dark/light
                 if (window.mermaid) {

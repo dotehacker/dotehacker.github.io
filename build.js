@@ -1714,7 +1714,8 @@ Allow: /
     const jsAssets = [
       { src: 'assets/js/search.js', dest: 'docs/assets/js/search.js' },
       { src: 'assets/js/toc.js', dest: 'docs/assets/js/toc.js' },
-      { src: 'assets/js/rain.js', dest: 'docs/assets/js/rain.js' }
+      { src: 'assets/js/rain.js', dest: 'docs/assets/js/rain.js' },
+      { src: 'assets/js/snow.js', dest: 'docs/assets/js/snow.js' }
     ];
 
     let copiedCount = 0;
