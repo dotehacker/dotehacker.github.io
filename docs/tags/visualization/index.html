@@ -70,6 +70,14 @@
         };
     </script>
     <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+      }
+    }
+    </script>
 </head>
 <body>
     <div class="scroll-progress"><div class="scroll-progress-bar" id="scroll-progress-bar"></div></div>
@@ -80,11 +88,12 @@
         <nav class="site-nav">
             <a href="/#publications">Publications</a>
             <a href="/blog/">Blog</a>
-            <button class="theme-toggle" id="theme-toggle" aria-label="Switch theme: light, dark, rain, snow" title="Theme — click to cycle: light → dark → rain → snow">
+            <button class="theme-toggle" id="theme-toggle" aria-label="Switch theme: light, dark, rain, snow, cool" title="Theme — click to cycle: light → dark → rain → snow → cool">
                 <span class="theme-icon ti-light">☀️</span>
                 <span class="theme-icon ti-dark">🌙</span>
                 <span class="theme-icon ti-rain">🌧️</span>
                 <span class="theme-icon ti-snow">❄️</span>
+                <span class="theme-icon ti-cool">✨</span>
             </button>
         </nav>
     </div>
@@ -149,8 +158,8 @@ The Julia set is named after the French mathematician Gaston Julia who investiga
 
     <script>
         (function() {
-            const ORDER = ['light', 'dark', 'rain', 'snow'];   // toggle cycles through these
-            let rainLoading = null, snowLoading = null;
+            const ORDER = ['light', 'dark', 'rain', 'snow', 'cool'];   // toggle cycles through these
+            let rainLoading = null, snowLoading = null, coolLoading = null;
             const loadRain = () => {
                 if (window.RainBG) return Promise.resolve();
                 if (rainLoading) return rainLoading;
@@ -173,6 +182,18 @@ The Julia set is named after the French mathematician Gaston Julia who investiga
                 });
                 return snowLoading;
             };
+            const loadCool = () => {
+                if (window.CoolBG) return Promise.resolve();
+                if (coolLoading) return coolLoading;
+                coolLoading = new Promise((resolve) => {
+                    const s = document.createElement('script');
+                    s.type = 'module';
+                    s.src = '/assets/js/cool.js';
+                    s.onload = resolve; s.onerror = resolve;
+                    document.body.appendChild(s);
+                });
+                return coolLoading;
+            };
             const getThemePreference = () => {
                 const stored = localStorage.getItem('theme-preference');
                 if (stored && ORDER.includes(stored)) return stored;
@@ -180,9 +201,9 @@ The Julia set is named after the French mathematician Gaston Julia who investiga
             };
             const applyTheme = (theme) => {
                 const root = document.documentElement;
-                root.classList.remove('light-theme', 'dark-theme', 'rain-theme', 'snow-theme');
+                root.classList.remove('light-theme', 'dark-theme', 'rain-theme', 'snow-theme', 'cool-theme');
                 root.classList.add(`${theme}-theme`);
-                const isDark = theme === 'dark' || theme === 'rain' || theme === 'snow';
+                const isDark = theme === 'dark' || theme === 'rain' || theme === 'snow' || theme === 'cool';
                 // Rain background (opt-in)
                 if (theme === 'rain') {
                     loadRain().then(() => { if (window.RainBG) window.RainBG.start(); });
@@ -194,6 +215,12 @@ The Julia set is named after the French mathematician Gaston Julia who investiga
                     loadSnow().then(() => { if (window.SnowBG) window.SnowBG.start(); });
                 } else if (window.SnowBG) {
                     window.SnowBG.stop();
+                }
+                // Representation-space WebGL background (opt-in)
+                if (theme === 'cool') {
+                    loadCool().then(() => { if (window.CoolBG) window.CoolBG.start(); });
+                } else if (window.CoolBG) {
+                    window.CoolBG.stop();
                 }
                 // Mermaid follows dark/light
                 if (window.mermaid) {
