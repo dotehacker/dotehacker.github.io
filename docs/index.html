@@ -56,10 +56,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/style.css">
 
-    <!-- Mermaid.js for diagram rendering -->
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+    <!-- Mermaid.js — loaded on demand, only on pages that contain a diagram.
+         It is ~970 KiB, so loading it everywhere blocked rendering sitewide. -->
     <script>
-        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+        window.loadMermaid = (function () {
+            let p = null;
+            return function () {
+                if (window.mermaid) return Promise.resolve();
+                if (!document.querySelector('.mermaid')) return Promise.resolve();
+                if (p) return p;
+                p = new Promise((resolve) => {
+                    const s = document.createElement('script');
+                    s.src = 'https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js';
+                    s.onload = resolve; s.onerror = resolve;
+                    document.head.appendChild(s);
+                });
+                return p;
+            };
+        })();
     </script>
 
     <!-- MathJax for LaTeX math -->
@@ -104,7 +118,7 @@
         <div class="wrap">
             <div class="content-area">
                 <header class="intro">
-      <img class="intro-photo" src="/profile.jpg" alt="Sumit Yadav">
+      <img class="intro-photo" src="/profile.jpg" alt="Sumit Yadav" fetchpriority="high" decoding="async" width="560" height="556">
       <div class="intro-body">
         <h1>Sumit Yadav</h1>
         <p class="aka">aka rockerritesh</p>
@@ -125,7 +139,7 @@
       <p class="section-sub">See my <a href="https://scholar.google.com/citations?user=ag74ytsAAAAJ&amp;hl=en">Google Scholar</a> for the full list.</p>
       <div class="chips" data-target="#pub-list"><span class="chips-label">Topic</span><button class="chip active" data-filter="*">All</button><button class="chip" data-filter="Interpretability &amp; Safety">Interpretability &amp; Safety</button><button class="chip" data-filter="Low-resource NLP">Low-resource NLP</button><button class="chip" data-filter="Vision &amp; Other">Vision &amp; Other</button><button class="chip" data-filter="Text Classification">Text Classification</button></div>
       <div class="pub-list" id="pub-list"><div class="pub-card" data-topics="Interpretability &amp; Safety">
-        <div class="pub-fig"><img src="/pub-figs/safeconstellations.png" alt="Figure — SafeConstellations: Mitigating Over-Refusals in LLMs Through Task-Aware Representation Steering" loading="lazy"></div>
+        <div class="pub-fig"><img src="/pub-figs/safeconstellations.png" alt="Figure — SafeConstellations: Mitigating Over-Refusals in LLMs Through Task-Aware Representation Steering" loading="lazy" decoding="async" width="479" height="568"></div>
         <div class="pub-body">
           <h3 class="pub-title">SafeConstellations: Mitigating Over-Refusals in LLMs Through Task-Aware Representation Steering</h3>
           <p class="pub-authors">Utsav Maskey, <strong>Sumit Yadav</strong>, Mark Dras, Usman Naseem</p>
@@ -137,7 +151,7 @@
         </div>
       </div>
 <div class="pub-card" data-topics="Interpretability &amp; Safety">
-        <div class="pub-fig"><img src="/pub-figs/mechanism-width.png" alt="Figure — Your Intervention Was Too Narrow: Mechanism Width as a Precondition for Interpretability-Driven Discovery" loading="lazy"></div>
+        <div class="pub-fig"><img src="/pub-figs/mechanism-width.png" alt="Figure — Your Intervention Was Too Narrow: Mechanism Width as a Precondition for Interpretability-Driven Discovery" loading="lazy" decoding="async" width="760" height="369"></div>
         <div class="pub-body">
           <h3 class="pub-title">Your Intervention Was Too Narrow: Mechanism Width as a Precondition for Interpretability-Driven Discovery</h3>
           <p class="pub-authors"><strong>Sumit Yadav</strong>, Basanta Joshi</p>
@@ -149,7 +163,7 @@
         </div>
       </div>
 <div class="pub-card" data-topics="Interpretability &amp; Safety|Low-resource NLP">
-        <div class="pub-fig"><img src="/pub-figs/devanagari-steering.png" alt="Figure — How Far Can a Single Vector Carry a Language? Mechanistic Limits of Inference-Time Steering for Low-Resource Devanagari Languages" loading="lazy"></div>
+        <div class="pub-fig"><img src="/pub-figs/devanagari-steering.png" alt="Figure — How Far Can a Single Vector Carry a Language? Mechanistic Limits of Inference-Time Steering for Low-Resource Devanagari Languages" loading="lazy" decoding="async" width="760" height="402"></div>
         <div class="pub-body">
           <h3 class="pub-title">How Far Can a Single Vector Carry a Language? Mechanistic Limits of Inference-Time Steering for Low-Resource Devanagari Languages</h3>
           <p class="pub-authors"><strong>Sumit Yadav</strong>, Santosh Giri, Ganesh Gautam</p>
@@ -161,7 +175,7 @@
         </div>
       </div>
 <div class="pub-card" data-topics="Interpretability &amp; Safety">
-        <div class="pub-fig"><img src="/pub-figs/representation-geometry.png" alt="Figure — On the Relationship Between Representation Geometry and Generalization in Deep Neural Networks" loading="lazy"></div>
+        <div class="pub-fig"><img src="/pub-figs/representation-geometry.png" alt="Figure — On the Relationship Between Representation Geometry and Generalization in Deep Neural Networks" loading="lazy" decoding="async" width="760" height="344"></div>
         <div class="pub-body">
           <h3 class="pub-title">On the Relationship Between Representation Geometry and Generalization in Deep Neural Networks</h3>
           <p class="pub-authors"><strong>Sumit Yadav</strong> (sole author)</p>
@@ -173,7 +187,7 @@
         </div>
       </div>
 <div class="pub-card" data-topics="Interpretability &amp; Safety">
-        <div class="pub-fig"><img src="/pub-figs/geometric-phases.png" alt="Figure — Geometric Phases of Mechanism Formation in Neural Networks" loading="lazy"></div>
+        <div class="pub-fig"><img src="/pub-figs/geometric-phases.png" alt="Figure — Geometric Phases of Mechanism Formation in Neural Networks" loading="lazy" decoding="async" width="760" height="754"></div>
         <div class="pub-body">
           <h3 class="pub-title">Geometric Phases of Mechanism Formation in Neural Networks</h3>
           <p class="pub-authors"><strong>Sumit Yadav</strong></p>
@@ -185,7 +199,7 @@
         </div>
       </div>
 <div class="pub-card" data-topics="Low-resource NLP">
-        <div class="pub-fig"><img src="/pub-figs/maibert.png" alt="Figure — MaiBERT: A Pre-training Corpus and Language Model for Low-Resourced Maithili Language" loading="lazy"></div>
+        <div class="pub-fig"><img src="/pub-figs/maibert.png" alt="Figure — MaiBERT: A Pre-training Corpus and Language Model for Low-Resourced Maithili Language" loading="lazy" decoding="async" width="463" height="364"></div>
         <div class="pub-body">
           <h3 class="pub-title">MaiBERT: A Pre-training Corpus and Language Model for Low-Resourced Maithili Language</h3>
           <p class="pub-authors"><strong>Sumit Yadav</strong>, Raju Kumar Yadav, Utsav Maskey, Gautam Siddharth Kashyap, Ganesh Gautam, Usman Naseem</p>
@@ -197,7 +211,7 @@
         </div>
       </div>
 <div class="pub-card" data-topics="Vision &amp; Other">
-        <div class="pub-fig"><img src="/pub-figs/yolov8.png" alt="Figure — Revolutionizing Currency Security: A YOLOv8-Based Approach for Automated Detection of Counterfeit Nepali Banknotes" loading="lazy"></div>
+        <div class="pub-fig"><img src="/pub-figs/yolov8.png" alt="Figure — Revolutionizing Currency Security: A YOLOv8-Based Approach for Automated Detection of Counterfeit Nepali Banknotes" loading="lazy" decoding="async" width="489" height="378"></div>
         <div class="pub-body">
           <h3 class="pub-title">Revolutionizing Currency Security: A YOLOv8-Based Approach for Automated Detection of Counterfeit Nepali Banknotes</h3>
           <p class="pub-authors">Santosh Giri, Loknath Regmi, <strong>Sumit Yadav</strong>, Binaya Basnet, Binit KC, Mohan Bhandari</p>
@@ -209,7 +223,7 @@
         </div>
       </div>
 <div class="pub-card" data-topics="Low-resource NLP">
-        <div class="pub-fig"><img src="/pub-figs/thesis-mlm.png" alt="Figure — Evaluating Auto-Encoding Transformer Language Models for Maithili Text Classification" loading="lazy"></div>
+        <div class="pub-fig"><img src="/pub-figs/thesis-mlm.png" alt="Figure — Evaluating Auto-Encoding Transformer Language Models for Maithili Text Classification" loading="lazy" decoding="async" width="760" height="379"></div>
         <div class="pub-body">
           <h3 class="pub-title">Evaluating Auto-Encoding Transformer Language Models for Maithili Text Classification</h3>
           <p class="pub-authors"><strong>Sumit Yadav</strong>, Raju Kumar Yadav</p>
@@ -221,7 +235,7 @@
         </div>
       </div>
 <div class="pub-card" data-topics="Low-resource NLP">
-        <div class="pub-fig"><img src="/pub-figs/tirhuta.png" alt="Figure — Machine Learning Analysis of Tirhuta Lipi" loading="lazy"></div>
+        <div class="pub-fig"><img src="/pub-figs/tirhuta.png" alt="Figure — Machine Learning Analysis of Tirhuta Lipi" loading="lazy" decoding="async" width="760" height="482"></div>
         <div class="pub-body">
           <h3 class="pub-title">Machine Learning Analysis of Tirhuta Lipi</h3>
           <p class="pub-authors"><strong>Sumit Yadav</strong>, Raju Kumar Yadav</p>
@@ -233,7 +247,7 @@
         </div>
       </div>
 <div class="pub-card" data-topics="Text Classification">
-        <div class="pub-fig"><img src="/pub-figs/support-vector.png" alt="Figure — Support Vectors Are a Better Way of Text Classification for Imbalanced Data" loading="lazy"></div>
+        <div class="pub-fig"><img src="/pub-figs/support-vector.png" alt="Figure — Support Vectors Are a Better Way of Text Classification for Imbalanced Data" loading="lazy" decoding="async" width="760" height="238"></div>
         <div class="pub-body">
           <h3 class="pub-title">Support Vectors Are a Better Way of Text Classification for Imbalanced Data</h3>
           <p class="pub-authors"><strong>Sumit Yadav</strong> et al.</p>
@@ -487,16 +501,19 @@
                 } else if (window.CoolBG) {
                     window.CoolBG.stop();
                 }
-                // Mermaid follows dark/light
-                if (window.mermaid) {
-                    mermaid.initialize({ startOnLoad: false, theme: isDark ? 'dark' : 'default' });
-                    document.querySelectorAll('.mermaid').forEach(el => {
-                        if (el.getAttribute('data-processed')) {
-                            el.removeAttribute('data-processed');
-                            el.innerHTML = el.getAttribute('data-original') || el.innerHTML;
-                        }
+                // Mermaid follows dark/light (no-op on pages without diagrams)
+                if (document.querySelector('.mermaid')) {
+                    window.loadMermaid().then(() => {
+                        if (!window.mermaid) return;
+                        mermaid.initialize({ startOnLoad: false, theme: isDark ? 'dark' : 'default' });
+                        document.querySelectorAll('.mermaid').forEach(el => {
+                            if (el.getAttribute('data-processed')) {
+                                el.removeAttribute('data-processed');
+                                el.innerHTML = el.getAttribute('data-original') || el.innerHTML;
+                            }
+                        });
+                        if (window.mermaid.init) mermaid.init(undefined, '.mermaid');
                     });
-                    if (window.mermaid.init) mermaid.init(undefined, '.mermaid');
                 }
             };
             document.addEventListener('DOMContentLoaded', () => {

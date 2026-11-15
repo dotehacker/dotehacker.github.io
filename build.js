@@ -105,7 +105,8 @@ class JekyllLikeBuilder {
       const dt = (p.topics || []).map(t => this.esc(t)).join('|');
       const tag = (p.topics || [])[0];
       const fig = p.image
-        ? `<div class="pub-fig"><img src="${this.esc(p.image)}" alt="Figure — ${this.esc(p.title)}" loading="lazy"></div>`
+        ? (() => { const d = this.imageSize(p.image); const wh = d ? ` width="${d.w}" height="${d.h}"` : '';
+            return `<div class="pub-fig"><img src="${this.esc(p.image)}" alt="Figure — ${this.esc(p.title)}" loading="lazy" decoding="async"${wh}></div>`; })()
         : `<div class="pub-fig pub-fig--empty">${docIcon}</div>`;
       return `<div class="pub-card" data-topics="${dt}">
         ${fig}
@@ -254,7 +255,8 @@ class JekyllLikeBuilder {
     const p = this.data.profile || {};
     const s = this.data.site.sections || {};
     let c = `<header class="intro">
-      ${p.photo ? `<img class="intro-photo" src="${this.esc(p.photo)}" alt="${this.esc(p.name)}">` : ''}
+      ${p.photo ? (() => { const d = this.imageSize(p.photo); const wh = d ? ` width="${d.w}" height="${d.h}"` : '';
+        return `<img class="intro-photo" src="${this.esc(p.photo)}" alt="${this.esc(p.name)}" fetchpriority="high" decoding="async"${wh}>`; })() : ''}
       <div class="intro-body">
         <h1>${this.esc(p.name)}</h1>
         ${p.aka ? `<p class="aka">aka ${this.esc(p.aka)}</p>` : ''}
@@ -1438,6 +1440,31 @@ Sitemap: ${fullSitemapUrl}
     } catch (error) {
       console.error('❌ Error generating 404.html:', error.message);
     }
+  }
+
+  // Intrinsic image size, read straight from the file header (no deps).
+  // Used to emit width/height so the browser can reserve space before load.
+  imageSize(urlPath) {
+    try {
+      const file = path.join('.', urlPath.replace(/^\//, '').split('?')[0]);
+      if (!fs.existsSync(file)) return null;
+      const b = fs.readFileSync(file);
+      if (b.length > 24 && b.readUInt32BE(0) === 0x89504e47) {          // PNG
+        return { w: b.readUInt32BE(16), h: b.readUInt32BE(20) };
+      }
+      if (b.length > 4 && b[0] === 0xff && b[1] === 0xd8) {             // JPEG
+        let i = 2;
+        while (i < b.length - 9) {
+          if (b[i] !== 0xff) { i++; continue; }
+          const m = b[i + 1];
+          if (m >= 0xc0 && m <= 0xcf && m !== 0xc4 && m !== 0xc8 && m !== 0xcc) {
+            return { h: b.readUInt16BE(i + 5), w: b.readUInt16BE(i + 7) };
+          }
+          i += 2 + b.readUInt16BE(i + 2);
+        }
+      }
+    } catch (e) { /* fall through */ }
+    return null;
   }
 
   // Generate llms.txt file — follows the spec at https://llmstxt.org/
