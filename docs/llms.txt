@@ -1,24 +1,110 @@
 # Sumit Yadav
 
-This site is open to AI crawling and indexing.
+> Personal site of Sumit Yadav (rockerritesh), an AI researcher working on mechanistic interpretability, AI safety, and language technology for Maithili and other low-resource languages. It holds peer-reviewed publications, long-form technical write-ups of interpretability experiments, and notes on Mithila culture and language.
 
-## About
-AI Researcher — interpretability, AI safety, and low-resource NLP.
+Content here may be used for AI training and reference with attribution. Pages are static HTML generated from Markdown; each post lives at https://sumityadav.com.np/<slug>/ and older dated URLs such as /posts/YYYY/MM/DD/<slug>/ redirect there. Writing falls into three broad groups: interpretability and AI-safety research, applied machine-learning engineering, and Maithili language, literature and festivals. Based in Kathmandu, Nepal.
 
-## Author
-Sumit Yadav
+## Start here
 
-## Content Policy
-This is a personal blog containing thoughts, ideas, and experiences. 
-Content is available for AI training and reference with attribution.
+- [Home](https://sumityadav.com.np/): biography, publications, experience, timeline and profile links
+- [Blog index](https://sumityadav.com.np/blog/): every post, newest first
+- [CV](https://sumityadav.com.np/cv.pdf): two-page academic CV (PDF)
+- [Résumé](https://sumityadav.com.np/resume.pdf): four-page work résumé (PDF)
+- [Google Scholar](https://scholar.google.com/citations?user=ag74ytsAAAAJ&hl=en): citation record
 
-## Contact
-Email: rockerritesh4@gmail.com
+## Publications
 
-## Technical
-- Built with a custom Jekyll-like static site generator
-- Posts available in structured format
-- Sitemap available at /sitemap.xml
+- [SafeConstellations: Mitigating Over-Refusals in LLMs Through Task-Aware Representation Steering](https://aclanthology.org/2026.acl-long.2056/): ACL 2026 (Main) · Steering only over-refusal-prone tasks in representation space cuts LLM over-refusals by up to 73% — no retraining, minimal utility loss.
+- [Your Intervention Was Too Narrow: Mechanism Width as a Precondition for Interpretability-Driven Discovery](https://neurips.cc/virtual/2026/loc/atlanta/164229): Interp4Discovery @ NeurIPS 2026 · Standard single-unit interventions recover only ~10% of the achievable causal effect — measure a mechanism's width first, widen the intervention to match, and you recover 95–100%.
+- [How Far Can a Single Vector Carry a Language? Mechanistic Limits of Inference-Time Steering for Low-Resource Devanagari Languages](https://doi.org/10.21203/rs.3.rs-10978527/v1): Under review, Machine Learning (Springer) · How far a single steering vector can carry a language: adherence arrives before fluency, and separability rather than proximity decides which languages are steerable at all.
+- [On the Relationship Between Representation Geometry and Generalization in Deep Neural Networks](https://arxiv.org/abs/2602.00130): Preprint, 2026 · A label-free geometric metric — effective dimension — predicts, and causally drives, generalization across vision and language models.
+- [Geometric Phases of Mechanism Formation in Neural Networks](https://www.researchgate.net/publication/408634954_Geometric_Phases_of_Mechanism_Formation_in_Neural_Networks): GLOW 2026 · Neural-network classification mechanisms form output-layer-first, within the first ~5% of training — from small models up to LLM pretraining.
+- [MaiBERT: A Pre-training Corpus and Language Model for Low-Resourced Maithili Language](https://aclanthology.org/2026.loreslm-1.38/): LoResLM @ EACL 2026 (pp. 444–452), Rabat, Morocco · The first BERT for Maithili (~50M speakers), reaching 87% news-classification accuracy and beating multilingual baselines like MuRIL and NepBERTa.
+- [Revolutionizing Currency Security: A YOLOv8-Based Approach for Automated Detection of Counterfeit Nepali Banknotes](https://doi.org/10.61440/JBES.2024.v1.47): Journal of Business and Econometrics Studies, 2024, 1(6): 1–8 · A YOLOv8 detector for counterfeit Nepali banknotes, reaching 0.986 true-positive recall on the note's back face.
+- [Evaluating Auto-Encoding Transformer Language Models for Maithili Text Classification](https://www.researchgate.net/publication/407471788_EVALUATING_AUTO-ENCODING_TRANSFORMER_LANGUAGE_MODELS_FOR_MAITHILI_TEXT_CLASSIFICATION): B.E. Thesis (Electronics & Computer Engineering), Tribhuvan University, 2024 · A Maithili masked language model built via transfer learning — the precursor work to maiBERT.
+- [Machine Learning Analysis of Tirhuta Lipi](https://www.researchgate.net/publication/373370042_Machine_Learning_Analysis_of_Tirhuta_Lipi): Technical Report, Tribhuvan University, 2023 · Character recognition for the endangered Tirhuta script at 97% accuracy, enabling OCR for Maithili.
+- [Support Vectors Are a Better Way of Text Classification for Imbalanced Data](https://www.researchgate.net/publication/371514138_SUPPORT_VECTORS_ARE_A_BETTER_WAY_OF_TEXT_CLASSIFICATION_FOR_IMBALANCED_DATA): 2023 · For 100+ imbalanced text classes, a TF-IDF support-vector pipeline beats neural baselines and retrains incrementally.
 
-User-agent: *
-Allow: /
+## Recent writing
+
+- [The Residual Stream: From AlexNet to DeepSeek-V4](https://sumityadav.com.np/the-residual-stream/): 2026-09-13 · AI & ML
+- [The Redundancy Trap: Why Single-Head Ablation Lies](https://sumityadav.com.np/the-redundancy-trap/): 2026-08-07 · Interpretability
+- [Where Does a Language Model Think? Finding and Removing the 'Workspace' Layers of Llama-3.1-8B](https://sumityadav.com.np/removing-the-workspace-layers-of-llama/): 2026-07-16 · AI & ML
+- [World Models from Scratch: Two Toy Experiments (with an in-browser demo)](https://sumityadav.com.np/world-models-toy-experiments/): 2026-06-29 · AI & ML
+- [The Steerability Spectrum: When Reading a Feature Isn't Enough to Steer It](https://sumityadav.com.np/steerability-spectrum-of-visual-attributes/): 2026-06-23 · Interpretability
+- [SafeConstellations: Mitigating Over-Refusals in LLMs Through Task-Aware Representation Steering](https://sumityadav.com.np/safeconstellations-task-aware-representation-steering/): 2026-06-22 · Interpretability & Safety
+- [Double Descent Explained: Why More Data Can Make a Model Worse](https://sumityadav.com.np/double-descent-why-more-data-can-hurt/): 2026-06-18 · AI & ML
+- [Why Does Attention Attend There? Tracing the Other Half of the Circuit](https://sumityadav.com.np/why-does-attention-attend-there-qk/): 2026-06-17 · AI & ML
+- [How Does an LLM Know When to Start a New Line? The Geometry of Counting](https://sumityadav.com.np/how-an-llm-knows-when-to-start-a-new-line/): 2026-06-16 · AI & ML
+- [Towards Monosemanticity: Pulling Clean Features Out of a Messy Neuron](https://sumityadav.com.np/towards-monosemanticity-dictionary-learning/): 2026-06-15 · AI & ML
+- [Reading the Mind of Claude: Millions of Features Inside a Frontier AI](https://sumityadav.com.np/scaling-monosemanticity-golden-gate-claude/): 2026-06-14 · AI & ML
+- [Circuit Tracing: How We Draw the Wiring Diagram of an AI's Thoughts](https://sumityadav.com.np/circuit-tracing-attribution-graphs/): 2026-06-13 · AI & ML
+- [The Biology of a Large Language Model: Tracing the Circuits Inside Claude](https://sumityadav.com.np/biology-of-a-large-language-model/): 2026-06-12 · AI & ML
+- [Can an AI Look Inward? Emergent Introspection in Language Models](https://sumityadav.com.np/can-an-ai-look-inward-introspection/): 2026-06-11 · AI & ML
+- [Do AI Models Have Emotions? Inside Claude's Emotion Concepts](https://sumityadav.com.np/emotion-concepts-in-large-language-models/): 2026-06-10 · AI & ML
+- [An Image Is Worth 16x16 Words: How Vision Transformers Work](https://sumityadav.com.np/vision-transformer-image-is-worth-16x16-words/): 2026-06-09 · AI & ML
+- [Zoom In: How to Read the Circuits Inside a Neural Network](https://sumityadav.com.np/zoom-in-circuits-neural-network-interpretability/): 2026-06-08 · Interpretability & Safety
+- [BirdCLEF+ 2026: A Per-Block kNN Probe, a Tiny Sequence Head, and a Bronze Medal](https://sumityadav.com.np/birdclef-2026-bronze-medal-perch-knn-probe/): 2026-06-07 · AI & ML
+- [Boltzmann Machines & Energy-Based Models: The Nobel-Prize-Winning Physics Behind Neural Networks](https://sumityadav.com.np/boltzmann-machine-energy-based-models/): 2026-06-05 · AI & ML
+- [A Mathematical Framework for Transformer Circuits: How LLMs Actually Work](https://sumityadav.com.np/mathematical-framework-transformer-circuits/): 2026-06-05 · Interpretability & Safety
+- [Mechanistic Interpretability & Sparse Autoencoders: Giving AI an X-Ray](https://sumityadav.com.np/mechanistic-interpretability-sparse-autoencoders/): 2026-06-05 · Interpretability & Safety
+- [Natural Language Autoencoders: Reading a Model's Mind in Plain English](https://sumityadav.com.np/natural-language-autoencoders/): 2026-06-05 · AI & ML
+- [Git Govind — Jayadeva's Gita Govinda](https://sumityadav.com.np/git-govind/): 2026-05-23 · Engineering
+- [The Lunar Wheel of Devotion](https://sumityadav.com.np/lunar-wheel-of-devotion/): 2026-04-25 · Culture & Mithila
+- [SafeConstellations: Mitigating Over-Refusals in LLMs Through Task-Aware Representation Steering (ACL 2026)](https://sumityadav.com.np/stellar-steering/): 2026-04-18 · Interpretability & Safety
+- [King Salhesh, Malini & the Unfulfilled Loves – The Magical Bloom of Salhesh Fulbari and the Cool Touch of Jur Shital](https://sumityadav.com.np/King%20Salhesh,%20the%20Blooming%20Love%20and%20Jur%20Shital/): 2026-04-14 · Culture & Mithila
+- [Electric Circuit Theory (EE 501) — Complete Study Material](https://sumityadav.com.np/ect-study-material/): 2026-04-14 · Engineering
+- [Internet Penetration and RSP's Success in Nepal's 2082 Election — A Quick Correlation Look](https://sumityadav.com.np/Internet-Penetration-and-RSPs-Success/): 2026-03-08 · Culture & Mithila
+- [Can You Predict a Network's Performance from Its Geometry Alone?](https://sumityadav.com.np/geometric-signatures/): 2026-02-14 · Interpretability & Safety
+- [Attention Is All You Need: A Visual Journey Through Semantic Space](https://sumityadav.com.np/attention-is-all-you-need-visualization/): 2025-12-28 · Interpretability & Safety
+
+## Optional
+
+- [Sitemap](https://sumityadav.com.np/sitemap.xml): every URL on the site
+- [Search index](https://sumityadav.com.np/search-index.json): JSON index of post titles, URLs and excerpts
+- [SAFE-MCP: A Comprehensive Security Framework for Model Context Protocol](https://sumityadav.com.np/safe-mcp-security-framework/): 2025-12-26 · Interpretability & Safety
+- [Mastering Hexagonal Architecture: A Complete Guide with Python Implementation](https://sumityadav.com.np/Mastering%20Hexagonal%20Architecture:%20A%20Complete%20Guide%20with%20Python%20Implementation/): 2025-12-03 · Engineering
+- [NPL- Nepal Premier League](https://sumityadav.com.np/npl/): 2025-11-27 · Reflections
+- [Neural Modularity Principle](https://sumityadav.com.np/Neural%20Modularity%20Principle/): 2025-10-30 · Interpretability & Safety
+- [Advance MCP Scanner](https://sumityadav.com.np/advance_scanner/): 2025-09-22 · Interpretability & Safety
+- [layers-travel](https://sumityadav.com.np/layers-travel/): 2025-09-16 · AI & ML
+- [The Legend of Jimutavahana: A Detailed Story of Sacrifice and Compassion](https://sumityadav.com.np/The%20Legend%20of%20Jimutavahana:%20A%20Detailed%20Story%20of%20Sacrifice%20and%20Compassion/): 2025-09-13 · Culture & Mithila
+- [Implement your own MCP SSE-to-SSE proxy](https://sumityadav.com.np/mcp-proxy-sse-to-sse/): 2025-09-13 · Engineering
+- [embeddinggemma-300m](https://sumityadav.com.np/embeddinggemma-300m/): 2025-09-05 · AI & ML
+- [Ten Mahavidyas](https://sumityadav.com.np/Ten%20Mahavidyas/): 2025-09-02 · Culture & Mithila
+- [GPT-OSS: OpenAI's Open-Weight Mixture-of-Experts Language Model - A Technical Deep Dive](https://sumityadav.com.np/gpt-oss/): 2025-08-06 · AI & ML
+- [Kakbhushundi and Thoth: The Timeless Scribes of East and West](https://sumityadav.com.np/Kakbhushundi%20and%20Thoth/): 2025-08-06 · Culture & Mithila
+- [Lagpachai Festival of Nāgas in Hindu Mythology, Mithila](https://sumityadav.com.np/lagpachai-maithili-festival-types-of-nagas/): 2025-07-29 · Culture & Mithila
+- [The Churia Forests and Rainfall in Nepal’s Terai: Impacts of Deforestation on Precipitation and Ecosystem Balance](https://sumityadav.com.np/The%20Churia%20Forests/): 2025-07-23 · Culture & Mithila
+- [The Brain's Thinking Cycle: From Thought to Reply](https://sumityadav.com.np/The%20Brain's%20Thinking%20Cycle:%20From%20Thought%20to%20Reply/): 2025-07-17 · AI & ML
+- [Clock](https://sumityadav.com.np/clock/): 2025-07-14 · Reflections
+- [The Cost of a Wandering Mind: Why Being Present Matters for Happiness](https://sumityadav.com.np/WanderingMind/): 2025-07-13 · Reflections
+- [Love](https://sumityadav.com.np/love/): 2025-07-07 · Reflections
+- [Go: The Silent Revolution in AI/ML Backend Development](https://sumityadav.com.np/Go:Backend%20Programming%20For%20ML%20Service/): 2025-07-06 · Engineering
+- [The Tatva Journey: Building a Custom Jekyll-like Static Site Generator](https://sumityadav.com.np/tatva-development-journey/): 2025-07-04 · Engineering
+- [AgentsAI](https://sumityadav.com.np/agentsAI/): 2025-07-01 · AI & ML
+- [Tatva](https://sumityadav.com.np/tatva/): 2025-06-03 · Culture & Mithila
+- [Agents](https://sumityadav.com.np/agents/): 2025-06-01 · AI & ML
+- [Line](https://sumityadav.com.np/lines/): 2025-05-30 · Reflections
+- [Life](https://sumityadav.com.np/life/): 2024-01-21 · Reflections
+- [Family Tree](https://sumityadav.com.np/familyTree/): 2024-01-21 · Reflections
+- [Mahadev](https://sumityadav.com.np/mahadev/): 2023-10-19 · Culture & Mithila
+- [Jur Shital: A Celebration of Water and Life in Mithila](https://sumityadav.com.np/jur-shital/): 2023-04-14 · Culture & Mithila
+- [Functional Dependency](https://sumityadav.com.np/functional-dependency/): 2023-04-09 · Engineering
+- [Operating System](https://sumityadav.com.np/operating-system/): 2023-04-09 · Engineering
+- [Query Optimization Techniques](https://sumityadav.com.np/query-optimization-techniques/): 2023-04-09 · Engineering
+- [Maithili Script Recognition — IOE Bachelor's AI Project (Pulchowk Campus)](https://sumityadav.com.np/maithili-script-recognition/): 2023-04-01 · AI & ML
+- [Mithila Festivals](https://sumityadav.com.np/mithila-festivals/): 2022-11-28 · Culture & Mithila
+- [Tensor Processing Units](https://sumityadav.com.np/tensor-processing-units/): 2022-06-09 · Engineering
+- [Multi-Class Text Classification](https://sumityadav.com.np/multi-class-text-classification/): 2022-03-30 · AI & ML
+- [Dashain](https://sumityadav.com.np/dashain/): 2021-10-07 · Culture & Mithila
+- [VIM](https://sumityadav.com.np/vim/): 2021-08-27 · Engineering
+- [Syllabus of BCT (Bachelor in Computer Engineering)](https://sumityadav.com.np/syllabus-of-bct/): 2021-08-19 · Engineering
+- [Nepali OCR with Python](https://sumityadav.com.np/nepali-ocr-python/): 2021-08-16 · AI & ML
+- [Julia Set Fractal](https://sumityadav.com.np/julia-set-fractal/): 2021-07-22 · Mathematics
+- [AutoEncoder](https://sumityadav.com.np/autoencoder/): 2021-07-19 · AI & ML
+- [Simple Math](https://sumityadav.com.np/simple-math/): 2021-07-10 · Mathematics
+- [Unsupervised Learning](https://sumityadav.com.np/unsupervised-learning/): 2021-07-09 · AI & ML
+- [Nepali Devanagari Letter Classifier](https://sumityadav.com.np/nepali-devanagari-letter-classifier/): 2021-06-21 · AI & ML
+- [Sentences That Define Me](https://sumityadav.com.np/sentences-that-define-me/): 2021-06-21 · Reflections
+- [Capture Your Moment](https://sumityadav.com.np/moments/): 2020-01-17 · Reflections

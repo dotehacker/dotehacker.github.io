@@ -1440,42 +1440,77 @@ Sitemap: ${fullSitemapUrl}
     }
   }
 
-  // Generate llms.txt file
+  // Generate llms.txt file — follows the spec at https://llmstxt.org/
+  // (H1 name, blockquote summary, heading-free detail, then H2 link lists)
   generateLlmsTxt() {
     const destPath = 'docs/llms.txt';
-    
-    // Get site info from config
+    const base = (this.config.url || '').replace(/\/$/, '');
+    const abs = (u) => base + (u.startsWith('/') ? u : '/' + u);
+    const esc = (t) => String(t == null ? '' : t).replace(/\s+/g, ' ').trim();
+
     const siteName = this.config.title || 'Personal Website';
-    const description = this.config.description || 'A personal blog and website';
-    const authorName = this.config.author?.name || 'Site Owner';
-    const authorEmail = this.config.author?.email || '';
-    
+    const profile = this.data.profile || {};
+    const pubs = this.data.publications || [];
+
+    // One line per publication, pointing at the primary source.
+    const pubLine = (p) => {
+      const L = p.links || {};
+      const url = L.paper || L.arxiv || L.openreview || L.preprint || L.doi || L.project || L.code || '';
+      const venue = esc(p.venue).split('—')[0].replace(/\.$/, '').trim();
+      const note = [venue, esc(p.tldr)].filter(Boolean).join(' · ');
+      const title = esc(p.title);
+      return url ? `- [${title}](${url})${note ? ': ' + note : ''}`
+                 : `- ${title}${note ? ': ' + note : ''}`;
+    };
+
+    // Posts, newest first. Front-matter dates arrive as Date objects from YAML,
+    // so normalise to YYYY-MM-DD before sorting or printing.
+    const ymd = (d) => {
+      if (d instanceof Date && !isNaN(d)) return d.toISOString().slice(0, 10);
+      const m = String(d).match(/^(\d{4}-\d{2}-\d{2})/);
+      if (m) return m[1];
+      const parsed = new Date(d);
+      return isNaN(parsed) ? '' : parsed.toISOString().slice(0, 10);
+    };
+    const posts = [...this.posts].sort((a, b) => ymd(b.date).localeCompare(ymd(a.date)));
+    const postLine = (p) => {
+      const cat = esc(p.category || (p.categories || [])[0]);
+      const note = [ymd(p.date), cat].filter(Boolean).join(' · ');
+      return `- [${esc(p.title)}](${encodeURI(abs(p.url))})${note ? ': ' + note : ''}`;
+    };
+    const RECENT = 30;
+    const recent = posts.slice(0, RECENT);
+    const older = posts.slice(RECENT);
+
     const llmsContent = `# ${siteName}
 
-This site is open to AI crawling and indexing.
+> Personal site of ${profile.name || siteName}${profile.aka ? ` (${profile.aka})` : ''}, an AI researcher working on mechanistic interpretability, AI safety, and language technology for Maithili and other low-resource languages. It holds peer-reviewed publications, long-form technical write-ups of interpretability experiments, and notes on Mithila culture and language.
 
-## About
-${description}
+Content here may be used for AI training and reference with attribution. Pages are static HTML generated from Markdown; each post lives at ${base}/<slug>/ and older dated URLs such as /posts/YYYY/MM/DD/<slug>/ redirect there. Writing falls into three broad groups: interpretability and AI-safety research, applied machine-learning engineering, and Maithili language, literature and festivals${profile.location ? `. Based in ${esc(profile.location)}` : ''}.
 
-## Author
-${authorName}
+## Start here
 
-## Content Policy
-This is a personal blog containing thoughts, ideas, and experiences. 
-Content is available for AI training and reference with attribution.
+- [Home](${base}/): biography, publications, experience, timeline and profile links
+- [Blog index](${base}/blog/): every post, newest first
+- [CV](${abs('/cv.pdf')}): two-page academic CV (PDF)
+- [Résumé](${abs('/resume.pdf')}): four-page work résumé (PDF)
+- [Google Scholar](${this.config.author?.google_scholar || 'https://scholar.google.com/citations?user=ag74ytsAAAAJ&hl=en'}): citation record
 
-## Contact
-${authorEmail ? `Email: ${authorEmail}` : 'Contact information available on the about page.'}
+## Publications
 
-## Technical
-- Built with a custom Jekyll-like static site generator
-- Posts available in structured format
-- Sitemap available at /sitemap.xml
+${pubs.map(pubLine).join('\n')}
 
-User-agent: *
-Allow: /
+## Recent writing
+
+${recent.map(postLine).join('\n')}
+
+## Optional
+
+- [Sitemap](${abs('/sitemap.xml')}): every URL on the site
+- [Search index](${abs('/search-index.json')}): JSON index of post titles, URLs and excerpts
+${older.map(postLine).join('\n')}
 `;
-    
+
     try {
       fs.writeFileSync(destPath, llmsContent);
       console.log('✅ Generated llms.txt');
